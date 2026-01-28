@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SwitchQR - Create Dynamic QR</title>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#7426d9",
+                        "primary-hover": "#5e1eb3",
+                        "background-light": "#f7f6f8",
+                        "background-dark": "#181220",
+                        "surface-light": "#ffffff",
+                        "surface-dark": "#2d2438",
+                        "text-dark": "#140f1a",
+                        "text-light": "#f3f4f6",
+                        "text-subtle": "#6e5393",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        /* Custom scrollbar for cleaner look */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #d1d5db;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #9ca3af;
+        }
+        /* Toggle Switch Styles */
+        .toggle-checkbox:checked {
+            right: 0;
+            border-color: #7426d9;
+        }
+        .toggle-checkbox:checked + .toggle-label {
+            background-color: #7426d9;
+        }
+    </style>
+</head>
+<body class="font-display bg-background-light dark:bg-background-dark text-text-dark dark:text-text-light antialiased transition-colors duration-200">
+<div class="flex h-screen overflow-hidden">
+<!-- Side Navigation -->
+<aside class="hidden w-64 flex-col border-r border-[#ece8f2] dark:border-[#3a2f4d] bg-white dark:bg-surface-dark lg:flex">
+<div class="flex h-16 items-center px-6 border-b border-[#ece8f2] dark:border-[#3a2f4d]">
+<div class="flex flex-col">
+<h1 class="text-text-dark dark:text-white text-base font-bold leading-normal">SwitchQR</h1>
+<p class="text-text-subtle dark:text-gray-400 text-xs font-normal leading-normal">SaaS Platform</p>
+</div>
+</div>
+<nav class="flex-1 overflow-y-auto px-4 py-4 space-y-1">
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-text-dark dark:text-gray-300 hover:bg-[#faf8fb] dark:hover:bg-[#3a2f4d] group transition-colors" href="#">
+<span class="material-symbols-outlined text-text-subtle group-hover:text-primary transition-colors">dashboard</span>
+<span class="text-sm font-medium">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-text-dark dark:text-gray-300 hover:bg-[#faf8fb] dark:hover:bg-[#3a2f4d] group transition-colors" href="#">
+<span class="material-symbols-outlined text-text-subtle group-hover:text-primary transition-colors">flag</span>
+<span class="text-sm font-medium">Campaigns</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg bg-primary/10 text-primary dark:text-primary dark:bg-primary/20" href="#">
+<span class="material-symbols-outlined font-bold">add_circle</span>
+<span class="text-sm font-medium">Create QR</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-text-dark dark:text-gray-300 hover:bg-[#faf8fb] dark:hover:bg-[#3a2f4d] group transition-colors" href="#">
+<span class="material-symbols-outlined text-text-subtle group-hover:text-primary transition-colors">bar_chart</span>
+<span class="text-sm font-medium">Analytics</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-text-dark dark:text-gray-300 hover:bg-[#faf8fb] dark:hover:bg-[#3a2f4d] group transition-colors" href="#">
+<span class="material-symbols-outlined text-text-subtle group-hover:text-primary transition-colors">settings</span>
+<span class="text-sm font-medium">Settings</span>
+</a>
+</nav>
+<div class="p-4 border-t border-[#ece8f2] dark:border-[#3a2f4d]">
+<div class="flex items-center gap-3 px-3 py-2">
+<div class="h-8 w-8 rounded-full bg-gradient-to-tr from-primary to-purple-400"></div>
+<div>
+<p class="text-sm font-medium text-text-dark dark:text-white">Jane Doe</p>
+<p class="text-xs text-text-subtle">Pro Plan</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<div class="flex flex-1 flex-col overflow-hidden">
+<!-- Top Header -->
+<header class="flex h-16 items-center justify-between border-b border-[#ece8f2] dark:border-[#3a2f4d] bg-white dark:bg-surface-dark px-6 lg:px-8">
+<!-- Breadcrumbs -->
+<nav aria-label="Breadcrumb" class="flex">
+<ol class="flex items-center space-x-2">
+<li>
+<a class="text-text-subtle hover:text-primary text-sm font-medium" href="#">Campaigns</a>
+</li>
+<li>
+<span class="text-gray-300 dark:text-gray-600">/</span>
+</li>
+<li>
+<span aria-current="page" class="text-text-dark dark:text-white text-sm font-medium">New QR</span>
+</li>
+</ol>
+</nav>
+<div class="flex items-center gap-4">
+<div class="relative hidden sm:block">
+<span class="absolute inset-y-0 left-0 flex items-center pl-3 text-text-subtle">
+<span class="material-symbols-outlined text-[20px]">search</span>
+</span>
+<input class="w-64 rounded-lg border-none bg-[#f3f4f6] dark:bg-[#3a2f4d] py-2 pl-10 pr-4 text-sm text-text-dark dark:text-white placeholder-text-subtle focus:ring-2 focus:ring-primary" placeholder="Search QRs..." type="text"/>
+</div>
+<button class="flex items-center justify-center p-2 text-text-subtle hover:text-primary transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+</div>
+</header>
+<!-- Scrollable Content -->
+<main class="flex-1 overflow-y-auto bg-background-light dark:bg-background-dark p-6 lg:p-10">
+<div class="mx-auto max-w-6xl">
+<!-- Page Heading -->
+<div class="mb-8">
+<h1 class="text-3xl font-bold text-text-dark dark:text-white tracking-tight">Create Dynamic QR</h1>
+<p class="mt-2 text-text-subtle dark:text-gray-400">Configure your new dynamic QR code details and customize its appearance.</p>
+</div>
+<div class="grid grid-cols-1 gap-8 lg:grid-cols-12">
+<!-- Left Column: Configuration Form -->
+<div class="lg:col-span-7 flex flex-col gap-6">
+<!-- Basic Details Card -->
+<div class="rounded-xl border border-[#ece8f2] dark:border-[#3a2f4d] bg-white dark:bg-surface-dark shadow-sm">
+<div class="border-b border-[#ece8f2] dark:border-[#3a2f4d] px-6 py-4">
+<h2 class="text-lg font-semibold text-text-dark dark:text-white">Basic Details</h2>
+</div>
+<div class="p-6 space-y-6">
+<!-- QR Name -->
+<div>
+<label class="block text-sm font-medium text-text-dark dark:text-gray-200 mb-1" for="qr-name">Internal Name</label>
+<input class="w-full rounded-lg border border-gray-200 dark:border-gray-600 bg-white dark:bg-[#2d2438] px-4 py-2.5 text-text-dark dark:text-white placeholder-gray-400 focus:border-primary focus:ring-primary sm:text-sm transition-shadow" id="qr-name" placeholder="e.g. Summer Sale Poster A" type="text"/>
+</div>
+<!-- Destination URL -->
+<div>
+<label class="block text-sm font-medium text-text-dark dark:text-gray-200 mb-1" for="target-url">Destination URL</label>
+<div class="relative">
+<span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
+<span class="material-symbols-outlined text-[20px]">link</span>
+</span>
+<input class="w-full rounded-lg border border-gray-200 dark:border-gray-600 bg-white dark:bg-[#2d2438] pl-10 pr-4 py-2.5 text-text-dark dark:text-white placeholder-gray-400 focus:border-primary focus:ring-primary sm:text-sm transition-shadow" id="target-url" placeholder="https://example.com/promo" type="url"/>
+<!-- Valid Indicator (Hidden by default logic, just showing styling) -->
+<span class="absolute inset-y-0 right-0 flex items-center pr-3 text-green-500 hidden">
+<span class="material-symbols-outlined text-[20px]">check_circle</span>
+</span>
+</div>
+</div>
+<!-- Campaign Dropdown -->
+<div>
+<label class="block text-sm font-medium text-text-dark dark:text-gray-200 mb-1" for="campaign">Campaign</label>
+<div class="relative">
+<select class="w-full appearance-none rounded-lg border border-gray-200 dark:border-gray-600 bg-white dark:bg-[#2d2438] px-4 py-2.5 text-text-dark dark:text-white focus:border-primary focus:ring-primary sm:text-sm" id="campaign">
+<option>No Campaign</option>
+<option>Summer 2024</option>
+<option>Q3 Marketing Push</option>
+<option>Event: TechConf</option>
+</select>
+<span class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400">
+<span class="material-symbols-outlined">expand_more</span>
+</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Advanced Options Card -->
+<div class="rounded-xl border border-[#ece8f2] dark:border-[#3a2f4d] bg-white dark:bg-surface-dark shadow-sm overflow-hidden">
+<!-- UTM Accordion Header (Open for demo purposes) -->
+<button class="flex w-full items-center justify-between px-6 py-4 text-left hover:bg-gray-50 dark:hover:bg-[#352b42] transition-colors group">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary group-hover:scale-110 transition-transform">tune</span>
+<span class="text-sm font-semibold text-text-dark dark:text-white">UTM Builder &amp; Tracking</span>
+</div>
+<span class="material-symbols-outlined text-gray-400 transform rotate-180 transition-transform">expand_more</span>
+</button>
+<div class="px-6 pb-6 pt-2 border-t border-[#ece8f2] dark:border-[#3a2f4d]">
+<div class="grid grid-cols-1 gap-4 sm:grid-cols-3 mb-6">
+<div>
+<label class="block text-xs font-medium text-text-subtle mb-1">Source</label>
+<input class="w-full rounded-md border-gray-200 dark:border-gray-600 bg-[#f9fafb] dark:bg-[#2d2438] px-3 py-2 text-xs text-text-dark dark:text-white focus:border-primary focus:ring-primary" placeholder="google" type="text"/>
+</div>
+<div>
+<label class="block text-xs font-medium text-text-subtle mb-1">Medium</label>
+<input class="w-full rounded-md border-gray-200 dark:border-gray-600 bg-[#f9fafb] dark:bg-[#2d2438] px-3 py-2 text-xs text-text-dark dark:text-white focus:border-primary focus:ring-primary" placeholder="cpc" type="text"/>
+</div>
+<div>
+<label class="block text-xs font-medium text-text-subtle mb-1">Campaign</label>
+<input class="w-full rounded-md border-gray-200 dark:border-gray-600 bg-[#f9fafb] dark:bg-[#2d2438] px-3 py-2 text-xs text-text-dark dark:text-white focus:border-primary focus:ring-primary" placeholder="summer_sale" type="text"/>
+</div>
+</div>
+<div class="space-y-4">
+<!-- Scan Tracking Toggle -->
+<div class="flex items-center justify-between">
+<div class="flex flex-col">
+<span class="text-sm font-medium text-text-dark dark:text-white">Scan Tracking</span>
+<span class="text-xs text-text-subtle">Capture device, location, and time data.</span>
+</div>
+<div class="relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in">
+<input checked="" class="toggle-checkbox absolute block w-5 h-5 rounded-full bg-white border-4 appearance-none cursor-pointer border-gray-300 dark:border-gray-500 checked:border-primary transition-all duration-300" id="toggle-tracking" name="toggle" type="checkbox"/>
+<label class="toggle-label block overflow-hidden h-5 rounded-full bg-gray-300 dark:bg-gray-600 cursor-pointer transition-colors duration-300" for="toggle-tracking"></label>
+</div>
+</div>
+<!-- A/B Testing Toggle (Pro Feature) -->
+<div class="flex items-center justify-between opacity-80 bg-gray-50 dark:bg-[#352b42]/50 p-3 rounded-lg border border-dashed border-gray-300 dark:border-gray-600">
+<div class="flex flex-col">
+<div class="flex items-center gap-2">
+<span class="text-sm font-medium text-text-dark dark:text-white">A/B Testing</span>
+<span class="bg-amber-100 text-amber-800 text-[10px] font-bold px-1.5 py-0.5 rounded border border-amber-200 uppercase">Pro</span>
+<span class="material-symbols-outlined text-xs text-gray-400">lock</span>
+</div>
+<span class="text-xs text-text-subtle">Split traffic between two destination URLs.</span>
+</div>
+<!-- Fake Toggle for Locked State -->
+<div class="relative inline-block w-10 mr-2 align-middle select-none cursor-not-allowed opacity-50">
+<input class="absolute block w-5 h-5 rounded-full bg-white border-4 appearance-none border-gray-300" disabled="" type="checkbox"/>
+<label class="block overflow-hidden h-5 rounded-full bg-gray-300"></label>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column: Preview & Customization -->
+<div class="lg:col-span-5 flex flex-col gap-6">
+<div class="sticky top-6 flex flex-col gap-6">
+<!-- Preview Card -->
+<div class="rounded-xl border border-[#ece8f2] dark:border-[#3a2f4d] bg-white dark:bg-surface-dark shadow-md overflow-hidden flex flex-col h-full">
+<!-- Tabs -->
+<div class="flex border-b border-[#ece8f2] dark:border-[#3a2f4d]">
+<button class="flex-1 py-3 text-sm font-medium text-primary border-b-2 border-primary bg-primary/5">Design</button>
+<button class="flex-1 py-3 text-sm font-medium text-text-subtle hover:text-text-dark dark:hover:text-white transition-colors">Download</button>
+</div>
+<!-- QR Display Area -->
+<div class="flex-1 flex items-center justify-center bg-[#faf8fb] dark:bg-[#251e2e] p-8 min-h-[300px]">
+<div class="bg-white p-4 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700">
+<!-- QR Code Placeholder -->
+<div class="relative w-48 h-48 bg-white" data-alt="QR Code Preview">
+<img alt="QR Code Preview" class="w-full h-full object-contain mix-blend-multiply dark:mix-blend-normal opacity-90" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCNh0OY3sxHYJMoqcbaKfhvlrfp7E0PiDxuKYG8AM8shiOMQnvPrfPS2oi7fERcaHQrZ1tpXOU4KLqPmKBzIhmqt-7Uqkk6VlHtriU3rUYVcoB10tYLI9p_0rtved0bjy95wtx1JbVu3NMIcHs7JqmQ-pgCFPGsBoXxADZVfzvLpepw4Pni8KwKUo6Oj9cvY6hpqB9T-GuKdP6PWkE2wPTY2mhCXyzzu2DsXZGklB0Q7fEtReaJid8HPXP5gxx7WzVU4szZb_6A6oQ"/>
+<!-- Logo Overlay Example -->
+<div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+<div class="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-md">
+<span class="material-symbols-outlined text-primary text-2xl">bolt</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Customization Controls -->
+<div class="p-6 border-t border-[#ece8f2] dark:border-[#3a2f4d] space-y-5 bg-white dark:bg-surface-dark">
+<!-- Color Picker -->
+<div>
+<label class="block text-xs font-semibold uppercase tracking-wide text-text-subtle mb-3">Brand Color</label>
+<div class="flex items-center gap-3">
+<input class="h-10 w-10 cursor-pointer rounded border-0 p-0" type="color" value="#7426d9"/>
+<div class="flex-1">
+<input class="w-full rounded-md border-gray-200 dark:border-gray-600 bg-[#f9fafb] dark:bg-[#2d2438] px-3 py-2 text-sm text-text-dark dark:text-white focus:border-primary uppercase font-mono" type="text" value="#7426d9"/>
+</div>
+</div>
+<div class="flex gap-2 mt-3">
+<button class="w-6 h-6 rounded-full bg-black hover:scale-110 transition-transform ring-1 ring-offset-2 ring-transparent hover:ring-gray-300"></button>
+<button class="w-6 h-6 rounded-full bg-blue-600 hover:scale-110 transition-transform ring-1 ring-offset-2 ring-transparent hover:ring-gray-300"></button>
+<button class="w-6 h-6 rounded-full bg-[#7426d9] ring-2 ring-offset-2 ring-primary hover:scale-110 transition-transform"></button>
+<button class="w-6 h-6 rounded-full bg-green-500 hover:scale-110 transition-transform ring-1 ring-offset-2 ring-transparent hover:ring-gray-300"></button>
+<button class="w-6 h-6 rounded-full bg-red-500 hover:scale-110 transition-transform ring-1 ring-offset-2 ring-transparent hover:ring-gray-300"></button>
+</div>
+</div>
+<!-- Logo Upload (Locked) -->
+<div>
+<div class="flex items-center justify-between mb-2">
+<label class="block text-xs font-semibold uppercase tracking-wide text-text-subtle">Center Logo</label>
+<span class="flex items-center gap-1 text-[10px] font-bold text-amber-600 bg-amber-50 dark:bg-amber-900/30 px-2 py-0.5 rounded-full border border-amber-100 dark:border-amber-800">
+<span class="material-symbols-outlined text-[10px]">lock</span> PRO
+                                                </span>
+</div>
+<div class="relative group cursor-pointer border-2 border-dashed border-gray-200 dark:border-gray-600 rounded-lg p-4 text-center hover:border-primary/50 transition-colors">
+<div class="absolute inset-0 bg-white/50 dark:bg-black/20 backdrop-blur-[1px] rounded-lg z-10 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="bg-primary text-white text-xs font-bold py-1.5 px-3 rounded shadow-sm hover:bg-primary-hover">Unlock Feature</button>
+</div>
+<span class="material-symbols-outlined text-gray-400 text-3xl mb-1">cloud_upload</span>
+<p class="text-xs text-text-subtle">Drop logo here or click to upload</p>
+</div>
+</div>
+<div class="pt-2">
+<button class="w-full bg-primary hover:bg-primary-hover text-white font-semibold py-3 px-4 rounded-lg shadow-md transition-all flex items-center justify-center gap-2 group">
+<span>Save &amp; Activate</span>
+<span class="material-symbols-outlined group-hover:translate-x-1 transition-transform text-lg">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+<p class="text-center text-xs text-gray-400">
+                                    By creating this QR, you agree to our <a class="underline hover:text-primary" href="#">Terms of Service</a>.
+                                </p>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</div>
+</body></html>

@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SwitchQR - Create New Campaign Folder</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#6D28D9",
+                        "background-light": "#f8fafc",
+                        "background-dark": "#171220",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk"]
+                    },
+                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+<style type="text/tailwindcss">
+        body {
+            font-family: "Space Grotesk", sans-serif;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+<body class="bg-background-light min-h-screen">
+<div class="relative flex min-h-screen w-full flex-col overflow-x-hidden">
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-gray-200 bg-white px-10 py-3">
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-4 text-primary">
+<div class="size-8 flex items-center justify-center">
+<span class="material-symbols-outlined text-4xl">qr_code_2</span>
+</div>
+<h2 class="text-slate-900 text-xl font-bold leading-tight tracking-tight">SwitchQR</h2>
+</div>
+<label class="flex flex-col min-w-40 !h-10 max-w-64">
+<div class="flex w-full flex-1 items-stretch rounded-lg h-full bg-slate-50 border border-slate-200">
+<div class="text-slate-400 flex items-center justify-center pl-4">
+<span class="material-symbols-outlined text-xl">search</span>
+</div>
+<input class="form-input flex w-full min-w-0 flex-1 border-none bg-transparent focus:outline-0 focus:ring-0 h-full placeholder:text-slate-400 px-4 pl-2 text-sm font-normal text-slate-900" placeholder="Search resources..." value=""/>
+</div>
+</label>
+</div>
+<div class="flex flex-1 justify-end gap-8">
+<nav class="flex items-center gap-9">
+<a class="text-slate-600 text-sm font-medium hover:text-primary transition-colors" href="#">Dashboard</a>
+<a class="text-slate-600 text-sm font-medium hover:text-primary transition-colors" href="#">Campaigns</a>
+<a class="text-slate-600 text-sm font-medium hover:text-primary transition-colors" href="#">QRs</a>
+<a class="text-slate-600 text-sm font-medium hover:text-primary transition-colors" href="#">Analytics</a>
+</nav>
+<div class="flex gap-2">
+<button class="flex items-center justify-center rounded-lg h-10 w-10 bg-white text-slate-600 border border-slate-200 hover:bg-slate-50">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="flex items-center justify-center rounded-lg h-10 w-10 bg-white text-slate-600 border border-slate-200 hover:bg-slate-50">
+<span class="material-symbols-outlined">settings</span>
+</button>
+</div>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 border-2 border-primary" data-alt="User avatar placeholder" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDzhlzcJiOaDotdN43D3NW6S4S2f0NIfihwQCSRnQuxbQ-nC1i6HfYQV1UeyxdoyJ-Kg90Z1Iv8lC9nSmf0Rwjr1caBcxgQwEVU7CXKiO1r4LHRQ7-Wpk0s0MA-A7NtnMZ3pD9CJjSDHYLetienC4_vMTQxtEK020VrQTh8-uGkowL0yoQhlZiAUa0yajSFz1UlezlApSYD-Ro0bG8LBx0SVwkMSeIHez-jgwW9Tllp9e3zkZJOzOqYPnP3Y8xCC2eYTcwx8GVaHEo");'></div>
+</div>
+</header>
+<main class="flex-1 px-10 py-8 opacity-40 pointer-events-none">
+<div class="flex flex-wrap justify-between items-end gap-3 mb-8">
+<div class="flex flex-col gap-1">
+<h1 class="text-slate-900 text-3xl font-bold">Campaigns</h1>
+<p class="text-slate-500 text-sm">Manage your dynamic QR code collections.</p>
+</div>
+<button class="bg-primary text-white px-6 py-2.5 rounded-lg font-bold flex items-center gap-2">
+<span class="material-symbols-outlined">add</span>
+                    Create New Folder
+                </button>
+</div>
+<div class="grid grid-cols-3 gap-6">
+<div class="h-48 rounded-xl bg-white border border-slate-200 p-6 shadow-sm"></div>
+<div class="h-48 rounded-xl bg-white border border-slate-200 p-6 shadow-sm"></div>
+<div class="h-48 rounded-xl bg-white border border-slate-200 p-6 shadow-sm"></div>
+</div>
+</main>
+<div class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 backdrop-blur-sm p-4">
+<div class="w-full max-w-[640px] bg-white rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.15)] border border-slate-100 flex flex-col overflow-hidden">
+<div class="flex items-center justify-between border-b border-slate-100 px-8 py-6">
+<div>
+<h2 class="text-slate-900 text-2xl font-bold leading-tight">Create New Campaign</h2>
+<p class="text-slate-500 text-sm font-normal">Organize your dynamic QR codes into a single folder.</p>
+</div>
+<button class="text-slate-400 hover:text-slate-600 transition-colors p-1 rounded-full hover:bg-slate-100">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+<div class="px-8 py-6 space-y-6 overflow-y-auto max-h-[70vh] custom-scrollbar">
+<div class="flex flex-col gap-2">
+<label class="text-slate-800 text-sm font-semibold uppercase tracking-wider">Campaign Name</label>
+<input class="form-input w-full rounded-lg text-slate-900 border border-slate-200 bg-slate-50 focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 placeholder:text-slate-400 px-4 transition-all" placeholder="e.g. Summer Sale 2024" type="text"/>
+</div>
+<div class="flex flex-col gap-2">
+<label class="text-slate-800 text-sm font-semibold uppercase tracking-wider">Description <span class="text-slate-400 font-normal normal-case">(Optional)</span></label>
+<textarea class="form-input w-full rounded-lg text-slate-900 border border-slate-200 bg-slate-50 focus:ring-2 focus:ring-primary/20 focus:border-primary min-h-24 placeholder:text-slate-400 p-4 resize-none transition-all" placeholder="Describe the purpose of this campaign folder..."></textarea>
+</div>
+<div class="flex flex-col gap-2">
+<label class="text-slate-800 text-sm font-semibold uppercase tracking-wider">Add existing QRs</label>
+<div class="relative group">
+<div class="flex flex-wrap items-center gap-2 p-2.5 w-full rounded-lg border border-slate-200 bg-slate-50 focus-within:ring-2 focus-within:ring-primary/20 focus-within:border-primary focus-within:bg-white min-h-12 transition-all">
+<div class="bg-primary/10 text-primary px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1.5 border border-primary/20">
+                                    Product Launch QR
+                                    <span class="material-symbols-outlined text-[14px] cursor-pointer hover:text-primary/70">close</span>
+</div>
+<div class="bg-primary/10 text-primary px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1.5 border border-primary/20">
+                                    Demo Link
+                                    <span class="material-symbols-outlined text-[14px] cursor-pointer hover:text-primary/70">close</span>
+</div>
+<input class="flex-1 bg-transparent border-none focus:ring-0 text-sm p-0 text-slate-900 placeholder:text-slate-400 h-8" placeholder="Search QRs to add..." type="text"/>
+</div>
+<div class="absolute left-0 right-0 top-full mt-2 bg-white border border-slate-200 rounded-xl shadow-2xl z-10 hidden group-focus-within:block max-h-52 overflow-y-auto custom-scrollbar">
+<div class="p-3 hover:bg-slate-50 cursor-pointer text-sm text-slate-700 flex items-center gap-3 transition-colors">
+<span class="material-symbols-outlined text-primary text-xl">qr_code</span> 
+                                    Social Media Campaign #1
+                                </div>
+<div class="p-3 hover:bg-slate-50 cursor-pointer text-sm text-slate-700 flex items-center gap-3 transition-colors border-t border-slate-50">
+<span class="material-symbols-outlined text-primary text-xl">qr_code</span> 
+                                    Winter Discount Redirect
+                                </div>
+<div class="p-3 hover:bg-slate-50 cursor-pointer text-sm text-slate-700 flex items-center gap-3 transition-colors border-t border-slate-50">
+<span class="material-symbols-outlined text-primary text-xl">qr_code</span> 
+                                    Customer Support Portal
+                                </div>
+</div>
+</div>
+</div>
+<div class="flex flex-col gap-4 p-5 rounded-xl border border-dashed border-slate-200 bg-slate-50/50 opacity-90 select-none">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<label class="text-slate-500 text-sm font-semibold uppercase tracking-wider">Campaign Goals</label>
+<span class="bg-primary text-white text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-widest shadow-sm shadow-primary/20">Pro</span>
+</div>
+<span class="material-symbols-outlined text-slate-400 text-xl">lock</span>
+</div>
+<div class="flex flex-wrap gap-4">
+<div class="flex items-center gap-2 text-sm text-slate-400 font-medium">
+<div class="w-4 h-4 rounded-full border-2 border-slate-300"></div>
+                                Lead Generation
+                            </div>
+<div class="flex items-center gap-2 text-sm text-slate-400 font-medium">
+<div class="w-4 h-4 rounded-full border-2 border-slate-300"></div>
+                                Traffic Boost
+                            </div>
+<div class="flex items-center gap-2 text-sm text-slate-400 font-medium">
+<div class="w-4 h-4 rounded-full border-2 border-slate-300"></div>
+                                Conversion Tracking
+                            </div>
+</div>
+</div>
+</div>
+<div class="flex items-center justify-end gap-4 px-8 py-6 border-t border-slate-100 bg-slate-50/50">
+<button class="px-6 py-3 rounded-lg text-sm font-bold text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-all">
+                        Cancel
+                    </button>
+<button class="bg-primary hover:bg-[#5b21b6] text-white px-8 py-3 rounded-lg text-sm font-bold shadow-lg shadow-primary/25 transition-all active:scale-[0.98]">
+                        Create Campaign
+                    </button>
+</div>
+</div>
+</div>
+</div>
+
+</body></html>

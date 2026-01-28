@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SwitchQR Design System Guide</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#6b26d9",
+                        "secondary": "#8b5cf6",
+                        "success": "#10b981",
+                        "error": "#ef4444",
+                        "warning": "#f59e0b",
+                        "background-light": "#f7f6f8",
+                        "background-dark": "#171220",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 transition-colors duration-200">
+<div class="layout-container flex h-full grow flex-col">
+<!-- TopNavBar Component -->
+<header class="sticky top-0 z-50 flex items-center justify-between whitespace-nowrap border-b border-solid border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-background-dark/80 backdrop-blur-md px-10 py-3">
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-4 text-primary">
+<div class="size-8">
+<svg fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M36.7273 44C33.9891 44 31.6043 39.8386 30.3636 33.69C29.123 39.8386 26.7382 44 24 44C21.2618 44 18.877 39.8386 17.6364 33.69C16.3957 39.8386 14.0109 44 11.2727 44C7.25611 44 4 35.0457 4 24C4 12.9543 7.25611 4 11.2727 4C14.0109 4 16.3957 8.16144 17.6364 14.31C18.877 8.16144 21.2618 4 24 4C26.7382 4 29.123 8.16144 30.3636 14.31C31.6043 8.16144 33.9891 4 36.7273 4C40.7439 4 44 12.9543 44 24C44 35.0457 40.7439 44 36.7273 44Z" fill="currentColor"></path>
+</svg>
+</div>
+<h2 class="text-slate-900 dark:text-white text-lg font-bold leading-tight tracking-tight">SwitchQR <span class="text-primary">Design</span></h2>
+</div>
+<nav class="hidden md:flex items-center gap-9">
+<a class="text-slate-600 dark:text-slate-300 text-sm font-medium hover:text-primary transition-colors" href="#">Guidelines</a>
+<a class="text-primary text-sm font-bold" href="#">Components</a>
+<a class="text-slate-600 dark:text-slate-300 text-sm font-medium hover:text-primary transition-colors" href="#">Tokens</a>
+<a class="text-slate-600 dark:text-slate-300 text-sm font-medium hover:text-primary transition-colors" href="#">Icons</a>
+</nav>
+</div>
+<div class="flex flex-1 justify-end gap-6 items-center">
+<label class="hidden lg:flex flex-col min-w-40 h-10 max-w-64">
+<div class="flex w-full flex-1 items-stretch rounded-lg h-full overflow-hidden border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800">
+<div class="text-slate-400 flex items-center justify-center pl-3">
+<span class="material-symbols-outlined text-[20px]">search</span>
+</div>
+<input class="w-full border-none bg-transparent focus:ring-0 text-sm" placeholder="Search components..."/>
+</div>
+</label>
+<button class="flex min-w-[84px] cursor-pointer items-center justify-center rounded-lg h-10 px-4 bg-primary text-white text-sm font-bold tracking-wide hover:bg-primary/90 transition-all">
+<span>Download Assets</span>
+</button>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 border-2 border-primary/20" data-alt="User profile avatar" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAFSepVdS7YZEvNzz1zNTIb88k9keStH_4168WLj5pHTwGkcdmIUtJRQz4qaUMytM9rq-DrecCleHZyzUQRQddc4YhD0fOT2Nz78Y-iXXePnurpgv3m4ginK5XWwxTbc_2ZqYA2UnMsVn5icPX0pVDAFh7ef5DNb5BYmS24pVgtwsnFpvx9D04_WbYIK9J_YpXxuJd0QQ1y_HXEeIewewc6CYxH_2nhvJLrQZ8YFJeTPG8MtWvzaOik2gRKnO_C81AdMbOEtzN1vSE");'></div>
+</div>
+</header>
+<div class="flex flex-1">
+<!-- SideNavBar Component -->
+<aside class="sticky top-[65px] h-[calc(100vh-65px)] w-64 border-r border-slate-200 dark:border-slate-800 bg-white dark:bg-background-dark p-4 hidden xl:flex flex-col justify-between overflow-y-auto">
+<div class="flex flex-col gap-6">
+<div class="px-3">
+<h1 class="text-slate-900 dark:text-white text-base font-bold">SwitchQR System</h1>
+<p class="text-primary text-xs font-mono font-medium">v1.0.4 • Stable</p>
+</div>
+<div class="flex flex-col gap-1">
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg bg-primary/10 text-primary font-semibold" href="#intro">
+<span class="material-symbols-outlined text-[20px]">info</span>
+<span class="text-sm">Introduction</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" href="#colors">
+<span class="material-symbols-outlined text-[20px]">palette</span>
+<span class="text-sm">Colors</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" href="#typography">
+<span class="material-symbols-outlined text-[20px]">match_case</span>
+<span class="text-sm">Typography</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" href="#buttons">
+<span class="material-symbols-outlined text-[20px]">smart_button</span>
+<span class="text-sm">Buttons</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" href="#forms">
+<span class="material-symbols-outlined text-[20px]">check_box</span>
+<span class="text-sm">Form Elements</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" href="#feedback">
+<span class="material-symbols-outlined text-[20px]">notifications</span>
+<span class="text-sm">Feedback</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" href="#layout">
+<span class="material-symbols-outlined text-[20px]">grid_view</span>
+<span class="text-sm">Layout Elements</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" href="#charts">
+<span class="material-symbols-outlined text-[20px]">analytics</span>
+<span class="text-sm">Charts &amp; Stats</span>
+</a>
+</div>
+</div>
+<div class="px-3 py-4 border-t border-slate-100 dark:border-slate-800">
+<button class="flex items-center gap-2 text-slate-500 text-xs hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[18px]">settings</span>
+                        Settings
+                    </button>
+</div>
+</aside>
+<!-- Main Content Container -->
+<main class="flex-1 px-6 md:px-12 py-10 max-w-7xl mx-auto overflow-x-hidden">
+<!-- Breadcrumbs -->
+<nav class="flex flex-wrap gap-2 mb-6">
+<a class="text-slate-500 hover:text-primary text-sm font-medium transition-colors" href="#">Design System</a>
+<span class="text-slate-400 text-sm">/</span>
+<span class="text-slate-900 dark:text-white text-sm font-semibold">Component Library</span>
+</nav>
+<!-- PageHeading -->
+<div class="flex flex-wrap justify-between items-end gap-6 mb-12">
+<div class="flex min-w-72 flex-col gap-3">
+<h1 class="text-slate-900 dark:text-white text-5xl font-black leading-tight tracking-tight">Design System Guide</h1>
+<p class="text-slate-500 dark:text-slate-400 text-lg font-normal max-w-2xl leading-relaxed">A professional UI library and documentation for building consistent, modern, and accessible SaaS experiences with the SwitchQR brand.</p>
+</div>
+<div class="flex gap-3">
+<button class="flex items-center justify-center rounded-lg h-10 px-4 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 text-sm font-bold hover:shadow-md transition-all">
+                            Version History
+                        </button>
+</div>
+</div>
+<hr class="border-slate-200 dark:border-slate-800 mb-12"/>
+<!-- Section 1: Colors -->
+<section class="mb-20" id="colors">
+<div class="flex items-center gap-2 mb-6">
+<span class="material-symbols-outlined text-primary">palette</span>
+<h2 class="text-slate-900 dark:text-white text-2xl font-bold tracking-tight">01. Color Palette</h2>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+<div class="flex flex-col gap-3">
+<div class="h-32 w-full rounded-xl bg-primary shadow-lg shadow-primary/20 flex items-end p-4">
+<span class="text-white font-bold text-sm">Primary Purple</span>
+</div>
+<div class="flex justify-between items-center text-xs font-mono px-1">
+<span class="text-slate-500">#6B26D9</span>
+<span class="text-primary font-bold">brand-primary</span>
+</div>
+</div>
+<div class="flex flex-col gap-3">
+<div class="h-32 w-full rounded-xl bg-secondary shadow-lg shadow-secondary/20 flex items-end p-4">
+<span class="text-white font-bold text-sm">Secondary</span>
+</div>
+<div class="flex justify-between items-center text-xs font-mono px-1">
+<span class="text-slate-500">#8B5CF6</span>
+<span class="text-secondary font-bold">brand-secondary</span>
+</div>
+</div>
+<div class="flex flex-col gap-3">
+<div class="h-32 w-full rounded-xl bg-success shadow-lg shadow-success/20 flex items-end p-4">
+<span class="text-white font-bold text-sm">Success Green</span>
+</div>
+<div class="flex justify-between items-center text-xs font-mono px-1">
+<span class="text-slate-500">#10B981</span>
+<span class="text-success font-bold">semantic-success</span>
+</div>
+</div>
+<div class="flex flex-col gap-3">
+<div class="h-32 w-full rounded-xl bg-error shadow-lg shadow-error/20 flex items-end p-4">
+<span class="text-white font-bold text-sm">Error Red</span>
+</div>
+<div class="flex justify-between items-center text-xs font-mono px-1">
+<span class="text-slate-500">#EF4444</span>
+<span class="text-error font-bold">semantic-error</span>
+</div>
+</div>
+</div>
+<div class="mt-8 grid grid-cols-1 md:grid-cols-6 lg:grid-cols-10 gap-2">
+<div class="h-12 bg-slate-50 border border-slate-200 rounded dark:bg-slate-900 dark:border-slate-800"></div>
+<div class="h-12 bg-slate-100 rounded"></div>
+<div class="h-12 bg-slate-200 rounded"></div>
+<div class="h-12 bg-slate-300 rounded"></div>
+<div class="h-12 bg-slate-400 rounded"></div>
+<div class="h-12 bg-slate-500 rounded"></div>
+<div class="h-12 bg-slate-600 rounded"></div>
+<div class="h-12 bg-slate-700 rounded"></div>
+<div class="h-12 bg-slate-800 rounded"></div>
+<div class="h-12 bg-slate-950 rounded"></div>
+</div>
+</section>
+<!-- Section 2: Typography -->
+<section class="mb-20" id="typography">
+<div class="flex items-center gap-2 mb-6">
+<span class="material-symbols-outlined text-primary">text_fields</span>
+<h2 class="text-slate-900 dark:text-white text-2xl font-bold tracking-tight">02. Typography</h2>
+</div>
+<div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-8 space-y-8">
+<div>
+<p class="text-xs text-slate-400 font-mono mb-2">Display / 48px / Bold</p>
+<h1 class="text-[48px] font-black leading-tight text-slate-900 dark:text-white">The quick brown fox jumps</h1>
+</div>
+<div>
+<p class="text-xs text-slate-400 font-mono mb-2">Heading / 32px / Semibold</p>
+<h2 class="text-[32px] font-semibold leading-tight text-slate-900 dark:text-white">Design for the modern enterprise</h2>
+</div>
+<div>
+<p class="text-xs text-slate-400 font-mono mb-2">Subheading / 20px / Medium</p>
+<h3 class="text-[20px] font-medium leading-normal text-slate-800 dark:text-slate-200">Consistency in every interaction.</h3>
+</div>
+<div>
+<p class="text-xs text-slate-400 font-mono mb-2">Body / 16px / Regular</p>
+<p class="text-base font-normal leading-relaxed text-slate-600 dark:text-slate-400 max-w-3xl">SwitchQR uses Inter, a variable font family carefully crafted &amp; designed for computer screens. It features a tall x-height to aid in readability of mixed-case and lower-case text.</p>
+</div>
+</div>
+</section>
+<!-- Section 3: Buttons -->
+<section class="mb-20" id="buttons">
+<div class="flex items-center gap-2 mb-6">
+<span class="material-symbols-outlined text-primary">smart_button</span>
+<h2 class="text-slate-900 dark:text-white text-2xl font-bold tracking-tight">03. Buttons</h2>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+<!-- Primary & Secondary -->
+<div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-8 flex flex-wrap gap-6 items-center">
+<div class="flex flex-col gap-4 flex-1">
+<span class="text-xs font-bold text-slate-400 uppercase tracking-widest">Primary Actions</span>
+<div class="flex flex-wrap gap-4">
+<button class="px-6 py-2.5 bg-primary text-white rounded-lg font-bold hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/20 active:scale-95 transition-all">Primary Action</button>
+<button class="px-6 py-2.5 bg-primary/20 text-primary rounded-lg font-bold hover:bg-primary/30 transition-all">Secondary</button>
+</div>
+</div>
+</div>
+<!-- Outline & Ghost -->
+<div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-8 flex flex-wrap gap-6 items-center">
+<div class="flex flex-col gap-4 flex-1">
+<span class="text-xs font-bold text-slate-400 uppercase tracking-widest">Minimal Styles</span>
+<div class="flex flex-wrap gap-4">
+<button class="px-6 py-2.5 border-2 border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 rounded-lg font-bold hover:bg-slate-50 dark:hover:bg-slate-800 transition-all">Outline Button</button>
+<button class="px-6 py-2.5 text-slate-500 dark:text-slate-400 font-bold hover:text-primary transition-all">Ghost Action</button>
+</div>
+</div>
+</div>
+<!-- Icons & Status -->
+<div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-8 flex flex-wrap gap-6 items-center lg:col-span-2">
+<div class="flex flex-col gap-4 w-full">
+<span class="text-xs font-bold text-slate-400 uppercase tracking-widest">Iconic &amp; States</span>
+<div class="flex flex-wrap gap-4 items-center">
+<button class="flex items-center gap-2 px-6 py-2.5 bg-primary text-white rounded-lg font-bold">
+<span class="material-symbols-outlined text-[20px]">add</span> Create New
+                                    </button>
+<button class="size-11 flex items-center justify-center bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 rounded-full hover:bg-primary hover:text-white transition-all">
+<span class="material-symbols-outlined">favorite</span>
+</button>
+<button class="px-6 py-2.5 bg-slate-200 dark:bg-slate-800 text-slate-400 dark:text-slate-600 rounded-lg font-bold cursor-not-allowed" disabled="">Disabled State</button>
+<button class="px-6 py-2.5 bg-error text-white rounded-lg font-bold flex items-center gap-2">
+<span class="material-symbols-outlined text-[20px]">delete</span> Delete Record
+                                    </button>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Section 4: Form Elements -->
+<section class="mb-20" id="forms">
+<div class="flex items-center gap-2 mb-6">
+<span class="material-symbols-outlined text-primary">edit_note</span>
+<h2 class="text-slate-900 dark:text-white text-2xl font-bold tracking-tight">04. Form Elements</h2>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div class="space-y-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-8">
+<div class="space-y-2">
+<label class="text-sm font-bold text-slate-700 dark:text-slate-300">Input Label</label>
+<input class="w-full rounded-lg border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:border-primary focus:ring-primary transition-all" placeholder="Enter your text..." type="text"/>
+</div>
+<div class="space-y-2">
+<label class="text-sm font-bold text-slate-700 dark:text-slate-300">Dropdown Selection</label>
+<select class="w-full rounded-lg border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:border-primary focus:ring-primary transition-all">
+<option>Option 1</option>
+<option>Option 2</option>
+</select>
+</div>
+<div class="space-y-2">
+<label class="text-sm font-bold text-error">Invalid State</label>
+<input class="w-full rounded-lg border-error bg-error/5 focus:border-error focus:ring-error transition-all" type="text" value="incorrect value"/>
+<p class="text-xs text-error">Please enter a valid email address.</p>
+</div>
+</div>
+<div class="space-y-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-8">
+<div class="space-y-4">
+<label class="text-sm font-bold text-slate-700 dark:text-slate-300 block">Toggles &amp; Radios</label>
+<div class="flex items-center gap-3">
+<div class="relative inline-block w-12 h-6 rounded-full bg-primary p-1">
+<div class="size-4 bg-white rounded-full translate-x-6"></div>
+</div>
+<span class="text-sm text-slate-600 dark:text-slate-400">Notifications Enabled</span>
+</div>
+<div class="flex items-center gap-3">
+<div class="relative inline-block w-12 h-6 rounded-full bg-slate-200 dark:bg-slate-700 p-1">
+<div class="size-4 bg-white rounded-full"></div>
+</div>
+<span class="text-sm text-slate-600 dark:text-slate-400">Dark Mode (Disabled)</span>
+</div>
+<div class="space-y-2 pt-2">
+<div class="flex items-center gap-3">
+<input checked="" class="text-primary focus:ring-primary h-4 w-4" name="sample-radio" type="radio"/>
+<span class="text-sm text-slate-600 dark:text-slate-400">Active selection</span>
+</div>
+<div class="flex items-center gap-3">
+<input class="text-primary focus:ring-primary h-4 w-4" name="sample-radio" type="radio"/>
+<span class="text-sm text-slate-600 dark:text-slate-400">Inactive selection</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Section 5: Feedback -->
+<section class="mb-20" id="feedback">
+<div class="flex items-center gap-2 mb-6">
+<span class="material-symbols-outlined text-primary">campaign</span>
+<h2 class="text-slate-900 dark:text-white text-2xl font-bold tracking-tight">05. Feedback &amp; Alerts</h2>
+</div>
+<div class="space-y-4">
+<div class="flex items-center gap-4 p-4 rounded-lg bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 text-blue-700 dark:text-blue-400">
+<span class="material-symbols-outlined">info</span>
+<p class="text-sm font-medium">New system update available. Check version notes for details.</p>
+</div>
+<div class="flex items-center gap-4 p-4 rounded-lg bg-success/10 border border-success/20 text-success">
+<span class="material-symbols-outlined">check_circle</span>
+<p class="text-sm font-medium">Changes saved successfully. Your profile is now up to date.</p>
+</div>
+<div class="flex items-center gap-4 p-4 rounded-lg bg-warning/10 border border-warning/20 text-warning">
+<span class="material-symbols-outlined">warning</span>
+<p class="text-sm font-medium">Your subscription expires in 3 days. Please renew to avoid interruption.</p>
+</div>
+<div class="flex items-center gap-4 p-4 rounded-lg bg-error/10 border border-error/20 text-error">
+<span class="material-symbols-outlined">report</span>
+<p class="text-sm font-medium">Unable to connect to the database. Please try again later.</p>
+</div>
+</div>
+<div class="mt-8">
+<h4 class="text-xs font-bold text-slate-400 uppercase mb-4">Toast Notifications</h4>
+<div class="relative w-full max-w-sm rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xl p-5 flex items-start gap-4">
+<div class="size-10 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">cloud_done</span>
+</div>
+<div class="flex-1">
+<h5 class="text-sm font-bold text-slate-900 dark:text-white">Deployment Successful</h5>
+<p class="text-xs text-slate-500 mt-1">Your site is now live at switchqr.io/demo</p>
+</div>
+<button class="text-slate-400 hover:text-slate-600">
+<span class="material-symbols-outlined text-[18px]">close</span>
+</button>
+</div>
+</div>
+</section>
+<!-- Section 6: Layout Elements -->
+<section class="mb-20" id="layout">
+<div class="flex items-center gap-2 mb-6">
+<span class="material-symbols-outlined text-primary">view_quilt</span>
+<h2 class="text-slate-900 dark:text-white text-2xl font-bold tracking-tight">06. Layout Elements</h2>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+<div class="p-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-sm hover:shadow-md transition-shadow">
+<div class="size-12 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-500 mb-4" data-alt="Icon container example">
+<span class="material-symbols-outlined">dashboard</span>
+</div>
+<h4 class="text-lg font-bold text-slate-900 dark:text-white">Dashboard Card</h4>
+<p class="text-sm text-slate-500 dark:text-slate-400 mt-2">Standard card layout for stats and summaries.</p>
+</div>
+<div class="p-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl border-t-4 border-t-primary">
+<h4 class="text-lg font-bold text-slate-900 dark:text-white">Featured Card</h4>
+<p class="text-sm text-slate-500 dark:text-slate-400 mt-2">Highlighted content with brand primary top border.</p>
+<button class="mt-4 text-primary text-sm font-bold flex items-center gap-1">
+                                Learn More <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</button>
+</div>
+<div class="p-6 bg-gradient-to-br from-primary to-secondary rounded-2xl text-white">
+<h4 class="text-lg font-bold">Premium Layout</h4>
+<p class="text-sm text-white/80 mt-2">Special background for call-to-actions and promotions.</p>
+<button class="mt-4 bg-white text-primary px-4 py-2 rounded-lg text-sm font-bold">Upgrade Now</button>
+</div>
+</div>
+</section>
+<!-- Section 7: Charts & Stats -->
+<section class="mb-20" id="charts">
+<div class="flex items-center gap-2 mb-6">
+<span class="material-symbols-outlined text-primary">analytics</span>
+<h2 class="text-slate-900 dark:text-white text-2xl font-bold tracking-tight">07. Charts &amp; Data Viz</h2>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+<div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-6">
+<p class="text-xs font-bold text-slate-400 uppercase mb-4">Total Scans</p>
+<div class="flex items-end justify-between">
+<div class="text-3xl font-black text-slate-900 dark:text-white">12,842</div>
+<div class="text-success text-xs font-bold bg-success/10 px-2 py-1 rounded">+14.2%</div>
+</div>
+<div class="mt-6 h-12 w-full flex items-end gap-1">
+<div class="flex-1 bg-primary/20 rounded-t h-4 hover:h-8 transition-all"></div>
+<div class="flex-1 bg-primary/20 rounded-t h-6 hover:h-8 transition-all"></div>
+<div class="flex-1 bg-primary/20 rounded-t h-3 hover:h-8 transition-all"></div>
+<div class="flex-1 bg-primary rounded-t h-8"></div>
+<div class="flex-1 bg-primary/20 rounded-t h-5 hover:h-8 transition-all"></div>
+<div class="flex-1 bg-primary/20 rounded-t h-7 hover:h-8 transition-all"></div>
+<div class="flex-1 bg-primary/20 rounded-t h-4 hover:h-8 transition-all"></div>
+</div>
+</div>
+<div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-6 flex flex-col items-center justify-center">
+<p class="text-xs font-bold text-slate-400 uppercase self-start mb-6">Quota Usage</p>
+<div class="relative size-32 flex items-center justify-center">
+<svg class="size-full -rotate-90" viewbox="0 0 100 100">
+<circle class="text-slate-100 dark:text-slate-800" cx="50" cy="50" fill="transparent" r="40" stroke="currentColor" stroke-width="10"></circle>
+<circle class="text-primary" cx="50" cy="50" fill="transparent" r="40" stroke="currentColor" stroke-dasharray="251.2" stroke-dashoffset="62.8" stroke-linecap="round" stroke-width="10"></circle>
+</svg>
+<div class="absolute inset-0 flex flex-col items-center justify-center">
+<span class="text-xl font-black text-slate-900 dark:text-white">75%</span>
+</div>
+</div>
+<p class="text-xs text-slate-500 mt-4">7,500 of 10,000 QR codes</p>
+</div>
+<div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-6">
+<p class="text-xs font-bold text-slate-400 uppercase mb-4">Active Sessions</p>
+<div class="flex gap-4 items-center">
+<div class="flex -space-x-3">
+<div class="size-8 rounded-full border-2 border-white dark:border-slate-900 bg-slate-200 overflow-hidden" data-alt="User avatar small">
+<img alt="A" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD1zet4UuMxTzetF5dxt3Coavv2q9LMR3fin4oSaFMAZ3aAWIHalJr96gmiyxN8N7huZ5HeRmS7c6owPDilvILLRj611sY3rvwDDtOmBaOxpHg8Qe94clM5LiOSwPCD_NizHy_D0K0IOxManV2_N3CWI9PG5b9-NxtgBN5-ie7wOSKcJRDPRuLh-u8zsiAgueItPZrMPqnQjjlbNR3Q_DewWQU8v0JndefrHwo7yHG3vY4GINunX7B0w5MyYjDkBBY1WakU3glwKGo"/>
+</div>
+<div class="size-8 rounded-full border-2 border-white dark:border-slate-900 bg-slate-200 overflow-hidden" data-alt="User avatar small">
+<img alt="B" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAp7ojFrfvZYaRUE0xsmQwfL5NyTvUC1MlJ7yb7i7n87k3Xl9yy9DbQnn8PfKQMGyFLvpC9IEwpLHM3hwqpbsa3KD5Bm5MZcvplSV2w67Q6PwtflB-XPSftxAMJHIqnF7npBPAonahAhnfQk2Burniw7pqmAOKVuPlNYBwMOwd9JMM64Uk2lvJvrjxG3nOCIeBf3m5f0HFVaZqQg8sabXam7ZKaUlewfTo6m7DkjRSKnj7apTRcuEIOwUi6GbtYI1XlUDLDXslPTBs"/>
+</div>
+<div class="size-8 rounded-full border-2 border-white dark:border-slate-900 bg-slate-200 overflow-hidden" data-alt="User avatar small">
+<img alt="C" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD53QGvyDBFUTbY5UXZfcJ-z__q-Ndj2sp_YgT08tEAzYpjG-EvhAl_S3cDvYQrNZq9U0NbQWUdQyVsnpt3ihvFHTTPhKFnIQqTm-PtBeB4bbUMaj1dLhRXrMN2_YG3W6RTuYyHba0lOaQ7_1Zc71B2yNwvzsalBXf3JFOeY7o1e4sRPHgE7f4Hpvkbr41wjTmAwIf4Hpear_iFAAtDDpgzF0-kJHZTOllvuuBpkrGRWkcsCaIqg81HJmuQaeRNi2j9R6L1ekITwzE"/>
+</div>
+<div class="size-8 rounded-full border-2 border-white dark:border-slate-900 bg-slate-800 flex items-center justify-center text-[10px] text-white font-bold">
+                                        +12
+                                    </div>
+</div>
+<span class="text-sm font-medium text-slate-600 dark:text-slate-400">Viewing now</span>
+</div>
+<div class="mt-8 space-y-3">
+<div class="w-full bg-slate-100 dark:bg-slate-800 h-1.5 rounded-full overflow-hidden">
+<div class="bg-primary h-full w-[45%]"></div>
+</div>
+<div class="flex justify-between text-[10px] font-bold text-slate-400 uppercase">
+<span>Mobile Traffic</span>
+<span>45%</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Footer -->
+<footer class="mt-12 py-8 border-t border-slate-200 dark:border-slate-800 flex flex-col md:flex-row justify-between items-center gap-4 text-slate-500 text-sm">
+<p>© 2024 SwitchQR Platform. All rights reserved.</p>
+<div class="flex gap-6">
+<a class="hover:text-primary transition-colors" href="#">Documentation</a>
+<a class="hover:text-primary transition-colors" href="#">API Reference</a>
+<a class="hover:text-primary transition-colors" href="#">Support</a>
+</div>
+</footer>
+</main>
+</div>
+</div>
+</body></html>

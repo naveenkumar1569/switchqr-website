@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SwitchQR Features Overview</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&amp;family=Noto+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#6D28D9",
+                        "background-light": "#F8FAFC",
+                        "surface-light": "#ffffff",
+                        "surface-highlight": "#F1F5F9", 
+                        "text-main": "#0F172A", // Slate 900
+                        "text-body": "#475569", // Slate 600
+                        "border-subtle": "#E2E8F0", // Slate 200
+                    },
+                    fontFamily: {
+                        "display": ["Manrope", "sans-serif"],
+                        "body": ["Noto Sans", "sans-serif"],
+                    },
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }@keyframes fade-in-up {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in-up {
+            animation: fade-in-up 0.8s ease-out forwards;
+        }
+    </style>
+</head>
+<body class="bg-background-light text-text-main font-display overflow-x-hidden selection:bg-primary selection:text-white">
+<div class="w-full border-b border-border-subtle bg-white/80 backdrop-blur-md fixed top-0 z-50">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<header class="flex h-16 items-center justify-between">
+<div class="flex items-center gap-4 text-slate-900">
+<div class="size-8 text-primary">
+<svg class="w-full h-full" fill="none" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M13.8261 30.5736C16.7203 29.8826 20.2244 29.4783 24 29.4783C27.7756 29.4783 31.2797 29.8826 34.1739 30.5736C36.9144 31.2278 39.9967 32.7669 41.3563 33.8352L24.8486 7.36089C24.4571 6.73303 23.5429 6.73303 23.1514 7.36089L6.64374 33.8352C8.00331 32.7669 11.0856 31.2278 13.8261 30.5736Z" fill="currentColor"></path>
+<path clip-rule="evenodd" d="M39.998 35.764C39.9944 35.7463 39.9875 35.7155 39.9748 35.6706C39.9436 35.5601 39.8949 35.4259 39.8346 35.2825C39.8168 35.2403 39.7989 35.1993 39.7813 35.1602C38.5103 34.2887 35.9788 33.0607 33.7095 32.5189C30.9875 31.8691 27.6413 31.4783 24 31.4783C20.3587 31.4783 17.0125 31.8691 14.2905 32.5189C12.0012 33.0654 9.44505 34.3104 8.18538 35.1832C8.17384 35.2075 8.16216 35.233 8.15052 35.2592C8.09919 35.3751 8.05721 35.4886 8.02977 35.589C8.00356 35.6848 8.00039 35.7333 8.00004 35.7388C8.00004 35.739 8 35.7393 8.00004 35.7388C8.00004 35.7641 8.0104 36.0767 8.68485 36.6314C9.34546 37.1746 10.4222 37.7531 11.9291 38.2772C14.9242 39.319 19.1919 40 24 40C28.8081 40 33.0758 39.319 36.0709 38.2772C37.5778 37.7531 38.6545 37.1746 39.3151 36.6314C39.9006 36.1499 39.9857 35.8511 39.998 35.764ZM4.95178 32.7688L21.4543 6.30267C22.6288 4.4191 25.3712 4.41909 26.5457 6.30267L43.0534 32.777C43.0709 32.8052 43.0878 32.8338 43.104 32.8629L41.3563 33.8352C43.104 32.8629 43.1038 32.8626 43.104 32.8629L43.1051 32.865L43.1065 32.8675L43.1101 32.8739L43.1199 32.8918C43.1276 32.906 43.1377 32.9246 43.1497 32.9473C43.1738 32.9925 43.2062 33.0545 43.244 33.1299C43.319 33.2792 43.4196 33.489 43.5217 33.7317C43.6901 34.1321 44 34.9311 44 35.7391C44 37.4427 43.003 38.7775 41.8558 39.7209C40.6947 40.6757 39.1354 41.4464 37.385 42.0552C33.8654 43.2794 29.133 44 24 44C18.867 44 14.1346 43.2794 10.615 42.0552C8.86463 41.4464 7.30529 40.6757 6.14419 39.7209C4.99695 38.7775 3.99999 37.4427 3.99999 35.7391C3.99999 34.8725 4.29264 34.0922 4.49321 33.6393C4.60375 33.3898 4.71348 33.1804 4.79687 33.0311C4.83898 32.9556 4.87547 32.8935 4.9035 32.8471C4.91754 32.8238 4.92954 32.8043 4.93916 32.7889L4.94662 32.777L4.95178 32.7688ZM35.9868 29.004L24 9.77997L12.0131 29.004C12.4661 28.8609 12.9179 28.7342 13.3617 28.6282C16.4281 27.8961 20.0901 27.4783 24 27.4783C27.9099 27.4783 31.5719 27.8961 34.6383 28.6282C35.082 28.7342 35.5339 28.8609 35.9868 29.004Z" fill="currentColor" fill-rule="evenodd"></path>
+</svg>
+</div>
+<h2 class="text-slate-900 text-xl font-bold tracking-tight">SwitchQR</h2>
+</div>
+<div class="hidden md:flex flex-1 justify-end gap-8 items-center">
+<div class="flex items-center gap-8">
+<a class="text-slate-500 hover:text-primary text-sm font-medium transition-colors" href="#">Features</a>
+<a class="text-slate-500 hover:text-primary text-sm font-medium transition-colors" href="#">Pricing</a>
+<a class="text-slate-500 hover:text-primary text-sm font-medium transition-colors" href="#">Blog</a>
+<a class="text-slate-500 hover:text-primary text-sm font-medium transition-colors" href="#">Login</a>
+</div>
+<button class="bg-primary hover:bg-primary/90 text-white text-sm font-bold py-2.5 px-6 rounded-lg transition-all shadow-[0_4px_15px_-3px_rgba(109,40,217,0.4)]">
+                    Get Started
+                </button>
+</div>
+<div class="md:hidden text-slate-900">
+<span class="material-symbols-outlined cursor-pointer">menu</span>
+</div>
+</header>
+</div>
+</div>
+<div class="relative pt-32 pb-20 md:pt-40 md:pb-32 overflow-hidden">
+<div class="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[600px] bg-primary/5 rounded-full blur-[100px] -z-10"></div>
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+<h1 class="text-5xl md:text-7xl font-extrabold tracking-tight text-slate-900 mb-6 leading-[1.1]">
+            Everything you need to <br class="hidden md:block"/>
+<span class="text-transparent bg-clip-text bg-gradient-to-r from-primary to-primary/60">manage offline campaigns.</span>
+</h1>
+<p class="text-lg md:text-xl text-slate-500 max-w-2xl mx-auto mb-10 leading-relaxed">
+            Powerful tools to track, edit, and optimize your QR codes in real-time. Stop re-printing, start optimizing.
+        </p>
+<div class="flex flex-col sm:flex-row gap-4 justify-center">
+<button class="bg-primary hover:bg-primary/90 text-white text-base font-bold h-12 px-8 rounded-xl transition-all shadow-[0_4px_20px_-5px_rgba(109,40,217,0.4)] flex items-center justify-center gap-2">
+                Get Started Now
+                <span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+</button>
+<button class="bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 text-base font-bold h-12 px-8 rounded-xl transition-all shadow-sm">
+                View Demo
+            </button>
+</div>
+<div class="mt-20 relative mx-auto max-w-5xl rounded-2xl border border-slate-200 bg-white/50 backdrop-blur-sm p-2 md:p-4 shadow-2xl animate-fade-in-up">
+<div class="rounded-xl overflow-hidden bg-slate-50 aspect-[16/9] relative group border border-slate-200/50">
+<div class="absolute inset-0 bg-gradient-to-t from-slate-100/50 via-transparent to-transparent z-10"></div>
+<div class="grid grid-cols-12 gap-4 p-8 h-full opacity-60 group-hover:opacity-100 transition-opacity duration-500" data-alt="Abstract gradient interface representing a dashboard">
+<div class="col-span-3 h-full flex flex-col gap-3">
+<div class="h-8 w-2/3 bg-slate-200 rounded-md"></div>
+<div class="h-4 w-full bg-slate-200/60 rounded-md mt-4"></div>
+<div class="h-4 w-3/4 bg-slate-200/60 rounded-md"></div>
+<div class="h-4 w-5/6 bg-slate-200/60 rounded-md"></div>
+</div>
+<div class="col-span-9 h-full flex flex-col gap-4">
+<div class="flex gap-4 mb-4">
+<div class="h-24 w-1/3 bg-white shadow-sm border border-slate-100 rounded-xl"></div>
+<div class="h-24 w-1/3 bg-white shadow-sm border border-slate-100 rounded-xl"></div>
+<div class="h-24 w-1/3 bg-white shadow-sm border border-slate-100 rounded-xl"></div>
+</div>
+<div class="flex-1 bg-white shadow-sm border border-slate-100 rounded-xl"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<section class="py-20 md:py-32 relative bg-background-light">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
+<div class="flex-1 space-y-6">
+<div class="inline-flex items-center justify-center p-3 bg-primary/10 rounded-xl text-primary mb-2">
+<span class="material-symbols-outlined text-3xl">qr_code_scanner</span>
+</div>
+<h2 class="text-3xl md:text-4xl font-bold text-slate-900 tracking-tight">Dynamic QR Codes</h2>
+<p class="text-slate-500 text-lg leading-relaxed">
+                    Change where your code points instantly without re-printing. Update your campaigns on the fly without changing the physical code on your flyers, packaging, or billboards.
+                </p>
+<ul class="space-y-3 pt-4">
+<li class="flex items-center gap-3 text-slate-600">
+<span class="material-symbols-outlined text-primary text-xl">check_circle</span>
+<span>Edit destination URLs anytime</span>
+</li>
+<li class="flex items-center gap-3 text-slate-600">
+<span class="material-symbols-outlined text-primary text-xl">check_circle</span>
+<span>Zero downtime updates</span>
+</li>
+</ul>
+</div>
+<div class="flex-1 w-full">
+<div class="bg-white border border-slate-100 rounded-2xl p-6 md:p-8 shadow-xl shadow-slate-200/50 relative overflow-hidden group hover:border-primary/20 transition-colors duration-500">
+<div class="absolute -right-20 -top-20 w-64 h-64 bg-primary/5 rounded-full blur-3xl group-hover:bg-primary/10 transition-all duration-500"></div>
+<div class="relative bg-white border border-slate-200 rounded-xl p-6 shadow-2xl max-w-sm mx-auto">
+<div class="flex justify-between items-center mb-6 border-b border-slate-100 pb-4">
+<h3 class="font-semibold text-slate-900">Edit Destination</h3>
+<span class="material-symbols-outlined text-slate-400 text-sm cursor-pointer hover:text-slate-600">close</span>
+</div>
+<div class="space-y-4">
+<div>
+<label class="block text-xs uppercase tracking-wider text-slate-500 font-semibold mb-2">Target URL</label>
+<div class="flex items-center gap-2 bg-slate-50 border border-slate-300 rounded-lg p-3 text-slate-900 text-sm">
+<span class="material-symbols-outlined text-slate-400 text-[18px]">link</span>
+<span class="truncate">https://myshop.com/summer-sale</span>
+</div>
+<p class="text-xs text-green-600 mt-2 flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">check</span> Valid URL
+                                </p>
+</div>
+<div class="pt-2">
+<button class="w-full bg-primary hover:bg-primary/90 text-white font-semibold py-2.5 rounded-lg shadow-lg shadow-primary/20 transition-all">
+                                    Save Changes
+                                </button>
+</div>
+</div>
+</div>
+<div class="absolute bottom-4 left-1/2 -translate-x-1/2 text-slate-400 text-xs font-mono">Simulated UI</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section class="py-20 md:py-32 bg-slate-50 border-y border-slate-200">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex flex-col-reverse lg:flex-row items-center gap-12 lg:gap-20">
+<div class="flex-1 w-full">
+<div class="bg-white border border-slate-100 rounded-2xl p-6 md:p-8 shadow-xl shadow-slate-200/50 relative group hover:border-primary/20 transition-colors duration-500">
+<div class="grid grid-cols-2 gap-4 mb-4">
+<div class="col-span-2 bg-slate-50 p-5 rounded-xl border border-slate-200">
+<div class="flex justify-between items-end mb-4">
+<div>
+<p class="text-slate-500 text-xs uppercase font-semibold">Total Scans</p>
+<h4 class="text-3xl font-bold text-slate-900 mt-1">1,248</h4>
+</div>
+<div class="text-green-600 text-sm font-medium flex items-center bg-green-100 px-2 py-1 rounded">
+<span class="material-symbols-outlined text-sm mr-1">trending_up</span>
+                                    +12.5%
+                                </div>
+</div>
+<div class="h-24 w-full flex items-end justify-between gap-2 px-1">
+<div class="w-full bg-primary/20 rounded-t-sm h-[30%] group-hover:h-[40%] transition-all duration-700 delay-75"></div>
+<div class="w-full bg-primary/30 rounded-t-sm h-[50%] group-hover:h-[60%] transition-all duration-700 delay-100"></div>
+<div class="w-full bg-primary/40 rounded-t-sm h-[40%] group-hover:h-[45%] transition-all duration-700 delay-150"></div>
+<div class="w-full bg-primary/50 rounded-t-sm h-[70%] group-hover:h-[75%] transition-all duration-700 delay-200"></div>
+<div class="w-full bg-primary/80 rounded-t-sm h-[60%] group-hover:h-[85%] transition-all duration-700 delay-300"></div>
+<div class="w-full bg-primary rounded-t-sm h-[90%] group-hover:h-[95%] transition-all duration-700 delay-500 relative shadow-[0_0_15px_rgba(109,40,217,0.3)]"></div>
+</div>
+</div>
+<div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+<div class="flex items-center gap-2 mb-2 text-slate-400">
+<span class="material-symbols-outlined text-sm">smartphone</span>
+<span class="text-xs font-semibold uppercase">Mobile</span>
+</div>
+<div class="text-xl font-bold text-slate-900">92%</div>
+<div class="w-full bg-slate-200 h-1.5 mt-2 rounded-full overflow-hidden">
+<div class="bg-primary h-full w-[92%]"></div>
+</div>
+</div>
+<div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+<div class="flex items-center gap-2 mb-2 text-slate-400">
+<span class="material-symbols-outlined text-sm">public</span>
+<span class="text-xs font-semibold uppercase">Top City</span>
+</div>
+<div class="text-xl font-bold text-slate-900 truncate" data-location="New York" style="https://lh3.googleusercontent.com/aida-public/AB6AXuAPg_Xvoo8KF85krf_Q45XTj7fzeKZJBbRAk-3EPgju-c7u_8r0PUMtq0wjbZPWNui144GD35K3fdkz2x2Jry9xeIvoooYbpHN9W-oxsHolK8XaL2mkz8MxketBmIF1iYQ43RBzAEv2wojsL8eHbi-gsSxrTWvz4i6U9Z7YQiE1etL-iM7-q9QZh8nDoYk8YRgIhLhk76C94GKF9hrUlXNGF5t0Pnldr8zy_E-Fuo5pAowPzdiZZEKCLVa3ve52nKOjghTGCTZqBIY">New York</div>
+<div class="text-xs text-slate-500 mt-1">342 scans</div>
+</div>
+</div>
+</div>
+</div>
+<div class="flex-1 space-y-6">
+<div class="inline-flex items-center justify-center p-3 bg-primary/10 rounded-xl text-primary mb-2">
+<span class="material-symbols-outlined text-3xl">monitoring</span>
+</div>
+<h2 class="text-3xl md:text-4xl font-bold text-slate-900 tracking-tight">Scan Analytics</h2>
+<p class="text-slate-500 text-lg leading-relaxed">
+                    Measure performance with real-time scan data. Track location, device type, and time of scan to understand your audience better than ever before.
+                </p>
+<button class="text-primary font-bold flex items-center gap-2 hover:gap-3 transition-all">
+                    Explore Analytics Features <span class="material-symbols-outlined">arrow_right_alt</span>
+</button>
+</div>
+</div>
+</div>
+</section>
+<section class="py-20 md:py-32 relative bg-background-light">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
+<div class="flex-1 space-y-6">
+<div class="flex items-center gap-4 mb-2">
+<div class="inline-flex items-center justify-center p-3 bg-primary/10 rounded-xl text-primary">
+<span class="material-symbols-outlined text-3xl">calendar_month</span>
+</div>
+<span class="px-3 py-1 rounded-full bg-emerald-100 text-emerald-700 text-xs font-bold border border-emerald-200 uppercase tracking-wider">Starter</span>
+</div>
+<h2 class="text-3xl md:text-4xl font-bold text-slate-900 tracking-tight">Scheduled Redirects</h2>
+<p class="text-slate-500 text-lg leading-relaxed">
+                    Automate your marketing calendar. Set redirects to change automatically at specific times. Perfect for limited-time offers, happy hours, or day/night modes.
+                </p>
+</div>
+<div class="flex-1 w-full">
+<div class="bg-white border border-slate-100 rounded-2xl p-6 md:p-8 shadow-xl shadow-slate-200/50 relative group hover:border-primary/20 transition-colors duration-500">
+<div class="bg-slate-50 rounded-xl border border-slate-200 overflow-hidden">
+<div class="p-4 border-b border-slate-200 flex justify-between items-center bg-white">
+<span class="font-semibold text-slate-900">August 24, 2024</span>
+<span class="material-symbols-outlined text-slate-400">edit_calendar</span>
+</div>
+<div class="p-4 space-y-3">
+<div class="flex items-center gap-4 p-3 rounded-lg border border-slate-200 opacity-60">
+<div class="w-12 text-center">
+<div class="text-xs text-slate-400 font-mono">09:00</div>
+<div class="text-xs text-slate-400 font-mono">AM</div>
+</div>
+<div class="w-0.5 h-8 bg-slate-300"></div>
+<div class="flex-1">
+<div class="text-sm font-medium text-slate-500 line-through">Morning Coffee Promo</div>
+<div class="text-xs text-slate-400">Ended</div>
+</div>
+</div>
+<div class="flex items-center gap-4 p-3 rounded-lg border border-primary/30 bg-primary/5 shadow-sm">
+<div class="w-12 text-center">
+<div class="text-xs text-primary font-bold font-mono">01:00</div>
+<div class="text-xs text-primary font-bold font-mono">PM</div>
+</div>
+<div class="w-0.5 h-8 bg-primary shadow-[0_0_10px_rgba(109,40,217,0.4)]"></div>
+<div class="flex-1">
+<div class="text-sm font-bold text-slate-900">Lunch Special</div>
+<div class="text-xs text-primary flex items-center gap-1 mt-0.5">
+<span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span> Active Now
+                                    </div>
+</div>
+<div class="text-xs bg-primary text-white px-2 py-1 rounded">Live</div>
+</div>
+<div class="flex items-center gap-4 p-3 rounded-lg border border-slate-200 bg-white">
+<div class="w-12 text-center">
+<div class="text-xs text-slate-500 font-mono">05:00</div>
+<div class="text-xs text-slate-500 font-mono">PM</div>
+</div>
+<div class="w-0.5 h-8 bg-slate-300"></div>
+<div class="flex-1">
+<div class="text-sm font-medium text-slate-700">Happy Hour Menu</div>
+<div class="text-xs text-slate-500">Starts in 3h 42m</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section class="py-20 md:py-32 bg-slate-50 border-y border-slate-200">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex flex-col-reverse lg:flex-row items-center gap-12 lg:gap-20">
+<div class="flex-1 w-full">
+<div class="bg-white border border-slate-100 rounded-2xl p-6 md:p-8 shadow-xl shadow-slate-200/50 relative group hover:border-primary/20 transition-colors duration-500 flex justify-center items-center min-h-[300px]">
+<div class="relative w-full max-w-md">
+<div class="flex justify-center mb-8 relative z-10">
+<div class="bg-white text-slate-900 font-bold px-4 py-2 rounded-lg shadow-md border border-slate-200 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">qr_code_2</span>
+                                Source
+                            </div>
+</div>
+<div class="absolute top-10 left-1/2 w-full max-w-[240px] -translate-x-1/2 h-16 pointer-events-none">
+<svg class="w-full h-full overflow-visible">
+<path class="opacity-50" d="M120,0 C120,30 20,30 20,60" fill="none" stroke="#6D28D9" stroke-dasharray="4 4" stroke-width="2"></path>
+<path class="opacity-50" d="M120,0 C120,30 220,30 220,60" fill="none" stroke="#6D28D9" stroke-dasharray="4 4" stroke-width="2"></path>
+<circle fill="#6D28D9" r="3">
+<animateMotion dur="2s" path="M120,0 C120,30 20,30 20,60" repeatCount="indefinite"></animateMotion>
+</circle>
+<circle fill="#6D28D9" r="3">
+<animateMotion begin="1s" dur="2s" path="M120,0 C120,30 220,30 220,60" repeatCount="indefinite"></animateMotion>
+</circle>
+</svg>
+</div>
+<div class="flex justify-between gap-4 mt-8">
+<div class="flex-1 bg-white border border-primary/40 rounded-xl p-4 relative shadow-lg shadow-primary/5">
+<div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-slate-50 text-xs border border-slate-200 px-2 py-0.5 rounded-full text-slate-500">50%</div>
+<div class="text-sm font-semibold text-slate-900 mb-1">Variant A</div>
+<div class="text-xs text-slate-500 truncate mb-3">landing-page-v1.html</div>
+<div class="w-full bg-slate-100 rounded-full h-1.5 overflow-hidden">
+<div class="bg-green-500 w-[64%] h-full"></div>
+</div>
+<div class="text-[10px] text-green-600 mt-1 text-right">6.4% Conv.</div>
+</div>
+<div class="flex-1 bg-white border border-slate-200 rounded-xl p-4 relative shadow-sm">
+<div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-slate-50 text-xs border border-slate-200 px-2 py-0.5 rounded-full text-slate-500">50%</div>
+<div class="text-sm font-semibold text-slate-900 mb-1">Variant B</div>
+<div class="text-xs text-slate-500 truncate mb-3">landing-page-v2.html</div>
+<div class="w-full bg-slate-100 rounded-full h-1.5 overflow-hidden">
+<div class="bg-slate-400 w-[42%] h-full"></div>
+</div>
+<div class="text-[10px] text-slate-400 mt-1 text-right">4.2% Conv.</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="flex-1 space-y-6">
+<div class="flex items-center gap-4 mb-2">
+<div class="inline-flex items-center justify-center p-3 bg-primary/10 rounded-xl text-primary">
+<span class="material-symbols-outlined text-3xl">call_split</span>
+</div>
+<span class="px-3 py-1 rounded-full bg-primary text-white text-xs font-bold border border-white/20 uppercase tracking-wider shadow-md shadow-primary/30">Pro Plan</span>
+</div>
+<h2 class="text-3xl md:text-4xl font-bold text-slate-900 tracking-tight">A/B Testing</h2>
+<p class="text-slate-500 text-lg leading-relaxed">
+                    Split traffic between two destinations to see what converts best. Optimize your landing pages scientifically by sending 50% of users to each version.
+                </p>
+</div>
+</div>
+</div>
+</section>
+<section class="py-20 bg-slate-50 relative overflow-hidden border-t border-slate-200">
+<div class="absolute inset-0 bg-primary/5"></div>
+<div class="max-w-4xl mx-auto px-4 relative z-10 text-center">
+<h2 class="text-4xl md:text-5xl font-extrabold text-slate-900 mb-6">Ready to upgrade your QR codes?</h2>
+<p class="text-xl text-slate-600 mb-10 max-w-2xl mx-auto">Join thousands of marketers using SwitchQR to manage smarter offline campaigns.</p>
+<div class="flex flex-col sm:flex-row justify-center gap-4">
+<button class="bg-primary hover:bg-primary/90 text-white text-lg font-bold h-14 px-10 rounded-xl shadow-[0_4px_25px_-5px_rgba(109,40,217,0.4)] transition-all transform hover:scale-105">
+                Start for Free
+            </button>
+<button class="bg-white border border-slate-200 hover:bg-slate-100 text-slate-700 text-lg font-bold h-14 px-10 rounded-xl transition-all shadow-sm">
+                View Pricing
+            </button>
+</div>
+<p class="mt-8 text-sm text-slate-500">No credit card required for Starter plan.</p>
+</div>
+</section>
+
+</body></html>

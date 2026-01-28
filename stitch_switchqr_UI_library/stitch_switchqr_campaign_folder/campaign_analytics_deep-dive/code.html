@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Campaign Analytics Deep-dive | SwitchQR</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#6D28D9",
+                        "surface-bg": "#F9FAFB",
+                        "card-bg": "#FFFFFF",
+                        "neutral-dark": "#374151",
+                        "neutral-light": "#6B7280",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                    boxShadow: {
+                        'soft': '0 2px 15px -3px rgba(0, 0, 0, 0.07), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Space Grotesk', sans-serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+    </style>
+</head>
+<body class="bg-surface-bg text-neutral-dark min-h-screen">
+<header class="border-b border-gray-200 bg-white px-6 py-3 sticky top-0 z-50">
+<div class="max-w-7xl mx-auto flex items-center justify-between">
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-3">
+<div class="size-8 bg-primary rounded-lg flex items-center justify-center text-white">
+<span class="material-symbols-outlined">qr_code_2</span>
+</div>
+<h1 class="text-xl font-bold tracking-tight text-gray-900">SwitchQR</h1>
+</div>
+<nav class="hidden md:flex items-center gap-6">
+<a class="text-sm font-medium text-neutral-light hover:text-primary" href="#">Dashboard</a>
+<a class="text-sm font-medium text-primary border-b-2 border-primary pb-1" href="#">Campaigns</a>
+<a class="text-sm font-medium text-neutral-light hover:text-primary" href="#">Templates</a>
+<a class="text-sm font-medium text-neutral-light hover:text-primary" href="#">Settings</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative hidden sm:block">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm">search</span>
+<input class="bg-gray-100 border-none rounded-lg pl-10 pr-4 py-2 text-sm focus:ring-2 focus:ring-primary w-64 text-gray-700" placeholder="Search campaign data..." type="text"/>
+</div>
+<button class="bg-primary text-white px-4 py-2 rounded-lg text-sm font-bold flex items-center gap-2 hover:bg-opacity-90 transition-all shadow-sm">
+<span class="material-symbols-outlined text-sm">add</span>
+                Create New
+            </button>
+<div class="size-9 rounded-full bg-gray-100 overflow-hidden border border-gray-200">
+<img alt="User avatar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDvRYoD08_dB6fAJq9Nt3eNtF_7P2kocJ62pOF799NAx-6jY4gnZoaTPiAvuxKTWLZMyjNMJuIems3D6F3O1FaDvAm--1eOkcKxGuZf--iCXQIbfp1RSskA7UY3L4vA3JVGnlPUqkIghkkxXL1fzKoYbuCgFyQtP_Kj6kfl-dSrTjLmUPgWQzwT2O7R3CchSS2xhAuuZ2cP3Hhi12M7sqJjvGnho6Z2RdSyKbLS1k__KyCH6hzpETlU1xne2KdkhQp8L3LvEPSOFq4"/>
+</div>
+</div>
+</div>
+</header>
+<main class="max-w-7xl mx-auto px-6 py-8">
+<nav class="flex items-center gap-2 text-sm mb-6 text-neutral-light">
+<a class="hover:text-primary" href="#">Campaigns</a>
+<span class="material-symbols-outlined text-xs">chevron_right</span>
+<span class="text-gray-900 font-medium">SaaStr 2026 Event</span>
+</nav>
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8">
+<div>
+<div class="flex items-center gap-3 mb-2">
+<h2 class="text-4xl font-black tracking-tight text-gray-900">SaaStr 2026 Event</h2>
+<span class="bg-emerald-50 text-emerald-600 text-xs font-bold px-2.5 py-1 rounded-full border border-emerald-100">Active</span>
+</div>
+<p class="text-neutral-light">Detailed performance overview for this campaign folder. Created on Jan 12, 2026.</p>
+</div>
+<div class="flex items-center gap-3">
+<button class="bg-white border border-gray-200 px-4 py-2 rounded-lg text-sm font-bold text-gray-700 flex items-center gap-2 hover:bg-gray-50 shadow-sm">
+<span class="material-symbols-outlined text-sm">calendar_today</span>
+                Last 30 Days
+            </button>
+<button class="bg-white border border-gray-200 px-4 py-2 rounded-lg text-sm font-bold text-gray-700 flex items-center gap-2 hover:bg-gray-50 shadow-sm">
+<span class="material-symbols-outlined text-sm">ios_share</span>
+                Export Report
+            </button>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+<div class="bg-white border border-gray-100 p-6 rounded-xl shadow-soft">
+<p class="text-sm font-medium text-neutral-light mb-1">Total Scans</p>
+<div class="flex items-baseline gap-2">
+<span class="text-3xl font-bold tracking-tight text-gray-900">24,502</span>
+<span class="text-emerald-600 text-sm font-bold flex items-center">+15.2% <span class="material-symbols-outlined text-xs">arrow_upward</span></span>
+</div>
+</div>
+<div class="bg-white border border-gray-100 p-6 rounded-xl shadow-soft">
+<p class="text-sm font-medium text-neutral-light mb-1">Unique Visitors</p>
+<div class="flex items-baseline gap-2">
+<span class="text-3xl font-bold tracking-tight text-gray-900">18,210</span>
+<span class="text-emerald-600 text-sm font-bold flex items-center">+8.4% <span class="material-symbols-outlined text-xs">arrow_upward</span></span>
+</div>
+</div>
+<div class="bg-white border border-gray-100 p-6 rounded-xl shadow-soft">
+<p class="text-sm font-medium text-neutral-light mb-1">Avg. Conversion</p>
+<div class="flex items-baseline gap-2">
+<span class="text-3xl font-bold tracking-tight text-gray-900">12.4%</span>
+<span class="text-emerald-600 text-sm font-bold flex items-center">+2.1% <span class="material-symbols-outlined text-xs">arrow_upward</span></span>
+</div>
+</div>
+<div class="bg-white border border-gray-100 p-6 rounded-xl shadow-soft">
+<p class="text-sm font-medium text-neutral-light mb-1">Total QR Assets</p>
+<div class="flex items-baseline gap-2">
+<span class="text-3xl font-bold tracking-tight text-gray-900">42</span>
+<span class="text-gray-400 text-sm font-medium">In folder</span>
+</div>
+</div>
+</div>
+<div class="bg-gradient-to-r from-violet-50 to-white border border-violet-100 rounded-xl p-5 mb-8 flex flex-col md:flex-row items-center justify-between gap-4 shadow-sm">
+<div class="flex items-center gap-4">
+<div class="size-10 bg-primary rounded-lg flex items-center justify-center text-white">
+<span class="material-symbols-outlined">auto_awesome</span>
+</div>
+<div>
+<h4 class="font-bold text-gray-900">Unlock Advanced Attribution</h4>
+<p class="text-sm text-neutral-light">Get deep-dive metrics including UTM tracking, user flow analysis, and retargeting pixels.</p>
+</div>
+</div>
+<button class="bg-primary text-white px-6 py-2.5 rounded-lg text-sm font-bold whitespace-nowrap hover:bg-opacity-90 transition-all shadow-md">Upgrade to Pro</button>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
+<div class="lg:col-span-2 bg-white border border-gray-100 p-6 rounded-xl shadow-soft">
+<div class="flex justify-between items-start mb-6">
+<div>
+<h3 class="text-xl font-bold text-gray-900 mb-1">Top Performing QRs</h3>
+<p class="text-sm text-neutral-light">Total Scans by Asset (Last 30 Days)</p>
+</div>
+<span class="text-emerald-600 text-sm font-bold">+12% vs last period</span>
+</div>
+<div class="space-y-6">
+<div class="grid grid-cols-[120px_1fr_60px] items-center gap-4">
+<span class="text-sm font-medium truncate text-gray-700">Main Stage</span>
+<div class="h-6 bg-gray-50 rounded-full overflow-hidden">
+<div class="h-full bg-primary rounded-full" style="width: 92%"></div>
+</div>
+<span class="text-sm font-bold text-right text-gray-900">8,421</span>
+</div>
+<div class="grid grid-cols-[120px_1fr_60px] items-center gap-4">
+<span class="text-sm font-medium truncate text-gray-700">Booth B2</span>
+<div class="h-6 bg-gray-50 rounded-full overflow-hidden">
+<div class="h-full bg-primary rounded-full" style="width: 78%"></div>
+</div>
+<span class="text-sm font-bold text-right text-gray-900">6,102</span>
+</div>
+<div class="grid grid-cols-[120px_1fr_60px] items-center gap-4">
+<span class="text-sm font-medium truncate text-gray-700">Badge QR</span>
+<div class="h-6 bg-gray-50 rounded-full overflow-hidden">
+<div class="h-full bg-primary rounded-full" style="width: 65%"></div>
+</div>
+<span class="text-sm font-bold text-right text-gray-900">4,930</span>
+</div>
+<div class="grid grid-cols-[120px_1fr_60px] items-center gap-4">
+<span class="text-sm font-medium truncate text-gray-700">VIP Lounge</span>
+<div class="h-6 bg-gray-50 rounded-full overflow-hidden">
+<div class="h-full bg-primary rounded-full" style="width: 42%"></div>
+</div>
+<span class="text-sm font-bold text-right text-gray-900">2,115</span>
+</div>
+<div class="grid grid-cols-[120px_1fr_60px] items-center gap-4">
+<span class="text-sm font-medium truncate text-gray-700">Flyer A</span>
+<div class="h-6 bg-gray-50 rounded-full overflow-hidden">
+<div class="h-full bg-primary rounded-full" style="width: 25%"></div>
+</div>
+<span class="text-sm font-bold text-right text-gray-900">1,208</span>
+</div>
+</div>
+</div>
+<div class="bg-white border border-gray-100 p-6 rounded-xl shadow-soft flex flex-col">
+<h3 class="text-xl font-bold text-gray-900 mb-1">Device Split</h3>
+<p class="text-sm text-neutral-light mb-8">Traffic source by OS</p>
+<div class="relative size-48 mx-auto mb-8">
+<svg class="size-full -rotate-90" viewBox="0 0 36 36">
+<circle class="stroke-gray-100" cx="18" cy="18" fill="none" r="16" stroke-width="3"></circle>
+<circle class="stroke-primary" cx="18" cy="18" fill="none" r="16" stroke-dasharray="75, 100" stroke-width="3"></circle>
+<circle class="stroke-sky-400" cx="18" cy="18" fill="none" r="16" stroke-dasharray="15, 100" stroke-dashoffset="-75" stroke-width="3"></circle>
+</svg>
+<div class="absolute inset-0 flex flex-col items-center justify-center">
+<span class="text-2xl font-bold text-gray-900">75%</span>
+<span class="text-[10px] text-gray-400 uppercase font-bold tracking-widest">Mobile</span>
+</div>
+</div>
+<div class="space-y-3 mt-auto">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="size-3 rounded-full bg-primary"></div>
+<span class="text-sm text-gray-700">iOS</span>
+</div>
+<span class="text-sm font-bold text-gray-900">75%</span>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="size-3 rounded-full bg-sky-400"></div>
+<span class="text-sm text-gray-700">Android</span>
+</div>
+<span class="text-sm font-bold text-gray-900">15%</span>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="size-3 rounded-full bg-gray-300"></div>
+<span class="text-sm text-gray-700">Desktop/Other</span>
+</div>
+<span class="text-sm font-bold text-gray-900">10%</span>
+</div>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+<div class="bg-white border border-gray-100 rounded-xl overflow-hidden shadow-soft">
+<div class="p-6 pb-2">
+<h3 class="text-xl font-bold text-gray-900 mb-1">Geo-Distribution</h3>
+<p class="text-sm text-neutral-light">Top scanning locations worldwide</p>
+</div>
+<div class="h-64 bg-gray-50 relative overflow-hidden">
+<img alt="World Map" class="w-full h-full object-cover opacity-60 grayscale" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDIpB7XIXUHmK7UfHfeMP_sspR7t_qcOQX9JMGatwL3i-2btlhLhjO9ITF3Md9PHOvjRjjWym7Kmil_Cy99Y31mvHaCNlorCw7kfixNCeIwlQUFP6BC3var3u79add07bTjOGCC-IIkRhHaB08DjHGPYglk4nX9rv6uaYpuCtNY34MqUy7Njp3KCEaMI4-N7RNktDSq1e8dCu6M4X2Jd4cTfXGOsswFF-wCdgf_EKEfb9cPDkg43bFtobTWsgdWKoX5A0_Aps4d6zA"/>
+<div class="absolute top-1/4 left-1/4 size-4 bg-primary/20 rounded-full animate-pulse"></div>
+<div class="absolute top-1/4 left-1/4 size-2 bg-primary rounded-full -translate-x-1/2 -translate-y-1/2"></div>
+<div class="absolute top-1/2 right-1/3 size-6 bg-primary/10 rounded-full"></div>
+<div class="absolute top-1/2 right-1/3 size-3 bg-primary rounded-full -translate-x-1/2 -translate-y-1/2"></div>
+<div class="absolute bottom-1/3 left-1/2 size-4 bg-primary/10 rounded-full"></div>
+</div>
+<div class="p-4 space-y-3">
+<div class="flex items-center justify-between text-sm text-gray-700">
+<span>United States</span>
+<span class="font-bold text-gray-900">62%</span>
+</div>
+<div class="w-full h-1.5 bg-gray-100 rounded-full overflow-hidden">
+<div class="h-full bg-primary" style="width: 62%"></div>
+</div>
+<div class="flex items-center justify-between text-sm pt-1 text-gray-700">
+<span>United Kingdom</span>
+<span class="font-bold text-gray-900">14%</span>
+</div>
+<div class="w-full h-1.5 bg-gray-100 rounded-full overflow-hidden">
+<div class="h-full bg-primary" style="width: 14%"></div>
+</div>
+</div>
+</div>
+<div class="lg:col-span-2 bg-white border border-gray-100 rounded-xl overflow-hidden flex flex-col shadow-soft">
+<div class="p-6 border-b border-gray-100 flex items-center justify-between bg-white">
+<h3 class="text-xl font-bold text-gray-900">QR Performance List</h3>
+<button class="text-primary text-sm font-bold flex items-center gap-1 hover:underline">
+                    View All Assets
+                    <span class="material-symbols-outlined text-sm">open_in_new</span>
+</button>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left">
+<thead>
+<tr class="text-xs uppercase tracking-wider text-neutral-light bg-gray-50">
+<th class="px-6 py-4 font-bold">QR Asset Name</th>
+<th class="px-6 py-4 font-bold">Scans</th>
+<th class="px-6 py-4 font-bold">Uniques</th>
+<th class="px-6 py-4 font-bold">Conversion</th>
+<th class="px-6 py-4 font-bold">Trends (7d)</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-gray-100">
+<tr class="hover:bg-gray-50/50 transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="size-8 bg-violet-50 text-primary rounded flex items-center justify-center">
+<span class="material-symbols-outlined text-sm">qr_code</span>
+</div>
+<div>
+<p class="font-bold text-sm text-gray-900">Main Stage</p>
+<p class="text-[10px] text-gray-400 font-medium">switchqr.io/sstr26-ms</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 text-sm font-bold text-gray-900">8,421</td>
+<td class="px-6 py-4 text-sm text-gray-700">5,210</td>
+<td class="px-6 py-4">
+<span class="text-sm font-bold text-emerald-600">14.8%</span>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-end gap-1 h-8">
+<div class="w-1.5 h-3 bg-violet-200 rounded-t-sm"></div>
+<div class="w-1.5 h-5 bg-violet-200 rounded-t-sm"></div>
+<div class="w-1.5 h-4 bg-violet-200 rounded-t-sm"></div>
+<div class="w-1.5 h-7 bg-primary rounded-t-sm"></div>
+<div class="w-1.5 h-8 bg-primary rounded-t-sm"></div>
+<div class="w-1.5 h-6 bg-primary rounded-t-sm"></div>
+</div>
+</td>
+</tr>
+<tr class="hover:bg-gray-50/50 transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="size-8 bg-violet-50 text-primary rounded flex items-center justify-center">
+<span class="material-symbols-outlined text-sm">qr_code</span>
+</div>
+<div>
+<p class="font-bold text-sm text-gray-900">Booth B2 Banner</p>
+<p class="text-[10px] text-gray-400 font-medium">switchqr.io/sstr26-b2</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 text-sm font-bold text-gray-900">6,102</td>
+<td class="px-6 py-4 text-sm text-gray-700">4,800</td>
+<td class="px-6 py-4">
+<span class="text-sm font-bold text-emerald-600">12.2%</span>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-end gap-1 h-8">
+<div class="w-1.5 h-6 bg-violet-200 rounded-t-sm"></div>
+<div class="w-1.5 h-5 bg-violet-200 rounded-t-sm"></div>
+<div class="w-1.5 h-8 bg-primary rounded-t-sm"></div>
+<div class="w-1.5 h-6 bg-primary rounded-t-sm"></div>
+<div class="w-1.5 h-5 bg-violet-200 rounded-t-sm"></div>
+<div class="w-1.5 h-4 bg-violet-200 rounded-t-sm"></div>
+</div>
+</td>
+</tr>
+<tr class="hover:bg-gray-50/50 transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="size-8 bg-violet-50 text-primary rounded flex items-center justify-center">
+<span class="material-symbols-outlined text-sm">qr_code</span>
+</div>
+<div>
+<p class="font-bold text-sm text-gray-900">VIP Badge Back</p>
+<p class="text-[10px] text-gray-400 font-medium">switchqr.io/sstr26-vip</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 text-sm font-bold text-gray-900">4,930</td>
+<td class="px-6 py-4 text-sm text-gray-700">3,120</td>
+<td class="px-6 py-4">
+<span class="text-sm font-bold text-emerald-600">22.4%</span>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-end gap-1 h-8">
+<div class="w-1.5 h-2 bg-violet-200 rounded-t-sm"></div>
+<div class="w-1.5 h-3 bg-violet-200 rounded-t-sm"></div>
+<div class="w-1.5 h-4 bg-violet-200 rounded-t-sm"></div>
+<div class="w-1.5 h-5 bg-primary rounded-t-sm"></div>
+<div class="w-1.5 h-7 bg-primary rounded-t-sm"></div>
+<div class="w-1.5 h-8 bg-primary rounded-t-sm"></div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</main>
+<footer class="max-w-7xl mx-auto px-6 py-12 border-t border-gray-200 mt-12 flex flex-col md:flex-row justify-between items-center gap-6">
+<div class="flex items-center gap-2">
+<span class="text-sm text-neutral-light font-medium">© 2026 SwitchQR Analytics Engine v2.4</span>
+</div>
+<div class="flex items-center gap-8">
+<a class="text-xs font-bold text-gray-400 hover:text-primary uppercase tracking-widest transition-colors" href="#">Help Center</a>
+<a class="text-xs font-bold text-gray-400 hover:text-primary uppercase tracking-widest transition-colors" href="#">API Docs</a>
+<a class="text-xs font-bold text-gray-400 hover:text-primary uppercase tracking-widest transition-colors" href="#">Privacy</a>
+</div>
+</footer>
+
+</body></html>

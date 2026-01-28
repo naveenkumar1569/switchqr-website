@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SwitchQR Login</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#7426d9",
+                        "primary-hover": "#5e1eb0",
+                        "background-light": "#f7f6f8",
+                        "background-dark": "#181220",
+                        "surface-light": "#ffffff",
+                        "surface-dark": "#231b2e",
+                        "text-main": "#140f1a",
+                        "text-sub": "#6e5393",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "2xl": "1rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display antialiased min-h-screen flex flex-col">
+<!-- Navbar for mobile context or general branding if needed, though mostly minimal for auth pages -->
+<header class="flex items-center justify-between px-6 py-4 md:hidden bg-surface-light dark:bg-surface-dark border-b border-gray-200 dark:border-gray-800">
+<div class="flex items-center gap-2 text-text-main dark:text-white">
+<span class="material-symbols-outlined text-primary text-3xl">qr_code_scanner</span>
+<span class="text-lg font-bold">SwitchQR</span>
+</div>
+</header>
+<main class="flex-grow flex items-center justify-center p-4 sm:p-8">
+<!-- Main Card Container -->
+<div class="w-full max-w-[1000px] bg-surface-light dark:bg-surface-dark rounded-2xl shadow-xl overflow-hidden flex flex-col md:flex-row min-h-[600px]">
+<!-- Left Side: Brand Panel -->
+<div class="relative hidden md:flex md:w-5/12 flex-col justify-between p-12 bg-gradient-to-br from-primary to-[#4a0f96] text-white">
+<!-- Background pattern overlay -->
+<div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(#fff 1px, transparent 1px); background-size: 24px 24px;"></div>
+<!-- Logo Area -->
+<div class="relative z-10 flex items-center gap-3">
+<div class="bg-white/20 p-2 rounded-lg backdrop-blur-sm">
+<span class="material-symbols-outlined text-white text-2xl">qr_code_scanner</span>
+</div>
+<span class="text-xl font-bold tracking-tight">SwitchQR</span>
+</div>
+<!-- Value Prop -->
+<div class="relative z-10 mt-auto mb-12">
+<h1 class="text-3xl font-bold leading-tight mb-4">Manage dynamic QR codes with ease.</h1>
+<p class="text-white/80 text-base font-normal leading-relaxed">Create, track, and update your QR codes instantly without reprinting. Enterprise-grade reliability for your marketing campaigns.</p>
+</div>
+<!-- Footer/Testimonial hint -->
+<div class="relative z-10 flex items-center gap-4 text-sm text-white/60">
+<div class="flex -space-x-2">
+<div class="w-8 h-8 rounded-full border-2 border-primary bg-gray-300 bg-cover bg-center" data-alt="User avatar 1" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCF4MDTq2tJBipljipuHG-NRTiNvcp6Wx9QbLNk6atLX4-TRlvtMYbdjpEdniQjTq7vf_IdR3um9InnPPS2e9NY_N0FAFgue6BzxDp0TPMcNNmRTtz6U1d9BZKcMUfhGRwiIQWWlhdJtzsg8q4kl28Em98l0bP31uFoWiWyBrMymtKlLm6kTxGfxX9-OCd24IVSh32ti-_YHkZg5bO94KfZ_WDIs_4UGS3sslzzni4Wk1NUxWMWH6l1sOATjTHd6fA8CbFrMMnoL08");'></div>
+<div class="w-8 h-8 rounded-full border-2 border-primary bg-gray-300 bg-cover bg-center" data-alt="User avatar 2" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCKf6chnSUR31C5IAXD2LgoiiGEAXCULHbRHV6UyVDlkvWe5WiH9gw97WUuRM5aBTkcBO13qgmbvBpVeBbr05YINc6XPYZ-RJ_RT0AZXrpJRHnvJ-HREh5W8Rb-jffG7vJI7YPjnGW2eJZfuRnFS3m54BBmeQlwgc2syVbWoKPTT0WIWgRy6wWArQdODXm_pzvXsyGqikNdTZjR3MQDJO1nYXRhxeJfisoP3B41vZlqtTxyn3Kf3Y2qs7mzR2CKE1TSybC50PvTN0s");'></div>
+<div class="w-8 h-8 rounded-full border-2 border-primary bg-gray-300 bg-cover bg-center" data-alt="User avatar 3" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCWA5ZIFmTj70Gkk-ygrFpLwhzAVTx_fu0wwTYSnX1boq3Ym1ecl3nTDR4k_Qr-F3PcZEVJOXjjZsiWauoJQd2_d3jouEYQUJXJ22mChvm3LLky-9sIvMQ0-G-3q2Y-0yfjSVFND4d9OM5W2iCYKsCJ_eaHVO_1VL-bDpUYQRMrVAsh1QmcKpMW_zFB5cL8HSOCYs_fA_33dRI1vQd8OTCLKigT30yVoLBcXC4qUetJChTd-sI3XUphEMXgmHmF4mRWlrOAL4cNF4A");'></div>
+</div>
+<span>Trusted by 10,000+ teams</span>
+</div>
+</div>
+<!-- Right Side: Login Form -->
+<div class="w-full md:w-7/12 flex flex-col justify-center p-8 md:p-12 lg:p-16 bg-surface-light dark:bg-surface-dark">
+<div class="max-w-md mx-auto w-full">
+<div class="mb-8 text-center md:text-left">
+<h2 class="text-3xl font-bold text-text-main dark:text-white mb-2">Welcome back</h2>
+<p class="text-text-sub dark:text-gray-400">Please enter your details to sign in.</p>
+</div>
+<form action="#" class="space-y-5">
+<!-- Email Field -->
+<div class="flex flex-col gap-1.5">
+<label class="text-sm font-medium text-text-main dark:text-gray-200" for="email">Email</label>
+<input class="form-input w-full rounded-lg border-gray-300 bg-background-light dark:bg-background-dark dark:border-gray-700 text-text-main dark:text-white focus:border-primary focus:ring-primary h-12 px-4 placeholder:text-gray-400 dark:placeholder:text-gray-500 text-base transition-colors duration-200" id="email" placeholder="name@company.com" required="" type="email"/>
+</div>
+<!-- Password Field -->
+<div class="flex flex-col gap-1.5">
+<div class="flex justify-between items-center">
+<label class="text-sm font-medium text-text-main dark:text-gray-200" for="password">Password</label>
+</div>
+<div class="relative">
+<input class="form-input w-full rounded-lg border-gray-300 bg-background-light dark:bg-background-dark dark:border-gray-700 text-text-main dark:text-white focus:border-primary focus:ring-primary h-12 px-4 placeholder:text-gray-400 dark:placeholder:text-gray-500 text-base transition-colors duration-200" id="password" placeholder="••••••••" required="" type="password"/>
+</div>
+<div class="flex justify-end mt-1">
+<a class="text-sm font-medium text-primary hover:text-primary-hover hover:underline" href="#">Forgot password?</a>
+</div>
+</div>
+<!-- Sign In Button -->
+<button class="w-full flex items-center justify-center rounded-lg bg-primary hover:bg-primary-hover text-white h-12 px-6 text-sm font-bold tracking-wide transition-all duration-200 shadow-md hover:shadow-lg mt-2" type="button">
+                            Sign In
+                        </button>
+<!-- Divider -->
+<div class="relative flex py-2 items-center">
+<div class="flex-grow border-t border-gray-200 dark:border-gray-700"></div>
+<span class="flex-shrink-0 mx-4 text-gray-400 text-sm">Or continue with</span>
+<div class="flex-grow border-t border-gray-200 dark:border-gray-700"></div>
+</div>
+<!-- Google Sign In -->
+<button class="w-full flex items-center justify-center gap-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-surface-dark hover:bg-gray-50 dark:hover:bg-gray-800 text-text-main dark:text-white h-12 px-6 text-sm font-medium transition-colors duration-200" type="button">
+<svg class="w-5 h-5" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"></path>
+<path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"></path>
+<path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"></path>
+<path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"></path>
+</svg>
+                            Sign in with Google
+                        </button>
+</form>
+<div class="mt-8 text-center">
+<p class="text-sm text-text-sub dark:text-gray-400">
+                            Don't have an account? 
+                            <a class="font-bold text-primary hover:text-primary-hover hover:underline" href="#">Sign up</a>
+</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Bottom footer links (Privacy/Terms) -->
+<div class="fixed bottom-4 w-full text-center text-xs text-gray-400 md:block hidden">
+<a class="hover:text-gray-600 dark:hover:text-gray-300 mx-2" href="#">Privacy Policy</a>
+            •
+            <a class="hover:text-gray-600 dark:hover:text-gray-300 mx-2" href="#">Terms of Service</a>
+</div>
+</main>
+</body></html>

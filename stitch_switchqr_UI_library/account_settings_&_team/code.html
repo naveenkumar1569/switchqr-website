@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SwitchQR - Account Settings</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#7426d9",
+                        "background-light": "#f7f6f8",
+                        "background-dark": "#181220",
+                        "surface-light": "#ffffff",
+                        "surface-dark": "#231b2e",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"],
+                        "body": ["Inter", "sans-serif"],
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white font-display antialiased selection:bg-primary/30 selection:text-primary">
+<div class="flex h-screen w-full overflow-hidden">
+<!-- Side Navigation -->
+<aside class="flex w-64 flex-col border-r border-gray-200 dark:border-gray-800 bg-surface-light dark:bg-surface-dark hidden md:flex">
+<div class="flex h-16 items-center px-6 border-b border-gray-200 dark:border-gray-800">
+<div class="flex items-center gap-2 text-primary">
+<span class="material-symbols-outlined text-[28px]">qr_code_scanner</span>
+<h1 class="text-xl font-bold tracking-tight text-slate-900 dark:text-white">SwitchQR</h1>
+</div>
+</div>
+<div class="flex flex-1 flex-col justify-between p-4">
+<nav class="flex flex-col gap-2">
+<a class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-slate-600 dark:text-slate-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors group" href="#">
+<span class="material-symbols-outlined text-[24px] group-hover:text-primary transition-colors">dashboard</span>
+<span class="text-sm font-medium">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-slate-600 dark:text-slate-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors group" href="#">
+<span class="material-symbols-outlined text-[24px] group-hover:text-primary transition-colors">qr_code_2</span>
+<span class="text-sm font-medium">QR Codes</span>
+</a>
+<a class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-slate-600 dark:text-slate-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors group" href="#">
+<span class="material-symbols-outlined text-[24px] group-hover:text-primary transition-colors">analytics</span>
+<span class="text-sm font-medium">Analytics</span>
+</a>
+<!-- Active State -->
+<a class="flex items-center gap-3 rounded-lg px-3 py-2.5 bg-primary/10 text-primary dark:bg-primary/20" href="#">
+<span class="material-symbols-outlined text-[24px] fill-1">settings</span>
+<span class="text-sm font-bold">Settings</span>
+</a>
+</nav>
+<div class="flex flex-col gap-4">
+<div class="rounded-xl bg-gray-50 dark:bg-gray-800 p-4 border border-gray-100 dark:border-gray-700">
+<div class="flex items-center gap-2 mb-2 text-slate-900 dark:text-white">
+<span class="material-symbols-outlined text-primary text-sm">bolt</span>
+<span class="text-xs font-bold uppercase tracking-wider">Free Plan</span>
+</div>
+<p class="text-xs text-slate-500 dark:text-slate-400 mb-3 leading-relaxed">
+                            You're using the limited free plan. Upgrade to unlock team features.
+                        </p>
+<button class="w-full cursor-pointer items-center justify-center rounded-lg h-9 bg-primary text-white text-xs font-bold hover:bg-primary/90 transition-all shadow-sm shadow-primary/20">
+                            Upgrade Plan
+                        </button>
+</div>
+<button class="flex items-center gap-3 px-3 py-2 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors">
+<span class="material-symbols-outlined">logout</span>
+<span class="text-sm font-medium">Sign out</span>
+</button>
+</div>
+</div>
+</aside>
+<!-- Main Content Layout -->
+<div class="flex flex-1 flex-col h-full bg-background-light dark:bg-background-dark overflow-hidden">
+<!-- Top Navigation -->
+<header class="h-16 flex items-center justify-between px-6 border-b border-gray-200 dark:border-gray-800 bg-surface-light dark:bg-surface-dark shrink-0">
+<!-- Mobile Menu Trigger (Visible only on small screens) -->
+<button class="md:hidden text-slate-500 hover:text-primary">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<!-- Breadcrumbs -->
+<nav class="hidden md:flex items-center gap-2 text-sm">
+<a class="text-slate-500 hover:text-primary transition-colors" href="#">Settings</a>
+<span class="text-slate-300 dark:text-slate-600">/</span>
+<span class="font-medium text-slate-900 dark:text-white">Account</span>
+</nav>
+<div class="flex items-center gap-6 ml-auto">
+<div class="hidden sm:flex items-center gap-6 text-sm font-medium text-slate-600 dark:text-slate-300">
+<a class="hover:text-primary transition-colors" href="#">Help</a>
+<a class="hover:text-primary transition-colors" href="#">Docs</a>
+</div>
+<div class="h-8 w-[1px] bg-gray-200 dark:bg-gray-700 hidden sm:block"></div>
+<button class="flex items-center gap-2">
+<div class="h-9 w-9 rounded-full bg-cover bg-center border border-gray-200 dark:border-gray-700" data-alt="User profile avatar of a smiling man" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuD3SGOVbwSRX_bstZVsEb9pGsWTIfJyKy-qoD8NTEXsCpZAxOUEqSNJaydGdlOyF2X_w3-6fg7lAxk15MWP5SMPqLnQkFQxpZ_jGNsg5y9UDpOWWYXVurw9ekcubeEzOOJ-iiQ1AdSdkvTKR1lnUifP-P0oJRVzG8LmAVPcG95y82TxBtmt6KjEnp86KRhbf9S5htRYM91K8ECkO-lf_8vyWWn6bIXLm4aVno5wRAtj2HKDUIyhwNKBfa_8fbwZaIelKTxvyNtOpXU");'></div>
+<span class="material-symbols-outlined text-slate-400 text-sm">expand_more</span>
+</button>
+</div>
+</header>
+<!-- Scrollable Content Area -->
+<main class="flex-1 overflow-y-auto p-4 md:p-8 lg:px-12">
+<div class="mx-auto max-w-5xl flex flex-col gap-8">
+<!-- Page Heading -->
+<div class="flex flex-col gap-2">
+<h1 class="text-3xl font-black tracking-tight text-slate-900 dark:text-white md:text-4xl">Account Settings</h1>
+<p class="text-base text-slate-500 dark:text-slate-400 max-w-2xl">
+                            Manage your personal details, workspace preferences, and security settings.
+                        </p>
+</div>
+<!-- Tabs & Content Container -->
+<div class="flex flex-col bg-surface-light dark:bg-surface-dark rounded-xl border border-gray-200 dark:border-gray-800 shadow-sm overflow-hidden">
+<!-- Tabs -->
+<div class="border-b border-gray-200 dark:border-gray-800 px-2 sm:px-6 bg-gray-50/50 dark:bg-gray-900/20">
+<div class="flex items-end gap-6 overflow-x-auto no-scrollbar">
+<!-- Active Tab -->
+<a class="relative flex items-center gap-2 pb-4 pt-5 border-b-[2px] border-primary text-primary" href="#">
+<span class="text-sm font-bold tracking-wide">Profile</span>
+</a>
+<!-- Locked Tab -->
+<a class="group relative flex items-center gap-2 pb-4 pt-5 border-b-[2px] border-transparent hover:border-gray-300 dark:hover:border-gray-600 transition-all" href="#">
+<span class="text-sm font-medium text-slate-500 dark:text-slate-400 group-hover:text-slate-800 dark:group-hover:text-slate-200">Team</span>
+<span class="material-symbols-outlined text-[16px] text-slate-400">lock</span>
+<span class="inline-flex items-center rounded-md bg-primary/10 px-1.5 py-0.5 text-[10px] font-bold uppercase text-primary ring-1 ring-inset ring-primary/20">Pro</span>
+</a>
+<!-- Locked Tab -->
+<a class="group relative flex items-center gap-2 pb-4 pt-5 border-b-[2px] border-transparent hover:border-gray-300 dark:hover:border-gray-600 transition-all" href="#">
+<span class="text-sm font-medium text-slate-500 dark:text-slate-400 group-hover:text-slate-800 dark:group-hover:text-slate-200">Domains</span>
+<span class="material-symbols-outlined text-[16px] text-slate-400">lock</span>
+<span class="inline-flex items-center rounded-md bg-primary/10 px-1.5 py-0.5 text-[10px] font-bold uppercase text-primary ring-1 ring-inset ring-primary/20">Pro</span>
+</a>
+<!-- Inactive Tab -->
+<a class="relative flex items-center gap-2 pb-4 pt-5 border-b-[2px] border-transparent hover:border-gray-300 dark:hover:border-gray-600 transition-all" href="#">
+<span class="text-sm font-medium text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200">Security</span>
+</a>
+<a class="relative flex items-center gap-2 pb-4 pt-5 border-b-[2px] border-transparent hover:border-gray-300 dark:hover:border-gray-600 transition-all" href="#">
+<span class="text-sm font-medium text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200">Notifications</span>
+</a>
+</div>
+</div>
+<!-- Active Tab Content: Profile -->
+<div class="p-6 sm:p-8 flex flex-col gap-8">
+<!-- Section: Avatar -->
+<div class="flex flex-col gap-6 border-b border-gray-100 dark:border-gray-800 pb-8">
+<div>
+<h3 class="text-lg font-bold text-slate-900 dark:text-white">Public Profile</h3>
+<p class="text-sm text-slate-500 dark:text-slate-400">This information will be displayed on your public profile.</p>
+</div>
+<div class="flex items-center gap-6">
+<div class="relative h-20 w-20 rounded-full border-2 border-gray-100 dark:border-gray-700 overflow-hidden shadow-sm">
+<div class="absolute inset-0 bg-cover bg-center" data-alt="User profile avatar large" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBttfRPki-99ht7VlhoQySLuW8uKrQa7PONJQVPn1t7yRsMryWXA5mQqLNQjTBF5UDmhysGX9kymqTp1Z4QmFdYRtvo800DEht8ZY9YYGpvcpdOyPmS-xdwlxL5My3wwZaIlFD_VzJvwl5Nes9-Ml2mBfIH1bVcdZp0j2fzIHsHg5F0uXLxAwbF-xazTaEEsymUIBLL5ngyX-Xm9nyRAbGjD36KN0abWV3qPHHTrJAtI5LntHvpa8Dmb-E8iYJwySf_5hOYP5_Gzj0");'></div>
+</div>
+<div class="flex flex-col gap-3">
+<div class="flex gap-3">
+<button class="inline-flex items-center justify-center rounded-lg bg-white dark:bg-gray-800 px-3 py-2 text-sm font-semibold text-slate-900 dark:text-white shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700">Change</button>
+<button class="inline-flex items-center justify-center rounded-lg bg-transparent px-3 py-2 text-sm font-semibold text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20">Remove</button>
+</div>
+<p class="text-xs text-slate-400">Recommended: 400x400px. JPG or PNG.</p>
+</div>
+</div>
+</div>
+<!-- Section: Form -->
+<form class="flex flex-col gap-6" onsubmit="event.preventDefault();">
+<div class="grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-2">
+<div class="sm:col-span-1">
+<label class="block text-sm font-medium leading-6 text-slate-900 dark:text-white" for="first-name">First name</label>
+<div class="mt-2">
+<input autocomplete="given-name" class="block w-full rounded-lg border-0 py-2.5 text-slate-900 dark:text-white shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-gray-700 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary dark:bg-gray-800 sm:text-sm sm:leading-6" id="first-name" name="first-name" type="text" value="Alex"/>
+</div>
+</div>
+<div class="sm:col-span-1">
+<label class="block text-sm font-medium leading-6 text-slate-900 dark:text-white" for="last-name">Last name</label>
+<div class="mt-2">
+<input autocomplete="family-name" class="block w-full rounded-lg border-0 py-2.5 text-slate-900 dark:text-white shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-gray-700 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary dark:bg-gray-800 sm:text-sm sm:leading-6" id="last-name" name="last-name" type="text" value="Morgan"/>
+</div>
+</div>
+<div class="sm:col-span-2">
+<label class="block text-sm font-medium leading-6 text-slate-900 dark:text-white" for="email">Email address</label>
+<div class="mt-2 relative">
+<div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+<span class="material-symbols-outlined text-gray-400 text-[20px]">mail</span>
+</div>
+<input autocomplete="email" class="block w-full rounded-lg border-0 py-2.5 pl-10 text-slate-900 dark:text-white shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-gray-700 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary dark:bg-gray-800 sm:text-sm sm:leading-6" id="email" name="email" type="email" value="alex.morgan@example.com"/>
+</div>
+<p class="mt-2 text-xs text-slate-500 dark:text-slate-400">This email will be used for account notifications.</p>
+</div>
+<div class="sm:col-span-2">
+<label class="block text-sm font-medium leading-6 text-slate-900 dark:text-white" for="job-title">Job Title</label>
+<div class="mt-2">
+<input class="block w-full rounded-lg border-0 py-2.5 text-slate-900 dark:text-white shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-gray-700 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary dark:bg-gray-800 sm:text-sm sm:leading-6" id="job-title" name="job-title" type="text" value="Product Manager"/>
+</div>
+</div>
+<div class="sm:col-span-2">
+<label class="block text-sm font-medium leading-6 text-slate-900 dark:text-white" for="bio">Bio</label>
+<div class="mt-2">
+<textarea class="block w-full rounded-lg border-0 py-2.5 text-slate-900 dark:text-white shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-gray-700 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary dark:bg-gray-800 sm:text-sm sm:leading-6" id="bio" name="bio" rows="3">Managing QR campaigns for enterprise clients.</textarea>
+</div>
+<p class="mt-2 text-xs text-slate-500 dark:text-slate-400">Brief description for your profile. URLs are hyperlinked.</p>
+</div>
+</div>
+<div class="mt-6 flex items-center justify-end gap-x-4 border-t border-gray-100 dark:border-gray-800 pt-6">
+<button class="text-sm font-semibold leading-6 text-slate-900 dark:text-white hover:text-primary transition-colors" type="button">Cancel</button>
+<button class="rounded-lg bg-primary px-5 py-2.5 text-sm font-bold text-white shadow-sm hover:bg-primary/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary transition-all" type="submit">Save Changes</button>
+</div>
+</form>
+</div>
+</div>
+<!-- Locked Feature Teaser (Visual Context) -->
+<div class="rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800/50 p-6 flex flex-col md:flex-row items-center justify-between gap-6 relative overflow-hidden group">
+<!-- Decorative background element -->
+<div class="absolute -right-10 -top-10 h-40 w-40 rounded-full bg-primary/5 blur-3xl group-hover:bg-primary/10 transition-all"></div>
+<div class="flex items-start gap-4 z-10">
+<div class="rounded-full bg-primary/10 p-3 text-primary">
+<span class="material-symbols-outlined text-2xl">group_add</span>
+</div>
+<div>
+<h4 class="text-base font-bold text-slate-900 dark:text-white">Need to manage a team?</h4>
+<p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Unlock Team roles, permissions, and collaborative folders with SwitchQR Pro.</p>
+</div>
+</div>
+<button class="whitespace-nowrap rounded-lg bg-slate-900 dark:bg-white px-4 py-2.5 text-sm font-bold text-white dark:text-slate-900 shadow-sm hover:bg-slate-800 dark:hover:bg-gray-100 transition-all z-10">
+                            View Plans
+                        </button>
+</div>
+</div>
+</main>
+</div>
+</div>
+</body></html>

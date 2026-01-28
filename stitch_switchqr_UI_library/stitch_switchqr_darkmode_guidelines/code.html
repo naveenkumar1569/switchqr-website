@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SwitchQR Dark Mode Guidelines</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#a689fa",
+                        "background-light": "#f6f5f8",
+                        "background-dark": "#0F172A",
+                        "surface": "#1E293B",
+                        "elevated": "#334155",
+                        "secondary-text": "#94A3B8",
+                        "primary-text": "#F8FAFC"
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"]
+                    },
+                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+        .glow-purple {
+            box-shadow: 0 0 15px rgba(166, 137, 250, 0.3);
+        }
+        .border-top-highlight {
+            border-top: 1px solid rgba(166, 137, 250, 0.4);
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-primary-text min-h-screen">
+<!-- Top Navigation Bar -->
+<header class="sticky top-0 z-50 w-full border-b border-solid border-slate-200 dark:border-slate-800 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md">
+<div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-3">
+<div class="size-8 bg-primary rounded flex items-center justify-center text-background-dark">
+<span class="material-symbols-outlined font-bold">qr_code_2</span>
+</div>
+<h2 class="text-lg font-bold tracking-tight">SwitchQR <span class="text-primary">Docs</span></h2>
+</div>
+<nav class="hidden md:flex items-center gap-6">
+<a class="text-sm font-medium hover:text-primary transition-colors" href="#">Guidelines</a>
+<a class="text-sm font-medium hover:text-primary transition-colors" href="#">Components</a>
+<a class="text-sm font-medium hover:text-primary transition-colors" href="#">Accessibility</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative hidden sm:block">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-secondary-text text-sm">search</span>
+<input class="bg-slate-200 dark:bg-surface border-none rounded-lg py-1.5 pl-10 pr-4 text-sm focus:ring-2 focus:ring-primary w-64" placeholder="Search guidelines..." type="text"/>
+</div>
+<button class="bg-primary text-background-dark px-4 py-2 rounded-lg text-sm font-bold flex items-center gap-2 hover:opacity-90 transition-opacity">
+<span class="material-symbols-outlined text-sm">download</span>
+                    PDF Export
+                </button>
+</div>
+</div>
+</header>
+<div class="max-w-7xl mx-auto px-6 py-8 flex gap-8">
+<!-- Sidebar Navigation -->
+<aside class="w-64 shrink-0 hidden lg:block sticky top-24 h-fit">
+<div class="flex flex-col gap-6">
+<div>
+<h3 class="text-xs font-bold uppercase tracking-widest text-secondary-text mb-4">Design System</h3>
+<p class="text-sm font-medium mb-1">v2.1.0 Dark Mode</p>
+<p class="text-xs text-secondary-text">Last updated Oct 2023</p>
+</div>
+<nav class="flex flex-col gap-1">
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg bg-primary/10 text-primary border border-primary/20" href="#colors">
+<span class="material-symbols-outlined text-[20px]">palette</span>
+<span class="text-sm font-medium">Core Colors</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-200 dark:hover:bg-surface transition-colors" href="#accents">
+<span class="material-symbols-outlined text-[20px] text-secondary-text">bolt</span>
+<span class="text-sm font-medium">Accents</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-200 dark:hover:bg-surface transition-colors" href="#typography">
+<span class="material-symbols-outlined text-[20px] text-secondary-text">match_case</span>
+<span class="text-sm font-medium">Typography</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-200 dark:hover:bg-surface transition-colors" href="#components">
+<span class="material-symbols-outlined text-[20px] text-secondary-text">widgets</span>
+<span class="text-sm font-medium">UI Components</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-200 dark:hover:bg-surface transition-colors" href="#dataviz">
+<span class="material-symbols-outlined text-[20px] text-secondary-text">bar_chart</span>
+<span class="text-sm font-medium">Data Viz</span>
+</a>
+</nav>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 min-w-0">
+<!-- Page Heading -->
+<div class="mb-12">
+<p class="text-primary font-bold text-sm tracking-widest uppercase mb-2">Documentation</p>
+<h1 class="text-4xl md:text-5xl font-black leading-tight tracking-tight mb-4">Dark Mode Guidelines</h1>
+<p class="text-lg text-secondary-text max-w-2xl">A comprehensive guide to the SwitchQR dark aesthetic, accessibility standards, and component behavior in low-light environments.</p>
+</div>
+<!-- Section 1: Core Colors -->
+<section class="mb-16" id="colors">
+<div class="flex items-center gap-3 mb-6">
+<div class="h-8 w-1 bg-primary rounded-full"></div>
+<h2 class="text-2xl font-bold">Section 1: Core Colors</h2>
+</div>
+<p class="text-secondary-text mb-8">The foundation of our dark mode is built on deep navy and slate tones to provide depth and reduce eye strain.</p>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<div class="flex flex-col gap-4 p-5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-surface">
+<div class="aspect-video rounded-lg bg-[#0F172A] flex items-end p-3 border border-slate-700">
+<span class="text-xs font-mono text-slate-400">#0F172A</span>
+</div>
+<div>
+<h3 class="font-bold mb-1">Background</h3>
+<p class="text-sm text-secondary-text">Deep navy base layer for the main canvas.</p>
+</div>
+</div>
+<div class="flex flex-col gap-4 p-5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-surface">
+<div class="aspect-video rounded-lg bg-[#1E293B] flex items-end p-3 border border-slate-600">
+<span class="text-xs font-mono text-slate-400">#1E293B</span>
+</div>
+<div>
+<h3 class="font-bold mb-1">Surface</h3>
+<p class="text-sm text-secondary-text">Primary container color for cards and sections.</p>
+</div>
+</div>
+<div class="flex flex-col gap-4 p-5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-surface">
+<div class="aspect-video rounded-lg bg-[#334155] flex items-end p-3 border border-slate-500">
+<span class="text-xs font-mono text-slate-300">#334155</span>
+</div>
+<div>
+<h3 class="font-bold mb-1">Elevated</h3>
+<p class="text-sm text-secondary-text">Used for floating menus and tooltips.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Section 2: Accents -->
+<section class="mb-16" id="accents">
+<div class="flex items-center gap-3 mb-6">
+<div class="h-8 w-1 bg-primary rounded-full"></div>
+<h2 class="text-2xl font-bold">Section 2: Accents</h2>
+</div>
+<div class="grid md:grid-cols-2 gap-8">
+<div class="bg-surface rounded-xl p-6 border border-slate-800">
+<h3 class="text-primary font-bold mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">check_circle</span>
+                            Recommended Accent
+                        </h3>
+<div class="flex items-center gap-6 mb-4">
+<div class="size-16 rounded-full bg-primary glow-purple flex items-center justify-center">
+<span class="material-symbols-outlined text-background-dark font-bold">star</span>
+</div>
+<div>
+<p class="font-bold">Vivid Purple (#A78BFA)</p>
+<p class="text-sm text-secondary-text">Optimized for high contrast and vibrance against dark backgrounds.</p>
+</div>
+</div>
+<div class="bg-background-dark p-4 rounded-lg">
+<button class="bg-primary text-background-dark px-4 py-2 rounded font-bold w-full">Vivid Action Button</button>
+</div>
+</div>
+<div class="bg-surface rounded-xl p-6 border border-slate-800 opacity-60">
+<h3 class="text-red-400 font-bold mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">cancel</span>
+                            Avoid
+                        </h3>
+<div class="flex items-center gap-6 mb-4">
+<div class="size-16 rounded-full bg-[#6D28D9] flex items-center justify-center">
+<span class="material-symbols-outlined text-slate-400 font-bold">do_not_disturb</span>
+</div>
+<div>
+<p class="font-bold text-slate-400">Deep Purple (#6D28D9)</p>
+<p class="text-sm text-secondary-text">Low visibility. Blends into the dark surface colors.</p>
+</div>
+</div>
+<div class="bg-background-dark p-4 rounded-lg">
+<button class="bg-[#6D28D9] text-white/50 px-4 py-2 rounded font-bold w-full cursor-not-allowed">Hard to read button</button>
+</div>
+</div>
+</div>
+</section>
+<!-- Section 3: Typography -->
+<section class="mb-16" id="typography">
+<div class="flex items-center gap-3 mb-6">
+<div class="h-8 w-1 bg-primary rounded-full"></div>
+<h2 class="text-2xl font-bold">Section 3: Typography</h2>
+</div>
+<div class="bg-surface rounded-xl p-8 border border-slate-800">
+<div class="space-y-8">
+<div>
+<div class="flex justify-between items-center mb-2">
+<p class="text-xs font-mono text-primary">#F8FAFC (Primary Text)</p>
+<p class="text-xs font-bold text-green-400">Contrast Ratio 15.4:1</p>
+</div>
+<h3 class="text-3xl font-black text-primary-text">Designing for the future of QR tech.</h3>
+</div>
+<div>
+<div class="flex justify-between items-center mb-2">
+<p class="text-xs font-mono text-secondary-text">#94A3B8 (Secondary Text)</p>
+<p class="text-xs font-bold text-green-400">Contrast Ratio 7.2:1</p>
+</div>
+<p class="text-lg text-secondary-text">Our typography system uses high-contrast scales to ensure readability across all device types and lighting conditions.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Section 4: Components -->
+<section class="mb-16" id="components">
+<div class="flex items-center gap-3 mb-6">
+<div class="h-8 w-1 bg-primary rounded-full"></div>
+<h2 class="text-2xl font-bold">Section 4: Components Showcase</h2>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+<!-- Button Showcase -->
+<div class="space-y-4">
+<h3 class="text-sm font-bold text-secondary-text uppercase tracking-widest">Interactive States</h3>
+<div class="bg-surface p-8 rounded-xl border border-slate-800 space-y-6">
+<button class="w-full bg-primary text-background-dark font-bold py-3 rounded-lg hover:brightness-110 transition-all glow-purple">
+                                Primary Button (Neon Glow)
+                            </button>
+<button class="w-full bg-transparent border-2 border-primary text-primary font-bold py-3 rounded-lg hover:bg-primary/10 transition-all">
+                                Outline Button
+                            </button>
+<div class="relative group">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-primary">alternate_email</span>
+<input class="w-full bg-background-dark border border-slate-700 focus:border-primary focus:ring-1 focus:ring-primary rounded-lg py-3 pl-10 text-primary-text transition-all" placeholder="Subtle highlight input" type="text"/>
+</div>
+</div>
+</div>
+<!-- Card Comparison -->
+<div class="space-y-4">
+<h3 class="text-sm font-bold text-secondary-text uppercase tracking-widest">Card Elevation</h3>
+<div class="bg-surface p-8 rounded-xl border border-slate-800 space-y-6">
+<div class="bg-elevated p-5 rounded-lg border-top-highlight shadow-2xl">
+<div class="flex items-center gap-3 mb-2">
+<span class="material-symbols-outlined text-primary">info</span>
+<h4 class="font-bold">Surface Card</h4>
+</div>
+<p class="text-sm text-secondary-text leading-relaxed">Instead of drop shadows, we use 1px top-border highlights and background color shifting to indicate elevation.</p>
+</div>
+<div class="flex gap-4">
+<div class="flex-1 h-12 rounded border border-slate-700 bg-background-dark flex items-center justify-center text-xs text-secondary-text">Base</div>
+<div class="flex-1 h-12 rounded border border-slate-600 bg-surface flex items-center justify-center text-xs text-secondary-text">Level 1</div>
+<div class="flex-1 h-12 rounded border border-slate-500 bg-elevated flex items-center justify-center text-xs text-secondary-text font-bold text-primary">Level 2</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Section 5: Data Viz -->
+<section class="mb-16" id="dataviz">
+<div class="flex items-center gap-3 mb-6">
+<div class="h-8 w-1 bg-primary rounded-full"></div>
+<h2 class="text-2xl font-bold">Section 5: Data Visualization</h2>
+</div>
+<div class="bg-surface rounded-xl p-8 border border-slate-800">
+<div class="flex flex-col md:flex-row gap-8 items-center">
+<div class="flex-1 w-full space-y-4">
+<div class="flex justify-between items-end h-40 gap-2">
+<div class="w-full bg-primary/20 rounded-t-sm relative group">
+<div class="absolute bottom-0 w-full bg-primary rounded-t-sm h-[40%] group-hover:h-[45%] transition-all"></div>
+</div>
+<div class="w-full bg-blue-500/20 rounded-t-sm relative group">
+<div class="absolute bottom-0 w-full bg-blue-400 rounded-t-sm h-[75%] group-hover:h-[80%] transition-all"></div>
+</div>
+<div class="w-full bg-primary/20 rounded-t-sm relative group">
+<div class="absolute bottom-0 w-full bg-primary rounded-t-sm h-[60%] group-hover:h-[65%] transition-all"></div>
+</div>
+<div class="w-full bg-blue-500/20 rounded-t-sm relative group">
+<div class="absolute bottom-0 w-full bg-blue-400 rounded-t-sm h-[90%] group-hover:h-[95%] transition-all"></div>
+</div>
+<div class="w-full bg-primary/20 rounded-t-sm relative group">
+<div class="absolute bottom-0 w-full bg-primary rounded-t-sm h-[50%] group-hover:h-[55%] transition-all"></div>
+</div>
+<div class="w-full bg-blue-500/20 rounded-t-sm relative group">
+<div class="absolute bottom-0 w-full bg-blue-400 rounded-t-sm h-[30%] group-hover:h-[35%] transition-all"></div>
+</div>
+</div>
+<div class="flex justify-between text-[10px] font-mono text-secondary-text uppercase tracking-widest">
+<span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span>
+</div>
+</div>
+<div class="w-full md:w-64 space-y-4">
+<h4 class="font-bold">Neon Viz Rules</h4>
+<ul class="space-y-3">
+<li class="flex gap-3 text-sm text-secondary-text">
+<div class="size-4 shrink-0 rounded-full bg-primary"></div>
+<span>Primary Series: Vivid Purple</span>
+</li>
+<li class="flex gap-3 text-sm text-secondary-text">
+<div class="size-4 shrink-0 rounded-full bg-blue-400"></div>
+<span>Secondary: Electric Blue</span>
+</li>
+<li class="flex gap-3 text-sm text-secondary-text">
+<span class="material-symbols-outlined text-sm">visibility</span>
+<span>Avoid solid blacks and muddy browns</span>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+<!-- Footer -->
+<footer class="mt-20 pt-8 border-t border-slate-800 pb-12 flex flex-col md:flex-row justify-between items-center gap-6">
+<div class="flex items-center gap-2 opacity-50">
+<span class="material-symbols-outlined">qr_code_2</span>
+<span class="text-sm font-medium">SwitchQR © 2023</span>
+</div>
+<div class="flex gap-8">
+<a class="text-sm text-secondary-text hover:text-primary" href="#">Github</a>
+<a class="text-sm text-secondary-text hover:text-primary" href="#">Figma Library</a>
+<a class="text-sm text-secondary-text hover:text-primary" href="#">Changelog</a>
+</div>
+</footer>
+</main>
+</div>
+</body></html>

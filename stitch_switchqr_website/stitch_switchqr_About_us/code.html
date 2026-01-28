@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>The SwitchQR Story</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#6613ec",
+                        "background-light": "#f7f6f8",
+                        "background-dark": "#171022",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-[#130d1b] dark:text-[#f9f8fc]">
+<!-- Navigation -->
+<div class="layout-container flex h-full grow flex-col">
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-b-[#ece7f3] dark:border-b-[#2d243a] px-10 py-4 sticky top-0 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md z-50">
+<div class="flex items-center gap-4 text-primary">
+<div class="size-8">
+<svg fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M13.8261 30.5736C16.7203 29.8826 20.2244 29.4783 24 29.4783C27.7756 29.4783 31.2797 29.8826 34.1739 30.5736C36.9144 31.2278 39.9967 32.7669 41.3563 33.8352L24.8486 7.36089C24.4571 6.73303 23.5429 6.73303 23.1514 7.36089L6.64374 33.8352C8.00331 32.7669 11.0856 31.2278 13.8261 30.5736Z" fill="currentColor"></path>
+<path clip-rule="evenodd" d="M39.998 35.764C39.9944 35.7463 39.9875 35.7155 39.9748 35.6706C39.9436 35.5601 39.8949 35.4259 39.8346 35.2825C39.8168 35.2403 39.7989 35.1993 39.7813 35.1602C38.5103 34.2887 35.9788 33.0607 33.7095 32.5189C30.9875 31.8691 27.6413 31.4783 24 31.4783C20.3587 31.4783 17.0125 31.8691 14.2905 32.5189C12.0012 33.0654 9.44505 34.3104 8.18538 35.1832C8.17384 35.2075 8.16216 35.233 8.15052 35.2592C8.09919 35.3751 8.05721 35.4886 8.02977 35.589C8.00356 35.6848 8.00039 35.7333 8.00004 35.7388C8.00004 35.739 8 35.7393 8.00004 35.7388C8.00004 35.7641 8.0104 36.0767 8.68485 36.6314C9.34546 37.1746 10.4222 37.7531 11.9291 38.2772C14.9242 39.319 19.1919 40 24 40C28.8081 40 33.0758 39.319 36.0709 38.2772C37.5778 37.7531 38.6545 37.1746 39.3151 36.6314C39.9006 36.1499 39.9857 35.8511 39.998 35.764ZM4.95178 32.7688L21.4543 6.30267C22.6288 4.4191 25.3712 4.41909 26.5457 6.30267L43.0534 32.777C43.0709 32.8052 43.0878 32.8338 43.104 32.8629L41.3563 33.8352C43.104 32.8629 43.1038 32.8626 43.104 32.8629L43.1051 32.865L43.1065 32.8675L43.1101 32.8739L43.1199 32.8918C43.1276 32.906 43.1377 32.9246 43.1497 32.9473C43.1738 32.9925 43.2062 33.0545 43.244 33.1299C43.319 33.2792 43.4196 33.489 43.5217 33.7317C43.6901 34.1321 44 34.9311 44 35.7391C44 37.4427 43.003 38.7775 41.8558 39.7209C40.6947 40.6757 39.1354 41.4464 37.385 42.0552C33.8654 43.2794 29.133 44 24 44C18.867 44 14.1346 43.2794 10.615 42.0552C8.86463 41.4464 7.30529 40.6757 6.14419 39.7209C4.99695 38.7775 3.99999 37.4427 3.99999 35.7391C3.99999 34.8725 4.29264 34.0922 4.49321 33.6393C4.60375 33.3898 4.71348 33.1804 4.79687 33.0311C4.83898 32.9556 4.87547 32.8935 4.9035 32.8471C4.91754 32.8238 4.92954 32.8043 4.93916 32.7889L4.94662 32.777L4.95178 32.7688ZM35.9868 29.004L24 9.77997L12.0131 29.004C12.4661 28.8609 12.9179 28.7342 13.3617 28.6282C16.4281 27.8961 20.0901 27.4783 24 27.4783C27.9099 27.4783 31.5719 27.8961 34.6383 28.6282C35.082 28.7342 35.5339 28.8609 35.9868 29.004Z" fill="currentColor" fill-rule="evenodd"></path>
+</svg>
+</div>
+<h2 class="text-xl font-bold tracking-tight">SwitchQR</h2>
+</div>
+<div class="flex items-center gap-8">
+<nav class="hidden md:flex items-center gap-9">
+<a class="text-sm font-medium hover:text-primary transition-colors" href="#">Product</a>
+<a class="text-sm font-medium hover:text-primary transition-colors" href="#">Solutions</a>
+<a class="text-sm font-medium hover:text-primary transition-colors" href="#">Pricing</a>
+<a class="text-sm font-medium text-primary border-b-2 border-primary" href="#">Our Story</a>
+</nav>
+<div class="flex gap-3">
+<button class="flex min-w-[84px] cursor-pointer items-center justify-center rounded-lg h-10 px-4 bg-primary text-white text-sm font-bold tracking-wide hover:opacity-90 transition-opacity">
+                        Get Started
+                    </button>
+<button class="flex min-w-[84px] cursor-pointer items-center justify-center rounded-lg h-10 px-4 bg-[#ece7f3] dark:bg-[#2d243a] text-[#130d1b] dark:text-[#f9f8fc] text-sm font-bold hover:bg-[#d8cfe7] dark:hover:bg-[#3d3250] transition-colors">
+                        Log In
+                    </button>
+</div>
+</div>
+</header>
+<main class="flex-1">
+<!-- Hero Section -->
+<section class="px-6 md:px-20 lg:px-40 py-16 lg:py-24">
+<div class="@container">
+<div class="flex flex-col items-center text-center max-w-4xl mx-auto">
+<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-bold uppercase tracking-widest mb-6">
+<span class="material-symbols-outlined text-[14px]">history_edu</span>
+                            The switchqr story
+                        </div>
+<h1 class="text-4xl md:text-6xl lg:text-7xl font-bold leading-tight tracking-tight mb-6">
+                            We Make QR Codes <br/><span class="text-primary italic">Less… Annoying</span>
+</h1>
+<p class="text-lg md:text-xl font-normal text-[#6a4c9a] dark:text-[#a08cc5] max-w-2xl mb-10 leading-relaxed">
+                            Static links are a liability. We built the cure. Dynamic tools for a changing world that won't leave you with dead-end print campaigns.
+                        </p>
+<button class="flex min-w-[180px] items-center justify-center rounded-xl h-14 px-8 bg-primary text-white text-lg font-bold tracking-tight hover:shadow-lg hover:shadow-primary/20 transition-all">
+                            See How It Works
+                        </button>
+</div>
+<div class="mt-16 rounded-2xl overflow-hidden aspect-[21/9] relative shadow-2xl">
+<div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
+<img alt="Abstract clean purple and white aesthetic workspace" class="w-full h-full object-cover" data-alt="Abstract minimalist office workspace with purple accents" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCFmT7uQ3Sg9nvuhC3T38jdLMm0-mzEFzzww-zPDeu4ggVxwQ2Ro4Zt7caSBtcnPb4PchDp9U8rsO7M6m3otikzccIomUY1E99kmBeTnFMbZvCyBhbvVdEt03KI7AmruX7lTT73fVvh-v_f9X2Y3rBpUxeuzhgF4IYcz-8tueCWqIoHu9zJup3ppEMMXNdpzsfZU2N8-2BcSrHczbwdmNb1cn62XnQNCIhfh45cX_zjqzFWXhTvoscpW_tUy6gAbAgsilkxxgagM-U"/>
+</div>
+</div>
+</section>
+<!-- What We Believe Section -->
+<section class="bg-[#ece7f3]/30 dark:bg-[#1f162e] px-6 md:px-20 lg:px-40 py-20">
+<div class="max-w-[960px] mx-auto">
+<div class="flex flex-col gap-4 mb-12">
+<h2 class="text-primary text-sm font-bold uppercase tracking-widest">Our Philosophy</h2>
+<h3 class="text-3xl md:text-5xl font-bold tracking-tight">Strong Opinions, Better Products</h3>
+<p class="text-[#6a4c9a] dark:text-[#a08cc5] text-lg max-w-2xl">We don't just build software; we build a philosophy for the modern web.</p>
+</div>
+<div class="grid md:grid-cols-3 gap-6">
+<div class="flex flex-col gap-6 rounded-2xl border border-[#d8cfe7] dark:border-[#2d243a] bg-white dark:bg-[#171022] p-8 hover:border-primary transition-colors group">
+<div class="size-12 rounded-xl bg-primary/10 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-all">
+<span class="material-symbols-outlined">sync_alt</span>
+</div>
+<div class="flex flex-col gap-2">
+<h4 class="text-xl font-bold">Flexibility over Fixity</h4>
+<p class="text-[#6a4c9a] dark:text-[#a08cc5] leading-relaxed">Stop worrying about broken links. Change your destination anytime without ever needing to reprint.</p>
+</div>
+</div>
+<div class="flex flex-col gap-6 rounded-2xl border border-[#d8cfe7] dark:border-[#2d243a] bg-white dark:bg-[#171022] p-8 hover:border-primary transition-colors group">
+<div class="size-12 rounded-xl bg-primary/10 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-all">
+<span class="material-symbols-outlined">ads_click</span>
+</div>
+<div class="flex flex-col gap-2">
+<h4 class="text-xl font-bold">Strategy over Scanning</h4>
+<p class="text-[#6a4c9a] dark:text-[#a08cc5] leading-relaxed">Turn every scan into a strategic touchpoint with advanced routing, logic, and intent mapping.</p>
+</div>
+</div>
+<div class="flex flex-col gap-6 rounded-2xl border border-[#d8cfe7] dark:border-[#2d243a] bg-white dark:bg-[#171022] p-8 hover:border-primary transition-colors group">
+<div class="size-12 rounded-xl bg-primary/10 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-all">
+<span class="material-symbols-outlined">analytics</span>
+</div>
+<div class="flex flex-col gap-2">
+<h4 class="text-xl font-bold">Data over Guesswork</h4>
+<p class="text-[#6a4c9a] dark:text-[#a08cc5] leading-relaxed">Real-time analytics that tell you who, where, and when. No more manual tracking spreadsheets.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Why We Built This Section -->
+<section class="px-6 md:px-20 lg:px-40 py-24">
+<div class="max-w-[960px] mx-auto grid md:grid-cols-2 gap-16 items-center">
+<div>
+<h2 class="text-3xl md:text-5xl font-bold tracking-tight mb-8">Why We Built This</h2>
+<div class="space-y-6 text-lg text-[#130d1b] dark:text-[#f9f8fc] leading-relaxed">
+<p>We were tired of seeing beautiful print campaigns ruined by a single typo in a URL or a website migration that broke thousands of codes.</p>
+<p>QR codes are a bridge between the physical and digital worlds, but for too long, that bridge was made of fragile glass. We wanted to build it out of carbon fiber.</p>
+<p class="font-semibold text-primary">Enter SwitchQR: The "Smarter Behavior" engine.</p>
+</div>
+</div>
+<div class="relative">
+<div class="bg-primary/5 rounded-3xl p-8 border border-primary/20">
+<div class="flex flex-col gap-6">
+<div class="w-full aspect-video bg-cover bg-center rounded-xl shadow-lg" data-alt="Digital representation of dynamic QR code routing" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAZFNAX-ax5B8vNHeTWFmn4u1NMNZBHJlS8s4WJWbW7fApnC-37M39LsOOMsnwaMM4Ml-ObeCLsGDRW_62K0KkAZZVaWZK75Yra9quX0lXIGci1WTCvaRI4hEkHmBrTzP1fUrlhBRYym04Oys7oc9TBr3cyDL9doxlawgwKZs07JB4OObfdPWk-fAhSDgvhOU5uCVTdp20wFTN9rRZFFzsBxxK3a0g4Jm5H0fNrrf_Fv9I3US3AuYfZIC3F6FA6uSZPks2wQzW3jGA");'></div>
+<div class="space-y-3">
+<h4 class="text-xl font-bold">Same QR. Smarter behavior.</h4>
+<p class="text-[#6a4c9a] dark:text-[#a08cc5] text-base leading-relaxed">
+                                        Our platform allows you to keep the same physical code while evolving the digital destination behind it indefinitely. Update links in real-time without touching the printer.
+                                    </p>
+</div>
+</div>
+</div>
+<!-- Decorative element -->
+<div class="absolute -z-10 -bottom-6 -right-6 size-32 bg-primary/20 rounded-full blur-3xl"></div>
+</div>
+</div>
+</section>
+<!-- Who This Is For Section -->
+<section class="bg-background-light dark:bg-background-dark px-6 md:px-20 lg:px-40 py-20 border-y border-[#ece7f3] dark:border-[#2d243a]">
+<div class="max-w-[960px] mx-auto">
+<div class="text-center mb-16">
+<h2 class="text-3xl md:text-4xl font-bold tracking-tight">Who This Is For</h2>
+<p class="text-[#6a4c9a] dark:text-[#a08cc5] mt-4">The bridge-builders and future-proofers.</p>
+</div>
+<div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="p-6 rounded-2xl bg-[#ece7f3]/40 dark:bg-[#1f162e] flex flex-col items-center text-center gap-4 hover:bg-white dark:hover:bg-[#2d243a] transition-all shadow-sm">
+<span class="material-symbols-outlined text-primary text-4xl">event</span>
+<h5 class="font-bold">Events</h5>
+<p class="text-xs text-[#6a4c9a] dark:text-[#a08cc5]">Update schedules &amp; venues on the fly without reprints.</p>
+</div>
+<div class="p-6 rounded-2xl bg-[#ece7f3]/40 dark:bg-[#1f162e] flex flex-col items-center text-center gap-4 hover:bg-white dark:hover:bg-[#2d243a] transition-all shadow-sm">
+<span class="material-symbols-outlined text-primary text-4xl">storefront</span>
+<h5 class="font-bold">Retail</h5>
+<p class="text-xs text-[#6a4c9a] dark:text-[#a08cc5]">Dynamic menus and inventory landing pages that scale.</p>
+</div>
+<div class="p-6 rounded-2xl bg-[#ece7f3]/40 dark:bg-[#1f162e] flex flex-col items-center text-center gap-4 hover:bg-white dark:hover:bg-[#2d243a] transition-all shadow-sm">
+<span class="material-symbols-outlined text-primary text-4xl">local_shipping</span>
+<h5 class="font-bold">Shipping</h5>
+<p class="text-xs text-[#6a4c9a] dark:text-[#a08cc5]">Real-time tracking and logistics documentation.</p>
+</div>
+<div class="p-6 rounded-2xl bg-[#ece7f3]/40 dark:bg-[#1f162e] flex flex-col items-center text-center gap-4 hover:bg-white dark:hover:bg-[#2d243a] transition-all shadow-sm">
+<span class="material-symbols-outlined text-primary text-4xl">print</span>
+<h5 class="font-bold">Print</h5>
+<p class="text-xs text-[#6a4c9a] dark:text-[#a08cc5]">Future-proof your magazines, cards, and billboards.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Team/Identity Section -->
+<section class="px-6 md:px-20 lg:px-40 py-24">
+<div class="max-w-[960px] mx-auto">
+<div class="flex flex-col md:flex-row gap-16 items-center">
+<div class="w-full md:w-1/2">
+<h2 class="text-3xl font-bold mb-6">Humans Behind the Product</h2>
+<p class="text-lg text-[#6a4c9a] dark:text-[#a08cc5] leading-relaxed mb-6">
+                                We’re a distributed team of engineers, designers, and strategists who actually care about your scan rates. We don't hide behind bots.
+                            </p>
+<p class="text-base text-[#130d1b] dark:text-[#f9f8fc] italic border-l-4 border-primary pl-6 py-2">
+                                "Our mission is to turn every physical interaction into a meaningful digital journey. We're here for the late-night campaign launches and the high-stakes rollouts."
+                            </p>
+</div>
+<div class="w-full md:w-1/2 grid grid-cols-2 gap-4">
+<div class="aspect-square rounded-2xl overflow-hidden bg-slate-200">
+<img alt="Team member" class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500" data-alt="Portrait of a diverse male team member" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAlJqeRHDIbRbz2Me1whWu_EICkDZ0aGpIOxOxq-g3ETheuJmWGmxw00meZta2HpJ6nh7ieicv562hwOtRulX822hbEqazw8CAekJql3RIwqDTaupoTKRLYvF6_YiCChAiPL15JtPhdWzc5U75-2NiWO3u49rabUfv9hW1qpKpiBk1l5YFn1V7Z2Tu5fPU3JVtYDtCtjf2IEpiHRLmHM-VbPuHd4_-EmImnj-E88Wi4RhtyyDh5w0X123lRJqNwU6mqmojdZOvEU28"/>
+</div>
+<div class="aspect-square rounded-2xl overflow-hidden bg-slate-200 mt-8">
+<img alt="Team member" class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500" data-alt="Portrait of a smiling female team member" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAVslBAdnrmLQTzuGsce6Nr1UG-QXWKcCX7d36iycx34kZ2MRChajHAtEVpIG1NIdigsd2TXCv7-WkiQBs9SErOVcdM8GJtjUsNkuwcQM8nQaJsjBc_-MBNZ-5RAaOz8E-u8w0HSIk5F5L5LH7n6dbWzBDunx8ilt947mOzyjthRKIrgDVho5EuxkKH2iY5DVKY9F_dRDcilNtPHC0j1uY2PUvJuDQ6LKGxWlL8yd4Wb22UJXI5hc1pgJhOf7QAwxwODqsluJNMkn8"/>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Final Mission Card -->
+<section class="px-6 md:px-20 lg:px-40 pb-24">
+<div class="max-w-[960px] mx-auto">
+<div class="bg-primary rounded-[2rem] p-12 md:p-20 text-center relative overflow-hidden">
+<!-- Decorative background -->
+<div class="absolute inset-0 opacity-10 pointer-events-none">
+<div class="absolute top-0 left-0 w-64 h-64 bg-white rounded-full -translate-x-1/2 -translate-y-1/2"></div>
+<div class="absolute bottom-0 right-0 w-96 h-96 bg-white rounded-full translate-x-1/2 translate-y-1/2"></div>
+</div>
+<div class="relative z-10 flex flex-col items-center gap-8">
+<span class="material-symbols-outlined text-white text-6xl opacity-40">format_quote</span>
+<h2 class="text-3xl md:text-5xl font-bold text-white leading-tight max-w-2xl">
+                                QR codes are not going away. Static tools should.
+                            </h2>
+<div class="h-px w-20 bg-white/30"></div>
+<p class="text-white/80 font-medium tracking-widest uppercase text-sm">— Team SwitchQR</p>
+<button class="mt-8 px-10 py-4 bg-white text-primary rounded-xl font-bold hover:scale-105 transition-transform">
+                                Join the Movement
+                            </button>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="px-10 py-12 border-t border-[#ece7f3] dark:border-[#2d243a]">
+<div class="max-w-[960px] mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
+<div class="flex items-center gap-2 text-primary">
+<span class="material-symbols-outlined">qr_code_2</span>
+<span class="font-bold text-lg">SwitchQR</span>
+</div>
+<div class="flex gap-8 text-sm text-[#6a4c9a] dark:text-[#a08cc5]">
+<a class="hover:text-primary transition-colors" href="#">Twitter</a>
+<a class="hover:text-primary transition-colors" href="#">LinkedIn</a>
+<a class="hover:text-primary transition-colors" href="#">Privacy</a>
+<a class="hover:text-primary transition-colors" href="#">Terms</a>
+</div>
+<p class="text-xs text-[#6a4c9a]/60 dark:text-[#a08cc5]/60">© 2024 SwitchQR Inc. Built for the dynamic web.</p>
+</div>
+</footer>
+</div>
+</body></html>

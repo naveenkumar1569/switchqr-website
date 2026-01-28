@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SwitchQR - RetailX Case Study</title>
+<!-- Google Fonts: Manrope -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Theme Config -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#6b26d9",
+                        "background-light": "#faf8fb",
+                        "background-dark": "#171220",
+                        "text-main": "#130f1a",
+                        "text-muted": "#6b5393",
+                    },
+                    fontFamily: {
+                        "display": ["Manrope", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Manrope', sans-serif;
+        }
+        /* Custom scrollbar for a cleaner look */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #d1d5db;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #9ca3af;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-text-main font-display antialiased selection:bg-primary/20">
+<div class="flex flex-col min-h-screen">
+<!-- TopNavBar -->
+<header class="sticky top-0 z-50 bg-background-light/90 dark:bg-background-dark/90 backdrop-blur-md border-b border-[#ece8f2] dark:border-gray-800">
+<div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex items-center justify-between h-16">
+<!-- Logo -->
+<div class="flex items-center gap-4 text-text-main dark:text-white">
+<div class="size-8 text-primary">
+<svg class="w-full h-full" fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M13.8261 30.5736C16.7203 29.8826 20.2244 29.4783 24 29.4783C27.7756 29.4783 31.2797 29.8826 34.1739 30.5736C36.9144 31.2278 39.9967 32.7669 41.3563 33.8352L24.8486 7.36089C24.4571 6.73303 23.5429 6.73303 23.1514 7.36089L6.64374 33.8352C8.00331 32.7669 11.0856 31.2278 13.8261 30.5736Z" fill="currentColor"></path>
+<path clip-rule="evenodd" d="M39.998 35.764C39.9944 35.7463 39.9875 35.7155 39.9748 35.6706C39.9436 35.5601 39.8949 35.4259 39.8346 35.2825C39.8168 35.2403 39.7989 35.1993 39.7813 35.1602C38.5103 34.2887 35.9788 33.0607 33.7095 32.5189C30.9875 31.8691 27.6413 31.4783 24 31.4783C20.3587 31.4783 17.0125 31.8691 14.2905 32.5189C12.0012 33.0654 9.44505 34.3104 8.18538 35.1832C8.17384 35.2075 8.16216 35.233 8.15052 35.2592C8.09919 35.3751 8.05721 35.4886 8.02977 35.589C8.00356 35.6848 8.00039 35.7333 8.00004 35.7388C8.00004 35.739 8 35.7393 8.00004 35.7388C8.00004 35.7641 8.0104 36.0767 8.68485 36.6314C9.34546 37.1746 10.4222 37.7531 11.9291 38.2772C14.9242 39.319 19.1919 40 24 40C28.8081 40 33.0758 39.319 36.0709 38.2772C37.5778 37.7531 38.6545 37.1746 39.3151 36.6314C39.9006 36.1499 39.9857 35.8511 39.998 35.764ZM4.95178 32.7688L21.4543 6.30267C22.6288 4.4191 25.3712 4.41909 26.5457 6.30267L43.0534 32.777C43.0709 32.8052 43.0878 32.8338 43.104 32.8629L41.3563 33.8352C43.104 32.8629 43.1038 32.8626 43.104 32.8629L43.1051 32.865L43.1065 32.8675L43.1101 32.8739L43.1199 32.8918C43.1276 32.906 43.1377 32.9246 43.1497 32.9473C43.1738 32.9925 43.2062 33.0545 43.244 33.1299C43.319 33.2792 43.4196 33.489 43.5217 33.7317C43.6901 34.1321 44 34.9311 44 35.7391C44 37.4427 43.003 38.7775 41.8558 39.7209C40.6947 40.6757 39.1354 41.4464 37.385 42.0552C33.8654 43.2794 29.133 44 24 44C18.867 44 14.1346 43.2794 10.615 42.0552C8.86463 41.4464 7.30529 40.6757 6.14419 39.7209C4.99695 38.7775 3.99999 37.4427 3.99999 35.7391C3.99999 34.8725 4.29264 34.0922 4.49321 33.6393C4.60375 33.3898 4.71348 33.1804 4.79687 33.0311C4.83898 32.9556 4.87547 32.8935 4.9035 32.8471C4.91754 32.8238 4.92954 32.8043 4.93916 32.7889L4.94662 32.777L4.95178 32.7688ZM35.9868 29.004L24 9.77997L12.0131 29.004C12.4661 28.8609 12.9179 28.7342 13.3617 28.6282C16.4281 27.8961 20.0901 27.4783 24 27.4783C27.9099 27.4783 31.5719 27.8961 34.6383 28.6282C35.082 28.7342 35.5339 28.8609 35.9868 29.004Z" fill="currentColor" fill-rule="evenodd"></path>
+</svg>
+</div>
+<h2 class="text-lg font-bold leading-tight tracking-[-0.015em]">SwitchQR</h2>
+</div>
+<!-- Navigation Links -->
+<div class="hidden md:flex flex-1 justify-end gap-8 items-center">
+<div class="flex items-center gap-6 lg:gap-9">
+<a class="text-text-main dark:text-gray-200 text-sm font-medium hover:text-primary transition-colors" href="#">Features</a>
+<a class="text-text-main dark:text-gray-200 text-sm font-medium hover:text-primary transition-colors" href="#">Pricing</a>
+<a class="text-text-main dark:text-gray-200 text-sm font-medium hover:text-primary transition-colors" href="#">Case Studies</a>
+<a class="text-text-main dark:text-gray-200 text-sm font-medium hover:text-primary transition-colors" href="#">Blog</a>
+</div>
+<div class="flex gap-3">
+<button class="flex items-center justify-center rounded-xl h-10 px-5 bg-primary text-white text-sm font-bold hover:bg-primary/90 transition-all shadow-md shadow-primary/20">
+<span>Start Free Trial</span>
+</button>
+<button class="flex items-center justify-center rounded-xl h-10 px-5 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-text-main dark:text-white text-sm font-bold hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+<span>Log in</span>
+</button>
+</div>
+</div>
+<!-- Mobile Menu Icon (Placeholder) -->
+<div class="md:hidden">
+<span class="material-symbols-outlined text-text-main dark:text-white">menu</span>
+</div>
+</div>
+</div>
+</header>
+<!-- Main Content -->
+<main class="flex-grow">
+<div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-8">
+<!-- Breadcrumbs -->
+<div class="flex items-center gap-2 mb-8 text-sm">
+<a class="text-text-muted hover:text-primary dark:text-gray-400" href="#">Case Studies</a>
+<span class="text-gray-300 dark:text-gray-600">/</span>
+<span class="text-text-main font-medium dark:text-white">RetailX Engagement</span>
+</div>
+<!-- Hero Section -->
+<div class="flex flex-col gap-8 lg:gap-12 mb-16">
+<div class="flex flex-col gap-6 max-w-4xl">
+<!-- Chip -->
+<div class="inline-flex h-8 w-fit items-center justify-center gap-x-2 rounded-full bg-[#ece8f2] dark:bg-gray-800 px-4 text-primary dark:text-primary font-bold text-xs uppercase tracking-wider">
+                            Retail
+                        </div>
+<!-- Headline & Subhead -->
+<h1 class="text-4xl md:text-5xl lg:text-6xl font-black leading-[1.1] tracking-[-0.033em] text-text-main dark:text-white">
+                            How RetailX increased engagement by 40% with dynamic QR codes
+                        </h1>
+<p class="text-lg md:text-xl text-gray-600 dark:text-gray-300 leading-relaxed max-w-2xl">
+                            A deep dive into modernizing in-store engagement. Learn how dynamic linking saved their quarterly campaign and provided unexpected customer insights.
+                        </p>
+</div>
+<!-- Hero Image -->
+<div class="relative w-full aspect-[21/9] rounded-2xl overflow-hidden shadow-xl bg-gray-100 dark:bg-gray-800">
+<div class="absolute inset-0 bg-cover bg-center" data-alt="Close up of a customer holding a smartphone scanning a QR code on a retail shelf display in a brightly lit modern store" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDlCE3IxpAL9qmCJrbeJ2UgzTlOgnd7BlfABZxi4_bK7qWQsFf98tTaRvQ2-Z-TVwWyMuyyNPrsXv_55hI4jEg5j205JxnRwGQU_d-TjNGs-miZwhrt1BN7-M4HF8bA_myWta5Hs18kBPmUGL2jGMv7Cib2fmvPfVUqto-6iOg23JKAmpsr2KvliU8igG1c_d_29FFJiDHlrXfWC7N-b9pKAo3lroj_Z1V1ZqIGa5EiSacgJOE2Ovfx5eDMe49HzE5dI4CXJ2aM4is');"></div>
+<!-- Gradient Overlay for better text legibility if needed later -->
+<div class="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent"></div>
+</div>
+</div>
+<!-- Content Grid (Sidebar + Main) -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+<!-- Sidebar (Metrics) - Order 2 on mobile, Order 1 on Desktop (Right side visually, but placing logic may vary. Let's put it on the right) -->
+<div class="lg:col-span-4 lg:col-start-9 order-1 lg:order-2">
+<div class="sticky top-24 flex flex-col gap-6">
+<!-- Metric Card -->
+<div class="rounded-xl border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-800 p-6 shadow-sm">
+<h3 class="text-lg font-bold text-text-main dark:text-white mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">analytics</span>
+                                    At a Glance Results
+                                </h3>
+<div class="flex flex-col gap-6 divide-y divide-gray-100 dark:divide-gray-700">
+<div class="pt-0 pb-2">
+<div class="text-4xl font-black text-primary mb-1">40%</div>
+<p class="text-sm font-medium text-gray-900 dark:text-white">Increase in scan rate</p>
+<p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Compared to previous static codes campaigns</p>
+</div>
+<div class="pt-4 pb-2">
+<div class="text-4xl font-black text-primary mb-1">2x</div>
+<p class="text-sm font-medium text-gray-900 dark:text-white">Higher conversion</p>
+<p class="text-sm text-gray-500 dark:text-gray-400 mt-1">From scan to direct purchase on mobile</p>
+</div>
+<div class="pt-4">
+<div class="text-4xl font-black text-primary mb-1">100+</div>
+<p class="text-sm font-medium text-gray-900 dark:text-white">Codes Managed</p>
+<p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Single dashboard for all 50 store locations</p>
+</div>
+</div>
+</div>
+<!-- Integration / Social Proof Minis -->
+<div class="rounded-xl border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-800 p-6 shadow-sm">
+<p class="text-xs font-bold uppercase tracking-wider text-gray-400 mb-4">Integrations Used</p>
+<div class="flex gap-4 opacity-60 grayscale hover:grayscale-0 transition-all duration-300">
+<!-- Placeholders for icons -->
+<div class="h-8 w-8 bg-gray-200 dark:bg-gray-700 rounded-full flex items-center justify-center text-xs font-bold" title="Shopify">S</div>
+<div class="h-8 w-8 bg-gray-200 dark:bg-gray-700 rounded-full flex items-center justify-center text-xs font-bold" title="Google Analytics">G</div>
+<div class="h-8 w-8 bg-gray-200 dark:bg-gray-700 rounded-full flex items-center justify-center text-xs font-bold" title="Salesforce">SF</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Main Article Content - Order 2 on mobile, Order 1 on Desktop (Left Side) -->
+<div class="lg:col-span-8 lg:col-start-1 order-2 lg:order-1">
+<div class="flex flex-col gap-10 text-lg leading-relaxed text-gray-600 dark:text-gray-300">
+<!-- The Challenge -->
+<section>
+<h2 class="text-2xl md:text-3xl font-bold text-text-main dark:text-white mb-4">The Challenge</h2>
+<p class="mb-4">
+                                    RetailX, a leading lifestyle brand with over 50 brick-and-mortar locations, was facing a recurring issue with their in-store marketing collateral. Every quarter, thousands of shelf-talkers and posters were printed with QR codes linking to specific seasonal landing pages.
+                                </p>
+<p>
+                                    The problem arose when marketing strategies shifted mid-quarter. Whether it was a stockout of a promoted item or a sudden pivot to a new campaign, the printed QR codes became obsolete instantly.
+                                </p>
+<ul class="list-none space-y-2 mt-4 pl-4 border-l-2 border-primary/30">
+<li class="flex gap-2">
+<span class="material-symbols-outlined text-red-500 text-sm mt-1">close</span>
+<span>High reprinting costs for every campaign pivot.</span>
+</li>
+<li class="flex gap-2">
+<span class="material-symbols-outlined text-red-500 text-sm mt-1">close</span>
+<span>Customer frustration leading to dead 404 links.</span>
+</li>
+<li class="flex gap-2">
+<span class="material-symbols-outlined text-red-500 text-sm mt-1">close</span>
+<span>Zero visibility into which store locations were driving traffic.</span>
+</li>
+</ul>
+</section>
+<!-- Quote Card -->
+<section class="my-6">
+<div class="relative rounded-2xl bg-white dark:bg-gray-800 p-8 md:p-10 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100 dark:border-gray-700">
+<span class="absolute top-8 left-8 text-6xl text-primary/10 font-serif leading-none select-none">“</span>
+<div class="relative z-10 flex flex-col gap-6">
+<p class="text-xl md:text-2xl font-medium text-text-main dark:text-white italic leading-relaxed">
+                                            SwitchQR didn't just save us printing costs; it gave us a new channel for customer data we didn't know we were missing. We can now optimize our in-store traffic in real-time.
+                                        </p>
+<div class="flex items-center gap-4 pt-4 border-t border-gray-100 dark:border-gray-700">
+<div class="size-12 rounded-full overflow-hidden bg-gray-200">
+<img alt="Sarah Jenkins" class="w-full h-full object-cover" data-alt="Portrait of Sarah Jenkins, CMO at RetailX" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC_ejEa_uBIhlAQ0nR97k88adRk5nyFkEZ1zZ-2XahZg7DQCWqMiPzPlcDzPFnSELJur1tZmurqUf3QHV-y-rlU5_RiI7GRPYut-zAXH7EJ-f7J7622iO8pZyFWcJqddovF6AQKNmvD8ruN0r3EA_CrTeeKa0Y0KD9kyL9RydTHNOvZ9iZtwSv0_VfAC1yRXgioFnhwzxGoxVoBKPs_m_MS6D7jASdBpOV7OOKNiS3hu67q79zO7oQEdvpVaiDKNgnVNSwjBnZ35Bw"/>
+</div>
+<div class="flex flex-col">
+<span class="font-bold text-text-main dark:text-white">Sarah Jenkins</span>
+<span class="text-sm text-text-muted">Chief Marketing Officer, RetailX</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- The Solution -->
+<section>
+<h2 class="text-2xl md:text-3xl font-bold text-text-main dark:text-white mb-4">The Solution</h2>
+<p class="mb-4">
+                                    RetailX implemented SwitchQR to replace all static QR codes with dynamic ones. This allowed their central marketing team to update the destination URL of any code in any store, instantly, without reprinting a single piece of paper.
+                                </p>
+<p class="mb-4">
+                                    They utilized SwitchQR's folder management to organize codes by region, allowing regional managers to run localized promotions while HQ maintained brand consistency.
+                                </p>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6">
+<div class="bg-white dark:bg-gray-800 p-4 rounded-lg border border-gray-100 dark:border-gray-700 flex flex-col gap-2">
+<span class="material-symbols-outlined text-primary">edit</span>
+<span class="font-bold text-text-main dark:text-white">Dynamic Linking</span>
+<span class="text-sm">Changed destination URLs 4x per season based on inventory.</span>
+</div>
+<div class="bg-white dark:bg-gray-800 p-4 rounded-lg border border-gray-100 dark:border-gray-700 flex flex-col gap-2">
+<span class="material-symbols-outlined text-primary">experiment</span>
+<span class="font-bold text-text-main dark:text-white">A/B Testing</span>
+<span class="text-sm">Tested product video vs. reviews on landing pages.</span>
+</div>
+</div>
+</section>
+<!-- The Result -->
+<section>
+<h2 class="text-2xl md:text-3xl font-bold text-text-main dark:text-white mb-4">The Result</h2>
+<p class="mb-4">
+                                    The results were immediate. By ensuring that customers always landed on a relevant, in-stock product page, the bounce rate dropped significantly. The ability to A/B test landing pages meant that RetailX could refine the user journey week-over-week.
+                                </p>
+<p>
+                                    Beyond the 40% increase in scan rates, the operational savings were massive. The print budget for shelf-talkers was reduced by 30% annually, as generic "Scan for Deal" signage could now be reused for multiple different campaigns throughout the year.
+                                </p>
+</section>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Bottom CTA -->
+<section class="py-20 bg-white dark:bg-gray-900 border-t border-[#ece8f2] dark:border-gray-800">
+<div class="max-w-[960px] mx-auto px-4 text-center flex flex-col items-center gap-6">
+<h2 class="text-3xl md:text-4xl font-black text-text-main dark:text-white tracking-tight">
+                    Ready to see similar results?
+                </h2>
+<p class="text-lg text-gray-600 dark:text-gray-400 max-w-xl">
+                    Join RetailX and 500+ other brands using SwitchQR to modernize their physical touchpoints.
+                </p>
+<div class="flex flex-col sm:flex-row gap-4 mt-4 w-full justify-center">
+<button class="flex min-w-[160px] cursor-pointer items-center justify-center rounded-xl h-12 px-8 bg-primary text-white text-base font-bold shadow-lg shadow-primary/25 hover:translate-y-[-2px] transition-transform">
+                        Start your free trial
+                    </button>
+<button class="flex min-w-[160px] cursor-pointer items-center justify-center rounded-xl h-12 px-8 bg-background-light dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-text-main dark:text-white text-base font-bold hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                        Talk to Sales
+                    </button>
+</div>
+<p class="text-xs text-gray-400 mt-4">No credit card required for 14-day trial.</p>
+</div>
+</section>
+<!-- Footer (Simplified) -->
+<footer class="bg-background-light dark:bg-background-dark py-8 border-t border-[#ece8f2] dark:border-gray-800">
+<div class="max-w-[1280px] mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-4">
+<div class="flex items-center gap-2 text-text-main dark:text-white opacity-80">
+<div class="size-5 text-primary">
+<svg fill="currentColor" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M13.8261 30.5736C16.7203 29.8826 20.2244 29.4783 24 29.4783C27.7756 29.4783 31.2797 29.8826 34.1739 30.5736C36.9144 31.2278 39.9967 32.7669 41.3563 33.8352L24.8486 7.36089C24.4571 6.73303 23.5429 6.73303 23.1514 7.36089L6.64374 33.8352C8.00331 32.7669 11.0856 31.2278 13.8261 30.5736Z" fill="currentColor"></path>
+</svg>
+</div>
+<span class="font-bold text-sm">SwitchQR</span>
+</div>
+<p class="text-sm text-gray-500">© 2024 SwitchQR Inc. All rights reserved.</p>
+</div>
+</footer>
+</div>
+</body></html>

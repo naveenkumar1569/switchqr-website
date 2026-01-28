@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>How SwitchQR Works</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#6D28D9",
+                        "primary-dark": "#5b21b6",
+                        "background-light": "#ffffff",
+                        "surface": "#f8fafc",
+                        "border-color": "#e2e8f0",
+                        "text-main": "#0f172a",
+                        "text-muted": "#64748b"
+                    },
+                    fontFamily: {
+                        "display": ["Manrope", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8; 
+        }
+        .grid-bg {
+            background-image: radial-gradient(#6D28D9 1px, transparent 1px);
+            background-size: 32px 32px;
+            opacity: 0.05;
+        }
+        .hero-glow {
+            background: radial-gradient(circle at 50% 50%, rgba(109, 40, 217, 0.15) 0%, rgba(255, 255, 255, 0) 70%);
+        }
+    </style>
+</head>
+<body class="bg-background-light text-text-main font-display overflow-x-hidden antialiased">
+<div class="relative flex h-auto min-h-screen w-full flex-col group/design-root">
+<div class="layout-container flex w-full flex-col">
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-border-color px-4 md:px-10 py-3 bg-white/90 backdrop-blur-md sticky top-0 z-50">
+<div class="flex items-center gap-4 text-text-main">
+<div class="size-8 text-primary">
+<svg fill="currentColor" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M13.8261 30.5736C16.7203 29.8826 20.2244 29.4783 24 29.4783C27.7756 29.4783 31.2797 29.8826 34.1739 30.5736C36.9144 31.2278 39.9967 32.7669 41.3563 33.8352L24.8486 7.36089C24.4571 6.73303 23.5429 6.73303 23.1514 7.36089L6.64374 33.8352C8.00331 32.7669 11.0856 31.2278 13.8261 30.5736Z"></path>
+<path clip-rule="evenodd" d="M39.998 35.764C39.9944 35.7463 39.9875 35.7155 39.9748 35.6706C39.9436 35.5601 39.8949 35.4259 39.8346 35.2825C39.8168 35.2403 39.7989 35.1993 39.7813 35.1602C38.5103 34.2887 35.9788 33.0607 33.7095 32.5189C30.9875 31.8691 27.6413 31.4783 24 31.4783C20.3587 31.4783 17.0125 31.8691 14.2905 32.5189C12.0012 33.0654 9.44505 34.3104 8.18538 35.1832C8.17384 35.2075 8.16216 35.233 8.15052 35.2592C8.09919 35.3751 8.05721 35.4886 8.02977 35.589C8.00356 35.6848 8.00039 35.7333 8.00004 35.7388C8.00004 35.739 8 35.7393 8.00004 35.7388C8.00004 35.7641 8.0104 36.0767 8.68485 36.6314C9.34546 37.1746 10.4222 37.7531 11.9291 38.2772C14.9242 39.319 19.1919 40 24 40C28.8081 40 33.0758 39.319 36.0709 38.2772C37.5778 37.7531 38.6545 37.1746 39.3151 36.6314C39.9006 36.1499 39.9857 35.8511 39.998 35.764ZM4.95178 32.7688L21.4543 6.30267C22.6288 4.4191 25.3712 4.41909 26.5457 6.30267L43.0534 32.777C43.0709 32.8052 43.0878 32.8338 43.104 32.8629L41.3563 33.8352C43.104 32.8629 43.1038 32.8626 43.104 32.8629L43.1051 32.865L43.1065 32.8675L43.1101 32.8739L43.1199 32.8918C43.1276 32.906 43.1377 32.9246 43.1497 32.9473C43.1738 32.9925 43.2062 33.0545 43.244 33.1299C43.319 33.2792 43.4196 33.489 43.5217 33.7317C43.6901 34.1321 44 34.9311 44 35.7391C44 37.4427 43.003 38.7775 41.8558 39.7209C40.6947 40.6757 39.1354 41.4464 37.385 42.0552C33.8654 43.2794 29.133 44 24 44C18.867 44 14.1346 43.2794 10.615 42.0552C8.86463 41.4464 7.30529 40.6757 6.14419 39.7209C4.99695 38.7775 3.99999 37.4427 3.99999 35.7391C3.99999 34.8725 4.29264 34.0922 4.49321 33.6393C4.60375 33.3898 4.71348 33.1804 4.79687 33.0311C4.83898 32.9556 4.87547 32.8935 4.9035 32.8471C4.91754 32.8238 4.92954 32.8043 4.93916 32.7889L4.94662 32.777L4.95178 32.7688ZM35.9868 29.004L24 9.77997L12.0131 29.004C12.4661 28.8609 12.9179 28.7342 13.3617 28.6282C16.4281 27.8961 20.0901 27.4783 24 27.4783C27.9099 27.4783 31.5719 27.8961 34.6383 28.6282C35.082 28.7342 35.5339 28.8609 35.9868 29.004Z" fill="currentColor" fill-rule="evenodd"></path>
+</svg>
+</div>
+<h2 class="text-text-main text-lg font-bold leading-tight tracking-[-0.015em]">SwitchQR</h2>
+</div>
+<div class="flex flex-1 justify-end gap-8">
+<div class="hidden md:flex items-center gap-9">
+<a class="text-text-main text-sm font-medium leading-normal hover:text-primary transition-colors" href="#">Product</a>
+<a class="text-text-main text-sm font-medium leading-normal hover:text-primary transition-colors" href="#">Pricing</a>
+<a class="text-text-main text-sm font-medium leading-normal hover:text-primary transition-colors" href="#">Enterprise</a>
+<a class="text-text-main text-sm font-medium leading-normal hover:text-primary transition-colors" href="#">Resources</a>
+</div>
+<div class="flex gap-2">
+<button class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-10 px-4 bg-primary text-white text-sm font-bold leading-normal tracking-[0.015em] hover:bg-primary-dark transition-colors shadow-sm">
+<span class="truncate">Get Started</span>
+</button>
+<button class="hidden md:flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-10 px-4 bg-surface border border-border-color text-text-main text-sm font-bold leading-normal tracking-[0.015em] hover:bg-gray-100 transition-colors">
+<span class="truncate">Log In</span>
+</button>
+</div>
+</div>
+</header>
+</div>
+<div class="flex flex-col items-center justify-center w-full bg-surface">
+<div class="layout-content-container flex flex-col max-w-[960px] w-full px-4 md:px-0">
+<div class="@container py-8 md:py-12">
+<div class="p-0 md:p-4">
+<div class="relative flex min-h-[480px] flex-col gap-6 bg-white rounded-2xl items-center justify-center p-8 md:p-12 overflow-hidden border border-border-color shadow-xl shadow-primary/5">
+<div class="absolute inset-0 grid-bg"></div>
+<div class="absolute inset-0 hero-glow"></div>
+<div class="relative z-10 flex flex-col gap-4 text-center max-w-[600px]">
+<span class="text-primary font-bold tracking-wider uppercase text-xs bg-primary/10 px-3 py-1 rounded-full w-fit mx-auto border border-primary/20">How It Works</span>
+<h1 class="text-text-main text-4xl font-black leading-tight tracking-[-0.033em] md:text-5xl lg:text-6xl">
+                                    Intelligent Routing in a Static World
+                                </h1>
+<h2 class="text-text-muted text-base font-normal leading-relaxed md:text-lg">
+                                    See how SwitchQR bridges the gap between physical media and digital flexibility with our enterprise dynamic routing technology.
+                                </h2>
+</div>
+<div class="relative z-10 flex flex-col sm:flex-row gap-3 mt-4">
+<button class="flex min-w-[140px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-12 px-6 bg-primary text-white text-base font-bold leading-normal tracking-[0.015em] hover:scale-105 hover:bg-primary-dark transition-all shadow-lg shadow-primary/20">
+<span class="truncate">Start for free</span>
+</button>
+<button class="flex min-w-[140px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-12 px-6 bg-white border border-gray-200 text-text-main text-base font-bold leading-normal tracking-[0.015em] hover:bg-gray-50 transition-colors shadow-sm">
+<span class="truncate">Book a Demo</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="flex justify-center w-full px-4 md:px-0 bg-background-light">
+<div class="layout-content-container flex flex-col max-w-[960px] w-full">
+<h2 class="text-text-main text-[28px] md:text-[32px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">The 4-Step Journey</h2>
+<p class="text-text-muted px-4 pb-6 text-base max-w-[600px]">
+                    From creation to analytics, manage your QR lifecycle without ever reprinting a code.
+                </p>
+</div>
+</div>
+<div class="flex justify-center w-full px-4 md:px-0 bg-background-light">
+<div class="layout-content-container flex flex-col max-w-[960px] w-full">
+<div class="grid grid-cols-[40px_1fr] gap-x-6 px-4 py-4">
+<div class="flex flex-col items-center gap-1 pt-1">
+<div class="flex items-center justify-center size-10 rounded-full bg-primary text-white shadow-md shadow-primary/20">
+<span class="material-symbols-outlined">add_link</span>
+</div>
+<div class="w-[2px] bg-primary h-12 grow opacity-80"></div>
+</div>
+<div class="flex flex-1 flex-col py-2 pb-10">
+<p class="text-text-main text-lg font-bold leading-normal mb-1">Create</p>
+<p class="text-text-muted text-base font-normal leading-normal mb-3">Generate a dynamic QR code once.</p>
+<div class="bg-white rounded-lg p-3 border border-border-color max-w-sm shadow-sm hover:shadow-md transition-shadow">
+<div class="flex items-center gap-2 text-xs text-text-muted font-mono bg-surface p-2 rounded border border-gray-100">
+<span class="text-primary font-bold">POST</span> /api/v1/qr/create
+                            </div>
+</div>
+</div>
+<div class="flex flex-col items-center gap-1">
+<div class="w-[2px] bg-primary h-4 opacity-80"></div>
+<div class="flex items-center justify-center size-10 rounded-full bg-white border-2 border-primary text-primary shadow-sm">
+<span class="material-symbols-outlined">print</span>
+</div>
+<div class="w-[2px] bg-primary h-12 grow opacity-80"></div>
+</div>
+<div class="flex flex-1 flex-col py-2 pb-10">
+<p class="text-text-main text-lg font-bold leading-normal mb-1">Print</p>
+<p class="text-text-muted text-base font-normal leading-normal mb-3">Deploy on packaging, billboards, or stickers.</p>
+<div class="flex gap-2 p-2 rounded-lg hover:bg-surface transition-colors w-fit">
+<div class="size-12 bg-white p-1 rounded border border-gray-200 shadow-sm">
+<img alt="QR Code Preview" class="w-full h-full" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDp4SWCM0IRzg3VatQ17__ZkK94Yb-24xGsMmsvrh71wptQshr8Rzj4r5JRQsAIRVLHVFLWQo6inTAU87nyR_01UcumIvrs4yx_lW60eorOoQ4dqlGDV8uCPGQbnliIiQMv3VCyYK5b4qKGS7CiaaQGEmMpo2BsMcc-5iOyeIK-SPHQ1mWqFrfdTQe3DdjnWgq-EECm8DfaPZHxFofUqdUDbTIlcITcao8Q9EumF_z9Zg6ovizzYHiql0VhA8Cklnr7FX3YgRdGFck"/>
+</div>
+<div class="flex flex-col justify-center gap-1">
+<div class="h-2 w-16 bg-gray-200 rounded"></div>
+<div class="h-2 w-10 bg-gray-200 rounded"></div>
+</div>
+</div>
+</div>
+<div class="flex flex-col items-center gap-1">
+<div class="w-[2px] bg-primary h-4 opacity-80"></div>
+<div class="flex items-center justify-center size-10 rounded-full bg-white border-2 border-primary text-primary shadow-sm">
+<span class="material-symbols-outlined">tune</span>
+</div>
+<div class="w-[2px] bg-primary h-12 grow opacity-80"></div>
+</div>
+<div class="flex flex-1 flex-col py-2 pb-10">
+<p class="text-text-main text-lg font-bold leading-normal mb-1">Update</p>
+<p class="text-text-muted text-base font-normal leading-normal mb-3">Change the destination URL instantly.</p>
+<div class="bg-white rounded-lg p-3 border border-border-color max-w-sm shadow-sm flex flex-col gap-2">
+<div class="text-[10px] uppercase font-bold text-gray-400">Target URL</div>
+<div class="flex items-center justify-between bg-surface p-2 rounded border border-gray-200">
+<span class="text-xs truncate text-text-main">myshop.com/summer-sale</span>
+<span class="material-symbols-outlined text-xs text-green-600">check_circle</span>
+</div>
+</div>
+</div>
+<div class="flex flex-col items-center gap-1 pb-1">
+<div class="w-[2px] bg-primary h-4 opacity-80"></div>
+<div class="flex items-center justify-center size-10 rounded-full bg-white border-2 border-primary text-primary shadow-sm">
+<span class="material-symbols-outlined">monitoring</span>
+</div>
+</div>
+<div class="flex flex-1 flex-col py-2">
+<p class="text-text-main text-lg font-bold leading-normal mb-1">Track</p>
+<p class="text-text-muted text-base font-normal leading-normal mb-3">Monitor scans, locations, and device types.</p>
+<div class="flex gap-2 items-end h-10 w-24 p-1">
+<div class="w-1/4 bg-primary/40 h-[40%] rounded-t-sm"></div>
+<div class="w-1/4 bg-primary/60 h-[70%] rounded-t-sm"></div>
+<div class="w-1/4 bg-primary/80 h-[50%] rounded-t-sm"></div>
+<div class="w-1/4 bg-primary h-[90%] rounded-t-sm"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="flex justify-center w-full px-4 md:px-0 py-16 bg-surface">
+<div class="layout-content-container flex flex-col max-w-[960px] w-full">
+<div class="flex flex-col gap-10 px-4 py-4 @container">
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+<div class="flex flex-col gap-4">
+<h1 class="text-text-main tracking-tight text-[32px] font-bold leading-tight md:text-4xl max-w-[720px]">
+                                Under the Hood
+                            </h1>
+<p class="text-text-muted text-base font-normal leading-normal max-w-[500px]">
+                                Our architecture acts as an invisible, zero-latency middleman, allowing you to update destinations without reprinting.
+                            </p>
+</div>
+<button class="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-10 px-5 bg-white border border-border-color text-text-main text-sm font-bold leading-normal tracking-[0.015em] hover:bg-gray-50 transition-colors w-fit shadow-sm">
+<span class="truncate">View Developer Docs</span>
+</button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="group relative flex flex-col gap-4 p-6 rounded-2xl bg-white border border-border-color shadow-lg shadow-gray-200/50 hover:border-primary/50 transition-colors overflow-hidden">
+<div class="absolute -right-10 -top-10 w-40 h-40 bg-primary/5 rounded-full blur-3xl group-hover:bg-primary/10 transition-all"></div>
+<div class="w-full aspect-video bg-surface rounded-xl flex items-center justify-center relative overflow-hidden border border-gray-100">
+<div class="flex items-center gap-2 md:gap-4 z-10">
+<div class="flex flex-col items-center gap-2">
+<span class="material-symbols-outlined text-3xl md:text-4xl text-gray-400">smartphone</span>
+</div>
+<div class="flex flex-col items-center">
+<div class="h-[2px] w-8 md:w-12 bg-gradient-to-r from-gray-300 to-primary"></div>
+</div>
+<div class="flex flex-col items-center gap-2 relative">
+<div class="absolute inset-0 bg-primary blur-lg opacity-20 animate-pulse"></div>
+<div class="size-12 md:size-14 rounded-xl bg-white border border-primary text-primary flex items-center justify-center relative z-10 shadow-lg shadow-primary/20">
+<span class="material-symbols-outlined">alt_route</span>
+</div>
+</div>
+<div class="flex flex-col items-center">
+<div class="h-[2px] w-8 md:w-12 bg-gradient-to-r from-primary to-green-500"></div>
+</div>
+<div class="flex flex-col items-center gap-2">
+<span class="material-symbols-outlined text-3xl md:text-4xl text-green-500">public</span>
+</div>
+</div>
+<div class="absolute inset-0 opacity-[0.05] mix-blend-multiply" style="background-image: radial-gradient(#6366f1 1px, transparent 1px); background-size: 16px 16px;"></div>
+</div>
+<div>
+<p class="text-text-main text-xl font-bold leading-normal mb-1">Zero Latency Redirects</p>
+<p class="text-text-muted text-sm font-normal leading-relaxed">
+                                    A flow diagram showing Phone to SwitchQR to Destination. Your users never know we are there.
+                                </p>
+</div>
+</div>
+<div class="group relative flex flex-col gap-4 p-6 rounded-2xl bg-white border border-border-color shadow-lg shadow-gray-200/50 hover:border-blue-500/30 transition-colors overflow-hidden">
+<div class="absolute -right-10 -top-10 w-40 h-40 bg-blue-500/5 rounded-full blur-3xl group-hover:bg-blue-500/10 transition-all"></div>
+<div class="w-full aspect-video bg-surface rounded-xl flex items-center justify-center relative overflow-hidden border border-gray-100" data-alt="Abstract representation of cloud servers and stability">
+<div class="relative z-10 flex flex-col items-center gap-3">
+<div class="size-16 rounded-full bg-white shadow-md flex items-center justify-center border border-blue-100">
+<span class="material-symbols-outlined text-4xl text-blue-500">cloud_done</span>
+</div>
+<div class="flex gap-4 mt-2">
+<div class="bg-white/80 backdrop-blur-md px-3 py-1 rounded-full border border-gray-200 text-xs font-mono text-green-600 shadow-sm">99.99% Uptime</div>
+<div class="bg-white/80 backdrop-blur-md px-3 py-1 rounded-full border border-gray-200 text-xs font-mono text-blue-500 shadow-sm">Global CDN</div>
+</div>
+</div>
+<div class="absolute inset-0 flex flex-col justify-between py-4 opacity-30">
+<div class="w-full h-[1px] bg-blue-200"></div>
+<div class="w-full h-[1px] bg-blue-200"></div>
+<div class="w-full h-[1px] bg-blue-200"></div>
+<div class="w-full h-[1px] bg-blue-200"></div>
+</div>
+</div>
+<div>
+<p class="text-text-main text-xl font-bold leading-normal mb-1">Built for Scale</p>
+<p class="text-text-muted text-sm font-normal leading-relaxed">
+                                    Enterprise-grade infrastructure handles millions of scans with redundant global servers.
+                                </p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="flex justify-center w-full px-4 md:px-0 py-20 bg-background-light border-t border-border-color">
+<div class="layout-content-container flex flex-col items-center max-w-[720px] w-full text-center gap-6">
+<h2 class="text-text-main text-3xl md:text-4xl font-bold tracking-tight">Ready to switch?</h2>
+<p class="text-text-muted text-lg">Start managing your physical world like your digital ads.</p>
+<div class="flex flex-col sm:flex-row gap-4 w-full justify-center">
+<button class="flex min-w-[160px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-12 px-6 bg-primary text-white text-base font-bold leading-normal tracking-[0.015em] hover:bg-primary-dark transition-colors shadow-lg shadow-primary/25">
+<span class="truncate">Start for free</span>
+</button>
+<button class="flex min-w-[160px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-12 px-6 bg-white text-text-main text-base font-bold leading-normal tracking-[0.015em] border border-gray-200 hover:bg-gray-50 transition-colors shadow-sm">
+<span class="truncate">Contact Sales</span>
+</button>
+</div>
+<p class="text-xs text-text-muted mt-4">No credit card required for free tier.</p>
+</div>
+</div>
+</div>
+
+</body></html>

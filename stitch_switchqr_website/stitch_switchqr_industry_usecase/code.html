@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Event Use Case: Digital Programs | SwitchQR</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#6b26d9",
+                        "background-light": "#f7f6f8",
+                        "background-dark": "#171220",
+                    },
+                    fontFamily: {
+                        "display": ["Manrope", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Manrope', sans-serif;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-[#130f1a] dark:text-white antialiased">
+<!-- Top Navigation Bar -->
+<div class="layout-container flex flex-col">
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-[#ece8f2] dark:border-[#2d2838] px-6 md:px-20 lg:px-40 py-4 bg-white dark:bg-background-dark">
+<div class="flex items-center gap-4 text-primary">
+<div class="size-8">
+<svg fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M13.8261 30.5736C16.7203 29.8826 20.2244 29.4783 24 29.4783C27.7756 29.4783 31.2797 29.8826 34.1739 30.5736C36.9144 31.2278 39.9967 32.7669 41.3563 33.8352L24.8486 7.36089C24.4571 6.73303 23.5429 6.73303 23.1514 7.36089L6.64374 33.8352C8.00331 32.7669 11.0856 31.2278 13.8261 30.5736Z" fill="currentColor"></path>
+<path clip-rule="evenodd" d="M39.998 35.764C39.9944 35.7463 39.9875 35.7155 39.9748 35.6706C39.9436 35.5601 39.8949 35.4259 39.8346 35.2825C39.8168 35.2403 39.7989 35.1993 39.7813 35.1602C38.5103 34.2887 35.9788 33.0607 33.7095 32.5189C30.9875 31.8691 27.6413 31.4783 24 31.4783C20.3587 31.4783 17.0125 31.8691 14.2905 32.5189C12.0012 33.0654 9.44505 34.3104 8.18538 35.1832C8.17384 35.2075 8.16216 35.233 8.15052 35.2592C8.09919 35.3751 8.05721 35.4886 8.02977 35.589C8.00356 35.6848 8.00039 35.7333 8.00004 35.7388C8.00004 35.739 8 35.7393 8.00004 35.7388C8.00004 35.7641 8.0104 36.0767 8.68485 36.6314C9.34546 37.1746 10.4222 37.7531 11.9291 38.2772C14.9242 39.319 19.1919 40 24 40C28.8081 40 33.0758 39.319 36.0709 38.2772C37.5778 37.7531 38.6545 37.1746 39.3151 36.6314C39.9006 36.1499 39.9857 35.8511 39.998 35.764ZM4.95178 32.7688L21.4543 6.30267C22.6288 4.4191 25.3712 4.41909 26.5457 6.30267L43.0534 32.777C43.0709 32.8052 43.0878 32.8338 43.104 32.8629L41.3563 33.8352C43.104 32.8629 43.1038 32.8626 43.104 32.8629L43.1051 32.865L43.1065 32.8675L43.1101 32.8739L43.1199 32.8918C43.1276 32.906 43.1377 32.9246 43.1497 32.9473C43.1738 32.9925 43.2062 33.0545 43.244 33.1299C43.319 33.2792 43.4196 33.489 43.5217 33.7317C43.6901 34.1321 44 34.9311 44 35.7391C44 37.4427 43.003 38.7775 41.8558 39.7209C40.6947 40.6757 39.1354 41.4464 37.385 42.0552C33.8654 43.2794 29.133 44 24 44C18.867 44 14.1346 43.2794 10.615 42.0552C8.86463 41.4464 7.30529 40.6757 6.14419 39.7209C4.99695 38.7775 3.99999 37.4427 3.99999 35.7391C3.99999 34.8725 4.29264 34.0922 4.49321 33.6393C4.60375 33.3898 4.71348 33.1804 4.79687 33.0311C4.83898 32.9556 4.87547 32.8935 4.9035 32.8471C4.91754 32.8238 4.92954 32.8043 4.93916 32.7889L4.94662 32.777L4.95178 32.7688ZM35.9868 29.004L24 9.77997L12.0131 29.004C12.4661 28.8609 12.9179 28.7342 13.3617 28.6282C16.4281 27.8961 20.0901 27.4783 24 27.4783C27.9099 27.4783 31.5719 27.8961 34.6383 28.6282C35.082 28.7342 35.5339 28.8609 35.9868 29.004Z" fill="currentColor" fill-rule="evenodd"></path>
+</svg>
+</div>
+<h2 class="text-[#130f1a] dark:text-white text-xl font-bold tracking-tight">SwitchQR</h2>
+</div>
+<div class="flex flex-1 justify-end gap-8 items-center">
+<nav class="hidden md:flex items-center gap-9">
+<a class="text-sm font-medium hover:text-primary transition-colors" href="#">Solutions</a>
+<a class="text-sm font-medium hover:text-primary transition-colors" href="#">Features</a>
+<a class="text-sm font-medium hover:text-primary transition-colors" href="#">Pricing</a>
+<a class="text-sm font-medium hover:text-primary transition-colors" href="#">About</a>
+</nav>
+<div class="flex gap-2">
+<button class="flex min-w-[100px] cursor-pointer items-center justify-center rounded-lg h-10 px-4 bg-primary text-white text-sm font-bold tracking-wide">
+                        Get Started
+                    </button>
+<button class="hidden sm:flex min-w-[84px] cursor-pointer items-center justify-center rounded-lg h-10 px-4 bg-[#ece8f2] dark:bg-white/10 text-[#130f1a] dark:text-white text-sm font-bold">
+                        Log In
+                    </button>
+</div>
+</div>
+</header>
+<!-- Hero Section -->
+<main class="flex-1">
+<div class="px-6 md:px-20 lg:px-40 py-12 md:py-20">
+<div class="@container max-w-[1280px] mx-auto">
+<div class="flex flex-col gap-10 lg:flex-row items-center">
+<div class="w-full lg:w-1/2 flex flex-col gap-6 lg:gap-8 justify-center">
+<div class="flex flex-col gap-4">
+<span class="text-primary font-bold tracking-widest text-xs uppercase">Events Industry Solution</span>
+<h1 class="text-[#130f1a] dark:text-white text-4xl md:text-5xl lg:text-6xl font-black leading-tight tracking-tight">
+                                    Elevate Your Event Experience with Dynamic Digital Programs
+                                </h1>
+<p class="text-[#6b5393] dark:text-gray-300 text-lg md:text-xl font-normal leading-relaxed">
+                                    End paper waste and enhance attendee engagement with real-time updates through a single QR code that evolves with your event schedule.
+                                </p>
+</div>
+<div class="flex flex-col sm:flex-row gap-4">
+<button class="flex min-w-[240px] cursor-pointer items-center justify-center rounded-lg h-14 px-6 bg-primary text-white text-lg font-bold shadow-lg shadow-primary/20 hover:scale-[1.02] transition-transform">
+                                    Create your first program QR
+                                </button>
+<button class="flex min-w-[180px] cursor-pointer items-center justify-center rounded-lg h-14 px-6 border-2 border-[#d9d1e5] dark:border-white/20 text-[#130f1a] dark:text-white text-lg font-bold hover:bg-[#ece8f2] dark:hover:bg-white/5 transition-colors">
+                                    View Demo
+                                </button>
+</div>
+</div>
+<div class="w-full lg:w-1/2">
+<div class="relative rounded-2xl overflow-hidden shadow-2xl">
+<div class="bg-center bg-no-repeat aspect-[4/3] bg-cover" data-alt="Attendee scanning a QR code on a sleek event sign" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBdZSQRumw4S2lYQypi0MHqlWdc1ZUEkSrDHaO3xz4D-8VbqhEt3dstbMt1DzO09sgvgciI3k8zyq0QjdX7e0BgMHZzl40NYxnyAI5t3NnCNTD9jo6iFXcUA2Nn2NH0eRQJCP2BPenGjBbnYnMDrVt8Ep9xS7wH_ZOSUVAiccAoTe4f0cybrcXBgPAtCqM02xwQEojURdt1ALHXMGOY-NHha8cnN-Vu79yXxSBquRNTL6JT1kyLdsffRoJDNZYCUQ_zl4Dt49C52CI");'>
+</div>
+<div class="absolute inset-0 bg-gradient-to-t from-primary/20 to-transparent"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Key Benefits Section -->
+<div class="bg-white dark:bg-background-dark/50 py-20 px-6 md:px-20 lg:px-40">
+<div class="max-w-[1280px] mx-auto flex flex-col gap-16">
+<div class="flex flex-col gap-4 text-center items-center">
+<h2 class="text-[#130f1a] dark:text-white text-3xl md:text-4xl font-black tracking-tight max-w-[800px]">
+                            Key Benefits for Modern Events
+                        </h2>
+<p class="text-[#6b5393] dark:text-gray-400 text-lg max-w-[700px]">
+                            Streamline your event logistics and provide a seamless, high-tech experience for every attendee without the headache of physical updates.
+                        </p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<!-- Benefit 1 -->
+<div class="group flex flex-col gap-6 rounded-2xl border border-[#d9d1e5] dark:border-[#2d2838] bg-background-light dark:bg-[#1e1929] p-8 hover:border-primary transition-colors">
+<div class="size-14 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-3xl">edit_square</span>
+</div>
+<div class="flex flex-col gap-2">
+<h3 class="text-[#130f1a] dark:text-white text-xl font-bold">Instant Updates</h3>
+<p class="text-[#6b5393] dark:text-gray-400 text-base leading-relaxed">Fix typos or schedule changes post-printing instantly. No need to replace physical signage or reprint thousands of programs.</p>
+</div>
+</div>
+<!-- Benefit 2 -->
+<div class="group flex flex-col gap-6 rounded-2xl border border-[#d9d1e5] dark:border-[#2d2838] bg-background-light dark:bg-[#1e1929] p-8 hover:border-primary transition-colors">
+<div class="size-14 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-3xl">analytics</span>
+</div>
+<div class="flex flex-col gap-2">
+<h3 class="text-[#130f1a] dark:text-white text-xl font-bold">Real-time Analytics</h3>
+<p class="text-[#6b5393] dark:text-gray-400 text-base leading-relaxed">Track which sessions are most popular and monitor attendee flow in real-time. Gather data for future event planning.</p>
+</div>
+</div>
+<!-- Benefit 3 -->
+<div class="group flex flex-col gap-6 rounded-2xl border border-[#d9d1e5] dark:border-[#2d2838] bg-background-light dark:bg-[#1e1929] p-8 hover:border-primary transition-colors">
+<div class="size-14 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-3xl">eco</span>
+</div>
+<div class="flex flex-col gap-2">
+<h3 class="text-[#130f1a] dark:text-white text-xl font-bold">Sustainable &amp; Cost-Effective</h3>
+<p class="text-[#6b5393] dark:text-gray-400 text-base leading-relaxed">Significantly reduce paper waste and reprinting costs by digitizing your event programs, maps, and brochures.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Feature Integration Section: Scheduled Redirects -->
+<div class="py-24 px-6 md:px-20 lg:px-40 bg-background-light dark:bg-background-dark">
+<div class="max-w-[1280px] mx-auto">
+<div class="grid lg:grid-cols-2 gap-16 items-center">
+<div class="flex flex-col gap-8">
+<h2 class="text-[#130f1a] dark:text-white text-3xl md:text-4xl font-black tracking-tight leading-tight">
+                                The Power of Scheduled Redirects
+                            </h2>
+<p class="text-[#6b5393] dark:text-gray-300 text-lg">
+                                Stop worrying about multiple QR codes for different times of the day. One code handles everything, automatically switching based on your custom schedule.
+                            </p>
+<!-- Timeline UI -->
+<div class="flex flex-col gap-4">
+<div class="grid grid-cols-[48px_1fr] gap-x-4">
+<div class="flex flex-col items-center gap-1">
+<div class="bg-primary/20 text-primary p-2 rounded-full">
+<span class="material-symbols-outlined text-2xl">wb_sunny</span>
+</div>
+<div class="w-[2px] bg-primary/30 h-16"></div>
+</div>
+<div class="flex flex-col py-2">
+<p class="text-[#130f1a] dark:text-white text-lg font-bold">Morning Agenda</p>
+<p class="text-[#6b5393] dark:text-gray-400 text-base">9:00 AM — Points to main hall map and morning sessions</p>
+</div>
+<div class="flex flex-col items-center gap-1">
+<div class="bg-primary text-white p-2 rounded-full ring-4 ring-primary/10">
+<span class="material-symbols-outlined text-2xl">event_seat</span>
+</div>
+<div class="w-[2px] bg-primary/30 h-16"></div>
+</div>
+<div class="flex flex-col py-2">
+<p class="text-primary text-lg font-bold flex items-center gap-2">
+                                            Afternoon Workshop <span class="bg-primary/10 text-primary text-[10px] uppercase px-2 py-0.5 rounded-full">Active Now</span>
+</p>
+<p class="text-[#6b5393] dark:text-gray-400 text-base">1:00 PM — Automatically switches to workshop selection and links</p>
+</div>
+<div class="flex flex-col items-center gap-1">
+<div class="bg-primary/20 text-primary p-2 rounded-full">
+<span class="material-symbols-outlined text-2xl">nightlife</span>
+</div>
+</div>
+<div class="flex flex-col py-2">
+<p class="text-[#130f1a] dark:text-white text-lg font-bold">Networking Mixer</p>
+<p class="text-[#6b5393] dark:text-gray-400 text-base">6:30 PM — Redirects to cocktail menu and networking platform</p>
+</div>
+</div>
+</div>
+</div>
+<div class="relative bg-white dark:bg-[#1e1929] p-8 rounded-3xl shadow-xl border border-[#ece8f2] dark:border-[#2d2838]">
+<div class="flex flex-col gap-6">
+<div class="flex justify-between items-center border-b border-[#ece8f2] dark:border-[#2d2838] pb-4">
+<h4 class="font-bold text-lg">Smart Redirect Rules</h4>
+<span class="material-symbols-outlined text-primary">settings</span>
+</div>
+<div class="space-y-4">
+<div class="bg-background-light dark:bg-background-dark p-4 rounded-xl flex items-center justify-between">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-gray-400">schedule</span>
+<div>
+<p class="text-xs font-bold text-gray-500 uppercase">Start Time</p>
+<p class="font-medium">Today, 09:00 AM</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-gray-300">arrow_forward_ios</span>
+</div>
+<div class="bg-background-light dark:bg-background-dark p-4 rounded-xl flex items-center justify-between border-l-4 border-primary">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary">link</span>
+<div>
+<p class="text-xs font-bold text-primary uppercase">Destination URL</p>
+<p class="font-medium">events.com/program-v2</p>
+</div>
+</div>
+</div>
+</div>
+<div class="pt-4">
+<img alt="Event QR Code" class="mx-auto w-48 h-48 p-4 bg-white rounded-2xl" data-alt="A purple branded QR code for event programs" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBmIRiK8J91oT4oLwlu0KX0GuIjKpd__59SPeusM4KYMAJ0mxlMrw5FwY6rLbrYlu6IJbcJzKb0CPLCZMKlgiKBhDhfIGo-_Too0kZMLfUY3KHGQx7SqO2HaKE-0vYxiIJVl3YshUfkBG0dQICGu7LtoHX-D4POTNSQI3-1gf6b0onB03xpNyqydVp2EB_3o3GVTu3ILAQmPS4y2AA4Fw76YVGRVgQFGJw1_AZ3EYoyS3TbxmTS6PhUEE1vuJGdnxbG-2qyVNM2NP0"/>
+<p class="text-center mt-4 text-sm text-[#6b5393] dark:text-gray-400 italic">"Scan to see magic in action"</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- How to Use Guide -->
+<div class="py-24 px-6 md:px-20 lg:px-40 bg-white dark:bg-background-dark/50">
+<div class="max-w-[1000px] mx-auto">
+<h2 class="text-[#130f1a] dark:text-white text-3xl md:text-4xl font-black tracking-tight text-center mb-16">Simple 3-Step Setup</h2>
+<div class="grid md:grid-cols-3 gap-12 relative">
+<div class="hidden md:block absolute top-1/4 left-1/4 right-1/4 h-[2px] bg-[#d9d1e5] dark:bg-[#2d2838] -z-10"></div>
+<div class="flex flex-col items-center text-center gap-6">
+<div class="size-16 rounded-full bg-primary text-white flex items-center justify-center text-2xl font-bold shadow-xl shadow-primary/30">1</div>
+<div>
+<h4 class="text-xl font-bold mb-2">Create One QR</h4>
+<p class="text-[#6b5393] dark:text-gray-400">Generate a single dynamic QR for the entire event duration.</p>
+</div>
+</div>
+<div class="flex flex-col items-center text-center gap-6">
+<div class="size-16 rounded-full bg-primary text-white flex items-center justify-center text-2xl font-bold shadow-xl shadow-primary/30">2</div>
+<div>
+<h4 class="text-xl font-bold mb-2">Distribute Everywhere</h4>
+<p class="text-[#6b5393] dark:text-gray-400">Place on attendee badges, wall posters, and digital displays.</p>
+</div>
+</div>
+<div class="flex flex-col items-center text-center gap-6">
+<div class="size-16 rounded-full bg-primary text-white flex items-center justify-center text-2xl font-bold shadow-xl shadow-primary/30">3</div>
+<div>
+<h4 class="text-xl font-bold mb-2">Live Orchestration</h4>
+<p class="text-[#6b5393] dark:text-gray-400">Update destination URLs or schedule redirects as the day progresses.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Testimonial Section -->
+<div class="py-24 px-6 md:px-20 lg:px-40">
+<div class="max-w-[960px] mx-auto">
+<div class="bg-primary/5 dark:bg-[#1e1929] rounded-[2.5rem] p-12 lg:p-16 border border-primary/10 relative overflow-hidden">
+<span class="material-symbols-outlined absolute top-10 left-10 text-9xl text-primary/5 pointer-events-none">format_quote</span>
+<div class="relative z-10 flex flex-col items-center text-center gap-10">
+<h3 class="text-2xl lg:text-3xl font-bold leading-relaxed italic text-[#130f1a] dark:text-white">
+                                "SwitchQR transformed how we handled SaaStr. With thousands of attendees moving between sessions, the ability to pivot our digital program in real-time saved us from dozens of logistical nightmares and countless paper printouts."
+                            </h3>
+<div class="flex flex-col items-center gap-4">
+<div class="size-16 rounded-full bg-center bg-cover" data-alt="Portrait of an event organizer" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDU01J6QHHa4pSlw9ItSgRSLp_LywmDvWEK2U3nLpeOLrwJziDCtlCgd3HiehgQW1By6XMtBEUNobYv6tiv1kvJEfhJ6obBS3np1JNB_7Luz5dDbhox-7bwsIzGQ-5QuVF2nPCwB-x0Csybt4kAwgnyJvx3YI3FF3z6a4OS85dpanUiRCvRDfpWyRDUFagQMhIzvTIDSJV4u7zj9xDDldRERNH8W1WOze71Xe1RJHlhRS8wW9O3Qlo4x1DDuAF4Ms_d_gI-NLkPhaE');"></div>
+<div>
+<p class="font-black text-[#130f1a] dark:text-white">Alex Rivera</p>
+<p class="text-[#6b5393] dark:text-primary font-medium">Head of Event Operations, SaaStr</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Final CTA Section -->
+<div class="py-24 px-6 md:px-20 lg:px-40 bg-primary text-white">
+<div class="max-w-[1280px] mx-auto text-center flex flex-col items-center gap-8">
+<h2 class="text-3xl md:text-5xl font-black tracking-tight">Ready for your next event?</h2>
+<p class="text-white/80 text-lg md:text-xl max-w-[600px]">
+                        Join hundreds of event organizers who have already made the switch to sustainable, dynamic digital programs.
+                    </p>
+<div class="flex flex-col sm:flex-row gap-4 mt-4 w-full justify-center">
+<button class="bg-white text-primary px-10 py-5 rounded-xl font-black text-xl hover:scale-105 transition-transform shadow-2xl">
+                            Create your first program QR
+                        </button>
+</div>
+<p class="text-white/60 text-sm">No credit card required for basic setup.</p>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="bg-white dark:bg-background-dark border-t border-[#ece8f2] dark:border-[#2d2838] py-12 px-6 md:px-20 lg:px-40">
+<div class="max-w-[1280px] mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
+<div class="flex items-center gap-4 text-primary opacity-60">
+<h2 class="text-xl font-bold tracking-tight">SwitchQR</h2>
+<span class="text-gray-400">© 2024 SwitchQR Inc.</span>
+</div>
+<div class="flex gap-8 text-sm font-medium text-gray-500 dark:text-gray-400">
+<a class="hover:text-primary transition-colors" href="#">Privacy Policy</a>
+<a class="hover:text-primary transition-colors" href="#">Terms of Service</a>
+<a class="hover:text-primary transition-colors" href="#">Documentation</a>
+<a class="hover:text-primary transition-colors" href="#">Support</a>
+</div>
+</div>
+</footer>
+</div>
+</body></html>
