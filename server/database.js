@@ -65,8 +65,6 @@ const initDb = () => {
             qr_id INTEGER NOT NULL,
             variant_id INTEGER,
             schedule_rule_id INTEGER,
-            destination_url TEXT NOT NULL,
-            routing_mode TEXT NOT NULL DEFAULT 'basic' CHECK(routing_mode IN ('basic', 'scheduled', 'ab')),
             timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
             ip TEXT,
             user_agent TEXT,
@@ -79,12 +77,6 @@ const initDb = () => {
             FOREIGN KEY (variant_id) REFERENCES qr_variants(id),
             FOREIGN KEY (schedule_rule_id) REFERENCES qr_schedule_rules(id)
         );
-
-        -- Performance indexes
-        CREATE INDEX IF NOT EXISTS idx_qrs_short_code ON qrs(short_code);
-        CREATE INDEX IF NOT EXISTS idx_scans_qr_id ON scans(qr_id);
-        CREATE INDEX IF NOT EXISTS idx_scans_timestamp ON scans(timestamp);
-        CREATE INDEX IF NOT EXISTS idx_scans_qr_timestamp ON scans(qr_id, timestamp);
     `;
 
     db.exec(schema);
@@ -99,9 +91,7 @@ const initDb = () => {
             "ALTER TABLE qrs ADD COLUMN scheduling_enabled BOOLEAN DEFAULT 0",
             "ALTER TABLE qr_schedule_rules ADD COLUMN recurrence_type TEXT DEFAULT 'once'",
             "ALTER TABLE qr_schedule_rules ADD COLUMN recurrence_days TEXT",
-            "ALTER TABLE qr_schedule_rules ADD COLUMN recurrence_end_date TEXT",
-            "ALTER TABLE scans ADD COLUMN destination_url TEXT",
-            "ALTER TABLE scans ADD COLUMN routing_mode TEXT DEFAULT 'basic'"
+            "ALTER TABLE qr_schedule_rules ADD COLUMN recurrence_end_date TEXT"
         ];
 
         migrations.forEach(sql => {
@@ -113,22 +103,6 @@ const initDb = () => {
                 if (!e.message.includes('duplicate column')) {
                     logger.debug('Migration note', { message: e.message });
                 }
-            }
-        });
-
-        // Create indexes (safe to run multiple times)
-        const indexes = [
-            "CREATE INDEX IF NOT EXISTS idx_qrs_short_code ON qrs(short_code)",
-            "CREATE INDEX IF NOT EXISTS idx_scans_qr_id ON scans(qr_id)",
-            "CREATE INDEX IF NOT EXISTS idx_scans_timestamp ON scans(timestamp)",
-            "CREATE INDEX IF NOT EXISTS idx_scans_qr_timestamp ON scans(qr_id, timestamp)"
-        ];
-
-        indexes.forEach(sql => {
-            try {
-                db.prepare(sql).run();
-            } catch (e) {
-                logger.debug('Index note', { message: e.message });
             }
         });
     } catch (error) {

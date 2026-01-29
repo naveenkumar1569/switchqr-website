@@ -3,8 +3,6 @@ import React, { useEffect } from 'react';
 import { useParams, Navigate, Link } from 'react-router-dom';
 import { industries } from '../data/industries';
 
-const CLIENT_APP_URL = import.meta.env.VITE_CLIENT_URL || 'http://localhost:5173';
-
 const TimelineModule = ({ feature }) => (
     <div className="flex flex-col gap-4">
         {feature.items.map((item, index) => (
@@ -121,12 +119,12 @@ const IndustryUseCase = () => {
                                     </p>
                                 </div>
                                 <div className="flex flex-col sm:flex-row gap-4">
-                                    <a href={`${CLIENT_APP_URL}/register`} className="flex min-w-[240px] cursor-pointer items-center justify-center rounded-xl h-14 px-6 bg-primary text-white text-lg font-bold shadow-lg shadow-primary/20 hover:scale-[1.02] transition-transform">
+                                    <button className="flex min-w-[240px] cursor-pointer items-center justify-center rounded-xl h-14 px-6 bg-primary text-white text-lg font-bold shadow-lg shadow-primary/20 hover:scale-[1.02] transition-transform">
                                         Create your first QR
-                                    </a>
-                                    <Link to="/pricing" className="flex min-w-[180px] cursor-pointer items-center justify-center rounded-xl h-14 px-6 border-2 border-gray-200 text-text-main text-lg font-bold hover:bg-gray-50 transition-colors">
+                                    </button>
+                                    <button className="flex min-w-[180px] cursor-pointer items-center justify-center rounded-xl h-14 px-6 border-2 border-gray-200 text-text-main text-lg font-bold hover:bg-gray-50 transition-colors">
                                         View Demo
-                                    </Link>
+                                    </button>
                                 </div>
 
                                 {/* Placement Tags */}
@@ -354,9 +352,9 @@ const IndustryUseCase = () => {
                             Join hundreds of businesses like yours that have switched to dynamic, intelligent QR codes.
                         </p>
                         <div className="flex flex-col sm:flex-row gap-4 mt-4 w-full justify-center">
-                            <a href={`${CLIENT_APP_URL}/register`} className="bg-white text-primary px-10 py-5 rounded-xl font-black text-xl hover:scale-105 transition-transform shadow-2xl cursor-pointer">
+                            <button className="bg-white text-primary px-10 py-5 rounded-xl font-black text-xl hover:scale-105 transition-transform shadow-2xl cursor-pointer">
                                 Create your first dynamic QR
-                            </a>
+                            </button>
                         </div>
                         <p className="text-white/60 text-sm">No credit card required for basic setup.</p>
                     </div>

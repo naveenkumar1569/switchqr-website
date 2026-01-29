@@ -4,8 +4,6 @@ import { Link } from 'react-router-dom';
 const Pricing = () => {
     const [isAnnual, setIsAnnual] = useState(true);
 
-    const CLIENT_APP_URL = import.meta.env.VITE_CLIENT_URL || 'http://localhost:5173';
-
     const plans = [
         {
             name: 'Free',
@@ -150,8 +148,8 @@ const Pricing = () => {
                                 </span>
                                 <span className="text-gray-500 font-medium">/mo</span>
                             </div>
-                            <a href={`${CLIENT_APP_URL}/register`}
-                                className={`w-full py-3 px-4 text-sm font-bold rounded-xl transition-all mb-8 flex items-center justify-center ${plan.ctaStyle === 'primary'
+                            <button
+                                className={`w-full py-3 px-4 text-sm font-bold rounded-xl transition-all mb-8 ${plan.ctaStyle === 'primary'
                                     ? 'bg-primary hover:bg-primary-dark text-white shadow-md hover:shadow-lg shadow-primary/20'
                                     : plan.ctaStyle === 'outline'
                                         ? 'bg-white border-2 border-primary text-primary hover:bg-primary hover:text-white'
@@ -159,7 +157,7 @@ const Pricing = () => {
                                     }`}
                             >
                                 {plan.cta}
-                            </a>
+                            </button>
                             <ul className="flex flex-col gap-4 flex-1">
                                 {plan.features.map((feature, fIndex) => (
                                     <li key={fIndex} className="flex items-start gap-3 text-sm text-gray-600">

@@ -1,7 +1,6 @@
 const express = require('express');
 const { db } = require('../database');
 const rateLimit = require('express-rate-limit');
-const logger = require('../utils/logger');
 
 const router = express.Router();
 
@@ -39,17 +38,6 @@ function selectVariant(variants) {
     return variants[0];
 }
 
-// Validate URL is safe for redirect (http/https only)
-function isValidRedirectUrl(url) {
-    if (!url || typeof url !== 'string') return false;
-    try {
-        const parsed = new URL(url);
-        return parsed.protocol === 'http:' || parsed.protocol === 'https:';
-    } catch {
-        return false;
-    }
-}
-
 // Helper: Check if a schedule is currently active
 function isScheduleActive(schedule, now = new Date()) {
     // One-time schedule (legacy behavior)
@@ -67,9 +55,8 @@ function isScheduleActive(schedule, now = new Date()) {
         if (now > endDate) return false;
     }
 
-    // Check day of week using UTC
-    const days = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
-    const dayOfWeek = days[now.getUTCDay()];
+    // Check day of week
+    const dayOfWeek = now.toLocaleDateString('en-US', { weekday: 'lowercase', timeZone: 'UTC' });
 
     if (schedule.recurrence_type === 'daily') {
         // Active every day - continue to time check
@@ -88,11 +75,9 @@ function isScheduleActive(schedule, now = new Date()) {
         }
     }
 
-    // Check time of day for recurring schedules (use UTC)
+    // Check time of day for recurring schedules
     // start_time and end_time are stored as "HH:MM" for recurring schedules
-    const currentHours = String(now.getUTCHours()).padStart(2, '0');
-    const currentMinutes = String(now.getUTCMinutes()).padStart(2, '0');
-    const currentTime = `${currentHours}:${currentMinutes}`;
+    const currentTime = now.toTimeString().slice(0, 5); // "HH:MM"
     const startTime = schedule.start_time; // "HH:MM" for recurring
     const endTime = schedule.end_time;     // "HH:MM" for recurring
 
@@ -121,21 +106,21 @@ function findActiveSchedule(schedules) {
     return activeSchedules[0];
 }
 
-router.get('/r/:shortCode', redirectLimiter, (req, res) => {
+router.get('/:shortCode', redirectLimiter, (req, res) => {
     const { shortCode } = req.params;
 
-    try {
-        const stmt = db.prepare('SELECT id, destination_url, ab_testing_enabled, scheduling_enabled FROM qrs WHERE short_code = ? AND status = "active"');
-        const qr = stmt.get(shortCode);
+    // specific exclusion for API routes if they conflict (though mounting order handles this usually)
+    if (shortCode === 'api' || shortCode === 'favicon.ico') {
+        return res.status(404).end(); // Pass to next router or just 404
+    }
 
-        if (!qr) {
-            return res.status(404).send('QR Code not found or inactive');
-        }
+    const stmt = db.prepare('SELECT id, destination_url, ab_testing_enabled, scheduling_enabled FROM qrs WHERE short_code = ? AND status = "active"');
+    const qr = stmt.get(shortCode);
 
+    if (qr) {
         let destinationUrl = qr.destination_url;
         let variantId = null;
         let scheduleRuleId = null;
-        let routingMode = 'basic';
 
         // Priority 1: Check if scheduling is enabled
         if (qr.scheduling_enabled) {
@@ -147,7 +132,6 @@ router.get('/r/:shortCode', redirectLimiter, (req, res) => {
                 if (activeSchedule) {
                     destinationUrl = activeSchedule.destination_url;
                     scheduleRuleId = activeSchedule.id;
-                    routingMode = 'scheduled';
                 }
             }
         }
@@ -175,40 +159,30 @@ router.get('/r/:shortCode', redirectLimiter, (req, res) => {
                 if (selectedVariant) {
                     destinationUrl = selectedVariant.destination_url;
                     variantId = selectedVariant.id; // Will be null for control
-                    routingMode = 'ab';
                 }
             }
         }
 
-        // Validate destination URL before redirecting
-        if (!isValidRedirectUrl(destinationUrl)) {
-            logger.error('Invalid redirect URL', { qr_id: qr.id, url: destinationUrl });
-            return res.status(500).send('Invalid destination URL');
-        }
+        // Log Scan (Async - fire and forget for speed)
+        const scanStmt = db.prepare(`
+            INSERT INTO scans (qr_id, variant_id, schedule_rule_id, ip, user_agent, device_type, os, country, city, referrer)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        `);
 
-        // Log Scan (non-blocking - fire and forget)
+        // Basic extraction (can use user-agent parser lib later for device/os)
+        const ip = req.ip || req.connection.remoteAddress;
+        const ua = req.get('User-Agent');
+        const referrer = req.get('Referrer');
+
         try {
-            const scanStmt = db.prepare(`
-                INSERT INTO scans (qr_id, variant_id, schedule_rule_id, destination_url, routing_mode, ip, user_agent, device_type, os, country, city, referrer)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-            `);
-
-            const ip = req.ip || req.connection?.remoteAddress || 'unknown';
-            const ua = req.get('User-Agent') || '';
-            const referrer = req.get('Referrer') || '';
-
-            scanStmt.run(qr.id, variantId, scheduleRuleId, destinationUrl, routingMode, ip, ua, 'unknown', 'unknown', 'unknown', 'unknown', referrer);
-        } catch (logError) {
-            // Logging failure must not block redirect
-            logger.error('Scan logging failed', { error: logError.message, qr_id: qr.id });
+            scanStmt.run(qr.id, variantId, scheduleRuleId, ip, ua, 'unknown', 'unknown', 'unknown', 'unknown', referrer);
+        } catch (e) {
+            console.error('Scan logging failed', e);
         }
 
-        return res.redirect(302, destinationUrl);
-
-    } catch (error) {
-        logger.error('Redirect endpoint error', { error: error.message, shortCode });
-        // Even on error, try to redirect to primary destination if we have it
-        return res.status(500).send('Server error');
+        return res.redirect(destinationUrl);
+    } else {
+        return res.status(404).send('QR Code not found or inactive');
     }
 });
 

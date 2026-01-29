@@ -275,8 +275,8 @@ const GlobalAnalytics = () => {
                     </div>
                 </div>
 
-                {/* Upsell Card - Only show for Free users */}
-                {planInfo?.plan === 'free' && (
+                {/* Upsell Card - Only show if advanced analytics not enabled */}
+                {!planInfo?.features?.advanced_analytics && (
                     <div className="flex flex-col rounded-xl bg-surface-light dark:bg-surface-dark border border-border-light dark:border-border-dark shadow-sm overflow-hidden h-full">
                         {/* Image Section */}
                         <div className="h-32 w-full bg-cover bg-center relative">
@@ -294,7 +294,7 @@ const GlobalAnalytics = () => {
                                 </p>
                             </div>
                             <button className="w-full cursor-pointer items-center justify-center rounded-lg h-10 px-4 bg-primary text-white text-sm font-bold shadow-md hover:bg-primary-hover transition-all flex gap-2 group">
-                                <span>Upgrade to Starter</span>
+                                <span>Upgrade to SwitchQR Pro</span>
                                 <span className="material-symbols-outlined text-[18px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
                             </button>
                         </div>

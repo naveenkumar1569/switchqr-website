@@ -63,8 +63,16 @@ const ScheduleList = ({ schedules, onUpdate, onDelete, onAdd }) => {
         setShowAddModal(false);
     };
 
-    // Get current active schedule
-    const activeSchedule = schedules.find(s => s.is_active);
+    // Get current active schedules
+    const activeSchedules = schedules.filter(s => s.is_active);
+
+    // Get others that might be caught in between
+    const otherSchedules = schedules.filter(s =>
+        !s.is_active &&
+        (!s.recurrence_type || s.recurrence_type === 'once') &&
+        !(new Date(s.start_time) > new Date()) &&
+        !(s.end_time && new Date(s.end_time) < new Date())
+    );
 
     // Separate one-time and recurring schedules
     const oneTimeSchedules = schedules.filter(s => !s.recurrence_type || s.recurrence_type === 'once');
@@ -82,18 +90,43 @@ const ScheduleList = ({ schedules, onUpdate, onDelete, onAdd }) => {
 
     return (
         <div className="space-y-4">
-            {/* Active Schedule */}
-            {activeSchedule && (
+            {/* Active Schedules */}
+            {activeSchedules.length > 0 && (
                 <div>
                     <h4 className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wide mb-3">
                         Active Now
                     </h4>
-                    <ScheduleRuleCard
-                        schedule={activeSchedule}
-                        isActive={true}
-                        onUpdate={onUpdate}
-                        onDelete={onDelete}
-                    />
+                    <div className="space-y-3">
+                        {activeSchedules.map((schedule) => (
+                            <ScheduleRuleCard
+                                key={schedule.id}
+                                schedule={schedule}
+                                isActive={true}
+                                onUpdate={onUpdate}
+                                onDelete={onDelete}
+                            />
+                        ))}
+                    </div>
+                </div>
+            )}
+
+            {/* Other Schedules (Hidden logic fix) */}
+            {otherSchedules.length > 0 && (
+                <div>
+                    <h4 className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wide mb-3">
+                        Other Scheduled
+                    </h4>
+                    <div className="space-y-3">
+                        {otherSchedules.map((schedule) => (
+                            <ScheduleRuleCard
+                                key={schedule.id}
+                                schedule={schedule}
+                                isActive={false}
+                                onUpdate={onUpdate}
+                                onDelete={onDelete}
+                            />
+                        ))}
+                    </div>
                 </div>
             )}
 

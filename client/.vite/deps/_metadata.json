@@ -1,0 +1,46 @@
+{
+  "hash": "1e7547fc",
+  "configHash": "2402e99e",
+  "lockfileHash": "4266ddc3",
+  "browserHash": "e4085ab2",
+  "optimized": {
+    "react": {
+      "src": "../../node_modules/react/index.js",
+      "file": "react.js",
+      "fileHash": "baebd7c7",
+      "needsInterop": true
+    },
+    "react-dom/client": {
+      "src": "../../node_modules/react-dom/client.js",
+      "file": "react-dom_client.js",
+      "fileHash": "17165769",
+      "needsInterop": true
+    },
+    "react-router-dom": {
+      "src": "../../node_modules/react-router-dom/dist/index.mjs",
+      "file": "react-router-dom.js",
+      "fileHash": "c84475e9",
+      "needsInterop": false
+    },
+    "react-dom": {
+      "src": "../../node_modules/react-dom/index.js",
+      "file": "react-dom.js",
+      "fileHash": "7e113f10",
+      "needsInterop": true
+    },
+    "react-datepicker": {
+      "src": "../../node_modules/react-datepicker/dist/index.es.js",
+      "file": "react-datepicker.js",
+      "fileHash": "fc63c0f8",
+      "needsInterop": false
+    }
+  },
+  "chunks": {
+    "chunk-ORSB5BRZ": {
+      "file": "chunk-ORSB5BRZ.js"
+    },
+    "chunk-SDXSXCKD": {
+      "file": "chunk-SDXSXCKD.js"
+    }
+  }
+}

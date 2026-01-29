@@ -4,13 +4,7 @@ const jwt = require('jsonwebtoken');
 const { db } = require('../database');
 
 const router = express.Router();
-
-// SECURITY: Require JWT_SECRET in production
-const JWT_SECRET = process.env.JWT_SECRET;
-if (!JWT_SECRET && process.env.NODE_ENV === 'production') {
-    throw new Error('JWT_SECRET environment variable is required in production');
-}
-const SECRET = JWT_SECRET || 'dev-secret-do-not-use-in-prod';
+const JWT_SECRET = process.env.JWT_SECRET || 'supersecretkey';
 
 // Register
 router.post('/register', async (req, res) => {
@@ -25,7 +19,7 @@ router.post('/register', async (req, res) => {
         const stmt = db.prepare('INSERT INTO users (email, password_hash) VALUES (?, ?)');
         const info = stmt.run(email, hashedPassword);
 
-        const token = jwt.sign({ id: info.lastInsertRowid, email }, SECRET, { expiresIn: '1h' });
+        const token = jwt.sign({ id: info.lastInsertRowid, email }, JWT_SECRET, { expiresIn: '1h' });
 
         res.status(201).json({ token, user: { id: info.lastInsertRowid, email } });
     } catch (error) {
@@ -58,7 +52,7 @@ router.post('/login', async (req, res) => {
             return res.status(400).json({ error: 'Invalid credentials' });
         }
 
-        const token = jwt.sign({ id: user.id, email: user.email }, SECRET, { expiresIn: '1h' });
+        const token = jwt.sign({ id: user.id, email: user.email }, JWT_SECRET, { expiresIn: '1h' });
 
         res.json({ token, user: { id: user.id, email: user.email } });
     } catch (error) {

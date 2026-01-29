@@ -71,7 +71,7 @@ export const apiDelete = (endpoint, token = null) => {
  * @returns {string}
  */
 export const getShortCodeUrl = (shortCode) => {
-    return `${API_BASE_URL}/r/${shortCode}`;
+    return `${API_BASE_URL}/${shortCode}`;
 };
 
 export { API_BASE_URL };

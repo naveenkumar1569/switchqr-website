@@ -2,8 +2,6 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { stories } from '../data/stories';
 
-const CLIENT_APP_URL = import.meta.env.VITE_CLIENT_URL || 'http://localhost:5173';
-
 const SuccessStories = () => {
     const categories = ['All', 'Retail', 'Events', 'Food & Beverage', 'Packaging'];
     const [activeCategory, setActiveCategory] = React.useState('All');
@@ -173,9 +171,9 @@ const SuccessStories = () => {
                         Start creating dynamic QR codes today and track every scan in real-time. No credit card required.
                     </p>
                     <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
-                        <a href={`${CLIENT_APP_URL}/register`} className="w-full rounded-full bg-white px-8 py-4 text-base font-bold text-primary shadow-lg transition-transform hover:scale-105 sm:w-auto flex items-center justify-center">
+                        <button className="w-full rounded-full bg-white px-8 py-4 text-base font-bold text-primary shadow-lg transition-transform hover:scale-105 sm:w-auto">
                             Start Free Trial
-                        </a>
+                        </button>
                         <button className="w-full rounded-full border-2 border-primary-light px-8 py-4 text-base font-bold text-white transition-colors hover:bg-white/10 sm:w-auto">
                             Talk to Sales
                         </button>

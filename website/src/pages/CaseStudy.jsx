@@ -2,8 +2,6 @@ import React, { useEffect } from 'react';
 import { Link, useParams, Navigate } from 'react-router-dom';
 import { stories } from '../data/stories';
 
-const CLIENT_APP_URL = import.meta.env.VITE_CLIENT_URL || 'http://localhost:5173';
-
 const RichText = ({ content }) => {
     if (!content) return null;
 
@@ -197,9 +195,9 @@ const CaseStudy = () => {
                         Join {story.company} and 500+ other brands using SwitchQR to modernize their physical touchpoints.
                     </p>
                     <div className="flex flex-col sm:flex-row gap-4 mt-4 w-full justify-center">
-                        <a href={`${CLIENT_APP_URL}/register`} className="flex min-w-[160px] cursor-pointer items-center justify-center rounded-xl h-12 px-8 bg-primary text-white text-base font-bold shadow-lg shadow-primary/25 hover:translate-y-[-2px] transition-transform">
+                        <button className="flex min-w-[160px] cursor-pointer items-center justify-center rounded-xl h-12 px-8 bg-primary text-white text-base font-bold shadow-lg shadow-primary/25 hover:translate-y-[-2px] transition-transform">
                             Start your free trial
-                        </a>
+                        </button>
                         <button className="flex min-w-[160px] cursor-pointer items-center justify-center rounded-xl h-12 px-8 bg-background-light border border-gray-200 text-text-main text-base font-bold hover:bg-gray-100 transition-colors">
                             Talk to Sales
                         </button>

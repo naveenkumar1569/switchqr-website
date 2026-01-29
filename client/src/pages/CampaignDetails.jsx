@@ -301,7 +301,7 @@ const CampaignDetails = () => {
                                                 </div>
                                                 <div className="min-w-0">
                                                     <p className="font-bold text-sm text-slate-900 dark:text-white truncate group-hover:text-primary transition-colors">{qr.name}</p>
-                                                    <p className="text-[10px] text-slate-400 font-medium truncate">/r/{qr.short_code}</p>
+                                                    <p className="text-[10px] text-slate-400 font-medium truncate">/{qr.short_code}</p>
                                                 </div>
                                             </Link>
                                         </td>

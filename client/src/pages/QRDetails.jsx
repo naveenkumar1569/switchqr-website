@@ -7,7 +7,7 @@ import VariantList from '../components/VariantList';
 import LockedFeature from '../components/LockedFeature';
 import ScheduleList from '../components/ScheduleList';
 import ConfirmationModal from '../components/ConfirmationModal';
-import { apiGet, apiPost, apiPut, apiDelete, getShortCodeUrl } from '../utils/api';
+import { apiGet, apiPost, apiPut, apiDelete } from '../utils/api';
 
 const QRDetails = () => {
     const { id } = useParams();
@@ -265,12 +265,15 @@ const QRDetails = () => {
 
     const handleToggleABTesting = async () => {
         try {
-            const response = await apiPost(`/api/qrs/${id}/ab-testing/toggle`, { enabled: !abTestingEnabled }, token);
+            // Use standard PUT endpoint to update QR
+            const response = await apiPut(`/api/qrs/${id}`, { ab_testing_enabled: !abTestingEnabled }, token);
 
             if (response.ok) {
                 const data = await response.json();
                 setAbTestingEnabled(data.ab_testing_enabled);
-                showSuccess(data.message);
+                // Also update local QR state to reflect change
+                setQr(prev => ({ ...prev, ab_testing_enabled: data.ab_testing_enabled }));
+                showSuccess(data.ab_testing_enabled ? 'A/B Testing Enabled' : 'A/B Testing Disabled');
             } else {
                 const error = await response.json();
                 showError(error.error || 'Failed to toggle A/B testing');
@@ -370,15 +373,19 @@ const QRDetails = () => {
 
     const handleToggleScheduling = async () => {
         try {
-            const response = await apiPost(`/api/qrs/${id}/scheduling/toggle`, { enabled: !schedulingEnabled }, token);
+            // Use standard PUT endpoint
+            const response = await apiPut(`/api/qrs/${id}`, { scheduling_enabled: !schedulingEnabled }, token);
 
             if (response.ok) {
                 const data = await response.json();
                 setSchedulingEnabled(data.scheduling_enabled);
-                if (data.ab_testing_disabled) {
-                    setAbTestingEnabled(false);
-                }
-                showSuccess(data.message);
+                setQr(prev => ({ ...prev, scheduling_enabled: data.scheduling_enabled }));
+
+                // If scheduling enabled, logic might auto-disable AB testing if backend enforces it? 
+                // Backend qrs.supabase.js doesn't auto-disable, but they might be mutually exclusive in UI logic?
+                // Backend: scheduling takes priority, but both can be true.
+
+                showSuccess(data.scheduling_enabled ? 'Scheduling Enabled' : 'Scheduling Disabled');
             } else {
                 const error = await response.json();
                 showError(error.error || 'Failed to toggle scheduling');
@@ -816,7 +823,7 @@ const QRDetails = () => {
                                     <img
                                         alt="QR Code"
                                         className="size-48 object-contain"
-                                        src={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(getShortCodeUrl(qr.short_code))}`}
+                                        src={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(qr.destination_url)}`}
                                     />
                                     {/* Logo Overlay */}
                                     {logoPreview && (

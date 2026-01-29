@@ -2,7 +2,6 @@ const express = require('express');
 const { db } = require('../database');
 const authenticateToken = require('../middleware/authMiddleware');
 const validateDestinationUrl = require('../middleware/validateUrl');
-const logger = require('../utils/logger');
 
 const router = express.Router();
 
@@ -96,20 +95,6 @@ router.post('/:id/variants', authenticateToken, requireProPlan, validateDestinat
             return res.status(404).json({ error: 'QR code not found' });
         }
 
-        // Check total weight sum with new variant
-        const existingWeightStmt = db.prepare('SELECT SUM(weight) as total FROM qr_variants WHERE qr_id = ?');
-        const { total: existingTotal } = existingWeightStmt.get(qrId) || { total: 0 };
-        const newTotal = (existingTotal || 0) + weight;
-
-        if (newTotal > 100) {
-            return res.status(400).json({
-                error: 'Total variant weights cannot exceed 100%',
-                current_total: existingTotal || 0,
-                requested_weight: weight,
-                max_allowed: 100 - (existingTotal || 0)
-            });
-        }
-
         // Create variant
         const insertStmt = db.prepare(`
             INSERT INTO qr_variants (qr_id, destination_url, weight, label)
@@ -129,7 +114,7 @@ router.post('/:id/variants', authenticateToken, requireProPlan, validateDestinat
             created_at: new Date().toISOString()
         });
     } catch (error) {
-        logger.error('Error creating variant', { error: error.message });
+        console.error('Error creating variant:', error);
         res.status(500).json({ error: 'Server error' });
     }
 });
@@ -266,15 +251,8 @@ router.post('/:id/ab-testing/toggle', authenticateToken, requireProPlan, (req, r
         // With control group support, A/B testing works with any number of variants (even 0)
         // Control automatically gets remaining percentage
         if (enabled && count === 0) {
-            logger.info('A/B testing enabled with 0 variants', { qr_id: qrId, note: '100% traffic to control' });
-        }
-
-        // Mutual exclusivity: disable scheduling when enabling A/B testing
-        let schedulingDisabled = false;
-        if (enabled && qr.scheduling_enabled) {
-            const disableSchedulingStmt = db.prepare('UPDATE qrs SET scheduling_enabled = 0 WHERE id = ?');
-            disableSchedulingStmt.run(qrId);
-            schedulingDisabled = true;
+            // Just a friendly message - still allow enabling
+            console.log(`A/B testing enabled with 0 variants - 100% traffic to control (original URL)`);
         }
 
         // Update QR
@@ -283,11 +261,10 @@ router.post('/:id/ab-testing/toggle', authenticateToken, requireProPlan, (req, r
 
         res.json({
             ab_testing_enabled: enabled,
-            scheduling_disabled: schedulingDisabled,
             message: enabled ? 'A/B testing enabled' : 'A/B testing disabled'
         });
     } catch (error) {
-        logger.error('Error toggling A/B testing', { error: error.message });
+        console.error('Error toggling A/B testing:', error);
         res.status(500).json({ error: 'Server error' });
     }
 });

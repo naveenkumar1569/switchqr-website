@@ -93,7 +93,7 @@ const CreateQR = () => {
             const params = new URLSearchParams(window.location.search);
             const campaignId = params.get('campaign_id');
             if (campaignId) {
-                setFormData(prev => ({ ...prev, campaign_id: campaignId }));
+                setFormData(prev => ({ ...prev, campaign_id: Number(campaignId) }));
             }
         } catch (e) {
             console.error('[CreateQR] Error parsing URL params:', e);
@@ -226,7 +226,8 @@ const CreateQR = () => {
                 name: formData.name,
                 destination_url: finalDestinationUrl,
                 color: formData.color,
-                campaign_id: finalCampaignId
+                campaign_id: finalCampaignId,
+                ab_testing_enabled: abTestingEnabled // Send flag directly on creation
             };
 
 
@@ -235,10 +236,11 @@ const CreateQR = () => {
             if (response.ok) {
                 const responseData = await response.json();
 
-                // If A/B Testing was enabled, turn it on for the new QR
+                // If A/B Testing was enabled, configure variants (flag already set in POST)
                 if (abTestingEnabled) {
                     try {
-                        await apiPost(`/api/qrs/${responseData.id}/ab-testing/toggle`, { enabled: true }, token);
+                        // Removed redundant toggle call
+
 
                         // Create configured variants
                         if (pendingVariants.length > 0) {
@@ -268,6 +270,7 @@ const CreateQR = () => {
                 localStorage.removeItem('token');
                 navigate('/login');
             } else {
+                const responseData = await response.json().catch(() => ({}));
                 console.error('Failed to create QR:', responseData);
                 showError('Creation Failed', { description: responseData.error || 'Unknown error occurred' });
             }

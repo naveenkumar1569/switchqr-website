@@ -9,7 +9,7 @@ const Register = () => {
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [error, setError] = useState('');
-    const { login } = useAuth();
+    const { login, signInWithGoogle } = useAuth();
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
@@ -44,9 +44,13 @@ const Register = () => {
         }
     };
 
-    const handleGoogleSignup = () => {
-        // Placeholder for Google OAuth integration
-        setError('Google signup coming soon!');
+    const handleGoogleSignup = async () => {
+        try {
+            await signInWithGoogle();
+        } catch (err) {
+            setError(err.message || 'Google signup failed');
+            console.error(err);
+        }
     };
 
     return (

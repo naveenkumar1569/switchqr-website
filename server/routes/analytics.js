@@ -1,7 +1,6 @@
 const express = require('express');
 const { db } = require('../database');
 const authenticateToken = require('../middleware/authMiddleware');
-const logger = require('../utils/logger');
 
 const router = express.Router();
 
@@ -66,7 +65,7 @@ router.get('/:id', authenticateToken, (req, res) => {
         });
 
     } catch (error) {
-        logger.error('Analytics error', { endpoint: 'GET /:id', error: error.message });
+        console.error('[Analytics] Error in GET /:id:', error);
         res.status(500).json({ error: 'Server error' });
     }
 });
@@ -129,7 +128,7 @@ router.get('/', authenticateToken, (req, res) => {
 
         const deviceSplit = { Mobile: 0, Desktop: 0, Tablet: 0 };
         userAgents.forEach(scan => {
-            const ua = (scan.user_agent || '').toLowerCase();
+            const ua = scan.user_agent.toLowerCase();
             if (ua.includes('mobile') || ua.includes('android') || ua.includes('iphone')) {
                 deviceSplit.Mobile++;
             } else if (ua.includes('ipad') || ua.includes('tablet')) {
@@ -167,7 +166,7 @@ router.get('/', authenticateToken, (req, res) => {
             recentScans
         });
     } catch (error) {
-        logger.error('Error fetching global stats', { error: error.message });
+        console.error('Error fetching global stats:', error);
         res.status(500).json({ error: 'Failed to fetch statistics' });
     }
 });
