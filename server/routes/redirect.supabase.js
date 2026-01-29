@@ -15,10 +15,8 @@ const logger = require('../utils/logger');
 const router = express.Router();
 
 // Initialize Supabase Client (Admin Client for Bypass RLS)
-const SUPABASE_URL = process.env.SUPABASE_URL;
-const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
-if (!SUPABASE_SERVICE_KEY) {
+if (!process.env.SUPABASE_SERVICE_ROLE_KEY) {
     logger.error('CRITICAL: Missing SUPABASE_SERVICE_ROLE_KEY. Redirects will fail if RLS is enabled.');
 }
 

@@ -13,9 +13,9 @@ const router = express.Router();
 
 let supabase;
 
-if (SUPABASE_URL && SUPABASE_ANON_KEY) {
+if (process.env.SUPABASE_URL && process.env.SUPABASE_ANON_KEY) {
     try {
-        supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
     } catch (e) {
         logger.error('Failed to init Supabase in auth route', e);
     }
