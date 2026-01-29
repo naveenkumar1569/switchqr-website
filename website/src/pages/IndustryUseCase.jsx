@@ -88,6 +88,7 @@ const AnalyticsModule = ({ feature }) => (
 );
 
 const IndustryUseCase = () => {
+    const CLIENT_APP_URL = import.meta.env.VITE_APP_URL || 'https://app.switch-qr.com';
     const { slug } = useParams();
     const industry = industries[slug];
 
@@ -119,12 +120,12 @@ const IndustryUseCase = () => {
                                     </p>
                                 </div>
                                 <div className="flex flex-col sm:flex-row gap-4">
-                                    <button className="flex min-w-[240px] cursor-pointer items-center justify-center rounded-xl h-14 px-6 bg-primary text-white text-lg font-bold shadow-lg shadow-primary/20 hover:scale-[1.02] transition-transform">
+                                    <a href={`${CLIENT_APP_URL}/register`} className="flex min-w-[240px] cursor-pointer items-center justify-center rounded-xl h-14 px-6 bg-primary text-white text-lg font-bold shadow-lg shadow-primary/20 hover:scale-[1.02] transition-transform">
                                         Create your first QR
-                                    </button>
-                                    <button className="flex min-w-[180px] cursor-pointer items-center justify-center rounded-xl h-14 px-6 border-2 border-gray-200 text-text-main text-lg font-bold hover:bg-gray-50 transition-colors">
+                                    </a>
+                                    <a href={`${CLIENT_APP_URL}/register`} className="flex min-w-[180px] cursor-pointer items-center justify-center rounded-xl h-14 px-6 border-2 border-gray-200 text-text-main text-lg font-bold hover:bg-gray-50 transition-colors">
                                         View Demo
-                                    </button>
+                                    </a>
                                 </div>
 
                                 {/* Placement Tags */}
@@ -352,9 +353,9 @@ const IndustryUseCase = () => {
                             Join hundreds of businesses like yours that have switched to dynamic, intelligent QR codes.
                         </p>
                         <div className="flex flex-col sm:flex-row gap-4 mt-4 w-full justify-center">
-                            <button className="bg-white text-primary px-10 py-5 rounded-xl font-black text-xl hover:scale-105 transition-transform shadow-2xl cursor-pointer">
+                            <a href={`${CLIENT_APP_URL}/register`} className="bg-white text-primary px-10 py-5 rounded-xl font-black text-xl hover:scale-105 transition-transform shadow-2xl cursor-pointer">
                                 Create your first dynamic QR
-                            </button>
+                            </a>
                         </div>
                         <p className="text-white/60 text-sm">No credit card required for basic setup.</p>
                     </div>

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 const Pricing = () => {
+    const CLIENT_APP_URL = import.meta.env.VITE_APP_URL || 'https://app.switch-qr.com';
     const [isAnnual, setIsAnnual] = useState(true);
 
     const plans = [
@@ -148,8 +149,9 @@ const Pricing = () => {
                                 </span>
                                 <span className="text-gray-500 font-medium">/mo</span>
                             </div>
-                            <button
-                                className={`w-full py-3 px-4 text-sm font-bold rounded-xl transition-all mb-8 ${plan.ctaStyle === 'primary'
+                            <a
+                                href={`${CLIENT_APP_URL}/register`}
+                                className={`block text-center w-full py-3 px-4 text-sm font-bold rounded-xl transition-all mb-8 ${plan.ctaStyle === 'primary'
                                     ? 'bg-primary hover:bg-primary-dark text-white shadow-md hover:shadow-lg shadow-primary/20'
                                     : plan.ctaStyle === 'outline'
                                         ? 'bg-white border-2 border-primary text-primary hover:bg-primary hover:text-white'
@@ -157,7 +159,7 @@ const Pricing = () => {
                                     }`}
                             >
                                 {plan.cta}
-                            </button>
+                            </a>
                             <ul className="flex flex-col gap-4 flex-1">
                                 {plan.features.map((feature, fIndex) => (
                                     <li key={fIndex} className="flex items-start gap-3 text-sm text-gray-600">

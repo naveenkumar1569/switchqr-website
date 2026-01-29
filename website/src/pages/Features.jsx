@@ -1,6 +1,7 @@
 import React from 'react';
 
 const Features = () => {
+    const CLIENT_APP_URL = import.meta.env.VITE_APP_URL || 'https://app.switch-qr.com';
     return (
         <>
             {/* Hero Section */}
@@ -15,9 +16,9 @@ const Features = () => {
                         Powerful tools to track, edit, and optimize your QR codes in real-time. Stop re-printing, start optimizing.
                     </p>
                     <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-                        <button className="px-8 py-4 bg-primary hover:bg-primary-dark text-white font-bold rounded-xl shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-0.5">
+                        <a href={`${CLIENT_APP_URL}/register`} className="px-8 py-4 bg-primary hover:bg-primary-dark text-white font-bold rounded-xl shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-0.5">
                             Get Started Free
-                        </button>
+                        </a>
                         <button className="px-8 py-4 bg-white hover:bg-gray-50 text-text-main font-bold rounded-xl border-2 border-gray-200 hover:border-primary/30 transition-all">
                             View Demo
                         </button>
@@ -579,9 +580,9 @@ const Features = () => {
                             Join thousands of businesses using SwitchQR to create smarter, more flexible marketing campaigns.
                         </p>
                         <div className="relative flex flex-col sm:flex-row items-center justify-center gap-4">
-                            <button className="w-full sm:w-auto min-w-[160px] cursor-pointer items-center justify-center rounded-xl h-14 px-8 bg-white text-primary text-lg font-bold hover:bg-gray-50 transition-colors shadow-lg">
+                            <a href={`${CLIENT_APP_URL}/register`} className="w-full sm:w-auto min-w-[160px] cursor-pointer flex items-center justify-center rounded-xl h-14 px-8 bg-white text-primary text-lg font-bold hover:bg-gray-50 transition-colors shadow-lg">
                                 Start Free Trial
-                            </button>
+                            </a>
                         </div>
                         <p className="relative text-sm text-white/60 mt-6">No credit card required · Cancel anytime</p>
                     </div>
