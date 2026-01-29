@@ -23,14 +23,28 @@ if (!SUPABASE_SERVICE_KEY) {
 }
 
 // Use Service Key if available, otherwise fall back to Anon (Unsafe for production with RLS)
-const supabaseAdmin = createClient(
-    SUPABASE_URL,
-    SUPABASE_SERVICE_KEY || process.env.SUPABASE_ANON_KEY,
-    { auth: { persistSession: false } }
-);
+// Use Service Key if available, otherwise fall back to Anon (Unsafe for production with RLS)
+let supabaseAdmin;
+try {
+    if (SUPABASE_URL) {
+        supabaseAdmin = createClient(
+            SUPABASE_URL,
+            SUPABASE_SERVICE_KEY || process.env.SUPABASE_ANON_KEY,
+            { auth: { persistSession: false } }
+        );
+    } else {
+        logger.warn('Redirect Service: SUPABASE_URL missing. Redirects will fail.');
+    }
+} catch (e) {
+    logger.error('CRITICAL: Failed to init Supabase Admin client', e);
+}
 
 router.get('/r/:shortCode', async (req, res) => {
     const { shortCode } = req.params;
+
+    if (!supabaseAdmin) {
+        return res.status(503).send('Redirect service unavailable');
+    }
 
     try {
         // 1. Lookup QR

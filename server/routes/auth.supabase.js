@@ -11,18 +11,21 @@ const logger = require('../utils/logger');
 
 const router = express.Router();
 
-// Initialize Supabase Client (Anon Key is fine for Auth)
-const SUPABASE_URL = process.env.SUPABASE_URL;
-const SUPABASE_ANON_KEY = process.env.SUPABASE_ANON_KEY;
+let supabase;
 
-if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
-    logger.error('Supabase credentials missing in auth route');
+if (SUPABASE_URL && SUPABASE_ANON_KEY) {
+    try {
+        supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    } catch (e) {
+        logger.error('Failed to init Supabase in auth route', e);
+    }
+} else {
+    logger.warn('Supabase credentials missing in auth route. Auth endpoints will fail.');
 }
-
-const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 // Register
 router.post('/register', async (req, res) => {
+    if (!supabase) return res.status(503).json({ error: 'Auth service misconfigured' });
     const { email, password, name } = req.body;
 
     if (!email || !password) {
@@ -78,6 +81,7 @@ router.post('/register', async (req, res) => {
 
 // Login
 router.post('/login', async (req, res) => {
+    if (!supabase) return res.status(503).json({ error: 'Auth service misconfigured' });
     const { email, password } = req.body;
 
     if (!email || !password) {

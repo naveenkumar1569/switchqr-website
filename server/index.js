@@ -6,7 +6,7 @@ require('dotenv').config({ path: path.join(__dirname, '.env') });
 const logger = require('./utils/logger');
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 5001;
 
 // Database mode: 'supabase' or 'sqlite' (for legacy/migration)
 const DATABASE_MODE = (process.env.DATABASE_MODE || 'supabase').trim();
