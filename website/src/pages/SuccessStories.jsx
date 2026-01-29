@@ -3,9 +3,7 @@ import { Link } from 'react-router-dom';
 import { stories } from '../data/stories';
 
 const SuccessStories = () => {
-    const CLIENT_APP_URL = import.meta.env.PROD
-        ? 'https://app.switch-qr.com'
-        : (import.meta.env.VITE_APP_URL || 'https://app.switch-qr.com');
+    const CLIENT_APP_URL = 'https://app.switch-qr.com';
     const categories = ['All', 'Retail', 'Events', 'Food & Beverage', 'Packaging'];
     const [activeCategory, setActiveCategory] = React.useState('All');
 

@@ -1,9 +1,7 @@
 import React from 'react';
 
 const Features = () => {
-    const CLIENT_APP_URL = import.meta.env.PROD
-        ? 'https://app.switch-qr.com'
-        : (import.meta.env.VITE_APP_URL || 'https://app.switch-qr.com');
+    const CLIENT_APP_URL = 'https://app.switch-qr.com';
     return (
         <>
             {/* Hero Section */}

@@ -47,9 +47,7 @@ const renderBold = (text) => {
 };
 
 const CaseStudy = () => {
-    const CLIENT_APP_URL = import.meta.env.PROD
-        ? 'https://app.switch-qr.com'
-        : (import.meta.env.VITE_APP_URL || 'https://app.switch-qr.com');
+    const CLIENT_APP_URL = 'https://app.switch-qr.com';
     const { slug } = useParams();
     const story = stories.find(s => s.slug === slug);
 

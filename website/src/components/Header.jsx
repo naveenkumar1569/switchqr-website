@@ -2,10 +2,8 @@ import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { industries } from '../data/industries';
 
-// Get client app URL from environment variable
-const CLIENT_APP_URL = import.meta.env.PROD
-    ? 'https://app.switch-qr.com'
-    : (import.meta.env.VITE_APP_URL || 'https://app.switch-qr.com');
+// Hardcoded production URL for marketing site
+const CLIENT_APP_URL = 'https://app.switch-qr.com';
 
 const Header = () => {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);

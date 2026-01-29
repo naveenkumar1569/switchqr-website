@@ -88,9 +88,7 @@ const AnalyticsModule = ({ feature }) => (
 );
 
 const IndustryUseCase = () => {
-    const CLIENT_APP_URL = import.meta.env.PROD
-        ? 'https://app.switch-qr.com'
-        : (import.meta.env.VITE_APP_URL || 'https://app.switch-qr.com');
+    const CLIENT_APP_URL = 'https://app.switch-qr.com';
     const { slug } = useParams();
     const industry = industries[slug];
 
