@@ -15,19 +15,17 @@ const logger = require('../utils/logger');
 const router = express.Router();
 
 // Initialize Supabase Client (Admin Client for Bypass RLS)
-
 if (!process.env.SUPABASE_SERVICE_ROLE_KEY) {
     logger.error('CRITICAL: Missing SUPABASE_SERVICE_ROLE_KEY. Redirects will fail if RLS is enabled.');
 }
 
 // Use Service Key if available, otherwise fall back to Anon (Unsafe for production with RLS)
-// Use Service Key if available, otherwise fall back to Anon (Unsafe for production with RLS)
 let supabaseAdmin;
 try {
-    if (SUPABASE_URL) {
+    if (process.env.SUPABASE_URL) {
         supabaseAdmin = createClient(
-            SUPABASE_URL,
-            SUPABASE_SERVICE_KEY || process.env.SUPABASE_ANON_KEY,
+            process.env.SUPABASE_URL,
+            process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_ANON_KEY,
             { auth: { persistSession: false } }
         );
     } else {
