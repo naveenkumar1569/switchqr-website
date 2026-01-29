@@ -2,6 +2,9 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { industries } from '../data/industries';
 
+// Get client app URL from environment variable
+const CLIENT_APP_URL = import.meta.env.VITE_APP_URL || 'https://app.switch-qr.com';
+
 const Home = () => {
     const problems = [
         {
@@ -60,9 +63,9 @@ const Home = () => {
                                 Stop reprinting marketing materials. Manage all your QR campaigns, track scans, and redirect users instantly from one dynamic dashboard.
                             </p>
                             <div className="flex flex-wrap gap-4 justify-center lg:justify-start">
-                                <button className="flex items-center justify-center rounded-xl h-12 px-8 bg-primary hover:bg-primary/90 text-white text-base font-bold shadow-lg shadow-primary/25 transition-all transform hover:-translate-y-0.5">
+                                <a href={`${CLIENT_APP_URL}/register`} className="flex items-center justify-center rounded-xl h-12 px-8 bg-primary hover:bg-primary/90 text-white text-base font-bold shadow-lg shadow-primary/25 transition-all transform hover:-translate-y-0.5">
                                     Get Started Free
-                                </button>
+                                </a>
                                 <button className="flex items-center justify-center rounded-xl h-12 px-8 bg-white border border-[#dad1e5] hover:border-primary/50 text-text-main text-base font-bold transition-all">
                                     <span className="mr-2 material-symbols-outlined text-[20px]">play_circle</span>
                                     See How It Works
@@ -274,9 +277,9 @@ const Home = () => {
                             Join 10,000+ marketers using SwitchQR to run smarter, measurable campaigns.
                         </p>
                         <div className="relative flex flex-col sm:flex-row items-center justify-center gap-4">
-                            <button className="w-full sm:w-auto min-w-[160px] cursor-pointer items-center justify-center rounded-xl h-14 px-8 bg-white text-primary text-lg font-bold hover:bg-gray-50 transition-colors shadow-lg">
+                            <a href={`${CLIENT_APP_URL}/register`} className="w-full sm:w-auto min-w-[160px] cursor-pointer flex items-center justify-center rounded-xl h-14 px-8 bg-white text-primary text-lg font-bold hover:bg-gray-50 transition-colors shadow-lg">
                                 Start Free
-                            </button>
+                            </a>
                         </div>
                         <p className="relative text-sm text-white/60 mt-6">No credit card required · Cancel anytime</p>
                     </div>
