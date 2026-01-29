@@ -207,6 +207,12 @@ router.put('/:id', supabaseAuth, async (req, res) => {
             return res.status(403).json({ error: 'A/B Testing not available on your plan' });
         }
 
+        // Sanitize inputs
+        // Fix: Empty string for campaign_id causes UUID error
+        if (updates.campaign_id === '') {
+            updates.campaign_id = null;
+        }
+
         // Prevent updating immutable fields
         delete updates.id;
         delete updates.owner_id;
