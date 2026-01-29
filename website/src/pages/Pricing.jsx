@@ -2,7 +2,9 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 const Pricing = () => {
-    const CLIENT_APP_URL = import.meta.env.VITE_APP_URL || 'https://app.switch-qr.com';
+    const CLIENT_APP_URL = import.meta.env.PROD
+        ? 'https://app.switch-qr.com'
+        : (import.meta.env.VITE_APP_URL || 'https://app.switch-qr.com');
     const [isAnnual, setIsAnnual] = useState(true);
 
     const plans = [
