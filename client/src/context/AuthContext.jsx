@@ -15,43 +15,54 @@ export const AuthProvider = ({ children }) => {
         const initializeAuth = async () => {
             let currentToken = token;
 
-            // Check for Supabase session if no local token (e.g. OAuth redirect)
-            if (!currentToken) {
-                const { data: { session } } = await supabase.auth.getSession();
-                if (session?.access_token) {
-                    currentToken = session.access_token;
-                    setToken(currentToken);
-                }
-            }
+            try {
+                // Check for Supabase session if no local token (e.g. OAuth redirect)
+                if (!currentToken) {
+                    const { data, error } = await supabase.auth.getSession();
+                    if (error) console.error('Error getting session:', error);
 
-            if (currentToken) {
-                try {
-                    // Fetch Plan Info
-                    const planResponse = await apiGet('/api/plan', currentToken);
-                    if (planResponse.ok) {
-                        const planData = await planResponse.json();
-                        setPlanInfo(planData);
-                    } else {
-                        setPlanInfo(null);
+                    if (data?.session?.access_token) {
+                        currentToken = data.session.access_token;
+                        setToken(currentToken);
                     }
+                }
 
-                    // Fetch User Profile if not already set
-                    if (!user) {
-                        const userResponse = await apiGet('/api/users/profile', currentToken);
-                        if (userResponse.ok) {
-                            const userData = await userResponse.json();
-                            setUser(userData);
+                if (currentToken) {
+                    try {
+                        // Fetch Plan Info
+                        const planResponse = await apiGet('/api/plan', currentToken);
+                        if (planResponse.ok) {
+                            const planData = await planResponse.json();
+                            setPlanInfo(planData);
+                        } else {
+                            setPlanInfo(null);
                         }
+
+                        // Fetch User Profile if not already set
+                        if (!user) {
+                            const userResponse = await apiGet('/api/users/profile', currentToken);
+                            if (userResponse.ok) {
+                                const userData = await userResponse.json();
+                                setUser(userData);
+                            }
+                        }
+                    } catch (error) {
+                        console.error('Error fetching user data:', error);
+                        setPlanInfo(null);
+                        // Don't clear token here, effectively allowing "authenticated but offline" state
+                        // or allowing retry. Clearing token might force relogin loop.
                     }
-                } catch (error) {
-                    console.error('Error initializing auth:', error);
+                } else {
                     setPlanInfo(null);
+                    setUser(null);
                 }
-            } else {
-                setPlanInfo(null);
-                setUser(null);
+            } catch (err) {
+                console.error('Critical Auth Initialization Error:', err);
+                // If critical error, maybe clear token to force re-login?
+                // setToken(null);
+            } finally {
+                setLoading(false);
             }
-            setLoading(false);
         };
 
         initializeAuth();
