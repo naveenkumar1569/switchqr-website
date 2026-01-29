@@ -25,6 +25,7 @@
     "helmet": "^8.1.0",
     "jsonwebtoken": "^9.0.3",
     "request-ip": "^3.3.0",
+    "useragent": "^2.3.0",
     "winston": "^3.19.0"
   },
   "devDependencies": {
