@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { industries } from '../data/industries';
 
-// Get client app URL from environment variable, with localhost fallback for development
-const CLIENT_APP_URL = import.meta.env.VITE_CLIENT_URL || 'http://localhost:5173';
+// Get client app URL from environment variable
+const CLIENT_APP_URL = import.meta.env.VITE_APP_URL || 'https://app.switch-qr.com';
 
 const Header = () => {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
