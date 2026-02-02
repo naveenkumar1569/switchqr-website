@@ -152,19 +152,18 @@ const CreateQR = () => {
         setLoading(true);
 
         try {
-            // Wait for planInfo to be loaded
+            // Use plan info from context with safe defaults for graceful degradation
+            // This ensures QR creation never blocks on plan loading
+            const QR_LIMIT = planInfo?.qr_limit ?? 5; // Default to free tier limit
+            const currentCount = planInfo?.qr_count ?? 0;
+            const planName = planInfo?.plan ?? 'free';
+
+            // Show info if using degraded defaults
             if (!planInfo) {
-                showError('Loading Plan Information', { description: 'Please wait while we load your plan details.' });
-                setLoading(false);
-                return;
+                showInfo('Creating with default limits', {
+                    description: 'Plan info unavailable. Using free tier limits.'
+                });
             }
-
-            // Use plan info from context - no fallback to avoid incorrect limits
-            const QR_LIMIT = planInfo.qr_limit;
-            const currentCount = planInfo.qr_count || 0;
-            const planName = planInfo.plan || 'free';
-
-
 
             if (currentCount >= QR_LIMIT) {
                 setLoading(false);
@@ -563,29 +562,18 @@ const CreateQR = () => {
 
                         )}
                     </div>
-                </div >
+                </div>
 
                 {/* Right Column: Preview & Customization */}
-                < div className="lg:col-span-5 flex flex-col gap-6" >
+                <div className="lg:col-span-5 flex flex-col gap-6">
                     <div className="sticky top-6 flex flex-col gap-6">
                         {/* Preview Card */}
                         <div className="rounded-xl border border-border-light dark:border-border-dark bg-surface-light dark:bg-surface-dark shadow-md overflow-hidden flex flex-col h-full">
-                            {/* Tabs */}
+                            {/* Design Tab Header */}
                             <div className="flex border-b border-border-light dark:border-border-dark">
-                                <button
-                                    type="button"
-                                    onClick={() => setActiveCustomizationTab('design')}
-                                    className={`flex-1 py-3 text-sm font-medium transition-colors ${activeCustomizationTab === 'design' ? 'text-primary border-b-2 border-primary bg-primary/5' : 'text-text-subtle hover:text-text-dark dark:hover:text-white'}`}
-                                >
+                                <div className="flex-1 py-3 text-sm font-medium text-primary border-b-2 border-primary bg-primary/5 text-center">
                                     Design
-                                </button>
-                                <button
-                                    type="button"
-                                    onClick={() => setActiveCustomizationTab('download')}
-                                    className={`flex-1 py-3 text-sm font-medium transition-colors ${activeCustomizationTab === 'download' ? 'text-primary border-b-2 border-primary bg-primary/5' : 'text-text-subtle hover:text-text-dark dark:hover:text-white'}`}
-                                >
-                                    Download
-                                </button>
+                                </div>
                             </div>
                             {/* QR Display Area */}
                             <div className="flex-1 flex items-center justify-center bg-[#faf8fb] dark:bg-[#251e2e] p-8 min-h-[300px]">
@@ -610,219 +598,100 @@ const CreateQR = () => {
                             </div>
                             {/* Customization Controls */}
                             <div className="p-6 border-t border-border-light dark:border-border-dark space-y-5 bg-white dark:bg-surface-dark">
-                                {activeCustomizationTab === 'design' ? (
-                                    <>
-                                        {/* Color Picker */}
-                                        <div>
-                                            <label className="block text-xs font-semibold uppercase tracking-wide text-text-subtle mb-3">Brand Color</label>
-                                            <div className="flex items-center gap-3">
-                                                <input
-                                                    className="h-10 w-10 cursor-pointer rounded border-0 p-0"
-                                                    type="color"
-                                                    value={formData.color}
-                                                    onChange={handleColorChange}
-                                                />
-                                                <div className="flex-1">
-                                                    <input
-                                                        className="w-full rounded-md border-gray-200 dark:border-gray-600 bg-[#f9fafb] dark:bg-[#2d2438] px-3 py-2 text-sm text-text-dark dark:text-white focus:border-primary uppercase font-mono"
-                                                        type="text"
-                                                        value={formData.color}
-                                                        onChange={handleColorChange}
-                                                    />
-                                                </div>
-                                            </div>
-                                            <div className="flex gap-2 mt-3">
-                                                {['#000000', '#2563eb', '#7426d9', '#22c55e', '#ef4444'].map((c) => (
-                                                    <button
-                                                        type="button"
-                                                        key={c}
-                                                        className={`w-6 h-6 rounded-full hover:scale-110 transition-transform ring-1 ring-offset-2 ring-transparent hover:ring-gray-300 ${formData.color === c ? 'ring-primary ring-2' : ''}`}
-                                                        style={{ backgroundColor: c }}
-                                                        onClick={() => setFormData({ ...formData, color: c })}
-                                                    ></button>
-                                                ))}
-                                            </div>
-                                        </div>
-                                        {/* Logo Upload */}
-                                        <div>
-                                            <div className="flex items-center justify-between mb-2">
-                                                <label className="block text-xs font-semibold uppercase tracking-wide text-text-subtle">Center Logo</label>
-                                                {!isBrandingUnlocked && (
-                                                    <span className="flex items-center gap-1 text-[10px] font-bold text-amber-600 bg-amber-50 dark:bg-amber-900/30 px-2 py-0.5 rounded-full border border-amber-100 dark:border-amber-800">
-                                                        <span className="material-symbols-outlined text-[10px]">lock</span> PRO
-                                                    </span>
-                                                )}
-                                            </div>
-
+                                {/* Color Picker */}
+                                <div>
+                                    <label className="block text-xs font-semibold uppercase tracking-wide text-text-subtle mb-3">Brand Color</label>
+                                    <div className="flex items-center gap-3">
+                                        <input
+                                            className="h-10 w-10 cursor-pointer rounded border-0 p-0"
+                                            type="color"
+                                            value={formData.color}
+                                            onChange={handleColorChange}
+                                        />
+                                        <div className="flex-1">
                                             <input
-                                                type="file"
-                                                ref={fileInputRef}
-                                                className="hidden"
-                                                accept="image/*"
-                                                onChange={handleLogoUpload}
+                                                className="w-full rounded-md border-gray-200 dark:border-gray-600 bg-[#f9fafb] dark:bg-[#2d2438] px-3 py-2 text-sm text-text-dark dark:text-white focus:border-primary uppercase font-mono"
+                                                type="text"
+                                                value={formData.color}
+                                                onChange={handleColorChange}
                                             />
-
-                                            <div
-                                                onClick={() => {
-                                                    if (isBrandingUnlocked) {
-                                                        fileInputRef.current?.click();
-                                                    } else {
-                                                        navigate('/billing');
-                                                    }
-                                                }}
-                                                className={`relative group cursor-pointer border-2 border-dashed rounded-lg p-4 text-center transition-all ${logoPreview
-                                                    ? 'border-primary bg-primary/5'
-                                                    : 'border-gray-200 dark:border-gray-600 hover:border-primary/50 hover:bg-primary/5'
-                                                    }`}
-                                            >
-                                                {!isBrandingUnlocked && (
-                                                    <div className="absolute inset-0 bg-white/50 dark:bg-black/20 backdrop-blur-[1px] rounded-lg z-10 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                                                        <button type="button" className="bg-primary text-white text-xs font-bold py-1.5 px-3 rounded shadow-sm hover:bg-primary-hover">Unlock Feature</button>
-                                                    </div>
-                                                )}
-
-                                                {logoPreview ? (
-                                                    <div className="flex flex-col items-center">
-                                                        <div className="w-10 h-10 relative mb-2">
-                                                            <img src={logoPreview} alt="Preview" className="w-full h-full object-contain rounded shadow-sm" />
-                                                            <button
-                                                                onClick={(e) => {
-                                                                    e.stopPropagation();
-                                                                    setLogoPreview(null);
-                                                                    if (fileInputRef.current) fileInputRef.current.value = '';
-                                                                }}
-                                                                className="absolute -top-1 -right-1 bg-red-500 text-white rounded-full p-0.5 hover:bg-red-600"
-                                                            >
-                                                                <span className="material-symbols-outlined text-[10px] block">close</span>
-                                                            </button>
-                                                        </div>
-                                                        <p className="text-xs text-primary font-medium">Logo Uploaded</p>
-                                                    </div>
-                                                ) : (
-                                                    <>
-                                                        <span className="material-symbols-outlined text-gray-400 text-3xl mb-1">cloud_upload</span>
-                                                        <p className="text-xs text-text-subtle">Drop logo here or click to upload</p>
-                                                    </>
-                                                )}
-                                            </div>
                                         </div>
-                                    </>
-                                ) : (
-                                    <>
-                                        {/* Download Options */}
-                                        <div>
-                                            <label className="block text-xs font-semibold uppercase tracking-wide text-text-subtle mb-3">Format</label>
-                                            <div className="grid grid-cols-3 gap-3">
-                                                <button
-                                                    type="button"
-                                                    onClick={() => setDownloadFormat('png')}
-                                                    className={`py-2 px-3 rounded-md text-sm font-medium border ${downloadFormat === 'png' ? 'border-primary bg-primary/5 text-primary' : 'border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800'}`}
-                                                >
-                                                    PNG
-                                                </button>
-                                                <button
-                                                    type="button"
-                                                    onClick={() => {
-                                                        if (planInfo?.features?.svg_pdf_downloads) {
-                                                            setDownloadFormat('svg');
-                                                        } else {
-                                                            navigate('/billing');
-                                                        }
-                                                    }}
-                                                    className={`py-2 px-3 rounded-md text-sm font-medium border relative ${downloadFormat === 'svg' ? 'border-primary bg-primary/5 text-primary' : 'border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800'}`}
-                                                >
-                                                    <span className={`flex items-center justify-center gap-1 ${!planInfo?.features?.svg_pdf_downloads ? 'opacity-50' : ''}`}>
-                                                        SVG {!planInfo?.features?.svg_pdf_downloads && <span className="material-symbols-outlined text-[12px]">lock</span>}
-                                                    </span>
-                                                </button>
-                                                <button
-                                                    type="button"
-                                                    onClick={() => {
-                                                        if (planInfo?.features?.svg_pdf_downloads) {
-                                                            setDownloadFormat('pdf');
-                                                        } else {
-                                                            navigate('/billing');
-                                                        }
-                                                    }}
-                                                    className={`py-2 px-3 rounded-md text-sm font-medium border relative ${downloadFormat === 'pdf' ? 'border-primary bg-primary/5 text-primary' : 'border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800'}`}
-                                                >
-                                                    <span className={`flex items-center justify-center gap-1 ${!planInfo?.features?.svg_pdf_downloads ? 'opacity-50' : ''}`}>
-                                                        PDF {!planInfo?.features?.svg_pdf_downloads && <span className="material-symbols-outlined text-[12px]">lock</span>}
-                                                    </span>
-                                                </button>
+                                    </div>
+                                    <div className="flex gap-2 mt-3">
+                                        {['#000000', '#2563eb', '#7426d9', '#22c55e', '#ef4444'].map((c) => (
+                                            <button
+                                                type="button"
+                                                key={c}
+                                                className={`w-6 h-6 rounded-full hover:scale-110 transition-transform ring-1 ring-offset-2 ring-transparent hover:ring-gray-300 ${formData.color === c ? 'ring-primary ring-2' : ''}`}
+                                                style={{ backgroundColor: c }}
+                                                onClick={() => setFormData({ ...formData, color: c })}
+                                            ></button>
+                                        ))}
+                                    </div>
+                                </div>
+                                {/* Logo Upload */}
+                                <div>
+                                    <div className="flex items-center justify-between mb-2">
+                                        <label className="block text-xs font-semibold uppercase tracking-wide text-text-subtle">Center Logo</label>
+                                        {!isBrandingUnlocked && (
+                                            <span className="flex items-center gap-1 text-[10px] font-bold text-amber-600 bg-amber-50 dark:bg-amber-900/30 px-2 py-0.5 rounded-full border border-amber-100 dark:border-amber-800">
+                                                <span className="material-symbols-outlined text-[10px]">lock</span> PRO
+                                            </span>
+                                        )}
+                                    </div>
+
+                                    <input
+                                        type="file"
+                                        ref={fileInputRef}
+                                        className="hidden"
+                                        accept="image/*"
+                                        onChange={handleLogoUpload}
+                                    />
+
+                                    <div
+                                        onClick={() => {
+                                            if (isBrandingUnlocked) {
+                                                fileInputRef.current?.click();
+                                            } else {
+                                                navigate('/billing');
+                                            }
+                                        }}
+                                        className={`relative group cursor-pointer border-2 border-dashed rounded-lg p-4 text-center transition-all ${logoPreview
+                                            ? 'border-primary bg-primary/5'
+                                            : 'border-gray-200 dark:border-gray-600 hover:border-primary/50 hover:bg-primary/5'
+                                            }`}
+                                    >
+                                        {!isBrandingUnlocked && (
+                                            <div className="absolute inset-0 bg-white/50 dark:bg-black/20 backdrop-blur-[1px] rounded-lg z-10 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                                <button type="button" className="bg-primary text-white text-xs font-bold py-1.5 px-3 rounded shadow-sm hover:bg-primary-hover">Unlock Feature</button>
                                             </div>
-                                        </div>
+                                        )}
 
-                                        <div>
-                                            <label className="block text-xs font-semibold uppercase tracking-wide text-text-subtle mb-3">Size</label>
-                                            <div className="relative">
-                                                <button
-                                                    type="button"
-                                                    onClick={() => setIsSizeDropdownOpen(!isSizeDropdownOpen)}
-                                                    className="relative w-full cursor-pointer rounded-lg bg-white dark:bg-gray-800 py-2.5 pl-3 pr-10 text-left text-slate-900 dark:text-white shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-gray-700 focus:outline-none focus:ring-2 focus:ring-primary sm:text-sm sm:leading-6"
-                                                >
-                                                    <span className="block truncate">{downloadSize} x {downloadSize} px</span>
-                                                    <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
-                                                        <span className="material-symbols-outlined text-gray-400 text-[20px]">expand_more</span>
-                                                    </span>
-                                                </button>
-
-                                                {isSizeDropdownOpen && (
-                                                    <div className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-lg bg-white dark:bg-[#2d2438] py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm border border-gray-100 dark:border-gray-700">
-                                                        {['256', '512', '1024', '2048'].map((size) => (
-                                                            <div
-                                                                key={size}
-                                                                className={`relative cursor-pointer select-none py-2.5 pl-3 pr-9 ${downloadSize === size ? 'bg-primary/10 text-primary font-semibold' : 'text-slate-900 dark:text-white hover:bg-gray-50 dark:hover:bg-white/5'}`}
-                                                                onClick={() => {
-                                                                    setDownloadSize(size);
-                                                                    setIsSizeDropdownOpen(false);
-                                                                }}
-                                                            >
-                                                                <span className="block truncate">{size} x {size} px</span>
-                                                                {downloadSize === size && (
-                                                                    <span className="absolute inset-y-0 right-0 flex items-center pr-4 text-primary">
-                                                                        <span className="material-symbols-outlined text-[18px]">check</span>
-                                                                    </span>
-                                                                )}
-                                                            </div>
-                                                        ))}
-                                                    </div>
-                                                )}
+                                        {logoPreview ? (
+                                            <div className="flex flex-col items-center">
+                                                <div className="w-10 h-10 relative mb-2">
+                                                    <img src={logoPreview} alt="Preview" className="w-full h-full object-contain rounded shadow-sm" />
+                                                    <button
+                                                        onClick={(e) => {
+                                                            e.stopPropagation();
+                                                            setLogoPreview(null);
+                                                            if (fileInputRef.current) fileInputRef.current.value = '';
+                                                        }}
+                                                        className="absolute -top-1 -right-1 bg-red-500 text-white rounded-full p-0.5 hover:bg-red-600"
+                                                    >
+                                                        <span className="material-symbols-outlined text-[10px] block">close</span>
+                                                    </button>
+                                                </div>
+                                                <p className="text-xs text-primary font-medium">Logo Uploaded</p>
                                             </div>
-
-                                        </div>
-
-                                        <button
-                                            type="button"
-                                            className="w-full bg-primary hover:bg-primary-hover text-white font-semibold py-3 px-4 rounded-lg shadow-md transition-all flex items-center justify-center gap-2 group mt-4"
-                                            onClick={async () => {
-                                                if (downloadFormat !== 'png') {
-                                                    navigate('/billing');
-                                                    return;
-                                                }
-                                                try {
-                                                    const imageUrl = `https://api.qrserver.com/v1/create-qr-code/?size=${downloadSize}x${downloadSize}&data=${encodeURIComponent(formData.destination_url || 'https://example.com')}&color=${formData.color.replace('#', '')}`;
-                                                    const response = await fetch(imageUrl);
-                                                    const blob = await response.blob();
-                                                    const url = window.URL.createObjectURL(blob);
-                                                    const link = document.createElement('a');
-                                                    link.href = url;
-                                                    link.download = `switchqr-${formData.name || 'code'}.png`;
-                                                    document.body.appendChild(link);
-                                                    link.click();
-                                                    document.body.removeChild(link);
-                                                    window.URL.revokeObjectURL(url);
-                                                } catch (e) {
-                                                    console.error('Download failed', e);
-                                                    showError('Download Failed', { description: 'Failed to download QR code image.' });
-                                                }
-                                            }}
-                                        >
-                                            <span className="material-symbols-outlined">download</span>
-                                            Download QR
-                                        </button>
-                                    </>
-                                )}
+                                        ) : (
+                                            <>
+                                                <span className="material-symbols-outlined text-gray-400 text-3xl mb-1">cloud_upload</span>
+                                                <p className="text-xs text-text-subtle">Drop logo here or click to upload</p>
+                                            </>
+                                        )}
+                                    </div>
+                                </div>
                                 <div className="pt-2">
                                     <button
                                         type="submit"
@@ -839,9 +708,9 @@ const CreateQR = () => {
                             By creating this QR, you agree to our <Link to="/terms" className="underline hover:text-primary">Terms of Service</Link>.
                         </p>
                     </div>
-                </div >
-            </div >
-        </form >
+                </div>
+            </div>
+        </form>
     );
 };
 

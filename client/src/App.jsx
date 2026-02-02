@@ -20,14 +20,23 @@ import Settings from './pages/Settings';
 import Billing from './pages/Billing';
 
 const PrivateRoute = () => {
-  const { token, loading } = useAuth();
+  const { token, loading, bootState, planLoadError, BOOT_STATE } = useAuth();
 
-  if (loading) {
+  // Show loading screen during initialization
+  if (loading || bootState === BOOT_STATE?.INITIALIZING) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-background-light dark:bg-background-dark">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+      <div className="flex flex-col items-center justify-center min-h-screen bg-background-light dark:bg-background-dark">
+        <div className="flex flex-col items-center gap-4">
+          <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-primary"></div>
+          <p className="text-sm text-text-subtle">Loading your workspace...</p>
+        </div>
       </div>
     );
+  }
+
+  // Degraded mode warning (optional - shows banner but allows access)
+  if (bootState === BOOT_STATE?.DEGRADED && planLoadError) {
+    // Still allow access, Layout can show warning banner
   }
 
   return token ? <Layout /> : <Navigate to="/login" />;

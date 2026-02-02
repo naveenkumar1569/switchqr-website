@@ -1,17 +1,101 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useMemo } from 'react';
 import { apiGet } from '../utils/api';
 import { supabase } from '../utils/supabase';
 
 const AuthContext = createContext(null);
 
+// Default plan for graceful degradation when API fails
+const DEFAULT_FREE_PLAN = {
+    plan: 'free',
+    plan_expires_at: null,
+    qr_limit: 5,
+    qr_count: 0,
+    features: {
+        advanced_analytics: false,
+        campaigns: false,
+        branding: false,
+        ab_testing: false,
+        scheduling: false,
+        csv_export: false,
+        svg_pdf_downloads: false
+    }
+};
+
+// Boot states for proper UI gating
+const BOOT_STATE = {
+    INITIALIZING: 'initializing',  // App just started, checking session
+    AUTHENTICATED: 'authenticated', // User is logged in, data loaded
+    UNAUTHENTICATED: 'unauthenticated', // No user session
+    DEGRADED: 'degraded' // Auth OK but backend unreachable, using defaults
+};
+
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
-    const [token, setToken] = useState(localStorage.getItem('token'));
+    const [token, setToken] = useState(() => localStorage.getItem('token'));
     const [planInfo, setPlanInfo] = useState(null);
-    const [loading, setLoading] = useState(true);
+    const [bootState, setBootState] = useState(BOOT_STATE.INITIALIZING);
+    const [planLoadError, setPlanLoadError] = useState(null);
 
-    // Fetch plan information and user profile when token changes
+    // Derived loading state for backward compatibility
+    const loading = bootState === BOOT_STATE.INITIALIZING;
+
+    // Fetch plan and profile data with timeout
+    const fetchUserData = async (currentToken) => {
+        const TIMEOUT_MS = 8000; // 8 second timeout
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), TIMEOUT_MS);
+
+        try {
+            // Parallel fetch for plan and profile
+            const [planPromise, profilePromise] = [
+                apiGet('/api/plan', currentToken, { signal: controller.signal }),
+                apiGet('/api/users/profile', currentToken, { signal: controller.signal })
+            ];
+
+            const planResponse = await planPromise;
+            if (planResponse.ok) {
+                const planData = await planResponse.json();
+                setPlanInfo(planData);
+                setPlanLoadError(null);
+            } else {
+                // Plan API returned error, use default
+                console.warn('Plan API returned error, using free defaults');
+                setPlanInfo(DEFAULT_FREE_PLAN);
+                setPlanLoadError('Plan lookup failed, using free tier defaults');
+            }
+
+            // Profile fetch (non-blocking)
+            try {
+                const profileResponse = await profilePromise;
+                if (profileResponse.ok) {
+                    const userData = await profileResponse.json();
+                    setUser(userData);
+                }
+            } catch (profileErr) {
+                console.warn('Profile fetch failed (non-critical)', profileErr);
+            }
+
+            return true;
+        } catch (error) {
+            if (error.name === 'AbortError') {
+                console.warn('Plan fetch timed out, using free defaults');
+                setPlanInfo(DEFAULT_FREE_PLAN);
+                setPlanLoadError('Backend timeout, using free tier defaults');
+            } else {
+                console.error('Error fetching user data:', error);
+                setPlanInfo(DEFAULT_FREE_PLAN);
+                setPlanLoadError('Network error, using free tier defaults');
+            }
+            return false;
+        } finally {
+            clearTimeout(timeoutId);
+        }
+    };
+
+    // Main auth initialization
     useEffect(() => {
+        let isMounted = true;
+
         const initializeAuth = async () => {
             let currentToken = token;
 
@@ -23,49 +107,34 @@ export const AuthProvider = ({ children }) => {
 
                     if (data?.session?.access_token) {
                         currentToken = data.session.access_token;
-                        setToken(currentToken);
+                        if (isMounted) setToken(currentToken);
                     }
                 }
 
                 if (currentToken) {
-                    try {
-                        // Fetch Plan Info
-                        const planResponse = await apiGet('/api/plan', currentToken);
-                        if (planResponse.ok) {
-                            const planData = await planResponse.json();
-                            setPlanInfo(planData);
-                        } else {
-                            setPlanInfo(null);
-                        }
-
-                        // Fetch User Profile if not already set
-                        if (!user) {
-                            const userResponse = await apiGet('/api/users/profile', currentToken);
-                            if (userResponse.ok) {
-                                const userData = await userResponse.json();
-                                setUser(userData);
-                            }
-                        }
-                    } catch (error) {
-                        console.error('Error fetching user data:', error);
-                        setPlanInfo(null);
-                        // Don't clear token here, effectively allowing "authenticated but offline" state
-                        // or allowing retry. Clearing token might force relogin loop.
+                    const success = await fetchUserData(currentToken);
+                    if (isMounted) {
+                        setBootState(success ? BOOT_STATE.AUTHENTICATED : BOOT_STATE.DEGRADED);
                     }
                 } else {
-                    setPlanInfo(null);
-                    setUser(null);
+                    if (isMounted) {
+                        setPlanInfo(null);
+                        setUser(null);
+                        setBootState(BOOT_STATE.UNAUTHENTICATED);
+                    }
                 }
             } catch (err) {
                 console.error('Critical Auth Initialization Error:', err);
-                // If critical error, maybe clear token to force re-login?
-                // setToken(null);
-            } finally {
-                setLoading(false);
+                if (isMounted) {
+                    setBootState(BOOT_STATE.DEGRADED);
+                    setPlanInfo(DEFAULT_FREE_PLAN);
+                }
             }
         };
 
         initializeAuth();
+
+        return () => { isMounted = false; };
     }, [token]);
 
     // Supabase Auth Listener (Handles OAuth Redirects)
@@ -74,6 +143,7 @@ export const AuthProvider = ({ children }) => {
             if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
                 if (session?.access_token && session.access_token !== token) {
                     setToken(session.access_token);
+                    setBootState(BOOT_STATE.INITIALIZING); // Re-trigger fetch
                 }
             } else if (event === 'SIGNED_OUT') {
                 logout();
@@ -83,6 +153,7 @@ export const AuthProvider = ({ children }) => {
         return () => subscription.unsubscribe();
     }, [token]);
 
+    // Persist token to localStorage
     useEffect(() => {
         if (token) {
             localStorage.setItem('token', token);
@@ -103,6 +174,7 @@ export const AuthProvider = ({ children }) => {
         setToken(null);
         setUser(null);
         setPlanInfo(null);
+        setBootState(BOOT_STATE.UNAUTHENTICATED);
     };
 
     const signInWithGoogle = async () => {
@@ -122,6 +194,7 @@ export const AuthProvider = ({ children }) => {
                 if (response.ok) {
                     const data = await response.json();
                     setPlanInfo(data);
+                    setPlanLoadError(null);
                 }
             } catch (error) {
                 console.error('Error refreshing plan info:', error);
@@ -129,8 +202,23 @@ export const AuthProvider = ({ children }) => {
         }
     };
 
+    // Memoize context value to prevent unnecessary re-renders
+    const contextValue = useMemo(() => ({
+        user,
+        token,
+        planInfo,
+        loading,
+        bootState,
+        planLoadError,
+        login,
+        logout,
+        signInWithGoogle,
+        refreshPlan,
+        BOOT_STATE
+    }), [user, token, planInfo, loading, bootState, planLoadError]);
+
     return (
-        <AuthContext.Provider value={{ user, token, planInfo, loading, login, logout, signInWithGoogle, refreshPlan }}>
+        <AuthContext.Provider value={contextValue}>
             {children}
         </AuthContext.Provider>
     );

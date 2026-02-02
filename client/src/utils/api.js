@@ -11,9 +11,10 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://switchqr-back
  * @param {string} endpoint - API endpoint (e.g., '/api/qrs')
  * @param {Object} options - Fetch options
  * @param {string} token - Optional auth token
+ * @param {Object} extraOptions - Additional fetch options (like signal)
  * @returns {Promise<Response>}
  */
-export const apiRequest = async (endpoint, options = {}, token = null) => {
+export const apiRequest = async (endpoint, options = {}, token = null, extraOptions = {}) => {
     const url = `${API_BASE_URL}${endpoint}`;
 
     const headers = {
@@ -27,6 +28,7 @@ export const apiRequest = async (endpoint, options = {}, token = null) => {
 
     return fetch(url, {
         ...options,
+        ...extraOptions,
         headers,
     });
 };
@@ -34,8 +36,8 @@ export const apiRequest = async (endpoint, options = {}, token = null) => {
 /**
  * GET request helper
  */
-export const apiGet = (endpoint, token = null) => {
-    return apiRequest(endpoint, { method: 'GET' }, token);
+export const apiGet = (endpoint, token = null, extraOptions = {}) => {
+    return apiRequest(endpoint, { method: 'GET' }, token, extraOptions);
 };
 
 /**
