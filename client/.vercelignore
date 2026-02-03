@@ -1,0 +1,3 @@
+# Force Vercel to detect new deployment
+node_modules
+.DS_Store
