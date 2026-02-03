@@ -1,4 +1,10 @@
 {
+  "name": "switchqr-root",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "npm run build --prefix client",
+    "install": "npm install --prefix client"
+  },
   "dependencies": {
     "@supabase/supabase-js": "^2.93.2",
     "cors": "^2.8.6",
