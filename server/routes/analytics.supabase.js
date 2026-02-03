@@ -137,26 +137,17 @@ router.get('/:qr_id', supabaseAuth, async (req, res) => {
         const { data: { user }, error: authError } = await req.supabase.auth.getUser();
         if (authError || !user) return res.status(401).json({ error: 'Unauthorized' });
 
-        // Verify ownership
+        // Verify ownership and get QR details
         const { data: qr, error: qrError } = await req.supabase
             .from('qrs')
-            .select('id, name')
+            .select('id, name, destination_url')
             .eq('id', qr_id)
             .eq('owner_id', user.id)
             .single();
 
         if (qrError || !qr) return res.status(404).json({ error: 'QR not found' });
 
-        // Default Stats
-        const stats = {
-            totalScans: 0,
-            uniqueScans: 0,
-            topQr: qr.name,
-            recentScans: [],
-            deviceStats: { Mobile: 0, Desktop: 0, Tablet: 0 },
-            scansOverTime: []
-        };
-
+        // Fetch all scans
         const { data: scans, error: scanError } = await req.supabase
             .from('scans')
             .select('*')
@@ -165,19 +156,18 @@ router.get('/:qr_id', supabaseAuth, async (req, res) => {
 
         if (scanError) throw scanError;
 
+        // Initialize stats
+        const stats = {
+            totalScans: 0,
+            uniqueScans: 0,
+            deviceStats: { Mobile: 0, Desktop: 0, Tablet: 0 },
+            scansOverTime: []
+        };
+
         if (scans && scans.length > 0) {
             stats.totalScans = scans.length;
             const uniqueIps = new Set(scans.map(s => s.ip_address));
             stats.uniqueScans = uniqueIps.size;
-
-            stats.recentScans = scans.slice(0, 5).map(s => ({
-                id: s.id,
-                qr_name: qr.name,
-                timestamp: s.scanned_at,
-                user_agent: s.browser || 'Unknown',
-                location: s.city ? `${s.city}, ${s.country}` : 'Unknown',
-                ip_address: s.ip_address
-            }));
 
             // Device Stats
             const deviceCounts = { Mobile: 0, Desktop: 0, Tablet: 0 };
@@ -215,7 +205,16 @@ router.get('/:qr_id', supabaseAuth, async (req, res) => {
             }));
         }
 
-        res.json(stats);
+        // Return new structure with qr, scans, and stats
+        res.json({
+            qr: {
+                id: qr.id,
+                name: qr.name,
+                destination_url: qr.destination_url
+            },
+            scans: scans || [],
+            stats
+        });
     } catch (e) {
         logger.error('Stats error', e);
         res.status(500).json({ error: 'Server error' });

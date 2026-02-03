@@ -38,6 +38,7 @@ const Analytics = () => {
 
     const qr = stats.qr || {};
     const scans = stats.scans || [];
+    const analytics = stats.stats || {};
 
     return (
         <div className="max-w-7xl mx-auto flex flex-col gap-8">
@@ -67,7 +68,7 @@ const Analytics = () => {
                         </div>
                     </div>
                     <p className="text-sm font-medium text-slate-500 dark:text-slate-400">Total Scans</p>
-                    <h3 className="text-3xl font-bold text-slate-900 dark:text-white mt-1">{scans.length}</h3>
+                    <h3 className="text-3xl font-bold text-slate-900 dark:text-white mt-1">{analytics.totalScans || scans.length}</h3>
                 </div>
             </section>
 
@@ -81,6 +82,7 @@ const Analytics = () => {
                         <thead className="bg-slate-50 dark:bg-slate-800/50">
                             <tr>
                                 <th className="px-6 py-3 text-left text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Time</th>
+                                <th className="px-6 py-3 text-left text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Location</th>
                                 <th className="px-6 py-3 text-left text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">IP Address</th>
                                 <th className="px-6 py-3 text-left text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Device Info</th>
                             </tr>
@@ -92,6 +94,11 @@ const Analytics = () => {
                                         {new Date(scan.scanned_at).toLocaleString()}
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-600 dark:text-slate-300">
+                                        {scan.city && scan.country
+                                            ? `${scan.city}, ${scan.country}`
+                                            : scan.country || 'Unknown'}
+                                    </td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-600 dark:text-slate-300">
                                         {scan.ip_address}
                                     </td>
                                     <td className="px-6 py-4 text-sm text-slate-600 dark:text-slate-300 max-w-md truncate" title={scan.user_agent}>
@@ -101,7 +108,7 @@ const Analytics = () => {
                             ))}
                             {scans.length === 0 && (
                                 <tr>
-                                    <td colSpan="3" className="px-6 py-8 text-center text-slate-500">
+                                    <td colSpan="4" className="px-6 py-8 text-center text-slate-500">
                                         No scans yet.
                                     </td>
                                 </tr>
