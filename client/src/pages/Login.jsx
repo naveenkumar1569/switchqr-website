@@ -75,7 +75,7 @@ const Login = () => {
                     <div className="w-full md:w-7/12 flex flex-col justify-center p-8 md:p-12 lg:p-16 bg-surface-light dark:bg-surface-dark">
                         <div className="max-w-md mx-auto w-full">
                             <div className="mb-8 text-center md:text-left">
-                                <h2 className="text-3xl font-bold text-text-dark dark:text-white mb-2">Welcome back</h2>
+                                <h2 className="text-3xl font-bold text-text-dark dark:text-white mb-2">Welcome back (v2.0)</h2>
                                 <p className="text-text-subtle dark:text-gray-400">Please enter your details to sign in.</p>
                             </div>
 
