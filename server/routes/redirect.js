@@ -1,6 +1,7 @@
 const express = require('express');
 const { db } = require('../database');
 const rateLimit = require('express-rate-limit');
+const UAParser = require('ua-parser-js');
 
 const router = express.Router();
 
@@ -106,7 +107,52 @@ function findActiveSchedule(schedules) {
     return activeSchedules[0];
 }
 
-router.get('/:shortCode', redirectLimiter, (req, res) => {
+// Helper: Fetch geolocation data from IP
+async function getLocationData(ip) {
+    // Skip for localhost/private IPs
+    if (!ip || ip === '::1' || ip.startsWith('192.168.') || ip.startsWith('10.') || ip.startsWith('127.') || ip === '::ffff:127.0.0.1') {
+        return { country: null, city: null };
+    }
+
+    // Remove IPv6 prefix if present
+    const cleanIp = ip.replace('::ffff:', '');
+
+    try {
+        const response = await fetch(`http://ip-api.com/json/${cleanIp}?fields=status,country,city`);
+        const data = await response.json();
+
+        if (data.status === 'success') {
+            return {
+                country: data.country || null,
+                city: data.city || null
+            };
+        }
+    } catch (error) {
+        console.error('Geolocation fetch failed:', error);
+    }
+
+    return { country: null, city: null };
+}
+
+// Helper: Parse user agent for device/OS
+function parseUserAgent(ua) {
+    if (!ua) return { device_type: null, os: null, browser: null };
+
+    const parser = new UAParser(ua);
+    const result = parser.getResult();
+
+    // Determine device type
+    let device_type = 'Desktop';
+    if (result.device.type === 'mobile') device_type = 'Mobile';
+    else if (result.device.type === 'tablet') device_type = 'Tablet';
+
+    const os = result.os.name || null;
+    const browser = result.browser.name || null;
+
+    return { device_type, os, browser };
+}
+
+router.get('/:shortCode', redirectLimiter, async (req, res) => {
     const { shortCode } = req.params;
 
     // specific exclusion for API routes if they conflict (though mounting order handles this usually)
@@ -163,19 +209,23 @@ router.get('/:shortCode', redirectLimiter, (req, res) => {
             }
         }
 
-        // Log Scan (Async - fire and forget for speed)
+        // Log Scan with geolocation and device data
         const scanStmt = db.prepare(`
-            INSERT INTO scans (qr_id, variant_id, schedule_rule_id, ip, user_agent, device_type, os, country, city, referrer)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            INSERT INTO scans (qr_id, variant_id, schedule_rule_id, ip, user_agent, device_type, os, browser, country, city, referrer)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         `);
 
-        // Basic extraction (can use user-agent parser lib later for device/os)
+        // Extract IP and User-Agent
         const ip = req.ip || req.connection.remoteAddress;
         const ua = req.get('User-Agent');
         const referrer = req.get('Referrer');
 
+        // Get location and device data
+        const { country, city } = await getLocationData(ip);
+        const { device_type, os, browser } = parseUserAgent(ua);
+
         try {
-            scanStmt.run(qr.id, variantId, scheduleRuleId, ip, ua, 'unknown', 'unknown', 'unknown', 'unknown', referrer);
+            scanStmt.run(qr.id, variantId, scheduleRuleId, ip, ua, device_type, os, browser, country, city, referrer);
         } catch (e) {
             console.error('Scan logging failed', e);
         }
