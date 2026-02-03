@@ -12,7 +12,7 @@ const Analytics = () => {
     useEffect(() => {
         const fetchAnalytics = async () => {
             try {
-                const response = await apiGet(`/api/stats/${id}`, token);
+                const response = await apiGet(`/api/analytics/${id}`, token);
 
                 if (response.ok) {
                     const data = await response.json();
