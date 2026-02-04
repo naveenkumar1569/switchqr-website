@@ -350,22 +350,24 @@ const GlobalAnalytics = () => {
                 </div>
                 <div className="relative w-full h-[250px]" ref={containerRef}>
                     {/* Hover Tooltip */}
-                    {hoveredPoint !== null && (
+                    {hoveredPoint !== null && data.scansOverTime[hoveredPoint] && (
                         <div
-                            className="absolute z-20 pointer-events-none"
+                            className="absolute z-20 pointer-events-none transition-all duration-200"
                             style={{
                                 left: `${(hoveredPoint / (data.scansOverTime.length - 1 || 1)) * 100}%`,
-                                top: '-10px',
+                                top: '20px', // Move it down a bit so it doesn't clip
                                 transform: 'translateX(-50%)'
                             }}
                         >
-                            <div className="bg-text-main dark:bg-[#1e1726] border border-slate-700 rounded-lg shadow-xl px-4 py-2 text-white">
-                                <div className="text-xs font-bold whitespace-nowrap mb-1">
-                                    {data.scansOverTime[hoveredPoint]?.date}
+                            <div className="bg-slate-900 dark:bg-slate-800 border border-slate-700 rounded-lg shadow-2xl px-4 py-2 flex flex-col items-center min-w-[100px]">
+                                <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-0.5">
+                                    {data.scansOverTime[hoveredPoint].date}
                                 </div>
-                                <div className="text-sm font-black">
-                                    {data.scansOverTime[hoveredPoint]?.count} {data.scansOverTime[hoveredPoint]?.count === 1 ? 'Scan' : 'Scans'}
+                                <div className="text-base font-black text-white">
+                                    {data.scansOverTime[hoveredPoint].count} {data.scansOverTime[hoveredPoint].count === 1 ? 'Scan' : 'Scans'}
                                 </div>
+                                {/* Little triangle tip */}
+                                <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-slate-900 dark:bg-slate-800 rotate-45 border-t border-l border-slate-700"></div>
                             </div>
                         </div>
                     )}
