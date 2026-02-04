@@ -507,10 +507,11 @@ const GlobalAnalytics = () => {
                                     stroke="currentColor"
                                     strokeDasharray={`${data.deviceStats?.Mobile || 0}, 100`}
                                     strokeWidth={hoveredSegment === 'mobile' ? 10 : 8}
+                                    strokeLinecap="round"
                                     style={{
-                                        opacity: hoveredSegment === 'mobile' ? 0.85 : 1,
-                                        transition: 'all 0.3s ease',
-                                        filter: hoveredSegment === 'mobile' ? 'drop-shadow(0 0 4px rgba(116, 38, 217, 0.5))' : 'none'
+                                        opacity: hoveredSegment === 'mobile' ? 0.9 : 1,
+                                        transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+                                        filter: hoveredSegment === 'mobile' ? 'drop-shadow(0 0 3px rgba(116, 38, 217, 0.4))' : 'none'
                                     }}
                                     onMouseEnter={() => setHoveredSegment('mobile')}
                                     onMouseLeave={() => setHoveredSegment(null)}
@@ -524,10 +525,11 @@ const GlobalAnalytics = () => {
                                     strokeDasharray={`${data.deviceStats?.Tablet || 0}, 100`}
                                     strokeDashoffset={`-${data.deviceStats?.Mobile || 0}`}
                                     strokeWidth={hoveredSegment === 'tablet' ? 10 : 8}
+                                    strokeLinecap="round"
                                     style={{
-                                        opacity: hoveredSegment === 'tablet' ? 0.85 : 1,
-                                        transition: 'all 0.3s ease',
-                                        filter: hoveredSegment === 'tablet' ? 'drop-shadow(0 0 4px rgba(116, 38, 217, 0.5))' : 'none'
+                                        opacity: hoveredSegment === 'tablet' ? 0.9 : 1,
+                                        transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+                                        filter: hoveredSegment === 'tablet' ? 'drop-shadow(0 0 3px rgba(116, 38, 217, 0.4))' : 'none'
                                     }}
                                     onMouseEnter={() => setHoveredSegment('tablet')}
                                     onMouseLeave={() => setHoveredSegment(null)}
@@ -541,16 +543,17 @@ const GlobalAnalytics = () => {
                                     strokeDasharray={`${data.deviceStats?.Desktop || 0}, 100`}
                                     strokeDashoffset={`-${(data.deviceStats?.Mobile || 0) + (data.deviceStats?.Tablet || 0)}`}
                                     strokeWidth={hoveredSegment === 'desktop' ? 10 : 8}
+                                    strokeLinecap="round"
                                     style={{
-                                        opacity: hoveredSegment === 'desktop' ? 0.85 : 1,
-                                        transition: 'all 0.3s ease',
-                                        filter: hoveredSegment === 'desktop' ? 'drop-shadow(0 0 4px rgba(116, 38, 217, 0.5))' : 'none'
+                                        opacity: hoveredSegment === 'desktop' ? 0.9 : 1,
+                                        transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+                                        filter: hoveredSegment === 'desktop' ? 'drop-shadow(0 0 3px rgba(116, 38, 217, 0.4))' : 'none'
                                     }}
                                     onMouseEnter={() => setHoveredSegment('desktop')}
                                     onMouseLeave={() => setHoveredSegment(null)}
                                 ></path>
                             </svg>
-                            <div className="absolute inset-0 flex items-center justify-center flex-col">
+                            <div className="absolute inset-0 flex items-center justify-center flex-col pointer-events-none">
                                 <span className="text-2xl font-bold text-text-dark dark:text-white">Total</span>
                                 <span className="text-sm text-text-subtle dark:text-gray-400">Devices</span>
                             </div>
