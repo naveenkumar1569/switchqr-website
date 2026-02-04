@@ -374,7 +374,20 @@ const GlobalAnalytics = () => {
                         </div>
                     )}
 
-                    <svg className="w-full h-full overflow-visible" viewBox="0 0 800 250" style={{ shapeRendering: 'geometricPrecision' }}>
+                    {/* Debug Console Logs */}
+                    {React.useEffect(() => {
+                        const svg = document.querySelector('svg.w-full.h-full');
+                        if (svg) {
+                            const rect = svg.getBoundingClientRect();
+                            console.log('--- GRAPH ALIGNMENT DEBUG ---');
+                            console.log('Container Width:', rect.width);
+                            console.log('SVG ViewBox:', '0 0 800 250');
+                            console.log('Aspect Ratio Preserved:', svg.getAttribute('preserveAspectRatio'));
+                            console.log('Calculated Points X:', data.scansOverTime.map((d, i) => (i / (data.scansOverTime.length - 1 || 1)) * 800));
+                        }
+                    })}
+
+                    <svg className="w-full h-full overflow-visible" viewBox="0 0 800 250" preserveAspectRatio="none" style={{ shapeRendering: 'geometricPrecision', border: '1px solid red' }}>
                         {/* Grid Lines */}
                         <line stroke="#e5e7eb" strokeWidth="1" x1="0" x2="800" y1="200" y2="200" className="dark:stroke-gray-700" vectorEffect="non-scaling-stroke"></line>
                         <line stroke="#e5e7eb" strokeWidth="1" x1="0" x2="800" y1="100" y2="100" className="dark:stroke-gray-700" vectorEffect="non-scaling-stroke"></line>
