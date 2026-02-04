@@ -1086,7 +1086,7 @@ const QRDetails = () => {
                                                     {scan.user_agent.includes('Mobile') ? 'Mobile' : 'Desktop'}
                                                 </div>
                                             </td>
-                                            <td className="px-5 py-3 text-slate-600 dark:text-slate-400 whitespace-nowrap">Unknown</td>
+                                            <td className="px-5 py-3 text-slate-600 dark:text-slate-400 whitespace-nowrap">{scan.location || 'Unknown'}</td>
                                         </tr>
                                     ))}
                                     {stats.recentScans.length === 0 && (
