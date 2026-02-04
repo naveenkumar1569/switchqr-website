@@ -373,13 +373,13 @@ const GlobalAnalytics = () => {
                         </div>
                     )}
 
-                    <svg className="w-full h-full overflow-visible" preserveAspectRatio="none" viewBox="0 0 800 250">
+                    <svg className="w-full h-full overflow-visible" viewBox="0 0 800 250" style={{ shapeRendering: 'geometricPrecision' }}>
                         {/* Grid Lines */}
-                        <line stroke="#e5e7eb" strokeWidth="1" x1="0" x2="800" y1="200" y2="200" className="dark:stroke-gray-700"></line>
-                        <line stroke="#e5e7eb" strokeWidth="1" x1="0" x2="800" y1="100" y2="100" className="dark:stroke-gray-700"></line>
+                        <line stroke="#e5e7eb" strokeWidth="1" x1="0" x2="800" y1="200" y2="200" className="dark:stroke-gray-700" vectorEffect="non-scaling-stroke"></line>
+                        <line stroke="#e5e7eb" strokeWidth="1" x1="0" x2="800" y1="100" y2="100" className="dark:stroke-gray-700" vectorEffect="non-scaling-stroke"></line>
 
                         {/* Dynamic Path */}
-                        <path d={pathD} fill="none" stroke="#7426d9" strokeLinecap="round" strokeWidth="3"></path>
+                        <path d={pathD} fill="none" stroke="#7426d9" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" vectorEffect="non-scaling-stroke"></path>
 
                         {/* Invisible hover areas for each data point */}
                         {data.scansOverTime.map((d, i) => {
@@ -413,7 +413,8 @@ const GlobalAnalytics = () => {
                                     fill="currentColor"
                                     r={isHovered ? "6" : "4"}
                                     stroke="#7426d9"
-                                    strokeWidth={isHovered ? "3" : "2"}
+                                    strokeWidth={isHovered ? "2.5" : "2"}
+                                    vectorEffect="non-scaling-stroke"
                                     className={`text-white dark:text-[#2d2438] transition-all ${isHovered ? 'drop-shadow-lg' : ''}`}
                                     style={{ cursor: 'pointer' }}
                                     onMouseEnter={() => setHoveredPoint(i)}
