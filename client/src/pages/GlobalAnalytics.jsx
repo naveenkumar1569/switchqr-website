@@ -495,77 +495,104 @@ const GlobalAnalytics = () => {
                 <div className="flex flex-col rounded-xl bg-white dark:bg-surface-dark border border-neutral-border dark:border-border-dark shadow-sm p-6">
                     <h3 className="text-text-main dark:text-white text-lg font-bold mb-6">Device Split</h3>
                     <div className="flex items-center justify-center flex-1 mb-6">
-                        <div className="relative size-40">
-                            <svg className="size-full rotate-[-90deg]" viewBox="-3 -3 42 42">
-                                <path className="text-gray-100 dark:text-gray-700 stroke-[8px]" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor"></path>
-                                {/* Mobile Segment */}
+                        <div className="relative size-44 transition-all duration-300">
+                            <svg className="size-full rotate-[-90deg]" viewBox="-5 -5 46 46">
+                                {/* Background Track */}
                                 <path
-                                    className="text-primary cursor-pointer"
+                                    className="text-gray-100 dark:text-gray-800/50 stroke-[8px]"
                                     d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
                                     fill="none"
                                     stroke="currentColor"
+                                ></path>
+                                {/* Mobile Segment - #6D28D9 */}
+                                <path
+                                    className="cursor-pointer"
+                                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                                    fill="none"
+                                    stroke="#6D28D9"
                                     strokeDasharray={`${data.deviceStats?.Mobile || 0}, 100`}
                                     strokeWidth={hoveredSegment === 'mobile' ? 10 : 8}
                                     strokeLinecap="round"
                                     style={{
-                                        opacity: hoveredSegment === 'mobile' ? 0.9 : 1,
+                                        opacity: hoveredSegment === 'mobile' || !hoveredSegment ? 1 : 0.4,
                                         transition: 'all 0.3s ease-out',
-                                        filter: hoveredSegment === 'mobile' ? 'drop-shadow(0 0 3px rgba(109, 40, 217, 0.4))' : 'none'
+                                        filter: hoveredSegment === 'mobile' ? 'drop-shadow(0 0 4px rgba(109, 40, 217, 0.5))' : 'none'
                                     }}
                                     onMouseEnter={() => setHoveredSegment('mobile')}
                                     onMouseLeave={() => setHoveredSegment(null)}
                                 ></path>
-                                {/* Tablet */}
+                                {/* Tablet - #8B5CF6 */}
                                 <path
-                                    className="text-primary/60 cursor-pointer"
+                                    className="cursor-pointer"
                                     d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
                                     fill="none"
-                                    stroke="currentColor"
+                                    stroke="#8B5CF6"
                                     strokeDasharray={`${data.deviceStats?.Tablet || 0}, 100`}
                                     strokeDashoffset={`-${data.deviceStats?.Mobile || 0}`}
                                     strokeWidth={hoveredSegment === 'tablet' ? 10 : 8}
                                     strokeLinecap="round"
                                     style={{
-                                        opacity: hoveredSegment === 'tablet' ? 0.9 : 1,
+                                        opacity: hoveredSegment === 'tablet' || !hoveredSegment ? 1 : 0.4,
                                         transition: 'all 0.3s ease-out',
-                                        filter: hoveredSegment === 'tablet' ? 'drop-shadow(0 0 3px rgba(109, 40, 217, 0.4))' : 'none'
+                                        filter: hoveredSegment === 'tablet' ? 'drop-shadow(0 0 4px rgba(139, 92, 246, 0.5))' : 'none'
                                     }}
                                     onMouseEnter={() => setHoveredSegment('tablet')}
                                     onMouseLeave={() => setHoveredSegment(null)}
                                 ></path>
-                                {/* Desktop */}
+                                {/* Desktop - #C084FC */}
                                 <path
-                                    className="text-primary/30 cursor-pointer"
+                                    className="cursor-pointer"
                                     d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
                                     fill="none"
-                                    stroke="currentColor"
+                                    stroke="#C084FC"
                                     strokeDasharray={`${data.deviceStats?.Desktop || 0}, 100`}
                                     strokeDashoffset={`-${(data.deviceStats?.Mobile || 0) + (data.deviceStats?.Tablet || 0)}`}
                                     strokeWidth={hoveredSegment === 'desktop' ? 10 : 8}
                                     strokeLinecap="round"
                                     style={{
-                                        opacity: hoveredSegment === 'desktop' ? 0.9 : 1,
+                                        opacity: hoveredSegment === 'desktop' || !hoveredSegment ? 1 : 0.4,
                                         transition: 'all 0.3s ease-out',
-                                        filter: hoveredSegment === 'desktop' ? 'drop-shadow(0 0 3px rgba(109, 40, 217, 0.4))' : 'none'
+                                        filter: hoveredSegment === 'desktop' ? 'drop-shadow(0 0 4px rgba(192, 132, 252, 0.5))' : 'none'
                                     }}
                                     onMouseEnter={() => setHoveredSegment('desktop')}
                                     onMouseLeave={() => setHoveredSegment(null)}
                                 ></path>
                             </svg>
-                            <div className="absolute inset-0 flex items-center justify-center flex-col pointer-events-none">
-                                <span className="text-2xl font-bold text-text-main dark:text-white">Total</span>
-                                <span className="text-sm text-text-muted dark:text-gray-400">Devices</span>
+                            <div className="absolute inset-0 flex items-center justify-center flex-col pointer-events-none transition-all duration-300">
+                                {hoveredSegment ? (
+                                    <>
+                                        <span className="text-sm font-bold uppercase tracking-widest text-text-muted dark:text-gray-400">
+                                            {hoveredSegment}
+                                        </span>
+                                        <span className="text-3xl font-black text-[#6D28D9] dark:text-primary-light">
+                                            {data.deviceStats?.[hoveredSegment.charAt(0).toUpperCase() + hoveredSegment.slice(1)] || 0}%
+                                        </span>
+                                    </>
+                                ) : (
+                                    <>
+                                        <span className="text-3xl font-black text-text-main dark:text-white">
+                                            {data.totalScans.toLocaleString()}
+                                        </span>
+                                        <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-text-muted dark:text-gray-400">
+                                            Total Scans
+                                        </span>
+                                    </>
+                                )}
                             </div>
                         </div>
                     </div>
                     <div className="flex flex-col gap-3">
-                        {['Mobile', 'Tablet', 'Desktop'].map((device, idx) => (
-                            <div key={device} className="flex justify-between items-center text-sm">
+                        {[
+                            { name: 'Mobile', color: '#6D28D9' },
+                            { name: 'Tablet', color: '#8B5CF6' },
+                            { name: 'Desktop', color: '#C084FC' }
+                        ].map((device) => (
+                            <div key={device.name} className="flex justify-between items-center text-sm group cursor-pointer" onMouseEnter={() => setHoveredSegment(device.name.toLowerCase())} onMouseLeave={() => setHoveredSegment(null)}>
                                 <div className="flex items-center gap-2">
-                                    <div className={`size-3 rounded-full ${idx === 0 ? 'bg-primary' : idx === 1 ? 'bg-primary/60' : 'bg-primary/30'}`}></div>
-                                    <span className="text-text-main dark:text-white font-medium">{device}</span>
+                                    <div className="size-3 rounded-full transition-transform group-hover:scale-125" style={{ backgroundColor: device.color }}></div>
+                                    <span className="text-text-main dark:text-white font-medium group-hover:text-[#6D28D9] dark:group-hover:text-primary-light transition-colors">{device.name}</span>
                                 </div>
-                                <span className="text-text-muted dark:text-gray-400">{data.deviceStats?.[device] || 0}%</span>
+                                <span className="text-text-muted dark:text-gray-400 font-bold">{data.deviceStats?.[device.name] || 0}%</span>
                             </div>
                         ))}
                     </div>
