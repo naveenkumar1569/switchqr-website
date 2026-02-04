@@ -496,7 +496,7 @@ const GlobalAnalytics = () => {
                     <div className="flex items-center justify-center flex-1 mb-6">
                         <div className="relative size-40">
                             {/* Simple donut chart - approximate logic for visualization */}
-                            <svg className="size-full rotate-[-90deg]" viewBox="0 0 36 36">
+                            <svg className="size-full rotate-[-90deg]" viewBox="-3 -3 42 42">
                                 <path className="text-gray-100 dark:text-gray-700" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" strokeWidth="8"></path>
                                 {/* Mobile Segment */}
                                 <path className="text-primary" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" strokeDasharray={`${data.deviceStats?.Mobile || 0}, 100`} strokeWidth="8"></path>
