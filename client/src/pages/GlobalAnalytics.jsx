@@ -499,7 +499,7 @@ const GlobalAnalytics = () => {
                             <svg className="size-full rotate-[-90deg]" viewBox="-5 -5 46 46">
                                 {/* Background Track */}
                                 <path
-                                    className="text-gray-100 dark:text-gray-800/50 stroke-[8px]"
+                                    className="text-gray-100 dark:text-gray-800/40 stroke-[6px]"
                                     d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
                                     fill="none"
                                     stroke="currentColor"
@@ -510,13 +510,13 @@ const GlobalAnalytics = () => {
                                     d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
                                     fill="none"
                                     stroke="#6D28D9"
-                                    strokeDasharray={`${data.deviceStats?.Mobile || 0}, 100`}
-                                    strokeWidth={hoveredSegment === 'mobile' ? 10 : 8}
+                                    strokeDasharray={`${(data.deviceStats?.Mobile || 0) > 2 ? (data.deviceStats.Mobile - 2) : 0}, 100`}
+                                    strokeWidth={hoveredSegment === 'mobile' ? 8 : 6}
                                     strokeLinecap="round"
                                     style={{
                                         opacity: hoveredSegment === 'mobile' || !hoveredSegment ? 1 : 0.4,
                                         transition: 'all 0.3s ease-out',
-                                        filter: hoveredSegment === 'mobile' ? 'drop-shadow(0 0 4px rgba(109, 40, 217, 0.5))' : 'none'
+                                        filter: hoveredSegment === 'mobile' ? 'drop-shadow(0 0 4px rgba(109, 40, 217, 0.4))' : 'none'
                                     }}
                                     onMouseEnter={() => setHoveredSegment('mobile')}
                                     onMouseLeave={() => setHoveredSegment(null)}
@@ -527,14 +527,14 @@ const GlobalAnalytics = () => {
                                     d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
                                     fill="none"
                                     stroke="#8B5CF6"
-                                    strokeDasharray={`${data.deviceStats?.Tablet || 0}, 100`}
+                                    strokeDasharray={`${(data.deviceStats?.Tablet || 0) > 2 ? (data.deviceStats.Tablet - 2) : 0}, 100`}
                                     strokeDashoffset={`-${data.deviceStats?.Mobile || 0}`}
-                                    strokeWidth={hoveredSegment === 'tablet' ? 10 : 8}
+                                    strokeWidth={hoveredSegment === 'tablet' ? 8 : 6}
                                     strokeLinecap="round"
                                     style={{
                                         opacity: hoveredSegment === 'tablet' || !hoveredSegment ? 1 : 0.4,
                                         transition: 'all 0.3s ease-out',
-                                        filter: hoveredSegment === 'tablet' ? 'drop-shadow(0 0 4px rgba(139, 92, 246, 0.5))' : 'none'
+                                        filter: hoveredSegment === 'tablet' ? 'drop-shadow(0 0 4px rgba(139, 92, 246, 0.4))' : 'none'
                                     }}
                                     onMouseEnter={() => setHoveredSegment('tablet')}
                                     onMouseLeave={() => setHoveredSegment(null)}
@@ -545,35 +545,35 @@ const GlobalAnalytics = () => {
                                     d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
                                     fill="none"
                                     stroke="#C084FC"
-                                    strokeDasharray={`${data.deviceStats?.Desktop || 0}, 100`}
+                                    strokeDasharray={`${(data.deviceStats?.Desktop || 0) > 2 ? (data.deviceStats.Desktop - 2) : 0}, 100`}
                                     strokeDashoffset={`-${(data.deviceStats?.Mobile || 0) + (data.deviceStats?.Tablet || 0)}`}
-                                    strokeWidth={hoveredSegment === 'desktop' ? 10 : 8}
+                                    strokeWidth={hoveredSegment === 'desktop' ? 8 : 6}
                                     strokeLinecap="round"
                                     style={{
                                         opacity: hoveredSegment === 'desktop' || !hoveredSegment ? 1 : 0.4,
                                         transition: 'all 0.3s ease-out',
-                                        filter: hoveredSegment === 'desktop' ? 'drop-shadow(0 0 4px rgba(192, 132, 252, 0.5))' : 'none'
+                                        filter: hoveredSegment === 'desktop' ? 'drop-shadow(0 0 4px rgba(192, 132, 252, 0.4))' : 'none'
                                     }}
                                     onMouseEnter={() => setHoveredSegment('desktop')}
                                     onMouseLeave={() => setHoveredSegment(null)}
                                 ></path>
                             </svg>
-                            <div className="absolute inset-0 flex items-center justify-center flex-col pointer-events-none transition-all duration-300">
+                            <div className="absolute inset-0 flex items-center justify-center flex-col pointer-events-none transition-all duration-300 gap-1">
                                 {hoveredSegment ? (
                                     <>
-                                        <span className="text-sm font-bold uppercase tracking-widest text-text-muted dark:text-gray-400">
+                                        <span className="text-[10px] font-bold uppercase tracking-widest text-text-muted dark:text-gray-400">
                                             {hoveredSegment}
                                         </span>
-                                        <span className="text-3xl font-black text-[#6D28D9] dark:text-primary-light">
+                                        <span className="text-2xl font-black text-[#6D28D9] dark:text-primary-light leading-none">
                                             {data.deviceStats?.[hoveredSegment.charAt(0).toUpperCase() + hoveredSegment.slice(1)] || 0}%
                                         </span>
                                     </>
                                 ) : (
                                     <>
-                                        <span className="text-3xl font-black text-text-main dark:text-white">
+                                        <span className="text-3xl font-black text-text-main dark:text-white leading-none">
                                             {data.totalScans.toLocaleString()}
                                         </span>
-                                        <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-text-muted dark:text-gray-400">
+                                        <span className="text-[10px] font-bold uppercase tracking-[0.15em] text-text-muted dark:text-gray-400 leading-tight">
                                             Total Scans
                                         </span>
                                     </>
