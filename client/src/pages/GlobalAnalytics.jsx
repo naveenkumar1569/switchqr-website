@@ -115,18 +115,20 @@ const GlobalAnalytics = () => {
         </div>
     );
 
-    // Calculate chart points (simple normalization for demo)
+    // Calculate chart points with padding to align with x-axis labels
     const maxScans = Math.max(...data.scansOverTime.map(d => d.count), 10);
+    const padding = 20; // Padding on each side
+    const graphWidth = 800 - (padding * 2);
     const chartPoints = data.scansOverTime.map((d, i) => {
-        const x = (i / (data.scansOverTime.length - 1 || 1)) * 800;
+        const x = padding + (i / (data.scansOverTime.length - 1 || 1)) * graphWidth;
         const y = 200 - ((d.count / maxScans) * 150); // Scale to fit 200px height
-        return `${x} ${y}`; // Keep it simple line graph
+        return `${x} ${y}`;
     }).join(' L ');
 
     // Construct SVG Path
     const pathD = data.scansOverTime.length > 1
         ? `M ${chartPoints}`
-        : 'M 0 200 L 800 200'; // Flat line if no data
+        : `M ${padding} 200 L ${800 - padding} 200`; // Flat line if no data
 
     return (
         <div className="max-w-[1200px] w-full mx-auto flex flex-col gap-8">
@@ -383,7 +385,9 @@ const GlobalAnalytics = () => {
 
                         {/* Invisible hover areas for each data point */}
                         {data.scansOverTime.map((d, i) => {
-                            const x = (i / (data.scansOverTime.length - 1 || 1)) * 800;
+                            const padding = 20;
+                            const graphWidth = 800 - (padding * 2);
+                            const x = padding + (i / (data.scansOverTime.length - 1 || 1)) * graphWidth;
                             const width = 800 / (data.scansOverTime.length || 1);
                             return (
                                 <rect
@@ -402,7 +406,9 @@ const GlobalAnalytics = () => {
 
                         {/* Dots for Data Points */}
                         {data.scansOverTime.map((d, i) => {
-                            const x = (i / (data.scansOverTime.length - 1 || 1)) * 800;
+                            const padding = 20;
+                            const graphWidth = 800 - (padding * 2);
+                            const x = padding + (i / (data.scansOverTime.length - 1 || 1)) * graphWidth;
                             const y = 200 - ((d.count / maxScans) * 150);
                             const isHovered = hoveredPoint === i;
                             return (
