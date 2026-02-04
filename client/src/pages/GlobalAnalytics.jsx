@@ -349,39 +349,48 @@ const GlobalAnalytics = () => {
                     </div>
                 </div>
                 <div className="relative w-full h-[250px]" ref={containerRef}>
+                    {/* Vertical Hover Guide Line */}
+                    {hoveredPoint !== null && (
+                        <div
+                            className="absolute top-0 bottom-[50px] w-[1px] bg-[#6D28D9]/20 pointer-events-none transition-all duration-300 ease-out"
+                            style={{ left: `${(hoveredPoint / (data.scansOverTime.length - 1 || 1)) * 100}%` }}
+                        />
+                    )}
+
                     {/* Hover Tooltip */}
                     {hoveredPoint !== null && data.scansOverTime[hoveredPoint] && (
                         <div
-                            className="absolute z-20 pointer-events-none transition-all duration-200"
+                            className="absolute z-20 pointer-events-none transition-all duration-300 ease-out"
                             style={{
                                 left: `${(hoveredPoint / (data.scansOverTime.length - 1 || 1)) * 100}%`,
-                                top: '20px', // Move it down a bit so it doesn't clip
+                                top: '10px',
                                 transform: 'translateX(-50%)'
                             }}
                         >
-                            <div className="bg-slate-900 dark:bg-slate-800 border border-slate-700 rounded-lg shadow-2xl px-4 py-2 flex flex-col items-center min-w-[100px]">
-                                <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-0.5">
+                            <div className="bg-white dark:bg-[#1e1726] border-l-4 border-[#6D28D9] rounded-lg shadow-xl px-4 py-3 flex flex-col min-w-[140px] border border-slate-200/50 dark:border-white/5">
+                                <div className="text-[10px] font-black text-[#6e5393] dark:text-gray-400 uppercase tracking-widest mb-1 leading-none">
                                     {data.scansOverTime[hoveredPoint].date}
                                 </div>
-                                <div className="text-base font-black text-white">
-                                    {data.scansOverTime[hoveredPoint].count} {data.scansOverTime[hoveredPoint].count === 1 ? 'Scan' : 'Scans'}
+                                <div className="flex justify-between items-center text-sm">
+                                    <span className="text-[#140f1a] dark:text-white/80">Scans:</span>
+                                    <span className="font-black text-[#6D28D9]">
+                                        {data.scansOverTime[hoveredPoint].count.toLocaleString()}
+                                    </span>
                                 </div>
-                                {/* Little triangle tip */}
-                                <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-slate-900 dark:bg-slate-800 rotate-45 border-t border-l border-slate-700"></div>
                             </div>
                         </div>
                     )}
 
                     <svg className="w-full h-full overflow-visible" viewBox={`0 0 ${graphWidth} 250`} preserveAspectRatio="none" style={{ shapeRendering: 'geometricPrecision' }}>
-                        {/* Grid Lines */}
+                        {/* Grid Lines - Neutral light gray #F1F5F9 */}
                         {[0, 50, 100, 150, 200].map(y => (
-                            <line key={y} stroke="#f0f0f0" className="dark:stroke-gray-800" strokeWidth="1" x1="0" x2={graphWidth} y1={y} y2={y} vectorEffect="non-scaling-stroke" />
+                            <line key={y} stroke="#F1F5F9" className="dark:stroke-white/5" strokeWidth="1" x1="0" x2={graphWidth} y1={y} y2={y} vectorEffect="non-scaling-stroke" />
                         ))}
 
                         <defs>
                             <linearGradient id="chartGradient" x1="0" x2="0" y1="0" y2="1">
-                                <stop offset="0%" stopColor="#7426d9" stopOpacity="0.1" />
-                                <stop offset="100%" stopColor="#7426d9" stopOpacity="0" />
+                                <stop offset="0%" stopColor="#6D28D9" stopOpacity="0.1" />
+                                <stop offset="100%" stopColor="#6D28D9" stopOpacity="0" />
                             </linearGradient>
                         </defs>
 
@@ -394,18 +403,19 @@ const GlobalAnalytics = () => {
                             />
                         )}
 
-                        {/* Curved Line Path */}
+                        {/* Curved Line Path - 2px Solid #6D28D9 */}
                         <path
                             d={pathD}
                             fill="none"
-                            stroke="#7426d9"
+                            stroke="#6D28D9"
                             strokeLinecap="round"
                             strokeLinejoin="round"
-                            strokeWidth="3"
+                            strokeWidth="2"
                             vectorEffect="non-scaling-stroke"
+                            className="transition-all duration-300"
                         />
 
-                        {/* Invisible hover areas for each data point */}
+                        {/* Invisible hover areas */}
                         {data.scansOverTime.map((d, i) => {
                             const x = (i / (data.scansOverTime.length - 1 || 1)) * graphWidth;
                             const width = graphWidth / (data.scansOverTime.length || 1);
@@ -415,7 +425,7 @@ const GlobalAnalytics = () => {
                                     x={x - width / 2}
                                     y="0"
                                     width={width}
-                                    height="250"
+                                    height="200"
                                     fill="transparent"
                                     style={{ cursor: 'pointer' }}
                                     onMouseEnter={() => setHoveredPoint(i)}
@@ -424,7 +434,7 @@ const GlobalAnalytics = () => {
                             );
                         })}
 
-                        {/* Dots for Data Points */}
+                        {/* Dots for Data Points - 4px radius, 2px stroke */}
                         {data.scansOverTime.map((d, i) => {
                             const x = (i / (data.scansOverTime.length - 1 || 1)) * graphWidth;
                             const y = 200 - ((d.count / maxScans) * 150);
@@ -435,11 +445,11 @@ const GlobalAnalytics = () => {
                                     cx={x}
                                     cy={y}
                                     fill="white"
-                                    r={isHovered ? "6" : "4"}
-                                    stroke="#7426d9"
+                                    r={isHovered ? "5" : "4"}
+                                    stroke="#6D28D9"
                                     strokeWidth="2"
                                     vectorEffect="non-scaling-stroke"
-                                    className="dark:fill-background-dark transition-all"
+                                    className="dark:fill-[#181220] transition-all duration-300"
                                 />
                             );
                         })}
@@ -489,8 +499,8 @@ const GlobalAnalytics = () => {
                                     strokeLinecap="round"
                                     style={{
                                         opacity: hoveredSegment === 'mobile' ? 0.9 : 1,
-                                        transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
-                                        filter: hoveredSegment === 'mobile' ? 'drop-shadow(0 0 3px rgba(116, 38, 217, 0.4))' : 'none'
+                                        transition: 'all 0.3s ease-out',
+                                        filter: hoveredSegment === 'mobile' ? 'drop-shadow(0 0 3px rgba(109, 40, 217, 0.4))' : 'none'
                                     }}
                                     onMouseEnter={() => setHoveredSegment('mobile')}
                                     onMouseLeave={() => setHoveredSegment(null)}
@@ -507,8 +517,8 @@ const GlobalAnalytics = () => {
                                     strokeLinecap="round"
                                     style={{
                                         opacity: hoveredSegment === 'tablet' ? 0.9 : 1,
-                                        transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
-                                        filter: hoveredSegment === 'tablet' ? 'drop-shadow(0 0 3px rgba(116, 38, 217, 0.4))' : 'none'
+                                        transition: 'all 0.3s ease-out',
+                                        filter: hoveredSegment === 'tablet' ? 'drop-shadow(0 0 3px rgba(109, 40, 217, 0.4))' : 'none'
                                     }}
                                     onMouseEnter={() => setHoveredSegment('tablet')}
                                     onMouseLeave={() => setHoveredSegment(null)}
@@ -525,8 +535,8 @@ const GlobalAnalytics = () => {
                                     strokeLinecap="round"
                                     style={{
                                         opacity: hoveredSegment === 'desktop' ? 0.9 : 1,
-                                        transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
-                                        filter: hoveredSegment === 'desktop' ? 'drop-shadow(0 0 3px rgba(116, 38, 217, 0.4))' : 'none'
+                                        transition: 'all 0.3s ease-out',
+                                        filter: hoveredSegment === 'desktop' ? 'drop-shadow(0 0 3px rgba(109, 40, 217, 0.4))' : 'none'
                                     }}
                                     onMouseEnter={() => setHoveredSegment('desktop')}
                                     onMouseLeave={() => setHoveredSegment(null)}
