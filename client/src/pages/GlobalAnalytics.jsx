@@ -499,11 +499,11 @@ const GlobalAnalytics = () => {
                             <svg className="size-full rotate-[-90deg]" viewBox="-3 -3 42 42">
                                 <path className="text-gray-100 dark:text-gray-700" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" strokeWidth="8"></path>
                                 {/* Mobile Segment */}
-                                <path className="text-primary" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" strokeDasharray={`${data.deviceStats?.Mobile || 0}, 100`} strokeWidth="8"></path>
+                                <path className="text-primary transition-all duration-300 cursor-pointer hover:opacity-80 hover:stroke-[10px]" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" strokeDasharray={`${data.deviceStats?.Mobile || 0}, 100`} strokeWidth="8"></path>
                                 {/* Tablet */}
-                                <path className="text-primary/60" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" strokeDasharray={`${data.deviceStats?.Tablet || 0}, 100`} strokeDashoffset={`-${data.deviceStats?.Mobile || 0}`} strokeWidth="8"></path>
+                                <path className="text-primary/60 transition-all duration-300 cursor-pointer hover:opacity-80 hover:stroke-[10px]" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" strokeDasharray={`${data.deviceStats?.Tablet || 0}, 100`} strokeDashoffset={`-${data.deviceStats?.Mobile || 0}`} strokeWidth="8"></path>
                                 {/* Desktop */}
-                                <path className="text-primary/30" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" strokeDasharray={`${data.deviceStats?.Desktop || 0}, 100`} strokeDashoffset={`-${(data.deviceStats?.Mobile || 0) + (data.deviceStats?.Tablet || 0)}`} strokeWidth="8"></path>
+                                <path className="text-primary/30 transition-all duration-300 cursor-pointer hover:opacity-80 hover:stroke-[10px]" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" strokeDasharray={`${data.deviceStats?.Desktop || 0}, 100`} strokeDashoffset={`-${(data.deviceStats?.Mobile || 0) + (data.deviceStats?.Tablet || 0)}`} strokeWidth="8"></path>
                             </svg>
                             <div className="absolute inset-0 flex items-center justify-center flex-col">
                                 <span className="text-2xl font-bold text-text-dark dark:text-white">Total</span>
