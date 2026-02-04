@@ -115,13 +115,11 @@ const GlobalAnalytics = () => {
         </div>
     );
 
-    // Calculate chart points with proportional padding to align with x-axis labels
+    // Calculate chart points to match justify-between label distribution (0% to 100%)
     const maxScans = Math.max(...data.scansOverTime.map(d => d.count), 10);
-    const paddingPercent = 0.025; // 2.5% padding on each side (matches px-2 which is ~2.5% of typical width)
-    const padding = 800 * paddingPercent; // 20px at 800 viewBox width
-    const graphWidth = 800 - (padding * 2);
     const chartPoints = data.scansOverTime.map((d, i) => {
-        const x = padding + (i / (data.scansOverTime.length - 1 || 1)) * graphWidth;
+        // Position from 0 to 800 to match justify-between labels
+        const x = (i / (data.scansOverTime.length - 1 || 1)) * 800;
         const y = 200 - ((d.count / maxScans) * 150); // Scale to fit 200px height
         return `${x} ${y}`;
     }).join(' L ');
@@ -129,7 +127,7 @@ const GlobalAnalytics = () => {
     // Construct SVG Path
     const pathD = data.scansOverTime.length > 1
         ? `M ${chartPoints}`
-        : `M ${padding} 200 L ${800 - padding} 200`; // Flat line if no data
+        : 'M 0 200 L 800 200'; // Flat line if no data
 
     return (
         <div className="max-w-[1200px] w-full mx-auto flex flex-col gap-8">
@@ -386,10 +384,7 @@ const GlobalAnalytics = () => {
 
                         {/* Invisible hover areas for each data point */}
                         {data.scansOverTime.map((d, i) => {
-                            const paddingPercent = 0.025;
-                            const padding = 800 * paddingPercent;
-                            const graphWidth = 800 - (padding * 2);
-                            const x = padding + (i / (data.scansOverTime.length - 1 || 1)) * graphWidth;
+                            const x = (i / (data.scansOverTime.length - 1 || 1)) * 800;
                             const width = 800 / (data.scansOverTime.length || 1);
                             return (
                                 <rect
@@ -408,10 +403,7 @@ const GlobalAnalytics = () => {
 
                         {/* Dots for Data Points */}
                         {data.scansOverTime.map((d, i) => {
-                            const paddingPercent = 0.025;
-                            const padding = 800 * paddingPercent;
-                            const graphWidth = 800 - (padding * 2);
-                            const x = padding + (i / (data.scansOverTime.length - 1 || 1)) * graphWidth;
+                            const x = (i / (data.scansOverTime.length - 1 || 1)) * 800;
                             const y = 200 - ((d.count / maxScans) * 150);
                             const isHovered = hoveredPoint === i;
                             return (
