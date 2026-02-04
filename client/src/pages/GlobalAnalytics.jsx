@@ -14,14 +14,62 @@ const GlobalAnalytics = () => {
         scansOverTime: []
     });
     const [loading, setLoading] = useState(true);
-    const [dateRange, setDateRange] = useState(7);
+    const [dateRange, setDateRange] = useState({ type: 'days', value: 7, label: 'Last 7 Days' });
     const [showRangeMenu, setShowRangeMenu] = useState(false);
     const [hoveredPoint, setHoveredPoint] = useState(null);
+    const [showCustomRange, setShowCustomRange] = useState(false);
+    const [customStartDate, setCustomStartDate] = useState('');
+    const [customEndDate, setCustomEndDate] = useState('');
+
+    // Helper function to get date range parameters
+    const getDateRangeParams = () => {
+        const now = new Date();
+        let startDate, endDate;
+
+        switch (dateRange.type) {
+            case 'days':
+                return `days=${dateRange.value}`;
+
+            case 'current_month':
+                startDate = new Date(now.getFullYear(), now.getMonth(), 1);
+                endDate = now;
+                break;
+
+            case 'last_month':
+                startDate = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+                endDate = new Date(now.getFullYear(), now.getMonth(), 0);
+                break;
+
+            case 'this_year':
+                startDate = new Date(now.getFullYear(), 0, 1);
+                endDate = now;
+                break;
+
+            case 'last_year':
+                startDate = new Date(now.getFullYear() - 1, 0, 1);
+                endDate = new Date(now.getFullYear() - 1, 11, 31);
+                break;
+
+            case 'custom':
+                if (customStartDate && customEndDate) {
+                    return `start=${customStartDate}&end=${customEndDate}`;
+                }
+                return 'days=7'; // fallback
+
+            default:
+                return 'days=7';
+        }
+
+        // Format dates as YYYY-MM-DD
+        const formatDate = (d) => d.toISOString().split('T')[0];
+        return `start=${formatDate(startDate)}&end=${formatDate(endDate)}`;
+    };
 
     useEffect(() => {
         const fetchGlobalStats = async () => {
             try {
-                const response = await apiGet(`/api/stats?days=${dateRange}`, token);
+                const params = getDateRangeParams();
+                const response = await apiGet(`/api/stats?${params}`, token);
 
                 if (response.ok) {
                     const stats = await response.json();
@@ -35,7 +83,7 @@ const GlobalAnalytics = () => {
         };
 
         fetchGlobalStats();
-    }, [token, dateRange]);
+    }, [token, dateRange, customStartDate, customEndDate]);
 
     const handleExport = () => {
         if (!data.recentScans.length) return;
@@ -96,13 +144,56 @@ const GlobalAnalytics = () => {
                             onClick={() => setShowRangeMenu(!showRangeMenu)}
                         >
                             <span className="material-symbols-outlined text-[20px]">calendar_today</span>
-                            <span>Last {dateRange} Days</span>
+                            <span>{dateRange.label}</span>
                             <span className="material-symbols-outlined text-[20px]">expand_more</span>
                         </button>
                         {showRangeMenu && (
-                            <div className="absolute top-full mt-2 right-0 w-40 bg-white dark:bg-surface-dark border border-border-light dark:border-border-dark rounded-lg shadow-lg z-10 py-1">
-                                <button onClick={() => { setDateRange(7); setShowRangeMenu(false); }} className="block w-full text-left px-4 py-2 text-sm text-text-dark dark:text-white hover:bg-gray-50 dark:hover:bg-slate-800">Last 7 Days</button>
-                                <button onClick={() => { setDateRange(30); setShowRangeMenu(false); }} className="block w-full text-left px-4 py-2 text-sm text-text-dark dark:text-white hover:bg-gray-50 dark:hover:bg-slate-800">Last 30 Days</button>
+                            <div className="absolute top-full mt-2 right-0 w-48 bg-white dark:bg-surface-dark border border-border-light dark:border-border-dark rounded-lg shadow-lg z-10 py-1">
+                                <button
+                                    onClick={() => { setDateRange({ type: 'days', value: 7, label: 'Last 7 Days' }); setShowRangeMenu(false); }}
+                                    className="block w-full text-left px-4 py-2 text-sm text-text-dark dark:text-white hover:bg-gray-50 dark:hover:bg-slate-800"
+                                >
+                                    Last 7 Days
+                                </button>
+                                <button
+                                    onClick={() => { setDateRange({ type: 'days', value: 30, label: 'Last 30 Days' }); setShowRangeMenu(false); }}
+                                    className="block w-full text-left px-4 py-2 text-sm text-text-dark dark:text-white hover:bg-gray-50 dark:hover:bg-slate-800"
+                                >
+                                    Last 30 Days
+                                </button>
+                                <div className="border-t border-border-light dark:border-border-dark my-1"></div>
+                                <button
+                                    onClick={() => { setDateRange({ type: 'current_month', label: 'Current Month' }); setShowRangeMenu(false); }}
+                                    className="block w-full text-left px-4 py-2 text-sm text-text-dark dark:text-white hover:bg-gray-50 dark:hover:bg-slate-800"
+                                >
+                                    Current Month
+                                </button>
+                                <button
+                                    onClick={() => { setDateRange({ type: 'last_month', label: 'Last Month' }); setShowRangeMenu(false); }}
+                                    className="block w-full text-left px-4 py-2 text-sm text-text-dark dark:text-white hover:bg-gray-50 dark:hover:bg-slate-800"
+                                >
+                                    Last Month
+                                </button>
+                                <div className="border-t border-border-light dark:border-border-dark my-1"></div>
+                                <button
+                                    onClick={() => { setDateRange({ type: 'this_year', label: 'This Year' }); setShowRangeMenu(false); }}
+                                    className="block w-full text-left px-4 py-2 text-sm text-text-dark dark:text-white hover:bg-gray-50 dark:hover:bg-slate-800"
+                                >
+                                    This Year
+                                </button>
+                                <button
+                                    onClick={() => { setDateRange({ type: 'last_year', label: 'Last Year' }); setShowRangeMenu(false); }}
+                                    className="block w-full text-left px-4 py-2 text-sm text-text-dark dark:text-white hover:bg-gray-50 dark:hover:bg-slate-800"
+                                >
+                                    Last Year
+                                </button>
+                                <div className="border-t border-border-light dark:border-border-dark my-1"></div>
+                                <button
+                                    onClick={() => { setShowCustomRange(true); setShowRangeMenu(false); }}
+                                    className="block w-full text-left px-4 py-2 text-sm text-text-dark dark:text-white hover:bg-gray-50 dark:hover:bg-slate-800"
+                                >
+                                    Custom Range...
+                                </button>
                             </div>
                         )}
                     </div>
@@ -123,6 +214,61 @@ const GlobalAnalytics = () => {
                     </button>
                 </div>
             </div>
+
+            {/* Custom Range Modal */}
+            {showCustomRange && (
+                <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" onClick={() => setShowCustomRange(false)}>
+                    <div className="bg-white dark:bg-surface-dark rounded-xl p-6 max-w-md w-full mx-4 border border-border-light dark:border-border-dark shadow-xl" onClick={(e) => e.stopPropagation()}>
+                        <div className="flex justify-between items-center mb-4">
+                            <h3 className="text-lg font-bold text-text-dark dark:text-white">Custom Date Range</h3>
+                            <button onClick={() => setShowCustomRange(false)} className="text-text-subtle hover:text-text-dark dark:hover:text-white">
+                                <span className="material-symbols-outlined">close</span>
+                            </button>
+                        </div>
+                        <div className="space-y-4">
+                            <div>
+                                <label className="block text-sm font-medium text-text-dark dark:text-white mb-2">Start Date</label>
+                                <input
+                                    type="date"
+                                    value={customStartDate}
+                                    onChange={(e) => setCustomStartDate(e.target.value)}
+                                    className="w-full px-3 py-2 bg-white dark:bg-slate-800 border border-border-light dark:border-border-dark rounded-lg text-text-dark dark:text-white focus:outline-none focus:ring-2 focus:ring-primary"
+                                />
+                            </div>
+                            <div>
+                                <label className="block text-sm font-medium text-text-dark dark:text-white mb-2">End Date</label>
+                                <input
+                                    type="date"
+                                    value={customEndDate}
+                                    onChange={(e) => setCustomEndDate(e.target.value)}
+                                    className="w-full px-3 py-2 bg-white dark:bg-slate-800 border border-border-light dark:border-border-dark rounded-lg text-text-dark dark:text-white focus:outline-none focus:ring-2 focus:ring-primary"
+                                />
+                            </div>
+                            <div className="flex gap-3 pt-2">
+                                <button
+                                    onClick={() => setShowCustomRange(false)}
+                                    className="flex-1 px-4 py-2 bg-gray-100 dark:bg-slate-800 text-text-dark dark:text-white rounded-lg hover:bg-gray-200 dark:hover:bg-slate-700 transition-colors"
+                                >
+                                    Cancel
+                                </button>
+                                <button
+                                    onClick={() => {
+                                        if (customStartDate && customEndDate) {
+                                            const label = `${customStartDate} to ${customEndDate}`;
+                                            setDateRange({ type: 'custom', label });
+                                            setShowCustomRange(false);
+                                        }
+                                    }}
+                                    disabled={!customStartDate || !customEndDate}
+                                    className="flex-1 px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-hover transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                                >
+                                    Apply
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
 
             {/* KPI Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -185,7 +331,7 @@ const GlobalAnalytics = () => {
                 <div className="flex flex-wrap justify-between items-center gap-4 mb-6">
                     <div>
                         <h3 className="text-text-dark dark:text-white text-lg font-bold">Scans over time</h3>
-                        <p className="text-text-subtle dark:text-gray-400 text-sm">Visualizing scan frequency over the last {dateRange} days.</p>
+                        <p className="text-text-subtle dark:text-gray-400 text-sm">Visualizing scan frequency for {dateRange.label.toLowerCase()}.</p>
                     </div>
                 </div>
                 <div className="relative w-full h-[250px]">
