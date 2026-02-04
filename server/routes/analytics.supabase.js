@@ -24,6 +24,31 @@ router.get('/', supabaseAuth, async (req, res) => {
         const { data: { user }, error: authError } = await req.supabase.auth.getUser();
         if (authError || !user) return res.status(401).json({ error: 'Unauthorized' });
 
+        // Parse date range parameters
+        const { days, start, end } = req.query;
+        let startDate, endDate;
+
+        if (start && end) {
+            // Custom date range
+            startDate = new Date(start);
+            endDate = new Date(end);
+        } else if (days) {
+            // Days-based range
+            const numDays = parseInt(days) || 7;
+            endDate = new Date();
+            startDate = new Date();
+            startDate.setDate(startDate.getDate() - (numDays - 1));
+        } else {
+            // Default to last 7 days
+            endDate = new Date();
+            startDate = new Date();
+            startDate.setDate(startDate.getDate() - 6);
+        }
+
+        // Normalize to start of day for startDate and end of day for endDate
+        startDate.setHours(0, 0, 0, 0);
+        endDate.setHours(23, 59, 59, 999);
+
         // Get total scans for user's QRs
         const { data: qrs, error: qrError } = await req.supabase
             .from('qrs')
@@ -46,12 +71,13 @@ router.get('/', supabaseAuth, async (req, res) => {
         };
 
         if (qrIds.length > 0) {
-            // Fetch scans (Limit to last 30 days for performance if needed, but fetching all for now)
-            // Note: For production, we should summarize this via RPC or seperate table.
+            // Fetch scans within the date range
             const { data: scans, error: scanError } = await req.supabase
                 .from('scans')
                 .select('*')
                 .in('qr_id', qrIds)
+                .gte('scanned_at', startDate.toISOString())
+                .lte('scanned_at', endDate.toISOString())
                 .order('scanned_at', { ascending: false });
 
             if (scanError) throw scanError;
@@ -98,16 +124,21 @@ router.get('/', supabaseAuth, async (req, res) => {
                     Desktop: Math.round((deviceCounts.Desktop / total) * 100)
                 };
 
-                // Scans Over Time (Last 7 days simplified)
+                // Scans Over Time - Dynamic timeline based on date range
                 const timeline = {};
-                // Fill last 7 days with 0
-                for (let i = 6; i >= 0; i--) {
-                    const d = new Date();
-                    d.setDate(d.getDate() - i);
+
+                // Calculate number of days in range
+                const daysDiff = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24)) + 1;
+
+                // Fill timeline with all dates in range
+                for (let i = 0; i < daysDiff; i++) {
+                    const d = new Date(startDate);
+                    d.setDate(d.getDate() + i);
                     const key = d.toISOString().split('T')[0];
                     timeline[key] = 0;
                 }
 
+                // Count scans per day
                 scans.forEach(s => {
                     const key = s.scanned_at.split('T')[0];
                     if (timeline[key] !== undefined) timeline[key]++;
@@ -116,6 +147,22 @@ router.get('/', supabaseAuth, async (req, res) => {
                 stats.scansOverTime = Object.keys(timeline).sort().map(date => ({
                     date,
                     count: timeline[date]
+                }));
+            } else {
+                // No scans in range, still create timeline with zeros
+                const timeline = {};
+                const daysDiff = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24)) + 1;
+
+                for (let i = 0; i < daysDiff; i++) {
+                    const d = new Date(startDate);
+                    d.setDate(d.getDate() + i);
+                    const key = d.toISOString().split('T')[0];
+                    timeline[key] = 0;
+                }
+
+                stats.scansOverTime = Object.keys(timeline).sort().map(date => ({
+                    date,
+                    count: 0
                 }));
             }
         }
