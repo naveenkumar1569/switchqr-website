@@ -3,6 +3,15 @@ import React, { useEffect, useState, useRef } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { apiGet } from '../utils/api';
 
+const getFlagEmoji = (countryCode) => {
+    if (!countryCode || countryCode === 'Unknown') return '🌐';
+    const codePoints = countryCode
+        .toUpperCase()
+        .split('')
+        .map(char => 127397 + char.charCodeAt());
+    return String.fromCodePoint(...codePoints);
+};
+
 const GlobalAnalytics = () => {
     const { token, planInfo } = useAuth();
     const [data, setData] = useState({
@@ -11,7 +20,8 @@ const GlobalAnalytics = () => {
         topQr: 'N/A',
         recentScans: [],
         deviceStats: { Mobile: 0, Desktop: 0, Tablet: 0 },
-        scansOverTime: []
+        scansOverTime: [],
+        locationStats: []
     });
     const [loading, setLoading] = useState(true);
     const [dateRange, setDateRange] = useState({ type: 'days', value: 7, label: 'Last 7 Days' });
@@ -565,34 +575,49 @@ const GlobalAnalytics = () => {
                 <div className="flex flex-col rounded-xl bg-white dark:bg-surface-dark border border-neutral-border dark:border-border-dark shadow-sm p-6">
                     <h3 className="text-text-main dark:text-white text-lg font-bold mb-6">Top Locations</h3>
                     <div className="flex flex-col gap-5">
-                        {(() => {
-                            const locationCounts = {};
-                            data.recentScans.forEach(scan => {
-                                if (scan.location && scan.location !== 'Unknown') {
-                                    locationCounts[scan.location] = (locationCounts[scan.location] || 0) + 1;
-                                }
-                            });
-                            const top = Object.entries(locationCounts)
-                                .sort((a, b) => b[1] - a[1])
-                                .slice(0, 4);
-                            const total = top.reduce((acc, [_, count]) => acc + count, 0) || 1;
+                        {data.locationStats && data.locationStats.length > 0 ? (
+                            (() => {
+                                const top = data.locationStats.slice(0, 5);
+                                const total = data.totalScans || 1;
 
-                            return top.length > 0 ? top.map(([location, count], i) => (
-                                <div key={i} className="flex flex-col gap-2">
-                                    <div className="flex justify-between items-center text-sm">
-                                        <div className="flex items-center gap-2">
-                                            <span className="text-text-main dark:text-white font-medium italic">{(location.split(',')[1] || location.split(',')[0]).trim()}</span>
+                                return top.map((loc, i) => (
+                                    <div key={i} className="flex flex-col gap-2">
+                                        <div className="flex justify-between items-center text-sm">
+                                            <div className="flex items-center gap-2">
+                                                <span className="text-xl" title={loc.countryName}>{getFlagEmoji(loc.country)}</span>
+                                                <div className="flex flex-col">
+                                                    <span className="text-text-main dark:text-white font-bold leading-none">
+                                                        {loc.countryName}
+                                                    </span>
+                                                    <span className="text-[10px] text-text-muted dark:text-gray-400 font-medium uppercase tracking-wider mt-0.5">
+                                                        {loc.city !== 'Unknown' ? loc.city : 'Various Cities'}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div className="flex flex-col items-end">
+                                                <span className="font-black text-[#6D28D9] dark:text-primary-light">
+                                                    {loc.count.toLocaleString()}
+                                                </span>
+                                                <span className="text-[10px] text-text-muted dark:text-gray-400 font-bold uppercase">
+                                                    {Math.round((loc.count / total) * 100)}%
+                                                </span>
+                                            </div>
                                         </div>
-                                        <span className="font-bold text-text-main dark:text-white">{count.toLocaleString()}</span>
+                                        <div className="w-full bg-neutral-border/30 dark:bg-slate-800 rounded-full h-1.5 overflow-hidden">
+                                            <div
+                                                className="bg-[#6D28D9] h-1.5 rounded-full transition-all duration-1000 ease-out"
+                                                style={{ width: `${(loc.count / total) * 100}%` }}
+                                            ></div>
+                                        </div>
                                     </div>
-                                    <div className="w-full bg-neutral-border/30 dark:bg-slate-800 rounded-full h-1.5">
-                                        <div className="bg-primary h-1.5 rounded-full transition-all duration-1000" style={{ width: `${(count / total) * 100}%` }}></div>
-                                    </div>
-                                </div>
-                            )) : (
-                                <div className="text-center py-8 text-text-muted dark:text-gray-500 text-sm">No location data available</div>
-                            );
-                        })()}
+                                ));
+                            })()
+                        ) : (
+                            <div className="text-center py-10 flex flex-col items-center gap-3">
+                                <span className="material-symbols-outlined text-text-muted dark:text-gray-600 text-4xl">location_on</span>
+                                <p className="text-text-muted dark:text-gray-500 text-sm font-medium">No scan locations detected yet</p>
+                            </div>
+                        )}
                     </div>
                 </div>
 

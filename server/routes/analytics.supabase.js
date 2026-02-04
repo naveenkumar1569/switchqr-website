@@ -67,7 +67,8 @@ router.get('/', supabaseAuth, async (req, res) => {
             topQr: 'N/A',
             recentScans: [],
             deviceStats: { Mobile: 0, Desktop: 0, Tablet: 0 },
-            scansOverTime: []
+            scansOverTime: [],
+            locationStats: []
         };
 
         if (qrIds.length > 0) {
@@ -123,6 +124,33 @@ router.get('/', supabaseAuth, async (req, res) => {
                     Tablet: Math.round((deviceCounts.Tablet / total) * 100),
                     Desktop: Math.round((deviceCounts.Desktop / total) * 100)
                 };
+
+                // Location Stats (Aggregated)
+                const locationMap = {};
+                scans.forEach(s => {
+                    const country = s.country || 'Unknown';
+                    const city = s.city || 'Unknown';
+                    const key = `${country}:${city}`;
+                    if (!locationMap[key]) {
+                        locationMap[key] = { country, city, count: 0 };
+                    }
+                    locationMap[key].count++;
+                });
+
+                const regionNames = new Intl.DisplayNames(['en'], { type: 'region' });
+                stats.locationStats = Object.values(locationMap)
+                    .sort((a, b) => b.count - a.count)
+                    .map(loc => {
+                        let countryName = loc.country;
+                        if (loc.country && loc.country !== 'Unknown') {
+                            try {
+                                countryName = regionNames.of(loc.country.toUpperCase());
+                            } catch (e) {
+                                // Fallback to code
+                            }
+                        }
+                        return { ...loc, countryName };
+                    });
 
                 // Scans Over Time - Intelligent aggregation based on date range
                 const daysDiff = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24)) + 1;
