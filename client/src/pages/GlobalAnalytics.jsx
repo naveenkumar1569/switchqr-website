@@ -138,18 +138,22 @@ const GlobalAnalytics = () => {
         </div>
     );
 
-    // Calculate chart points to match pixel-perfect container width
     const maxScans = Math.max(...data.scansOverTime.map(d => d.count), 10);
-    const chartPoints = data.scansOverTime.map((d, i) => {
-        // Position from 0 to graphWidth to match actual pixels
+    const points = data.scansOverTime.map((d, i) => {
         const x = (i / (data.scansOverTime.length - 1 || 1)) * graphWidth;
-        const y = 200 - ((d.count / maxScans) * 150); // Scale to fit 200px height
-        return `${x} ${y}`;
-    }).join(' L ');
+        const y = 200 - ((d.count / maxScans) * 150);
+        return { x, y };
+    });
 
-    // Construct SVG Path
-    const pathD = data.scansOverTime.length > 1
-        ? `M ${chartPoints}`
+    // Generate smooth cubic bezier path
+    const pathD = points.length > 1
+        ? points.reduce((acc, point, i, arr) => {
+            if (i === 0) return `M ${point.x} ${point.y}`;
+            const prev = arr[i - 1];
+            const cp1x = prev.x + (point.x - prev.x) / 2;
+            const cp2x = prev.x + (point.x - prev.x) / 2;
+            return `${acc} C ${cp1x} ${prev.y}, ${cp2x} ${point.y}, ${point.x} ${point.y}`;
+        }, "")
         : `M 0 200 L ${graphWidth} 200`; // Flat line if no data
 
     return (
@@ -228,21 +232,17 @@ const GlobalAnalytics = () => {
                             : 'bg-gray-100 dark:bg-gray-800 text-gray-400 cursor-not-allowed'
                             }`}
                         disabled={!planInfo?.features?.csv_export}
-                        title={!planInfo?.features?.csv_export ? 'Export requires Pro plan' : 'Export data to CSV'}
                     >
                         <span className="material-symbols-outlined text-[20px] mr-2">download</span>
                         <span>Export</span>
-                        {!planInfo?.features?.csv_export && (
-                            <span className="material-symbols-outlined text-amber-500 text-[16px] ml-1">lock</span>
-                        )}
                     </button>
                 </div>
             </div>
 
             {/* Custom Range Modal */}
             {showCustomRange && (
-                <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" onClick={() => setShowCustomRange(false)}>
-                    <div className="bg-white dark:bg-surface-dark rounded-xl p-6 max-w-md w-full mx-4 border border-border-light dark:border-border-dark shadow-xl" onClick={(e) => e.stopPropagation()}>
+                <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 px-4" onClick={() => setShowCustomRange(false)}>
+                    <div className="bg-white dark:bg-surface-dark rounded-xl p-6 max-w-md w-full border border-border-light dark:border-border-dark shadow-xl" onClick={(e) => e.stopPropagation()}>
                         <div className="flex justify-between items-center mb-4">
                             <h3 className="text-lg font-bold text-text-dark dark:text-white">Custom Date Range</h3>
                             <button onClick={() => setShowCustomRange(false)} className="text-text-subtle hover:text-text-dark dark:hover:text-white">
@@ -296,66 +296,56 @@ const GlobalAnalytics = () => {
 
             {/* KPI Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                {/* Card 1 */}
-                <div className="flex flex-col gap-2 rounded-xl p-5 bg-surface-light dark:bg-surface-dark border border-border-light dark:border-border-dark shadow-sm">
+                {/* Total Scans */}
+                <div className="flex flex-col gap-2 rounded-xl p-5 bg-white dark:bg-surface-dark border border-neutral-border dark:border-border-dark shadow-sm">
                     <div className="flex justify-between items-start">
-                        <p className="text-text-dark dark:text-white text-sm font-medium">Total Scans</p>
-                        <span className="material-symbols-outlined text-text-subtle text-[20px]">qr_code_scanner</span>
+                        <p className="text-text-main dark:text-white text-sm font-medium">Total Scans</p>
+                        <span className="material-symbols-outlined text-text-muted dark:text-gray-400 text-[20px]">qr_code_scanner</span>
                     </div>
                     <div className="flex items-end gap-2 mt-1">
-                        <p className="text-text-dark dark:text-white text-2xl font-bold leading-none">{data.totalScans}</p>
+                        <p className="text-text-main dark:text-white text-2xl font-bold leading-none">{data.totalScans.toLocaleString()}</p>
                     </div>
                 </div>
-                {/* Card 2 - Unique IPs */}
-                <div className="flex flex-col gap-2 rounded-xl p-5 bg-surface-light dark:bg-surface-dark border border-border-light dark:border-border-dark shadow-sm">
+                {/* Unique Scans */}
+                <div className="flex flex-col gap-2 rounded-xl p-5 bg-white dark:bg-surface-dark border border-neutral-border dark:border-border-dark shadow-sm">
                     <div className="flex justify-between items-start">
-                        <div className="flex items-center gap-1.5">
-                            <p className="text-text-dark dark:text-white text-sm font-medium">Unique IPs</p>
-                            <span className="material-symbols-outlined text-text-subtle text-[16px] cursor-help" title="Count of distinct IP addresses. Note: Users on different networks count separately, and users on shared networks are counted as one.">
-                                help_outline
-                            </span>
-                        </div>
-                        <span className="material-symbols-outlined text-text-subtle text-[20px]">person_outline</span>
+                        <p className="text-text-main dark:text-white text-sm font-medium">Unique Scans</p>
+                        <span className="material-symbols-outlined text-text-muted dark:text-gray-400 text-[20px]">person_outline</span>
                     </div>
                     <div className="flex items-end gap-2 mt-1">
-                        <p className="text-text-dark dark:text-white text-2xl font-bold leading-none">{data.uniqueScans}</p>
+                        <p className="text-text-main dark:text-white text-2xl font-bold leading-none">{data.uniqueScans.toLocaleString()}</p>
                     </div>
                 </div>
-                {/* Card 3 */}
-                <div className="flex flex-col gap-2 rounded-xl p-5 bg-surface-light dark:bg-surface-dark border border-border-light dark:border-border-dark shadow-sm">
+                {/* Scan Rate */}
+                <div className="flex flex-col gap-2 rounded-xl p-5 bg-white dark:bg-surface-dark border border-neutral-border dark:border-border-dark shadow-sm">
                     <div className="flex justify-between items-start">
-                        <p className="text-text-dark dark:text-white text-sm font-medium">Top Performing QR</p>
-                        <span className="material-symbols-outlined text-text-subtle text-[20px]">emoji_events</span>
+                        <p className="text-text-main dark:text-white text-sm font-medium">Scan Rate</p>
+                        <span className="material-symbols-outlined text-text-muted dark:text-gray-400 text-[20px]">trending_up</span>
                     </div>
                     <div className="flex items-end gap-2 mt-1">
-                        <p className="text-text-dark dark:text-white text-xl font-bold leading-none truncate">{data.topQr}</p>
-                    </div>
-                </div>
-                {/* Card 4 - Unique Ratio */}
-                <div className="flex flex-col gap-2 rounded-xl p-5 bg-surface-light dark:bg-surface-dark border border-border-light dark:border-border-dark shadow-sm">
-                    <div className="flex justify-between items-start">
-                        <div className="flex items-center gap-1.5">
-                            <p className="text-text-dark dark:text-white text-sm font-medium">Unique Ratio</p>
-                            <span className="material-symbols-outlined text-text-subtle text-[16px] cursor-help" title="Percentage of scans from unique IPs">
-                                help_outline
-                            </span>
-                        </div>
-                        <span className="material-symbols-outlined text-text-subtle text-[20px]">trending_up</span>
-                    </div>
-                    <div className="flex items-end gap-2 mt-1">
-                        <p className="text-text-dark dark:text-white text-2xl font-bold leading-none">
+                        <p className="text-text-main dark:text-white text-2xl font-bold leading-none">
                             {data.totalScans > 0 ? Math.round((data.uniqueScans / data.totalScans) * 100) : 0}%
                         </p>
+                    </div>
+                </div>
+                {/* Top QR */}
+                <div className="flex flex-col gap-2 rounded-xl p-5 bg-white dark:bg-surface-dark border border-neutral-border dark:border-border-dark shadow-sm">
+                    <div className="flex justify-between items-start">
+                        <p className="text-text-main dark:text-white text-sm font-medium">Top Performing QR</p>
+                        <span className="material-symbols-outlined text-text-muted dark:text-gray-400 text-[20px]">emoji_events</span>
+                    </div>
+                    <div className="flex items-end gap-2 mt-1">
+                        <p className="text-text-main dark:text-white text-xl font-bold leading-none truncate">{data.topQr}</p>
                     </div>
                 </div>
             </div>
 
             {/* Main Chart Section */}
-            <div className="flex flex-col rounded-xl bg-surface-light dark:bg-surface-dark border border-border-light dark:border-border-dark shadow-sm p-6">
+            <div className="flex flex-col rounded-xl bg-white dark:bg-surface-dark border border-neutral-border dark:border-border-dark shadow-sm p-6">
                 <div className="flex flex-wrap justify-between items-center gap-4 mb-6">
                     <div>
-                        <h3 className="text-text-dark dark:text-white text-lg font-bold">Scans over time</h3>
-                        <p className="text-text-subtle dark:text-gray-400 text-sm">Visualizing scan frequency for {dateRange.label.toLowerCase()}.</p>
+                        <h3 className="text-text-main dark:text-white text-lg font-bold">Scans over time</h3>
+                        <p className="text-text-muted dark:text-gray-400 text-sm">Visualizing scan frequency for {dateRange.label.toLowerCase()}.</p>
                     </div>
                 </div>
                 <div className="relative w-full h-[250px]" ref={containerRef}>
@@ -369,29 +359,12 @@ const GlobalAnalytics = () => {
                                 transform: 'translateX(-50%)'
                             }}
                         >
-                            <div className="bg-white dark:bg-[#1e1726] border border-slate-200 dark:border-slate-700 rounded-xl shadow-xl px-4 py-3 backdrop-blur-sm">
-                                <div className="flex items-center gap-2 mb-1">
-                                    <div className="w-2 h-2 rounded-full bg-primary"></div>
-                                    <div className="text-xs font-semibold text-slate-500 dark:text-slate-400">
-                                        {(() => {
-                                            const date = data.scansOverTime[hoveredPoint]?.date;
-                                            if (date.includes('-W')) {
-                                                return date.split('-')[1];
-                                            } else if (date.match(/^\d{4}-\d{2}$/)) {
-                                                const [year, month] = date.split('-');
-                                                const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-                                                return `${monthNames[parseInt(month) - 1]} ${year}`;
-                                            } else {
-                                                return date;
-                                            }
-                                        })()}
-                                    </div>
+                            <div className="bg-text-main dark:bg-[#1e1726] border border-slate-700 rounded-lg shadow-xl px-4 py-2 text-white">
+                                <div className="text-xs font-bold whitespace-nowrap mb-1">
+                                    {data.scansOverTime[hoveredPoint]?.date}
                                 </div>
-                                <div className="text-2xl font-bold text-slate-900 dark:text-white">
-                                    {data.scansOverTime[hoveredPoint]?.count}
-                                </div>
-                                <div className="text-xs text-slate-500 dark:text-slate-400">
-                                    {data.scansOverTime[hoveredPoint]?.count === 1 ? 'scan' : 'scans'}
+                                <div className="text-sm font-black">
+                                    {data.scansOverTime[hoveredPoint]?.count} {data.scansOverTime[hoveredPoint]?.count === 1 ? 'Scan' : 'Scans'}
                                 </div>
                             </div>
                         </div>
@@ -399,11 +372,36 @@ const GlobalAnalytics = () => {
 
                     <svg className="w-full h-full overflow-visible" viewBox={`0 0 ${graphWidth} 250`} preserveAspectRatio="none" style={{ shapeRendering: 'geometricPrecision' }}>
                         {/* Grid Lines */}
-                        <line stroke="#e5e7eb" strokeWidth="1" x1="0" x2={graphWidth} y1="200" y2="200" className="dark:stroke-gray-700" vectorEffect="non-scaling-stroke"></line>
-                        <line stroke="#e5e7eb" strokeWidth="1" x1="0" x2={graphWidth} y1="100" y2="100" className="dark:stroke-gray-700" vectorEffect="non-scaling-stroke"></line>
+                        {[0, 50, 100, 150, 200].map(y => (
+                            <line key={y} stroke="#f0f0f0" className="dark:stroke-gray-800" strokeWidth="1" x1="0" x2={graphWidth} y1={y} y2={y} vectorEffect="non-scaling-stroke" />
+                        ))}
 
-                        {/* Dynamic Path */}
-                        <path d={pathD} fill="none" stroke="#7426d9" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" vectorEffect="non-scaling-stroke"></path>
+                        <defs>
+                            <linearGradient id="chartGradient" x1="0" x2="0" y1="0" y2="1">
+                                <stop offset="0%" stopColor="#7426d9" stopOpacity="0.1" />
+                                <stop offset="100%" stopColor="#7426d9" stopOpacity="0" />
+                            </linearGradient>
+                        </defs>
+
+                        {/* Curved Path Area */}
+                        {data.scansOverTime.length > 1 && (
+                            <path
+                                d={`${pathD} V 250 H 0 Z`}
+                                fill="url(#chartGradient)"
+                                vectorEffect="non-scaling-stroke"
+                            />
+                        )}
+
+                        {/* Curved Line Path */}
+                        <path
+                            d={pathD}
+                            fill="none"
+                            stroke="#7426d9"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="3"
+                            vectorEffect="non-scaling-stroke"
+                        />
 
                         {/* Invisible hover areas for each data point */}
                         {data.scansOverTime.map((d, i) => {
@@ -434,57 +432,37 @@ const GlobalAnalytics = () => {
                                     key={i}
                                     cx={x}
                                     cy={y}
-                                    fill="currentColor"
+                                    fill="white"
                                     r={isHovered ? "6" : "4"}
                                     stroke="#7426d9"
-                                    strokeWidth={isHovered ? "2.5" : "2"}
+                                    strokeWidth="2"
                                     vectorEffect="non-scaling-stroke"
-                                    className={`text-white dark:text-[#2d2438] transition-all ${isHovered ? 'drop-shadow-lg' : ''}`}
-                                    style={{ cursor: 'pointer' }}
-                                    onMouseEnter={() => setHoveredPoint(i)}
-                                    onMouseLeave={() => setHoveredPoint(null)}
+                                    className="dark:fill-background-dark transition-all"
                                 />
                             );
                         })}
 
-                        {/* X-Axis Labels rendered directly in SVG for perfect alignment */}
+                        {/* X-Axis Labels */}
                         {data.scansOverTime.map((d, i) => {
                             const x = (i / (data.scansOverTime.length - 1 || 1)) * graphWidth;
-                            // Intelligent label formatting
                             let label = d.date;
-                            if (d.date.includes('-W')) {
-                                label = d.date.split('-')[1];
-                            } else if (d.date.match(/^\d{4}-\d{2}$/)) {
-                                const [year, month] = d.date.split('-');
-                                const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-                                label = monthNames[parseInt(month) - 1];
-                            } else {
-                                label = d.date.slice(5);
-                            }
+                            if (d.date.length > 5) label = d.date.slice(5);
 
-                            // Align logic: First=start, Last=end, Others=middle
                             const textAnchor = i === 0 ? "start" : i === data.scansOverTime.length - 1 ? "end" : "middle";
 
                             return (
                                 <text
                                     key={`label-${i}`}
                                     x={x}
-                                    y="230"
+                                    y="235"
                                     fill="currentColor"
-                                    className="text-xs text-text-subtle dark:text-gray-400 font-medium"
+                                    className="text-[10px] font-medium text-text-muted dark:text-gray-400"
                                     textAnchor={textAnchor}
-                                    style={{ fontSize: '12px' }}
                                 >
                                     {label}
                                 </text>
                             );
                         })}
-
-                        {data.scansOverTime.length === 0 && (
-                            <text x={graphWidth / 2} y="230" textAnchor="middle" className="text-xs text-text-subtle dark:text-gray-400">
-                                No data for this period
-                            </text>
-                        )}
                     </svg>
                 </div>
             </div>
@@ -492,13 +470,12 @@ const GlobalAnalytics = () => {
             {/* Bottom Row Grid */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
                 {/* Device Split Chart */}
-                <div className="flex flex-col rounded-xl bg-surface-light dark:bg-surface-dark border border-border-light dark:border-border-dark shadow-sm p-6 h-full">
-                    <h3 className="text-text-dark dark:text-white text-lg font-bold mb-6">Device Split</h3>
+                <div className="flex flex-col rounded-xl bg-white dark:bg-surface-dark border border-neutral-border dark:border-border-dark shadow-sm p-6">
+                    <h3 className="text-text-main dark:text-white text-lg font-bold mb-6">Device Split</h3>
                     <div className="flex items-center justify-center flex-1 mb-6">
                         <div className="relative size-40">
-                            {/* Simple donut chart - approximate logic for visualization */}
                             <svg className="size-full rotate-[-90deg]" viewBox="-3 -3 42 42">
-                                <path className="text-gray-100 dark:text-gray-700" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" strokeWidth="8"></path>
+                                <path className="text-gray-100 dark:text-gray-700 stroke-[8px]" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor"></path>
                                 {/* Mobile Segment */}
                                 <path
                                     className="text-primary cursor-pointer"
@@ -554,96 +531,80 @@ const GlobalAnalytics = () => {
                                 ></path>
                             </svg>
                             <div className="absolute inset-0 flex items-center justify-center flex-col pointer-events-none">
-                                <span className="text-2xl font-bold text-text-dark dark:text-white">Total</span>
-                                <span className="text-sm text-text-subtle dark:text-gray-400">Devices</span>
+                                <span className="text-2xl font-bold text-text-main dark:text-white">Total</span>
+                                <span className="text-sm text-text-muted dark:text-gray-400">Devices</span>
                             </div>
                         </div>
                     </div>
                     <div className="flex flex-col gap-3">
-                        <div className="flex justify-between items-center text-sm">
-                            <div className="flex items-center gap-2">
-                                <div className="size-3 rounded-full bg-primary"></div>
-                                <span className="text-text-dark dark:text-white font-medium">Mobile</span>
+                        {['Mobile', 'Tablet', 'Desktop'].map((device, idx) => (
+                            <div key={device} className="flex justify-between items-center text-sm">
+                                <div className="flex items-center gap-2">
+                                    <div className={`size-3 rounded-full ${idx === 0 ? 'bg-primary' : idx === 1 ? 'bg-primary/60' : 'bg-primary/30'}`}></div>
+                                    <span className="text-text-main dark:text-white font-medium">{device}</span>
+                                </div>
+                                <span className="text-text-muted dark:text-gray-400">{data.deviceStats?.[device] || 0}%</span>
                             </div>
-                            <span className="text-text-subtle dark:text-gray-400">{data.deviceStats?.Mobile}%</span>
-                        </div>
-                        <div className="flex justify-between items-center text-sm">
-                            <div className="flex items-center gap-2">
-                                <div className="size-3 rounded-full bg-primary/60"></div>
-                                <span className="text-text-dark dark:text-white font-medium">Tablet</span>
-                            </div>
-                            <span className="text-text-subtle dark:text-gray-400">{data.deviceStats?.Tablet}%</span>
-                        </div>
-                        <div className="flex justify-between items-center text-sm">
-                            <div className="flex items-center gap-2">
-                                <div className="size-3 rounded-full bg-primary/30"></div>
-                                <span className="text-text-dark dark:text-white font-medium">Desktop</span>
-                            </div>
-                            <span className="text-text-subtle dark:text-gray-400">{data.deviceStats?.Desktop}%</span>
-                        </div>
+                        ))}
                     </div>
                 </div>
 
                 {/* Top Locations */}
-                <div className="flex flex-col rounded-xl bg-surface-light dark:bg-surface-dark border border-border-light dark:border-border-dark shadow-sm p-6 h-full">
-                    <div className="flex justify-between items-center mb-6">
-                        <h3 className="text-text-dark dark:text-white text-lg font-bold">Top Locations</h3>
-                    </div>
-                    {(() => {
-                        // Calculate top locations from recent scans
-                        const locationCounts = {};
-                        data.recentScans.forEach(scan => {
-                            if (scan.location && scan.location !== 'Unknown') {
-                                locationCounts[scan.location] = (locationCounts[scan.location] || 0) + 1;
-                            }
-                        });
+                <div className="flex flex-col rounded-xl bg-white dark:bg-surface-dark border border-neutral-border dark:border-border-dark shadow-sm p-6">
+                    <h3 className="text-text-main dark:text-white text-lg font-bold mb-6">Top Locations</h3>
+                    <div className="flex flex-col gap-5">
+                        {(() => {
+                            const locationCounts = {};
+                            data.recentScans.forEach(scan => {
+                                if (scan.location && scan.location !== 'Unknown') {
+                                    locationCounts[scan.location] = (locationCounts[scan.location] || 0) + 1;
+                                }
+                            });
+                            const top = Object.entries(locationCounts)
+                                .sort((a, b) => b[1] - a[1])
+                                .slice(0, 4);
+                            const total = top.reduce((acc, [_, count]) => acc + count, 0) || 1;
 
-                        const topLocations = Object.entries(locationCounts)
-                            .sort((a, b) => b[1] - a[1])
-                            .slice(0, 5)
-                            .map(([location, count]) => ({ location, count }));
-
-                        return topLocations.length > 0 ? (
-                            <div className="flex flex-col gap-3">
-                                {topLocations.map((item, i) => (
-                                    <div key={i} className="flex justify-between items-center">
+                            return top.length > 0 ? top.map(([location, count], i) => (
+                                <div key={i} className="flex flex-col gap-2">
+                                    <div className="flex justify-between items-center text-sm">
                                         <div className="flex items-center gap-2">
-                                            <span className="material-symbols-outlined text-[18px] text-text-subtle">location_on</span>
-                                            <span className="text-text-dark dark:text-white text-sm font-medium">{item.location}</span>
+                                            <span className="text-text-main dark:text-white font-medium italic">{(location.split(',')[1] || location.split(',')[0]).trim()}</span>
                                         </div>
-                                        <span className="text-text-subtle text-sm">{item.count} {item.count === 1 ? 'scan' : 'scans'}</span>
+                                        <span className="font-bold text-text-main dark:text-white">{count.toLocaleString()}</span>
                                     </div>
-                                ))}
-                            </div>
-                        ) : (
-                            <div className="flex flex-col items-center justify-center h-full text-center gap-3">
-                                <span className="material-symbols-outlined text-4xl text-gray-300 dark:text-gray-600">location_on</span>
-                                <p className="text-text-subtle text-sm">No location data available</p>
-                            </div>
-                        );
-                    })()}
+                                    <div className="w-full bg-neutral-border/30 dark:bg-slate-800 rounded-full h-1.5">
+                                        <div className="bg-primary h-1.5 rounded-full transition-all duration-1000" style={{ width: `${(count / total) * 100}%` }}></div>
+                                    </div>
+                                </div>
+                            )) : (
+                                <div className="text-center py-8 text-text-muted dark:text-gray-500 text-sm">No location data available</div>
+                            );
+                        })()}
+                    </div>
                 </div>
 
-                {/* Upsell Card - Only show if advanced analytics not enabled */}
+                {/* Upsell Card */}
                 {!planInfo?.features?.advanced_analytics && (
-                    <div className="flex flex-col rounded-xl bg-surface-light dark:bg-surface-dark border border-border-light dark:border-border-dark shadow-sm overflow-hidden h-full">
-                        {/* Image Section */}
-                        <div className="h-32 w-full bg-cover bg-center relative">
-                            <div className="absolute inset-0 bg-gradient-to-r from-purple-500 to-indigo-600"></div>
-                            <div className="w-full h-full bg-primary/20 backdrop-blur-[1px] absolute inset-0"></div>
+                    <div className="flex flex-col rounded-xl bg-white dark:bg-surface-dark border border-neutral-border dark:border-border-dark shadow-sm overflow-hidden h-full">
+                        <div className="h-32 w-full bg-gradient-to-br from-primary to-indigo-600 relative">
+                            <div className="absolute inset-0 bg-white/10 backdrop-blur-[1px]"></div>
                         </div>
                         <div className="p-6 flex flex-col justify-between flex-1 gap-4">
                             <div className="flex flex-col gap-2">
                                 <div className="flex items-center gap-2 mb-1">
                                     <span className="material-symbols-outlined text-primary text-[24px]">lock</span>
-                                    <p className="text-text-dark dark:text-white text-lg font-bold leading-tight">Unlock advanced attribution</p>
+                                    <p className="text-text-main dark:text-white text-lg font-bold leading-tight">Unlock attribution</p>
                                 </div>
-                                <p className="text-text-subtle dark:text-gray-400 text-sm font-normal leading-relaxed">
-                                    Gain deeper insights with city-level data, detailed operating system stats, and browser analytics.
+                                <p className="text-text-muted dark:text-gray-400 text-sm leading-relaxed">
+                                    Gain deeper insights with city-level data, OS stats, and browser analytics.
                                 </p>
                             </div>
-                            <button className="w-full cursor-pointer items-center justify-center rounded-lg h-10 px-4 bg-primary text-white text-sm font-bold shadow-md hover:bg-primary-hover transition-all flex gap-2 group">
-                                <span>Upgrade to SwitchQR Pro</span>
+                            <button
+                                onClick={() => window.location.href = '/billing'}
+                                className="w-full cursor-pointer items-center justify-center rounded-lg h-10 px-4 bg-primary text-white text-sm font-bold shadow-md hover:bg-primary/90 transition-all flex gap-2 group"
+                            >
+                                <span>Upgrade Pro</span>
                                 <span className="material-symbols-outlined text-[18px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
                             </button>
                         </div>
