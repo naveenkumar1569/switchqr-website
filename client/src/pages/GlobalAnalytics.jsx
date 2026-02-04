@@ -115,9 +115,10 @@ const GlobalAnalytics = () => {
         </div>
     );
 
-    // Calculate chart points with padding to align with x-axis labels
+    // Calculate chart points with proportional padding to align with x-axis labels
     const maxScans = Math.max(...data.scansOverTime.map(d => d.count), 10);
-    const padding = 20; // Padding on each side
+    const paddingPercent = 0.025; // 2.5% padding on each side (matches px-2 which is ~2.5% of typical width)
+    const padding = 800 * paddingPercent; // 20px at 800 viewBox width
     const graphWidth = 800 - (padding * 2);
     const chartPoints = data.scansOverTime.map((d, i) => {
         const x = padding + (i / (data.scansOverTime.length - 1 || 1)) * graphWidth;
@@ -385,7 +386,8 @@ const GlobalAnalytics = () => {
 
                         {/* Invisible hover areas for each data point */}
                         {data.scansOverTime.map((d, i) => {
-                            const padding = 20;
+                            const paddingPercent = 0.025;
+                            const padding = 800 * paddingPercent;
                             const graphWidth = 800 - (padding * 2);
                             const x = padding + (i / (data.scansOverTime.length - 1 || 1)) * graphWidth;
                             const width = 800 / (data.scansOverTime.length || 1);
@@ -406,7 +408,8 @@ const GlobalAnalytics = () => {
 
                         {/* Dots for Data Points */}
                         {data.scansOverTime.map((d, i) => {
-                            const padding = 20;
+                            const paddingPercent = 0.025;
+                            const padding = 800 * paddingPercent;
                             const graphWidth = 800 - (padding * 2);
                             const x = padding + (i / (data.scansOverTime.length - 1 || 1)) * graphWidth;
                             const y = 200 - ((d.count / maxScans) * 150);
