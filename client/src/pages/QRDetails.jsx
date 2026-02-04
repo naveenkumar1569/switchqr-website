@@ -1033,9 +1033,8 @@ const QRDetails = () => {
                     <div className="bg-white dark:bg-[#1e1726] rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm p-5">
                         <h4 className="font-bold text-slate-900 dark:text-white mb-4">Device Types</h4>
                         <div className="space-y-3">
-                            {Object.entries(stats.deviceStats).map(([device, count]) => {
-                                const total = stats.totalScans || 1;
-                                const percent = Math.round((count / total) * 100);
+                            {Object.entries(stats.deviceStats).map(([device, percent]) => {
+                                // Backend already returns percentages, use them directly
                                 let color = 'bg-primary';
                                 if (device === 'Desktop') color = 'bg-blue-400';
                                 if (device === 'Tablet') color = 'bg-emerald-400';
@@ -1052,7 +1051,7 @@ const QRDetails = () => {
                                             <span className="font-semibold text-slate-900 dark:text-white">{percent}%</span>
                                         </div>
                                         <div className="w-full bg-slate-100 dark:bg-slate-800 rounded-full h-2 mt-1">
-                                            <div className={`${color} h-2 rounded-full`} style={{ width: `${percent}%` }}></div>
+                                            <div className={`${color} h-2 rounded-full`} style={{ width: `${Math.min(percent, 100)}%` }}></div>
                                         </div>
                                     </div>
                                 );
