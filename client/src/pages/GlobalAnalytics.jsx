@@ -16,6 +16,7 @@ const GlobalAnalytics = () => {
     const [loading, setLoading] = useState(true);
     const [dateRange, setDateRange] = useState({ type: 'days', value: 7, label: 'Last 7 Days' });
     const [showRangeMenu, setShowRangeMenu] = useState(false);
+    const [hoveredPoint, setHoveredPoint] = useState(null);
     const [showCustomRange, setShowCustomRange] = useState(false);
     const [customStartDate, setCustomStartDate] = useState('');
     const [customEndDate, setCustomEndDate] = useState('');
