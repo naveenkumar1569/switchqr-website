@@ -124,46 +124,131 @@ router.get('/', supabaseAuth, async (req, res) => {
                     Desktop: Math.round((deviceCounts.Desktop / total) * 100)
                 };
 
-                // Scans Over Time - Dynamic timeline based on date range
-                const timeline = {};
-
-                // Calculate number of days in range
+                // Scans Over Time - Intelligent aggregation based on date range
                 const daysDiff = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24)) + 1;
 
-                // Fill timeline with all dates in range
-                for (let i = 0; i < daysDiff; i++) {
-                    const d = new Date(startDate);
-                    d.setDate(d.getDate() + i);
-                    const key = d.toISOString().split('T')[0];
-                    timeline[key] = 0;
+                if (daysDiff <= 31) {
+                    // Daily aggregation for up to 31 days
+                    const timeline = {};
+                    for (let i = 0; i < daysDiff; i++) {
+                        const d = new Date(startDate);
+                        d.setDate(d.getDate() + i);
+                        const key = d.toISOString().split('T')[0];
+                        timeline[key] = 0;
+                    }
+
+                    scans.forEach(s => {
+                        const key = s.scanned_at.split('T')[0];
+                        if (timeline[key] !== undefined) timeline[key]++;
+                    });
+
+                    stats.scansOverTime = Object.keys(timeline).sort().map(date => ({
+                        date,
+                        count: timeline[date]
+                    }));
+
+                } else if (daysDiff <= 90) {
+                    // Weekly aggregation for 32-90 days
+                    const weeks = {};
+
+                    // Get week key (year-week format)
+                    const getWeekKey = (date) => {
+                        const d = new Date(date);
+                        const firstDayOfYear = new Date(d.getFullYear(), 0, 1);
+                        const pastDaysOfYear = (d - firstDayOfYear) / 86400000;
+                        const weekNum = Math.ceil((pastDaysOfYear + firstDayOfYear.getDay() + 1) / 7);
+                        return `${d.getFullYear()}-W${String(weekNum).padStart(2, '0')}`;
+                    };
+
+                    // Initialize weeks in range
+                    for (let i = 0; i < daysDiff; i++) {
+                        const d = new Date(startDate);
+                        d.setDate(d.getDate() + i);
+                        const weekKey = getWeekKey(d);
+                        if (!weeks[weekKey]) {
+                            weeks[weekKey] = { count: 0, startDate: d };
+                        }
+                    }
+
+                    // Count scans per week
+                    scans.forEach(s => {
+                        const weekKey = getWeekKey(s.scanned_at);
+                        if (weeks[weekKey] !== undefined) weeks[weekKey].count++;
+                    });
+
+                    stats.scansOverTime = Object.keys(weeks).sort().map(weekKey => ({
+                        date: weekKey,
+                        count: weeks[weekKey].count
+                    }));
+
+                } else {
+                    // Monthly aggregation for > 90 days
+                    const months = {};
+
+                    // Initialize months in range
+                    let currentDate = new Date(startDate);
+                    while (currentDate <= endDate) {
+                        const monthKey = `${currentDate.getFullYear()}-${String(currentDate.getMonth() + 1).padStart(2, '0')}`;
+                        months[monthKey] = 0;
+                        currentDate.setMonth(currentDate.getMonth() + 1);
+                    }
+
+                    // Count scans per month
+                    scans.forEach(s => {
+                        const scanDate = new Date(s.scanned_at);
+                        const monthKey = `${scanDate.getFullYear()}-${String(scanDate.getMonth() + 1).padStart(2, '0')}`;
+                        if (months[monthKey] !== undefined) months[monthKey]++;
+                    });
+
+                    stats.scansOverTime = Object.keys(months).sort().map(monthKey => ({
+                        date: monthKey,
+                        count: months[monthKey]
+                    }));
                 }
-
-                // Count scans per day
-                scans.forEach(s => {
-                    const key = s.scanned_at.split('T')[0];
-                    if (timeline[key] !== undefined) timeline[key]++;
-                });
-
-                stats.scansOverTime = Object.keys(timeline).sort().map(date => ({
-                    date,
-                    count: timeline[date]
-                }));
             } else {
-                // No scans in range, still create timeline with zeros
-                const timeline = {};
+                // No scans in range, still create timeline with zeros using same aggregation logic
                 const daysDiff = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24)) + 1;
 
-                for (let i = 0; i < daysDiff; i++) {
-                    const d = new Date(startDate);
-                    d.setDate(d.getDate() + i);
-                    const key = d.toISOString().split('T')[0];
-                    timeline[key] = 0;
-                }
+                if (daysDiff <= 31) {
+                    // Daily
+                    const timeline = {};
+                    for (let i = 0; i < daysDiff; i++) {
+                        const d = new Date(startDate);
+                        d.setDate(d.getDate() + i);
+                        const key = d.toISOString().split('T')[0];
+                        timeline[key] = 0;
+                    }
+                    stats.scansOverTime = Object.keys(timeline).sort().map(date => ({ date, count: 0 }));
 
-                stats.scansOverTime = Object.keys(timeline).sort().map(date => ({
-                    date,
-                    count: 0
-                }));
+                } else if (daysDiff <= 90) {
+                    // Weekly
+                    const weeks = {};
+                    const getWeekKey = (date) => {
+                        const d = new Date(date);
+                        const firstDayOfYear = new Date(d.getFullYear(), 0, 1);
+                        const pastDaysOfYear = (d - firstDayOfYear) / 86400000;
+                        const weekNum = Math.ceil((pastDaysOfYear + firstDayOfYear.getDay() + 1) / 7);
+                        return `${d.getFullYear()}-W${String(weekNum).padStart(2, '0')}`;
+                    };
+                    for (let i = 0; i < daysDiff; i++) {
+                        const d = new Date(startDate);
+                        d.setDate(d.getDate() + i);
+                        const weekKey = getWeekKey(d);
+                        if (!weeks[weekKey]) weeks[weekKey] = 0;
+                    }
+                    stats.scansOverTime = Object.keys(weeks).sort().map(weekKey => ({ date: weekKey, count: 0 }));
+
+                } else {
+                    // Monthly
+                    const months = {};
+                    let currentDate = new Date(startDate);
+                    while (currentDate <= endDate) {
+                        const monthKey = `${currentDate.getFullYear()}-${String(currentDate.getMonth() + 1).padStart(2, '0')}`;
+                        months[monthKey] = 0;
+                        currentDate.setMonth(currentDate.getMonth() + 1);
+                    }
+                    stats.scansOverTime = Object.keys(months).sort().map(monthKey => ({ date: monthKey, count: 0 }));
+                }
             }
         }
 

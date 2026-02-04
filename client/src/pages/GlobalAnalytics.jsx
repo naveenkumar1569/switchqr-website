@@ -403,9 +403,25 @@ const GlobalAnalytics = () => {
                     </svg>
                 </div>
                 <div className="flex justify-between mt-4 text-xs text-text-subtle dark:text-gray-400 font-medium px-2">
-                    {data.scansOverTime.map((d, i) => (
-                        <span key={i}>{d.date.slice(5)}</span>
-                    ))}
+                    {data.scansOverTime.map((d, i) => {
+                        // Intelligent label formatting based on date format
+                        let label = d.date;
+
+                        if (d.date.includes('-W')) {
+                            // Weekly format: "2025-W01" -> "W01"
+                            label = d.date.split('-')[1];
+                        } else if (d.date.match(/^\d{4}-\d{2}$/)) {
+                            // Monthly format: "2025-01" -> "Jan"
+                            const [year, month] = d.date.split('-');
+                            const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+                            label = monthNames[parseInt(month) - 1];
+                        } else {
+                            // Daily format: "2025-01-15" -> "01-15"
+                            label = d.date.slice(5);
+                        }
+
+                        return <span key={i}>{label}</span>;
+                    })}
                     {data.scansOverTime.length === 0 && <span>No data for this period</span>}
                 </div>
             </div>
