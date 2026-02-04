@@ -1,5 +1,5 @@
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { apiGet } from '../utils/api';
 
@@ -16,10 +16,31 @@ const GlobalAnalytics = () => {
     const [loading, setLoading] = useState(true);
     const [dateRange, setDateRange] = useState({ type: 'days', value: 7, label: 'Last 7 Days' });
     const [showRangeMenu, setShowRangeMenu] = useState(false);
-    const [hoveredPoint, setHoveredPoint] = useState(null);
     const [showCustomRange, setShowCustomRange] = useState(false);
     const [customStartDate, setCustomStartDate] = useState('');
     const [customEndDate, setCustomEndDate] = useState('');
+    const [graphWidth, setGraphWidth] = useState(800);
+    const containerRef = useRef(null);
+
+    // Measure container width for sharp graph rendering
+    useEffect(() => {
+        const updateWidth = () => {
+            if (containerRef.current) {
+                setGraphWidth(containerRef.current.clientWidth);
+            }
+        };
+
+        // Initial measurement
+        updateWidth();
+
+        // Resize observer for robust updates
+        const observer = new ResizeObserver(updateWidth);
+        if (containerRef.current) {
+            observer.observe(containerRef.current);
+        }
+
+        return () => observer.disconnect();
+    }, []);
 
     // Helper function to get date range parameters
     const getDateRangeParams = () => {
@@ -115,11 +136,11 @@ const GlobalAnalytics = () => {
         </div>
     );
 
-    // Calculate chart points to match justify-between label distribution (0% to 100%)
+    // Calculate chart points to match pixel-perfect container width
     const maxScans = Math.max(...data.scansOverTime.map(d => d.count), 10);
     const chartPoints = data.scansOverTime.map((d, i) => {
-        // Position from 0 to 800 to match justify-between labels
-        const x = (i / (data.scansOverTime.length - 1 || 1)) * 800;
+        // Position from 0 to graphWidth to match actual pixels
+        const x = (i / (data.scansOverTime.length - 1 || 1)) * graphWidth;
         const y = 200 - ((d.count / maxScans) * 150); // Scale to fit 200px height
         return `${x} ${y}`;
     }).join(' L ');
@@ -127,7 +148,7 @@ const GlobalAnalytics = () => {
     // Construct SVG Path
     const pathD = data.scansOverTime.length > 1
         ? `M ${chartPoints}`
-        : 'M 0 200 L 800 200'; // Flat line if no data
+        : `M 0 200 L ${graphWidth} 200`; // Flat line if no data
 
     return (
         <div className="max-w-[1200px] w-full mx-auto flex flex-col gap-8">
@@ -335,7 +356,7 @@ const GlobalAnalytics = () => {
                         <p className="text-text-subtle dark:text-gray-400 text-sm">Visualizing scan frequency for {dateRange.label.toLowerCase()}.</p>
                     </div>
                 </div>
-                <div className="relative w-full h-[250px]">
+                <div className="relative w-full h-[250px]" ref={containerRef}>
                     {/* Hover Tooltip */}
                     {hoveredPoint !== null && (
                         <div
@@ -374,18 +395,18 @@ const GlobalAnalytics = () => {
                         </div>
                     )}
 
-                    <svg className="w-full h-full overflow-visible" viewBox="0 0 800 250" preserveAspectRatio="none" style={{ shapeRendering: 'geometricPrecision' }}>
+                    <svg className="w-full h-full overflow-visible" viewBox={`0 0 ${graphWidth} 250`} style={{ shapeRendering: 'geometricPrecision' }}>
                         {/* Grid Lines */}
-                        <line stroke="#e5e7eb" strokeWidth="1" x1="0" x2="800" y1="200" y2="200" className="dark:stroke-gray-700" vectorEffect="non-scaling-stroke"></line>
-                        <line stroke="#e5e7eb" strokeWidth="1" x1="0" x2="800" y1="100" y2="100" className="dark:stroke-gray-700" vectorEffect="non-scaling-stroke"></line>
+                        <line stroke="#e5e7eb" strokeWidth="1" x1="0" x2={graphWidth} y1="200" y2="200" className="dark:stroke-gray-700" vectorEffect="non-scaling-stroke"></line>
+                        <line stroke="#e5e7eb" strokeWidth="1" x1="0" x2={graphWidth} y1="100" y2="100" className="dark:stroke-gray-700" vectorEffect="non-scaling-stroke"></line>
 
                         {/* Dynamic Path */}
                         <path d={pathD} fill="none" stroke="#7426d9" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" vectorEffect="non-scaling-stroke"></path>
 
                         {/* Invisible hover areas for each data point */}
                         {data.scansOverTime.map((d, i) => {
-                            const x = (i / (data.scansOverTime.length - 1 || 1)) * 800;
-                            const width = 800 / (data.scansOverTime.length || 1);
+                            const x = (i / (data.scansOverTime.length - 1 || 1)) * graphWidth;
+                            const width = graphWidth / (data.scansOverTime.length || 1);
                             return (
                                 <rect
                                     key={`hover-${i}`}
@@ -403,7 +424,7 @@ const GlobalAnalytics = () => {
 
                         {/* Dots for Data Points */}
                         {data.scansOverTime.map((d, i) => {
-                            const x = (i / (data.scansOverTime.length - 1 || 1)) * 800;
+                            const x = (i / (data.scansOverTime.length - 1 || 1)) * graphWidth;
                             const y = 200 - ((d.count / maxScans) * 150);
                             const isHovered = hoveredPoint === i;
                             return (
@@ -423,9 +444,10 @@ const GlobalAnalytics = () => {
                                 />
                             );
                         })}
+
                         {/* X-Axis Labels rendered directly in SVG for perfect alignment */}
                         {data.scansOverTime.map((d, i) => {
-                            const x = (i / (data.scansOverTime.length - 1 || 1)) * 800;
+                            const x = (i / (data.scansOverTime.length - 1 || 1)) * graphWidth;
                             // Intelligent label formatting
                             let label = d.date;
                             if (d.date.includes('-W')) {
@@ -457,7 +479,7 @@ const GlobalAnalytics = () => {
                         })}
 
                         {data.scansOverTime.length === 0 && (
-                            <text x="400" y="230" textAnchor="middle" className="text-xs text-text-subtle dark:text-gray-400">
+                            <text x={graphWidth / 2} y="230" textAnchor="middle" className="text-xs text-text-subtle dark:text-gray-400">
                                 No data for this period
                             </text>
                         )}
