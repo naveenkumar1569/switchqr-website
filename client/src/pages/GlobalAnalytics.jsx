@@ -396,7 +396,7 @@ const GlobalAnalytics = () => {
                         </div>
                     )}
 
-                    <svg className="w-full h-full overflow-visible" viewBox={`0 0 ${graphWidth} 250`} style={{ shapeRendering: 'geometricPrecision' }}>
+                    <svg className="w-full h-full overflow-visible" viewBox={`0 0 ${graphWidth} 250`} preserveAspectRatio="none" style={{ shapeRendering: 'geometricPrecision' }}>
                         {/* Grid Lines */}
                         <line stroke="#e5e7eb" strokeWidth="1" x1="0" x2={graphWidth} y1="200" y2="200" className="dark:stroke-gray-700" vectorEffect="non-scaling-stroke"></line>
                         <line stroke="#e5e7eb" strokeWidth="1" x1="0" x2={graphWidth} y1="100" y2="100" className="dark:stroke-gray-700" vectorEffect="non-scaling-stroke"></line>
