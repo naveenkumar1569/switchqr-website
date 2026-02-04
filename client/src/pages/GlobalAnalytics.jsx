@@ -16,6 +16,7 @@ const GlobalAnalytics = () => {
     const [loading, setLoading] = useState(true);
     const [dateRange, setDateRange] = useState(7);
     const [showRangeMenu, setShowRangeMenu] = useState(false);
+    const [hoveredPoint, setHoveredPoint] = useState(null);
 
     useEffect(() => {
         const fetchGlobalStats = async () => {
@@ -188,6 +189,23 @@ const GlobalAnalytics = () => {
                     </div>
                 </div>
                 <div className="relative w-full h-[250px]">
+                    {/* Hover Tooltip */}
+                    {hoveredPoint !== null && (
+                        <div
+                            className="absolute z-20 pointer-events-none"
+                            style={{
+                                left: `${(hoveredPoint / (data.scansOverTime.length - 1 || 1)) * 100}%`,
+                                top: '0px',
+                                transform: 'translateX(-50%)'
+                            }}
+                        >
+                            <div className="bg-slate-900 dark:bg-slate-800 text-white px-3 py-2 rounded-lg shadow-lg border border-slate-700 mb-2">
+                                <div className="text-xs font-medium text-slate-300">{data.scansOverTime[hoveredPoint]?.date}</div>
+                                <div className="text-sm font-bold">{data.scansOverTime[hoveredPoint]?.count} scans</div>
+                            </div>
+                        </div>
+                    )}
+
                     <svg className="w-full h-full overflow-visible" preserveAspectRatio="none" viewBox="0 0 800 250">
                         {/* Grid Lines */}
                         <line stroke="#e5e7eb" strokeWidth="1" x1="0" x2="800" y1="200" y2="200" className="dark:stroke-gray-700"></line>
@@ -196,14 +214,44 @@ const GlobalAnalytics = () => {
                         {/* Dynamic Path */}
                         <path d={pathD} fill="none" stroke="#7426d9" strokeLinecap="round" strokeWidth="3"></path>
 
+                        {/* Invisible hover areas for each data point */}
+                        {data.scansOverTime.map((d, i) => {
+                            const x = (i / (data.scansOverTime.length - 1 || 1)) * 800;
+                            const width = 800 / (data.scansOverTime.length || 1);
+                            return (
+                                <rect
+                                    key={`hover-${i}`}
+                                    x={x - width / 2}
+                                    y="0"
+                                    width={width}
+                                    height="250"
+                                    fill="transparent"
+                                    style={{ cursor: 'pointer' }}
+                                    onMouseEnter={() => setHoveredPoint(i)}
+                                    onMouseLeave={() => setHoveredPoint(null)}
+                                />
+                            );
+                        })}
+
                         {/* Dots for Data Points */}
                         {data.scansOverTime.map((d, i) => {
                             const x = (i / (data.scansOverTime.length - 1 || 1)) * 800;
                             const y = 200 - ((d.count / maxScans) * 150);
+                            const isHovered = hoveredPoint === i;
                             return (
-                                <circle key={i} cx={x} cy={y} fill="currentColor" r="4" stroke="#7426d9" strokeWidth="2" className="text-white dark:text-[#2d2438]">
-                                    <title>{d.date}: {d.count} scans</title>
-                                </circle>
+                                <circle
+                                    key={i}
+                                    cx={x}
+                                    cy={y}
+                                    fill="currentColor"
+                                    r={isHovered ? "6" : "4"}
+                                    stroke="#7426d9"
+                                    strokeWidth={isHovered ? "3" : "2"}
+                                    className={`text-white dark:text-[#2d2438] transition-all ${isHovered ? 'drop-shadow-lg' : ''}`}
+                                    style={{ cursor: 'pointer' }}
+                                    onMouseEnter={() => setHoveredPoint(i)}
+                                    onMouseLeave={() => setHoveredPoint(null)}
+                                />
                             );
                         })}
                     </svg>
