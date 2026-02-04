@@ -1016,8 +1016,19 @@ const QRDetails = () => {
                                     className="w-full bg-primary/20 hover:bg-primary/50 rounded-t-sm transition-all relative group-hover:shadow-lg"
                                     style={{ height: `${(day.count / maxCount) * 100}%` }}
                                 >
-                                    <div className="opacity-0 group-hover:opacity-100 absolute -top-8 left-1/2 -translate-x-1/2 bg-slate-800 text-white text-xs px-2 py-1 rounded pointer-events-none transition-opacity">
-                                        {day.count}
+                                    <div className="opacity-0 group-hover:opacity-100 absolute -top-20 left-1/2 -translate-x-1/2 bg-white dark:bg-[#1e1726] border border-slate-200 dark:border-slate-700 rounded-xl shadow-xl px-4 py-3 pointer-events-none transition-opacity backdrop-blur-sm whitespace-nowrap">
+                                        <div className="flex items-center gap-2 mb-1">
+                                            <div className="w-2 h-2 rounded-full bg-primary"></div>
+                                            <div className="text-xs font-semibold text-slate-500 dark:text-slate-400">
+                                                {new Date(day.date).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}
+                                            </div>
+                                        </div>
+                                        <div className="text-2xl font-bold text-slate-900 dark:text-white">
+                                            {day.count}
+                                        </div>
+                                        <div className="text-xs text-slate-500 dark:text-slate-400">
+                                            {day.count === 1 ? 'scan' : 'scans'}
+                                        </div>
                                     </div>
                                 </div>
                                 <span className="text-[10px] text-slate-400 truncate w-full text-center">{new Date(day.date).toLocaleDateString(undefined, { weekday: 'short' })}</span>

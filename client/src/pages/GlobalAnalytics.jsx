@@ -341,13 +341,34 @@ const GlobalAnalytics = () => {
                             className="absolute z-20 pointer-events-none"
                             style={{
                                 left: `${(hoveredPoint / (data.scansOverTime.length - 1 || 1)) * 100}%`,
-                                top: '0px',
+                                top: '-10px',
                                 transform: 'translateX(-50%)'
                             }}
                         >
-                            <div className="bg-slate-900 dark:bg-slate-800 text-white px-3 py-2 rounded-lg shadow-lg border border-slate-700 mb-2">
-                                <div className="text-xs font-medium text-slate-300">{data.scansOverTime[hoveredPoint]?.date}</div>
-                                <div className="text-sm font-bold">{data.scansOverTime[hoveredPoint]?.count} scans</div>
+                            <div className="bg-white dark:bg-[#1e1726] border border-slate-200 dark:border-slate-700 rounded-xl shadow-xl px-4 py-3 backdrop-blur-sm">
+                                <div className="flex items-center gap-2 mb-1">
+                                    <div className="w-2 h-2 rounded-full bg-primary"></div>
+                                    <div className="text-xs font-semibold text-slate-500 dark:text-slate-400">
+                                        {(() => {
+                                            const date = data.scansOverTime[hoveredPoint]?.date;
+                                            if (date.includes('-W')) {
+                                                return date.split('-')[1];
+                                            } else if (date.match(/^\d{4}-\d{2}$/)) {
+                                                const [year, month] = date.split('-');
+                                                const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+                                                return `${monthNames[parseInt(month) - 1]} ${year}`;
+                                            } else {
+                                                return date;
+                                            }
+                                        })()}
+                                    </div>
+                                </div>
+                                <div className="text-2xl font-bold text-slate-900 dark:text-white">
+                                    {data.scansOverTime[hoveredPoint]?.count}
+                                </div>
+                                <div className="text-xs text-slate-500 dark:text-slate-400">
+                                    {data.scansOverTime[hoveredPoint]?.count === 1 ? 'scan' : 'scans'}
+                                </div>
                             </div>
                         </div>
                     )}
