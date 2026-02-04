@@ -423,29 +423,45 @@ const GlobalAnalytics = () => {
                                 />
                             );
                         })}
+                        {/* X-Axis Labels rendered directly in SVG for perfect alignment */}
+                        {data.scansOverTime.map((d, i) => {
+                            const x = (i / (data.scansOverTime.length - 1 || 1)) * 800;
+                            // Intelligent label formatting
+                            let label = d.date;
+                            if (d.date.includes('-W')) {
+                                label = d.date.split('-')[1];
+                            } else if (d.date.match(/^\d{4}-\d{2}$/)) {
+                                const [year, month] = d.date.split('-');
+                                const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+                                label = monthNames[parseInt(month) - 1];
+                            } else {
+                                label = d.date.slice(5);
+                            }
+
+                            // Align logic: First=start, Last=end, Others=middle
+                            const textAnchor = i === 0 ? "start" : i === data.scansOverTime.length - 1 ? "end" : "middle";
+
+                            return (
+                                <text
+                                    key={`label-${i}`}
+                                    x={x}
+                                    y="230"
+                                    fill="currentColor"
+                                    className="text-xs text-text-subtle dark:text-gray-400 font-medium"
+                                    textAnchor={textAnchor}
+                                    style={{ fontSize: '12px' }}
+                                >
+                                    {label}
+                                </text>
+                            );
+                        })}
+
+                        {data.scansOverTime.length === 0 && (
+                            <text x="400" y="230" textAnchor="middle" className="text-xs text-text-subtle dark:text-gray-400">
+                                No data for this period
+                            </text>
+                        )}
                     </svg>
-                </div>
-                <div className="flex justify-between mt-4 text-xs text-text-subtle dark:text-gray-400 font-medium px-2">
-                    {data.scansOverTime.map((d, i) => {
-                        // Intelligent label formatting based on date format
-                        let label = d.date;
-
-                        if (d.date.includes('-W')) {
-                            // Weekly format: "2025-W01" -> "W01"
-                            label = d.date.split('-')[1];
-                        } else if (d.date.match(/^\d{4}-\d{2}$/)) {
-                            // Monthly format: "2025-01" -> "Jan"
-                            const [year, month] = d.date.split('-');
-                            const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-                            label = monthNames[parseInt(month) - 1];
-                        } else {
-                            // Daily format: "2025-01-15" -> "01-15"
-                            label = d.date.slice(5);
-                        }
-
-                        return <span key={i}>{label}</span>;
-                    })}
-                    {data.scansOverTime.length === 0 && <span>No data for this period</span>}
                 </div>
             </div>
 
