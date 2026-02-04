@@ -269,10 +269,39 @@ const GlobalAnalytics = () => {
                     <div className="flex justify-between items-center mb-6">
                         <h3 className="text-text-dark dark:text-white text-lg font-bold">Top Locations</h3>
                     </div>
-                    <div className="flex flex-col items-center justify-center h-full text-center gap-3">
-                        <span className="material-symbols-outlined text-4xl text-gray-300 dark:text-gray-600">location_on</span>
-                        <p className="text-text-subtle text-sm">Location data coming soon</p>
-                    </div>
+                    {(() => {
+                        // Calculate top locations from recent scans
+                        const locationCounts = {};
+                        data.recentScans.forEach(scan => {
+                            if (scan.location && scan.location !== 'Unknown') {
+                                locationCounts[scan.location] = (locationCounts[scan.location] || 0) + 1;
+                            }
+                        });
+
+                        const topLocations = Object.entries(locationCounts)
+                            .sort((a, b) => b[1] - a[1])
+                            .slice(0, 5)
+                            .map(([location, count]) => ({ location, count }));
+
+                        return topLocations.length > 0 ? (
+                            <div className="flex flex-col gap-3">
+                                {topLocations.map((item, i) => (
+                                    <div key={i} className="flex justify-between items-center">
+                                        <div className="flex items-center gap-2">
+                                            <span className="material-symbols-outlined text-[18px] text-text-subtle">location_on</span>
+                                            <span className="text-text-dark dark:text-white text-sm font-medium">{item.location}</span>
+                                        </div>
+                                        <span className="text-text-subtle text-sm">{item.count} {item.count === 1 ? 'scan' : 'scans'}</span>
+                                    </div>
+                                ))}
+                            </div>
+                        ) : (
+                            <div className="flex flex-col items-center justify-center h-full text-center gap-3">
+                                <span className="material-symbols-outlined text-4xl text-gray-300 dark:text-gray-600">location_on</span>
+                                <p className="text-text-subtle text-sm">No location data available</p>
+                            </div>
+                        );
+                    })()}
                 </div>
 
                 {/* Upsell Card - Only show if advanced analytics not enabled */}
