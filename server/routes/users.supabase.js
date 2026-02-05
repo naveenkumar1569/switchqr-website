@@ -44,9 +44,12 @@ router.get('/profile', supabaseAuth, async (req, res) => {
         const responseData = {
             id: user.id,
             email: user.email,
-            name: user.user_metadata?.full_name || '',
-            ...profile,
-            // Fallback defaults if profile is missing
+            first_name: profile?.first_name || '',
+            last_name: profile?.last_name || '',
+            job_title: profile?.job_title || '',
+            bio: profile?.bio || '',
+            company: profile?.company || '',
+            website: profile?.website || '',
             plan: profile?.plan || 'free'
         };
 
@@ -65,12 +68,14 @@ router.put('/profile', supabaseAuth, async (req, res) => {
 
         const updates = req.body;
         // Whitelist allowed fields
-        const allowed = ['name', 'company', 'website'];
+        const allowed = ['first_name', 'last_name', 'job_title', 'bio', 'company', 'website'];
         const cleanUpdates = {};
 
         allowed.forEach(field => {
             if (updates[field] !== undefined) cleanUpdates[field] = updates[field];
         });
+
+        logger.info('Profile update request', { userId: user.id, fields: Object.keys(cleanUpdates) });
 
         // Upsert profile
         const { data, error } = await req.supabase
@@ -85,12 +90,15 @@ router.put('/profile', supabaseAuth, async (req, res) => {
 
         if (error) throw error;
 
-        // Also update auth metadata if name changed
-        if (cleanUpdates.name) {
-            const { error: metaError } = await req.supabase.auth.updateUser({
-                data: { full_name: cleanUpdates.name }
-            });
-            if (metaError) logger.warn('Failed to update auth metadata', metaError);
+        // Update auth metadata with full name if first/last name changed
+        if (cleanUpdates.first_name || cleanUpdates.last_name) {
+            const fullName = `${cleanUpdates.first_name || data.first_name || ''} ${cleanUpdates.last_name || data.last_name || ''}`.trim();
+            if (fullName) {
+                const { error: metaError } = await req.supabase.auth.updateUser({
+                    data: { full_name: fullName }
+                });
+                if (metaError) logger.warn('Failed to update auth metadata', metaError);
+            }
         }
 
         res.json(data);
