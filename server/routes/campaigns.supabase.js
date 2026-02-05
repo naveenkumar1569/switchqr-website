@@ -70,6 +70,8 @@ router.get('/', supabaseAuth, async (req, res) => {
 
                         if (!scanError && scans) {
                             const now = new Date();
+                            const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+
                             scans.forEach(scan => {
                                 const qr = qrs.find(q => q.id === scan.qr_id);
                                 if (!qr) return;
@@ -79,11 +81,12 @@ router.get('/', supabaseAuth, async (req, res) => {
                                     stats.total++;
 
                                     // Calculate trend bucket (0 = 7 days ago, 6 = today)
-                                    const scanDate = new Date(scan.scanned_at);
-                                    const diffTime = Math.abs(now - scanDate);
-                                    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+                                    // Using calendar days instead of rolling 24-hour windows
+                                    const sDate = new Date(scan.scanned_at);
+                                    const scanDay = new Date(sDate.getFullYear(), sDate.getMonth(), sDate.getDate());
+                                    const diffDays = Math.round((today - scanDay) / (1000 * 60 * 60 * 24));
 
-                                    if (diffDays < 7) {
+                                    if (diffDays >= 0 && diffDays < 7) {
                                         const index = 6 - diffDays;
                                         if (index >= 0 && index <= 6) {
                                             stats.trend[index]++;
