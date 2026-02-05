@@ -65,7 +65,7 @@ router.get('/', supabaseAuth, async (req, res) => {
                     if (qrIds.length > 0) {
                         const { data: scans, error: scanError } = await req.supabase
                             .from('scans')
-                            .select('qr_id, created_at')
+                            .select('qr_id, scanned_at')
                             .in('qr_id', qrIds);
 
                         if (!scanError && scans) {
@@ -79,7 +79,7 @@ router.get('/', supabaseAuth, async (req, res) => {
                                     stats.total++;
 
                                     // Calculate trend bucket (0 = 7 days ago, 6 = today)
-                                    const scanDate = new Date(scan.created_at);
+                                    const scanDate = new Date(scan.scanned_at);
                                     const diffTime = Math.abs(now - scanDate);
                                     const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
 
@@ -147,7 +147,7 @@ router.get('/:id', supabaseAuth, async (req, res) => {
         if (qrIds.length > 0) {
             const { data: fetchedScans, error: scansError } = await req.supabase
                 .from('scans')
-                .select('qr_id, device, country, created_at')
+                .select('qr_id, device, country, scanned_at')
                 .in('qr_id', qrIds);
 
             if (!scansError) scans = fetchedScans || [];
