@@ -467,8 +467,12 @@ const GlobalAnalytics = () => {
                         {/* X-Axis Labels */}
                         {data.scansOverTime.map((d, i) => {
                             const x = (i / (data.scansOverTime.length - 1 || 1)) * graphWidth;
-                            let label = d.date;
-                            if (d.date.length > 5) label = d.date.slice(5);
+
+                            // Format date as "5 Feb" for international clarity
+                            const dateObj = new Date(d.date + 'T00:00:00');
+                            const day = dateObj.getDate();
+                            const month = dateObj.toLocaleDateString('en-US', { month: 'short' });
+                            const label = `${day} ${month}`;
 
                             const textAnchor = i === 0 ? "start" : i === data.scansOverTime.length - 1 ? "end" : "middle";
 

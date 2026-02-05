@@ -153,7 +153,7 @@ router.get('/', supabaseAuth, async (req, res) => {
                     });
 
                 // Scans Over Time - Intelligent aggregation based on date range
-                const daysDiff = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24)) + 1;
+                const daysDiff = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24));
 
                 if (daysDiff <= 31) {
                     // Daily aggregation for up to 31 days
