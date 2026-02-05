@@ -147,7 +147,7 @@ router.get('/:id', supabaseAuth, async (req, res) => {
         if (qrIds.length > 0) {
             const { data: fetchedScans, error: scansError } = await req.supabase
                 .from('scans')
-                .select('qr_id, device, country, scanned_at')
+                .select('qr_id, device_type, country, scanned_at')
                 .in('qr_id', qrIds);
 
             if (!scansError) scans = fetchedScans || [];
@@ -166,11 +166,17 @@ router.get('/:id', supabaseAuth, async (req, res) => {
         });
 
         const totalScans = scans.length;
-        const deviceStats = scans.reduce((acc, s) => {
-            const dev = s.device || 'Unknown';
-            acc[dev] = (acc[dev] || 0) + 1;
-            return acc;
-        }, {});
+        const deviceStats = { Mobile: 0, Desktop: 0, Tablet: 0 };
+        scans.forEach(s => {
+            const type = (s.device_type || 'Desktop').toLowerCase();
+            if (type.includes('iphone') || type.includes('android') || type.includes('mobile')) {
+                deviceStats.Mobile++;
+            } else if (type.includes('ipad') || type.includes('tablet')) {
+                deviceStats.Tablet++;
+            } else {
+                deviceStats.Desktop++;
+            }
+        });
 
         // Convert device counts to percentages for the frontend
         const devicePercents = {
