@@ -499,10 +499,11 @@ const GlobalAnalytics = () => {
                             <svg className="size-full rotate-[-90deg]" viewBox="-5 -5 46 46">
                                 {/* Background Track */}
                                 <path
-                                    className="text-gray-100 dark:text-gray-800/40 stroke-[6px]"
+                                    className="text-gray-100 dark:text-gray-800/40"
                                     d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
                                     fill="none"
                                     stroke="currentColor"
+                                    strokeWidth="7"
                                 ></path>
                                 {/* Mobile Segment - #6D28D9 */}
                                 <path
@@ -510,9 +511,9 @@ const GlobalAnalytics = () => {
                                     d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
                                     fill="none"
                                     stroke="#6D28D9"
-                                    strokeDasharray={`${(data.deviceStats?.Mobile || 0) > 2 ? (data.deviceStats.Mobile - 2) : 0}, 100`}
-                                    strokeWidth={hoveredSegment === 'mobile' ? 8 : 6}
-                                    strokeLinecap="round"
+                                    strokeDasharray={`${data.deviceStats?.Mobile || 0}, 100`}
+                                    strokeWidth={hoveredSegment === 'mobile' ? 9 : 7}
+                                    strokeLinecap="butt"
                                     style={{
                                         opacity: hoveredSegment === 'mobile' || !hoveredSegment ? 1 : 0.4,
                                         transition: 'all 0.3s ease-out',
@@ -527,10 +528,10 @@ const GlobalAnalytics = () => {
                                     d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
                                     fill="none"
                                     stroke="#8B5CF6"
-                                    strokeDasharray={`${(data.deviceStats?.Tablet || 0) > 2 ? (data.deviceStats.Tablet - 2) : 0}, 100`}
+                                    strokeDasharray={`${data.deviceStats?.Tablet || 0}, 100`}
                                     strokeDashoffset={`-${data.deviceStats?.Mobile || 0}`}
-                                    strokeWidth={hoveredSegment === 'tablet' ? 8 : 6}
-                                    strokeLinecap="round"
+                                    strokeWidth={hoveredSegment === 'tablet' ? 9 : 7}
+                                    strokeLinecap="butt"
                                     style={{
                                         opacity: hoveredSegment === 'tablet' || !hoveredSegment ? 1 : 0.4,
                                         transition: 'all 0.3s ease-out',
@@ -545,10 +546,10 @@ const GlobalAnalytics = () => {
                                     d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
                                     fill="none"
                                     stroke="#C084FC"
-                                    strokeDasharray={`${(data.deviceStats?.Desktop || 0) > 2 ? (data.deviceStats.Desktop - 2) : 0}, 100`}
+                                    strokeDasharray={`${data.deviceStats?.Desktop || 0}, 100`}
                                     strokeDashoffset={`-${(data.deviceStats?.Mobile || 0) + (data.deviceStats?.Tablet || 0)}`}
-                                    strokeWidth={hoveredSegment === 'desktop' ? 8 : 6}
-                                    strokeLinecap="round"
+                                    strokeWidth={hoveredSegment === 'desktop' ? 9 : 7}
+                                    strokeLinecap="butt"
                                     style={{
                                         opacity: hoveredSegment === 'desktop' || !hoveredSegment ? 1 : 0.4,
                                         transition: 'all 0.3s ease-out',
