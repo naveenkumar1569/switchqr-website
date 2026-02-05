@@ -4,6 +4,33 @@ import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
 import { apiGet } from '../utils/api';
 
+const COUNTRY_COORDINATES = {
+    'United States': { top: '32%', left: '18%' },
+    'India': { top: '48%', left: '72%' },
+    'United Kingdom': { top: '22%', left: '46%' },
+    'Germany': { top: '25%', left: '49%' },
+    'France': { top: '28%', left: '47%' },
+    'Canada': { top: '20%', left: '15%' },
+    'Japan': { top: '35%', left: '88%' },
+    'China': { top: '38%', left: '78%' },
+    'Australia': { top: '75%', left: '85%' },
+    'Brazil': { top: '65%', left: '32%' },
+    'Spain': { top: '32%', left: '46%' },
+    'Italy': { top: '30%', left: '50%' },
+    'Netherlands': { top: '24%', left: '48%' },
+    'Singapore': { top: '55%', left: '80%' },
+    'United Arab Emirates': { top: '43%', left: '63%' },
+    'Poland': { top: '24%', left: '53%' },
+    'Turkey': { top: '32%', left: '58%' },
+    'Mexico': { top: '42%', left: '18%' },
+    'South Korea': { top: '35%', left: '85%' },
+    'Russia': { top: '15%', left: '70%' },
+    'Indonesia': { top: '60%', left: '80%' },
+    'South Africa': { top: '75%', left: '55%' },
+    'Argentina': { top: '80%', left: '32%' },
+    'Egypt': { top: '38%', left: '55%' }
+};
+
 const CampaignDetails = () => {
     const { id } = useParams();
     const navigate = useNavigate();
@@ -52,6 +79,9 @@ const CampaignDetails = () => {
     const mobilePercent = campaign.device_stats?.Mobile || 0;
     const desktopPercent = campaign.device_stats?.Desktop || 0;
     const tabletPercent = campaign.device_stats?.Tablet || 0;
+
+    // Top 3 countries for hotspots
+    const topThreeCountries = (campaign.geo_stats || []).slice(0, 3);
 
     return (
         <div className="max-w-7xl mx-auto px-6 py-8">
@@ -257,15 +287,31 @@ const CampaignDetails = () => {
                             src="https://lh3.googleusercontent.com/aida-public/AB6AXuDIpB7XIXUHmK7UfHfeMP_sspR7t_qcOQX9JMGatwL3i-2btlhLhjO9ITF3Md9PHOvjRjjWym7Kmil_Cy99Y31mvHaCNlorCw7kfixNCeIwlQUFP6BC3var3u79add07bTjOGCC-IIkRhHaB08DjHGPYglk4nX9rv6uaYpuCtNY34MqUy7Njp3KCEaMI4-N7RNktDSq1e8dCu6M4X2Jd4cTfXGOsswFF-wCdgf_EKEfb9cPDkg43bFtobTWsgdWKoX5A0_Aps4d6zA"
                         />
 
-                        {/* Hotspot Markers (Representative points) */}
-                        <div className="absolute top-1/4 left-1/4 size-4 bg-primary/20 rounded-full animate-pulse"></div>
-                        <div className="absolute top-1/4 left-1/4 size-2 bg-primary rounded-full -translate-x-1/2 -translate-y-1/2"></div>
+                        {/* Dynamic Hotspot Markers */}
+                        {topThreeCountries.map((geo, i) => {
+                            const coords = COUNTRY_COORDINATES[geo.country];
+                            if (!coords) return null;
 
-                        <div className="absolute top-1/2 right-1/3 size-6 bg-primary/10 rounded-full animate-pulse [animation-delay:1s]"></div>
-                        <div className="absolute top-1/2 right-1/3 size-3 bg-primary rounded-full -translate-x-1/2 -translate-y-1/2"></div>
+                            return (
+                                <React.Fragment key={geo.country}>
+                                    <div
+                                        className="absolute size-4 bg-primary/20 rounded-full animate-pulse"
+                                        style={{ top: coords.top, left: coords.left, animationDelay: `${i * 0.5}s` }}
+                                    ></div>
+                                    <div
+                                        className="absolute size-2 bg-primary rounded-full -translate-x-1/2 -translate-y-1/2 shadow-[0_0_8px_rgba(109,40,217,0.5)]"
+                                        style={{ top: coords.top, left: coords.left }}
+                                    ></div>
+                                </React.Fragment>
+                            );
+                        })}
 
-                        <div className="absolute bottom-1/3 left-1/2 size-4 bg-primary/10 rounded-full animate-pulse [animation-delay:2s]"></div>
-                        <div className="absolute bottom-1/3 left-1/2 size-2 bg-primary rounded-full -translate-x-1/2 -translate-y-1/2"></div>
+                        {/* Fallback if no scans */}
+                        {topThreeCountries.length === 0 && (
+                            <div className="absolute inset-0 flex items-center justify-center">
+                                <span className="material-symbols-outlined text-4xl text-slate-300 dark:text-slate-700">public</span>
+                            </div>
+                        )}
                     </div>
                     <div className="p-4 space-y-3">
                         {campaign.geo_stats && campaign.geo_stats.length > 0 ? (
