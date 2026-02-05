@@ -40,14 +40,24 @@ const CampaignDetails = () => {
     const { showError } = useToast();
     const [campaign, setCampaign] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [days, setDays] = useState(30);
+
+    const timeRanges = [
+        { label: 'Last 24 Hours', value: 1 },
+        { label: 'Last 7 Days', value: 7 },
+        { label: 'Last 30 Days', value: 30 },
+        { label: 'Last 90 Days', value: 90 },
+        { label: 'Last 12 Months', value: 365 }
+    ];
 
     useEffect(() => {
         fetchCampaignDetails();
-    }, [id, token]);
+    }, [id, token, days]);
 
     const fetchCampaignDetails = async () => {
+        setLoading(true);
         try {
-            const response = await apiGet(`/api/campaigns/${id}`, token);
+            const response = await apiGet(`/api/campaigns/${id}?days=${days}`, token);
 
             if (response.ok) {
                 const data = await response.json();
@@ -106,10 +116,25 @@ const CampaignDetails = () => {
                     </p>
                 </div>
                 <div className="flex items-center gap-3">
-                    <button className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 px-4 py-2 rounded-lg text-sm font-bold text-slate-700 dark:text-slate-200 flex items-center gap-2 hover:bg-slate-50 dark:hover:bg-slate-700 shadow-sm transition-colors">
-                        <span className="material-symbols-outlined text-sm">calendar_today</span>
-                        Last 30 Days
-                    </button>
+                    <div className="relative group">
+                        <button className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 px-4 py-2 rounded-lg text-sm font-bold text-slate-700 dark:text-slate-200 flex items-center gap-2 hover:bg-slate-50 dark:hover:bg-slate-700 shadow-sm transition-colors">
+                            <span className="material-symbols-outlined text-sm">calendar_today</span>
+                            {timeRanges.find(r => r.value === days)?.label || 'Last 30 Days'}
+                            <span className="material-symbols-outlined text-sm">expand_more</span>
+                        </button>
+                        <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50 overflow-hidden">
+                            {timeRanges.map((range) => (
+                                <button
+                                    key={range.value}
+                                    onClick={() => setDays(range.value)}
+                                    className={`w-full px-4 py-2.5 text-sm text-left hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors flex items-center justify-between ${days === range.value ? 'text-primary font-bold' : 'text-slate-600 dark:text-slate-300'}`}
+                                >
+                                    {range.label}
+                                    {days === range.value && <span className="material-symbols-outlined text-xs">check</span>}
+                                </button>
+                            ))}
+                        </div>
+                    </div>
                     <button
                         onClick={() => navigate(`/qrs/create?campaign_id=${campaign.id}`)}
                         className="bg-primary text-white px-4 py-2 rounded-lg text-sm font-bold flex items-center gap-2 hover:bg-primary-hover shadow-sm transition-colors"

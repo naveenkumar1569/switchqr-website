@@ -142,13 +142,22 @@ router.get('/:id', supabaseAuth, async (req, res) => {
 
         const qrIds = (qrs || []).map(q => q.id);
 
-        // 3. Fetch Scans for all QRs in this campaign for aggregation
+        // 3. Fetch Scans for all QRs in this campaign for aggregation (with time filtering)
         let scans = [];
         if (qrIds.length > 0) {
-            const { data: fetchedScans, error: scansError } = await req.supabase
+            const days = parseInt(req.query.days) || 30;
+            const startDate = new Date();
+            startDate.setDate(startDate.getDate() - days);
+
+            let query = req.supabase
                 .from('scans')
                 .select('qr_id, device_type, country, scanned_at')
                 .in('qr_id', qrIds);
+
+            // Apply date filter
+            query = query.gte('scanned_at', startDate.toISOString());
+
+            const { data: fetchedScans, error: scansError } = await query;
 
             if (!scansError) scans = fetchedScans || [];
         }
