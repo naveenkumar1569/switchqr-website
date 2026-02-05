@@ -466,15 +466,31 @@ const GlobalAnalytics = () => {
 
                         {/* X-Axis Labels */}
                         {data.scansOverTime.map((d, i) => {
-                            const x = (i / (data.scansOverTime.length - 1 || 1)) * graphWidth;
+                            const totalPoints = data.scansOverTime.length;
+                            const x = (i / (totalPoints - 1 || 1)) * graphWidth;
 
-                            // Format date as "5 Feb" for international clarity
+                            // Determine skip interval based on total points
+                            // Goal: Show max ~8-10 labels
+                            let interval = 1;
+                            if (totalPoints > 14) interval = 2;
+                            if (totalPoints > 21) interval = 3;
+                            if (totalPoints > 30) interval = 5; // For 30 days, show ~6 labels
+                            if (totalPoints > 60) interval = 10;
+
+                            // Always show first and last, otherwise respect interval
+                            const isFirst = i === 0;
+                            const isLast = i === totalPoints - 1;
+                            const shouldShow = isFirst || isLast || (i % interval === 0);
+
+                            if (!shouldShow) return null;
+
+                            // Format date as "5 Feb"
                             const dateObj = new Date(d.date + 'T00:00:00');
                             const day = dateObj.getDate();
                             const month = dateObj.toLocaleDateString('en-US', { month: 'short' });
                             const label = `${day} ${month}`;
 
-                            const textAnchor = i === 0 ? "start" : i === data.scansOverTime.length - 1 ? "end" : "middle";
+                            const textAnchor = isFirst ? "start" : isLast ? "end" : "middle";
 
                             return (
                                 <text
