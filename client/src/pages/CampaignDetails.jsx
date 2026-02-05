@@ -249,8 +249,23 @@ const CampaignDetails = () => {
                         <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-1">Geo-Distribution</h3>
                         <p className="text-sm text-slate-500 dark:text-slate-400">Top scanning locations worldwide</p>
                     </div>
-                    <div className="h-64 bg-slate-50 dark:bg-slate-900/50 relative overflow-hidden flex items-center justify-center">
-                        <span className="material-symbols-outlined text-6xl text-slate-200 dark:text-slate-700">public</span>
+                    <div className="h-64 bg-slate-50 dark:bg-slate-900/50 relative overflow-hidden group">
+                        {/* World Map Image */}
+                        <img
+                            alt="World Map"
+                            className="w-full h-full object-cover opacity-60 grayscale group-hover:grayscale-0 group-hover:opacity-80 transition-all duration-700"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuDIpB7XIXUHmK7UfHfeMP_sspR7t_qcOQX9JMGatwL3i-2btlhLhjO9ITF3Md9PHOvjRjjWym7Kmil_Cy99Y31mvHaCNlorCw7kfixNCeIwlQUFP6BC3var3u79add07bTjOGCC-IIkRhHaB08DjHGPYglk4nX9rv6uaYpuCtNY34MqUy7Njp3KCEaMI4-N7RNktDSq1e8dCu6M4X2Jd4cTfXGOsswFF-wCdgf_EKEfb9cPDkg43bFtobTWsgdWKoX5A0_Aps4d6zA"
+                        />
+
+                        {/* Hotspot Markers (Representative points) */}
+                        <div className="absolute top-1/4 left-1/4 size-4 bg-primary/20 rounded-full animate-pulse"></div>
+                        <div className="absolute top-1/4 left-1/4 size-2 bg-primary rounded-full -translate-x-1/2 -translate-y-1/2"></div>
+
+                        <div className="absolute top-1/2 right-1/3 size-6 bg-primary/10 rounded-full animate-pulse [animation-delay:1s]"></div>
+                        <div className="absolute top-1/2 right-1/3 size-3 bg-primary rounded-full -translate-x-1/2 -translate-y-1/2"></div>
+
+                        <div className="absolute bottom-1/3 left-1/2 size-4 bg-primary/10 rounded-full animate-pulse [animation-delay:2s]"></div>
+                        <div className="absolute bottom-1/3 left-1/2 size-2 bg-primary rounded-full -translate-x-1/2 -translate-y-1/2"></div>
                     </div>
                     <div className="p-4 space-y-3">
                         {campaign.geo_stats && campaign.geo_stats.length > 0 ? (
