@@ -104,7 +104,6 @@ router.get('/', supabaseAuth, async (req, res) => {
 
         const enrichedCampaigns = (campaigns || []).map(c => {
             const stats = campaignStats[c.id] || { count: 0, total: 0, trend: [0, 0, 0, 0, 0, 0, 0] };
-            console.log(`[Trend Debug] Folder: ${c.name}, Trend: ${stats.trend.join(',')}`);
             return {
                 ...c,
                 qr_count: stats.count,

@@ -7,11 +7,36 @@ const CampaignCard = ({ campaign, onRename, onDelete }) => {
     const menuRef = useRef(null);
 
     const colors = [
-        { bg: 'bg-primary/10', text: 'text-primary' },
-        { bg: 'bg-blue-500/10', text: 'text-blue-500' },
-        { bg: 'bg-emerald-500/10', text: 'text-emerald-500' },
-        { bg: 'bg-amber-500/10', text: 'text-amber-500' },
-        { bg: 'bg-purple-500/10', text: 'text-purple-500' }
+        {
+            bg: 'bg-primary/10',
+            text: 'text-primary',
+            bar: 'bg-primary',
+            barFaint: 'bg-primary/20'
+        },
+        {
+            bg: 'bg-blue-500/10',
+            text: 'text-blue-500',
+            bar: 'bg-blue-500',
+            barFaint: 'bg-blue-500/20'
+        },
+        {
+            bg: 'bg-emerald-500/10',
+            text: 'text-emerald-500',
+            bar: 'bg-emerald-500',
+            barFaint: 'bg-emerald-500/20'
+        },
+        {
+            bg: 'bg-amber-500/10',
+            text: 'text-amber-500',
+            bar: 'bg-amber-500',
+            barFaint: 'bg-amber-500/20'
+        },
+        {
+            bg: 'bg-purple-500/10',
+            text: 'text-purple-500',
+            bar: 'bg-purple-500',
+            barFaint: 'bg-purple-500/20'
+        }
     ];
 
     // Use campaign ID to consistently pick a color
@@ -19,7 +44,7 @@ const CampaignCard = ({ campaign, onRename, onDelete }) => {
     const color = colors[colorIndex];
 
     // Calculate max value for sparkline scaling
-    const maxValue = Math.max(...(campaign.recent_scans_7d || [1]), 1);
+    const maxValue = Math.max(...(campaign.recent_scans_7d || [0]), 1);
 
     // Close menu when clicking outside
     useEffect(() => {
@@ -127,10 +152,7 @@ const CampaignCard = ({ campaign, onRename, onDelete }) => {
                         return (
                             <div
                                 key={index}
-                                className={`flex-1 rounded-t-sm transition-all ${isToday
-                                    ? color.text.replace('text-', 'bg-')
-                                    : color.text.replace('text-', 'bg-') + '/20'
-                                    }`}
+                                className={`flex-1 rounded-t-sm transition-all ${isToday ? color.bar : color.barFaint}`}
                                 style={{ height: `${Math.max(height, 5)}%` }}
                                 title={`${value} scans`}
                             />
