@@ -70,7 +70,8 @@ router.get('/', supabaseAuth, async (req, res) => {
 
                         if (!scanError && scans) {
                             const now = new Date();
-                            const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+                            // Use UTC midnight for today to be consistent
+                            const todayUTC = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate());
 
                             scans.forEach(scan => {
                                 const qr = qrs.find(q => q.id === scan.qr_id);
@@ -80,11 +81,10 @@ router.get('/', supabaseAuth, async (req, res) => {
                                 if (stats) {
                                     stats.total++;
 
-                                    // Calculate trend bucket (0 = 7 days ago, 6 = today)
-                                    // Using calendar days instead of rolling 24-hour windows
+                                    // Calculate trend bucket based on UTC days
                                     const sDate = new Date(scan.scanned_at);
-                                    const scanDay = new Date(sDate.getFullYear(), sDate.getMonth(), sDate.getDate());
-                                    const diffDays = Math.round((today - scanDay) / (1000 * 60 * 60 * 24));
+                                    const scanDayUTC = Date.UTC(sDate.getUTCFullYear(), sDate.getUTCMonth(), sDate.getUTCDate());
+                                    const diffDays = Math.floor((todayUTC - scanDayUTC) / (1000 * 60 * 60 * 24));
 
                                     if (diffDays >= 0 && diffDays < 7) {
                                         const index = 6 - diffDays;
@@ -104,6 +104,7 @@ router.get('/', supabaseAuth, async (req, res) => {
 
         const enrichedCampaigns = (campaigns || []).map(c => {
             const stats = campaignStats[c.id] || { count: 0, total: 0, trend: [0, 0, 0, 0, 0, 0, 0] };
+            console.log(`[Trend Debug] Folder: ${c.name}, Trend: ${stats.trend.join(',')}`);
             return {
                 ...c,
                 qr_count: stats.count,
