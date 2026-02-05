@@ -38,34 +38,76 @@ router.get('/', supabaseAuth, async (req, res) => {
             throw error;
         }
 
-        // Fetch QR counts for each campaign
+        // Fetch QR counts and aggregate scan stats for each campaign
         const campaignIds = (campaigns || []).map(c => c.id);
-        const campaignCounts = {};
+        const campaignStats = {}; // { id: { count: 0, total: 0, trend: [0,0,0,0,0,0,0] } }
 
         if (campaignIds.length > 0) {
-            // Check if column exists by trying to select it. 
-            // If this fails, we just don't show counts, don't crash.
             try {
-                const { data: qrs, error: countError } = await req.supabase
+                // 1. Get all QRs in these campaigns
+                const { data: qrs, error: qrError } = await req.supabase
                     .from('qrs')
-                    .select('campaign_id')
+                    .select('id, campaign_id')
                     .in('campaign_id', campaignIds)
                     .neq('status', 'deleted');
 
-                if (!countError && qrs) {
+                if (!qrError && qrs) {
+                    // Initialize stats
                     qrs.forEach(q => {
-                        campaignCounts[q.campaign_id] = (campaignCounts[q.campaign_id] || 0) + 1;
+                        if (!campaignStats[q.campaign_id]) {
+                            campaignStats[q.campaign_id] = { count: 0, total: 0, trend: [0, 0, 0, 0, 0, 0, 0] };
+                        }
+                        campaignStats[q.campaign_id].count++;
                     });
+
+                    // 2. Get all scans for these QRs
+                    const qrIds = qrs.map(q => q.id);
+                    if (qrIds.length > 0) {
+                        const { data: scans, error: scanError } = await req.supabase
+                            .from('scans')
+                            .select('qr_id, created_at')
+                            .in('qr_id', qrIds);
+
+                        if (!scanError && scans) {
+                            const now = new Date();
+                            scans.forEach(scan => {
+                                const qr = qrs.find(q => q.id === scan.qr_id);
+                                if (!qr) return;
+
+                                const stats = campaignStats[qr.campaign_id];
+                                if (stats) {
+                                    stats.total++;
+
+                                    // Calculate trend bucket (0 = 7 days ago, 6 = today)
+                                    const scanDate = new Date(scan.created_at);
+                                    const diffTime = Math.abs(now - scanDate);
+                                    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+
+                                    if (diffDays < 7) {
+                                        const index = 6 - diffDays;
+                                        if (index >= 0 && index <= 6) {
+                                            stats.trend[index]++;
+                                        }
+                                    }
+                                }
+                            });
+                        }
+                    }
                 }
             } catch (err) {
-                console.warn('[Campaigns] QR count logic failed', err);
+                console.warn('[Campaigns] Stats logic failed', err);
             }
         }
 
-        const enrichedCampaigns = (campaigns || []).map(c => ({
-            ...c,
-            qr_count: campaignCounts[c.id] || 0
-        }));
+        const enrichedCampaigns = (campaigns || []).map(c => {
+            const stats = campaignStats[c.id] || { count: 0, total: 0, trend: [0, 0, 0, 0, 0, 0, 0] };
+            return {
+                ...c,
+                qr_count: stats.count,
+                total_scans: stats.total,
+                recent_scans_7d: stats.trend
+            };
+        });
 
         res.json(enrichedCampaigns);
     } catch (e) {
