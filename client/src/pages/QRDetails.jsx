@@ -1149,7 +1149,7 @@ const QRDetails = () => {
                                             <td className="px-5 py-3">
                                                 <div className="flex items-center gap-2 text-slate-900 dark:text-white">
                                                     <span className="material-symbols-outlined text-[16px] text-slate-400">devices</span>
-                                                    {scan.user_agent.includes('Mobile') ? 'Mobile' : 'Desktop'}
+                                                    {(scan.device_type || '').includes('Mobile') ? 'Mobile' : 'Desktop'}
                                                 </div>
                                             </td>
                                             <td className="px-5 py-3 text-slate-600 dark:text-slate-400 whitespace-nowrap">

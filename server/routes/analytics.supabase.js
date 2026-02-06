@@ -345,6 +345,7 @@ router.get('/:qr_id', supabaseAuth, async (req, res) => {
                 id: s.id,
                 timestamp: s.scanned_at,
                 browser: s.browser || 'Unknown',
+                user_agent: s.browser || 'Unknown', // Alias for backward compatibility
                 os: s.os || 'Unknown',
                 device_type: s.device_type || 'Unknown',
                 city: s.city || 'Unknown',
