@@ -96,7 +96,8 @@ router.get('/', supabaseAuth, async (req, res) => {
                     qr_name: qrMap[s.qr_id] || 'Unknown QR',
                     timestamp: s.scanned_at,
                     user_agent: s.browser || 'Unknown',
-                    location: s.city ? `${s.city}, ${s.country}` : 'Unknown',
+                    city: s.city || 'Unknown',
+                    country: s.country || 'Unknown',
                     ip_address: s.ip_address
                 }));
 
@@ -335,7 +336,8 @@ router.get('/:qr_id', supabaseAuth, async (req, res) => {
                 qr_name: qr.name,
                 timestamp: s.scanned_at,
                 user_agent: s.browser || 'Unknown',
-                location: s.city ? `${s.city}, ${s.country}` : 'Unknown',
+                city: s.city || 'Unknown',
+                country: s.country || 'Unknown',
                 ip_address: s.ip_address
             }));
 

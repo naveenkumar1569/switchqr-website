@@ -121,22 +121,32 @@ const GlobalAnalytics = () => {
     const handleExport = () => {
         if (!data.recentScans.length) return;
 
-        const headers = ['Date', 'QR Name', 'Device', 'Location', 'IP'];
-        const rows = data.recentScans.map(scan => [
-            new Date(scan.timestamp).toLocaleString(),
-            scan.qr_name,
-            scan.user_agent,
-            scan.location || 'Unknown',
-            scan.ip_address
-        ]);
+        // Headers: Split Date/Time and Location for better accuracy
+        const headers = ['Date', 'Time', 'QR Name', 'Browser/Device', 'City', 'Country', 'IP Address'];
+
+        // Rows: Wrap in quotes to handle commas within data (like in timestamps or strings)
+        const formatCSVRow = (arr) => arr.map(field => `"${String(field).replace(/"/g, '""')}"`).join(',');
+
+        const rows = data.recentScans.map(scan => {
+            const dateObj = new Date(scan.timestamp);
+            return formatCSVRow([
+                dateObj.toLocaleDateString(),
+                dateObj.toLocaleTimeString(),
+                scan.qr_name,
+                scan.user_agent,
+                scan.city || 'Unknown',
+                scan.country || 'Unknown',
+                scan.ip_address
+            ]);
+        });
 
         const csvContent = "data:text/csv;charset=utf-8,"
-            + [headers.join(','), ...rows.map(e => e.join(','))].join("\n");
+            + [headers.join(','), ...rows].join("\n");
 
         const encodedUri = encodeURI(csvContent);
         const link = document.createElement("a");
         link.setAttribute("href", encodedUri);
-        link.setAttribute("download", `switchqr_stats_${new Date().toISOString().slice(0, 10)}.csv`);
+        link.setAttribute("download", `switchqr_scans_${new Date().toISOString().slice(0, 10)}.csv`);
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
