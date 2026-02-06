@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useMemo } from 'react';
+import { createPortal } from 'react-dom';
 import { useAuth } from '../context/AuthContext';
 import { Link, useSearchParams, useNavigate } from 'react-router-dom';
 import { useToast } from '../context/ToastContext';
@@ -18,6 +19,7 @@ const Dashboard = () => {
     const [filterOpen, setFilterOpen] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
     const [openMenuId, setOpenMenuId] = useState(null);
+    const [menuPosition, setMenuPosition] = useState({ top: 0, left: 0 });
     const [deleteConfirmation, setDeleteConfirmation] = useState({ isOpen: false, qrId: null });
     const itemsPerPage = 10;
 
@@ -64,6 +66,20 @@ const Dashboard = () => {
     useEffect(() => {
         setCurrentPage(1);
     }, [searchQuery, filterStatus]);
+
+    // Close menu on scroll or resize to prevent misalignment
+    useEffect(() => {
+        if (!openMenuId) return;
+
+        const handleUpdate = () => setOpenMenuId(null);
+        window.addEventListener('scroll', handleUpdate, true);
+        window.addEventListener('resize', handleUpdate);
+
+        return () => {
+            window.removeEventListener('scroll', handleUpdate, true);
+            window.removeEventListener('resize', handleUpdate);
+        };
+    }, [openMenuId]);
 
     const filteredQrs = useMemo(() => {
         return qrs.filter(qr => {
@@ -341,14 +357,28 @@ const Dashboard = () => {
                                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                         <div className="relative">
                                             <button
-                                                onClick={() => setOpenMenuId(openMenuId === qr.id ? null : qr.id)}
+                                                onClick={(e) => {
+                                                    const rect = e.currentTarget.getBoundingClientRect();
+                                                    setMenuPosition({
+                                                        top: rect.bottom + window.scrollY,
+                                                        left: rect.right - 192 // 192 is w-48 (width of menu)
+                                                    });
+                                                    setOpenMenuId(openMenuId === qr.id ? null : qr.id);
+                                                }}
                                                 className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors p-1 rounded-md hover:bg-slate-100 dark:hover:bg-slate-700"
                                             >
                                                 <span className="material-symbols-outlined text-[20px]">more_vert</span>
                                             </button>
 
-                                            {openMenuId === qr.id && (
-                                                <div className="absolute right-0 bottom-full mb-1 w-48 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg shadow-lg z-50 py-1 overflow-hidden animate-in fade-in zoom-in-95 duration-100">
+                                            {openMenuId === qr.id && createPortal(
+                                                <div
+                                                    className="fixed bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg shadow-lg z-[9999] py-1 overflow-hidden animate-in fade-in zoom-in-95 duration-100"
+                                                    style={{
+                                                        top: `${menuPosition.top - window.scrollY}px`,
+                                                        left: `${menuPosition.left}px`,
+                                                        width: '12rem'
+                                                    }}
+                                                >
                                                     <button
                                                         onClick={() => handleToggleStatus(qr.id, qr.status)}
                                                         className="w-full text-left px-4 py-2 text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-700 flex items-center gap-2"
@@ -373,7 +403,8 @@ const Dashboard = () => {
                                                         <span className="material-symbols-outlined text-[18px]">delete</span>
                                                         Delete
                                                     </button>
-                                                </div>
+                                                </div>,
+                                                document.body
                                             )}
                                         </div>
                                     </td>
