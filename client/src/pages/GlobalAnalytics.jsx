@@ -345,7 +345,9 @@ const GlobalAnalytics = () => {
                         <span className="material-symbols-outlined text-text-muted dark:text-gray-400 text-[20px]">emoji_events</span>
                     </div>
                     <div className="flex items-end gap-2 mt-1">
-                        <p className="text-text-main dark:text-white text-xl font-bold leading-none truncate">{data.topQr}</p>
+                        <p className="text-text-main dark:text-white text-xl font-bold leading-none truncate">
+                            {typeof data.topQr === 'object' ? data.topQr?.name : (data.topQr || 'N/A')}
+                        </p>
                     </div>
                 </div>
             </div>
