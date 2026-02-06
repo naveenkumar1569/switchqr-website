@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState, useMemo, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { useAuth } from '../context/AuthContext';
 import { Link, useSearchParams, useNavigate } from 'react-router-dom';
@@ -20,6 +20,7 @@ const Dashboard = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [openMenuId, setOpenMenuId] = useState(null);
     const [menuPosition, setMenuPosition] = useState({ top: 0, left: 0 });
+    const menuRef = useRef(null);
     const [deleteConfirmation, setDeleteConfirmation] = useState({ isOpen: false, qrId: null });
     const itemsPerPage = 10;
 
@@ -67,17 +68,25 @@ const Dashboard = () => {
         setCurrentPage(1);
     }, [searchQuery, filterStatus]);
 
-    // Close menu on scroll or resize to prevent misalignment
+    // Close menu on scroll, resize, or outside click
     useEffect(() => {
         if (!openMenuId) return;
 
         const handleUpdate = () => setOpenMenuId(null);
+        const handleClickOutside = (e) => {
+            if (menuRef.current && !menuRef.current.contains(e.target)) {
+                setOpenMenuId(null);
+            }
+        };
+
         window.addEventListener('scroll', handleUpdate, true);
         window.addEventListener('resize', handleUpdate);
+        document.addEventListener('mousedown', handleClickOutside);
 
         return () => {
             window.removeEventListener('scroll', handleUpdate, true);
             window.removeEventListener('resize', handleUpdate);
+            document.removeEventListener('mousedown', handleClickOutside);
         };
     }, [openMenuId]);
 
@@ -372,6 +381,7 @@ const Dashboard = () => {
 
                                             {openMenuId === qr.id && createPortal(
                                                 <div
+                                                    ref={menuRef}
                                                     className="fixed bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg shadow-lg z-[9999] py-1 overflow-hidden animate-in fade-in zoom-in-95 duration-100"
                                                     style={{
                                                         top: `${menuPosition.top - window.scrollY}px`,
