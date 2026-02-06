@@ -56,8 +56,46 @@ router.get('/', supabaseAuth, async (req, res) => {
             throw error;
         }
 
-        console.log(`✅ [DEBUG] Found ${qrs?.length} QRs`);
-        res.json(qrs);
+        // Fetch scan metrics for these QRs
+        const qrIds = (qrs || []).map(q => q.id);
+        const qrMetrics = {}; // { id: { count: 0, last: null } }
+
+        if (qrIds.length > 0) {
+            try {
+                const { data: scans, error: scanError } = await req.supabase
+                    .from('scans')
+                    .select('qr_id, scanned_at')
+                    .in('qr_id', qrIds);
+
+                if (!scanError && scans) {
+                    scans.forEach(s => {
+                        if (!qrMetrics[s.qr_id]) {
+                            qrMetrics[s.qr_id] = { count: 0, last: null };
+                        }
+                        qrMetrics[s.qr_id].count++;
+
+                        const scanTime = new Date(s.scanned_at).getTime();
+                        if (!qrMetrics[s.qr_id].last || scanTime > new Date(qrMetrics[s.qr_id].last).getTime()) {
+                            qrMetrics[s.qr_id].last = s.scanned_at;
+                        }
+                    });
+                }
+            } catch (err) {
+                console.warn('[QRs List] Metrics fetching failed', err);
+            }
+        }
+
+        const enrichedQrs = (qrs || []).map(qr => {
+            const metrics = qrMetrics[qr.id] || { count: 0, last: null };
+            return {
+                ...qr,
+                scan_count: metrics.count,
+                last_scanned: metrics.last
+            };
+        });
+
+        console.log(`✅ [DEBUG] Found ${qrs?.length} QRs, Enriched with metrics`);
+        res.json(enrichedQrs);
     } catch (error) {
         console.error('❌ [DEBUG] Server Error in GET /api/qrs:', error);
         res.status(500).json({ error: 'Server error', details: error.message });
@@ -74,8 +112,25 @@ router.get('/:id', supabaseAuth, async (req, res) => {
             .eq('id', id)
             .single();
 
-        if (error) return res.status(404).json({ error: 'QR not found' });
-        res.json(qr);
+        if (error || !qr) return res.status(404).json({ error: 'QR not found' });
+
+        // Add metrics
+        const { data: scans, error: scanError } = await req.supabase
+            .from('scans')
+            .select('scanned_at')
+            .eq('qr_id', id);
+
+        const metrics = {
+            scan_count: scans?.length || 0,
+            last_scanned: scans?.length > 0
+                ? scans.reduce((latest, s) => {
+                    const current = new Date(s.scanned_at);
+                    return !latest || current > new Date(latest) ? s.scanned_at : latest;
+                }, null)
+                : null
+        };
+
+        res.json({ ...qr, ...metrics });
     } catch (error) {
         res.status(500).json({ error: 'Server error' });
     }

@@ -105,8 +105,8 @@ router.get('/', supabaseAuth, async (req, res) => {
                 scans.forEach(s => {
                     qrCounts[s.qr_id] = (qrCounts[s.qr_id] || 0) + 1;
                 });
-                const topQrId = Object.keys(qrCounts).reduce((a, b) => qrCounts[a] > qrCounts[b] ? a : b);
-                stats.topQr = qrMap[topQrId] || 'N/A';
+                const topQrId = Object.keys(qrCounts).reduce((a, b) => qrCounts[a] > qrCounts[b] ? a : b, null);
+                stats.topQr = topQrId ? { name: qrMap[topQrId] || 'Untitled QR' } : 'N/A';
 
                 // Device Stats
                 const deviceCounts = { Mobile: 0, Desktop: 0, Tablet: 0 };
