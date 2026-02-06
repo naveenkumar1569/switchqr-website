@@ -602,9 +602,6 @@ const QRDetails = () => {
                         <span className="text-3xl font-bold text-slate-900 dark:text-white truncate block">
                             {stats.topLocation || 'N/A'}
                         </span>
-                        <span className="text-xs text-slate-400">
-                            {stats.topLocation && stats.topLocation !== 'N/A' ? 'Most common location' : 'Location unavailable'}
-                        </span>
                     </div>
                 </div>
             </div>
