@@ -30,9 +30,15 @@ const BOOT_STATE = {
 };
 
 export const AuthProvider = ({ children }) => {
-    const [user, setUser] = useState(null);
+    const [user, setUser] = useState(() => {
+        const savedUser = localStorage.getItem('user_profile');
+        return savedUser ? JSON.parse(savedUser) : null;
+    });
     const [token, setToken] = useState(() => localStorage.getItem('token'));
-    const [planInfo, setPlanInfo] = useState(null);
+    const [planInfo, setPlanInfo] = useState(() => {
+        const savedPlan = localStorage.getItem('plan_info');
+        return savedPlan ? JSON.parse(savedPlan) : null;
+    });
     const [bootState, setBootState] = useState(BOOT_STATE.INITIALIZING);
     const [planLoadError, setPlanLoadError] = useState(null);
 
@@ -41,7 +47,9 @@ export const AuthProvider = ({ children }) => {
 
     // Fetch plan and profile data with timeout
     const fetchUserData = async (currentToken) => {
-        const TIMEOUT_MS = 8000; // 8 second timeout
+        // Use a longer timeout for the initial boot to handle server cold starts (Render/Fly.io)
+        const isInitialBoot = bootState === BOOT_STATE.INITIALIZING;
+        const TIMEOUT_MS = isInitialBoot ? 60000 : 10000; // 60s for cold start, 10s for normal
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), TIMEOUT_MS);
 
@@ -70,6 +78,7 @@ export const AuthProvider = ({ children }) => {
                 if (profileResponse.ok) {
                     const userData = await profileResponse.json();
                     setUser(userData);
+                    localStorage.setItem('user_profile', JSON.stringify(userData));
                 }
             } catch (profileErr) {
                 console.warn('Profile fetch failed (non-critical)', profileErr);
@@ -153,16 +162,25 @@ export const AuthProvider = ({ children }) => {
         return () => subscription.unsubscribe();
     }, [token]);
 
-    // Persist token to localStorage
+    // Persist token and basic info to localStorage
     useEffect(() => {
         if (token) {
             localStorage.setItem('token', token);
         } else {
             localStorage.removeItem('token');
+            localStorage.removeItem('user_profile');
+            localStorage.removeItem('plan_info');
             setUser(null);
             setPlanInfo(null);
         }
     }, [token]);
+
+    // Persist plan info when it changes
+    useEffect(() => {
+        if (planInfo && planInfo.plan !== 'free') {
+            localStorage.setItem('plan_info', JSON.stringify(planInfo));
+        }
+    }, [planInfo]);
 
     const login = (newToken, userData) => {
         setToken(newToken);
