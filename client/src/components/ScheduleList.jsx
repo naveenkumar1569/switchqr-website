@@ -66,27 +66,28 @@ const ScheduleList = ({ schedules, onUpdate, onDelete, onAdd }) => {
     // Get current active schedules
     const activeSchedules = schedules.filter(s => s.is_active);
 
-    // Get others that might be caught in between
-    const otherSchedules = schedules.filter(s =>
-        !s.is_active &&
-        (!s.recurrence_type || s.recurrence_type === 'once') &&
-        !(new Date(s.start_time) > new Date()) &&
-        !(s.end_time && new Date(s.end_time) < new Date())
-    );
+    // Get non-active schedules
+    const inactiveSchedules = schedules.filter(s => !s.is_active);
 
-    // Separate one-time and recurring schedules
-    const oneTimeSchedules = schedules.filter(s => !s.recurrence_type || s.recurrence_type === 'once');
-    const recurringSchedules = schedules.filter(s => s.recurrence_type && s.recurrence_type !== 'once');
+    // Separate one-time and recurring (all within inactive)
+    const oneTimeInactive = inactiveSchedules.filter(s => !s.recurrence_type || s.recurrence_type === 'once');
+    const recurringSchedules = inactiveSchedules.filter(s => s.recurrence_type && s.recurrence_type !== 'once');
 
-    // Get upcoming one-time schedules (future start time)
-    const upcomingSchedules = oneTimeSchedules
+    // Get upcoming one-time schedules (future start time, AND not already active)
+    const upcomingSchedules = oneTimeInactive
         .filter(s => new Date(s.start_time) > new Date())
         .sort((a, b) => new Date(a.start_time) - new Date(b.start_time));
 
-    // Get past one-time schedules
-    const pastSchedules = oneTimeSchedules
+    // Get past one-time schedules (end time in the past, AND not active)
+    const pastSchedules = oneTimeInactive
         .filter(s => s.end_time && new Date(s.end_time) < new Date())
         .sort((a, b) => new Date(b.start_time) - new Date(a.start_time));
+
+    // Catch-all for anything else (one-time, not active, not upcoming, not past)
+    const otherSchedules = oneTimeInactive.filter(s =>
+        !upcomingSchedules.find(u => u.id === s.id) &&
+        !pastSchedules.find(p => p.id === s.id)
+    );
 
     return (
         <div className="space-y-4">
