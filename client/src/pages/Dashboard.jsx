@@ -172,6 +172,37 @@ const Dashboard = () => {
         }
     };
 
+    const handleExport = () => {
+        if (!filteredQrs.length) return;
+
+        const headers = ['QR Name', 'Created At', 'Destination URL', 'Short Code URL', 'Status', 'Total Scans', 'Last Scanned'];
+
+        const formatCSVRow = (arr) => arr.map(field => `"${String(field || '').replace(/"/g, '""')}"`).join(',');
+
+        const rows = filteredQrs.map(qr => {
+            return formatCSVRow([
+                qr.name,
+                new Date(qr.created_at).toLocaleString(),
+                qr.destination_url,
+                getShortCodeUrl(qr.short_code),
+                qr.status,
+                qr.scan_count || 0,
+                qr.last_scanned ? new Date(qr.last_scanned).toLocaleString() : 'Never'
+            ]);
+        });
+
+        const csvContent = "data:text/csv;charset=utf-8,"
+            + [headers.join(','), ...rows].join("\n");
+
+        const encodedUri = encodeURI(csvContent);
+        const link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", `switchqr_dashboard_${new Date().toISOString().slice(0, 10)}.csv`);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    };
+
     return (
         <div className="max-w-7xl mx-auto flex flex-col gap-8">
             <ConfirmationModal
@@ -288,6 +319,7 @@ const Dashboard = () => {
                     </div>
 
                     <button
+                        onClick={handleExport}
                         className={`flex items-center gap-2 px-4 py-2 border border-gray-200 dark:border-gray-700 rounded-lg transition-colors text-sm font-medium ${planInfo?.features?.csv_export
                             ? 'hover:bg-gray-50 dark:hover:bg-[#1a1625] text-text-subtle'
                             : 'opacity-50 cursor-not-allowed text-gray-400'
