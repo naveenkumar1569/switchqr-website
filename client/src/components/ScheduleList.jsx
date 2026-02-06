@@ -63,28 +63,30 @@ const ScheduleList = ({ schedules, onUpdate, onDelete, onAdd }) => {
         setShowAddModal(false);
     };
 
-    // Get current active schedules
-    const activeSchedules = schedules.filter(s => s.is_active);
+    const now = new Date();
 
-    // Get non-active schedules
-    const inactiveSchedules = schedules.filter(s => !s.is_active);
+    // Separate one-time and recurring
+    const oneTimeSchedules = schedules.filter(s => !s.recurrence_type || s.recurrence_type === 'once');
+    const recurringSchedules = schedules.filter(s => s.recurrence_type && s.recurrence_type !== 'once');
 
-    // Separate one-time and recurring (all within inactive)
-    const oneTimeInactive = inactiveSchedules.filter(s => !s.recurrence_type || s.recurrence_type === 'once');
-    const recurringSchedules = inactiveSchedules.filter(s => s.recurrence_type && s.recurrence_type !== 'once');
+    // Calculate one-time statuses locally
+    const activeSchedules = oneTimeSchedules.filter(s => {
+        const start = new Date(s.start_time);
+        const end = s.end_time ? new Date(s.end_time) : null;
+        return start <= now && (!end || end > now);
+    });
 
-    // Get upcoming one-time schedules (future start time, AND not already active)
-    const upcomingSchedules = oneTimeInactive
-        .filter(s => new Date(s.start_time) > new Date())
+    const upcomingSchedules = oneTimeSchedules
+        .filter(s => new Date(s.start_time) > now)
         .sort((a, b) => new Date(a.start_time) - new Date(b.start_time));
 
-    // Get past one-time schedules (end time in the past, AND not active)
-    const pastSchedules = oneTimeInactive
-        .filter(s => s.end_time && new Date(s.end_time) < new Date())
+    const pastSchedules = oneTimeSchedules
+        .filter(s => s.end_time && new Date(s.end_time) <= now)
         .sort((a, b) => new Date(b.start_time) - new Date(a.start_time));
 
-    // Catch-all for anything else (one-time, not active, not upcoming, not past)
-    const otherSchedules = oneTimeInactive.filter(s =>
+    // Catch-all for anything else (should be empty if logic is perfect)
+    const otherSchedules = oneTimeSchedules.filter(s =>
+        !activeSchedules.find(a => a.id === s.id) &&
         !upcomingSchedules.find(u => u.id === s.id) &&
         !pastSchedules.find(p => p.id === s.id)
     );
