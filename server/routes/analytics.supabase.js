@@ -331,6 +331,22 @@ router.get('/:qr_id', supabaseAuth, async (req, res) => {
             const uniqueIps = new Set(scans.map(s => s.ip_address));
             stats.uniqueScans = uniqueIps.size;
 
+            // Calculate Top Location from ALL scans
+            const locationCounts = {};
+            scans.forEach(s => {
+                if (s.country && s.country !== 'Unknown') {
+                    const locKey = s.city && s.city !== 'Unknown'
+                        ? `${s.city}, ${s.country}`
+                        : s.country;
+                    locationCounts[locKey] = (locationCounts[locKey] || 0) + 1;
+                }
+            });
+
+            const topLocationEntry = Object.entries(locationCounts)
+                .sort((a, b) => b[1] - a[1])[0];
+
+            stats.topLocation = topLocationEntry ? topLocationEntry[0] : 'N/A';
+
             stats.recentScans = scans.slice(0, 5).map(s => ({
                 id: s.id,
                 qr_name: qr.name,
@@ -338,6 +354,7 @@ router.get('/:qr_id', supabaseAuth, async (req, res) => {
                 user_agent: s.browser || 'Unknown',
                 city: s.city || 'Unknown',
                 country: s.country || 'Unknown',
+                location: s.city && s.city !== 'Unknown' ? `${s.city}, ${s.country}` : (s.country || 'Unknown'),
                 ip_address: s.ip_address
             }));
 
@@ -375,6 +392,8 @@ router.get('/:qr_id', supabaseAuth, async (req, res) => {
                 date,
                 count: timeline[date]
             }));
+        } else {
+            stats.topLocation = 'N/A';
         }
 
         res.json(stats);

@@ -599,43 +599,12 @@ const QRDetails = () => {
                         </span>
                     </div>
                     <div>
-                        {(() => {
-                            // Calculate top location from recent scans
-                            if (!stats.recentScans || stats.recentScans.length === 0) {
-                                return (
-                                    <>
-                                        <span className="text-3xl font-bold text-slate-900 dark:text-white">N/A</span>
-                                        <span className="text-xs text-slate-400 ml-2">Location unavailable</span>
-                                    </>
-                                );
-                            }
-
-                            const locationCounts = {};
-                            stats.recentScans.forEach(scan => {
-                                if (scan.location && scan.location !== 'Unknown') {
-                                    locationCounts[scan.location] = (locationCounts[scan.location] || 0) + 1;
-                                }
-                            });
-
-                            if (Object.keys(locationCounts).length === 0) {
-                                return (
-                                    <>
-                                        <span className="text-3xl font-bold text-slate-900 dark:text-white">N/A</span>
-                                        <span className="text-xs text-slate-400 ml-2">Location unavailable</span>
-                                    </>
-                                );
-                            }
-
-                            const topLocation = Object.entries(locationCounts)
-                                .sort((a, b) => b[1] - a[1])[0][0];
-
-                            return (
-                                <>
-                                    <span className="text-2xl font-bold text-slate-900 dark:text-white">{topLocation}</span>
-                                    <span className="text-xs text-slate-400 ml-2">Most common location</span>
-                                </>
-                            );
-                        })()}
+                        <span className="text-3xl font-bold text-slate-900 dark:text-white truncate block">
+                            {stats.topLocation || 'N/A'}
+                        </span>
+                        <span className="text-xs text-slate-400">
+                            {stats.topLocation && stats.topLocation !== 'N/A' ? 'Most common location' : 'Location unavailable'}
+                        </span>
                     </div>
                 </div>
             </div>
