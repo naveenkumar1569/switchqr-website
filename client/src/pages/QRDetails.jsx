@@ -1074,62 +1074,6 @@ const QRDetails = () => {
                     <div className="bg-white dark:bg-[#1e1726] rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col h-full max-h-[400px]">
                         <div className="px-5 py-4 border-b border-slate-200 dark:border-slate-800 flex justify-between items-center">
                             <h3 className="font-semibold text-slate-900 dark:text-white">Recent Scans</h3>
-                            {(stats.allScans || stats.recentScans).length > 0 && (
-                                <button
-                                    onClick={() => {
-                                        const headers = [
-                                            'Date', 'Time', 'IP Address', 'City', 'Country',
-                                            'Device Type', 'OS', 'Browser', 'Referrer',
-                                            'Routing Mode', 'Served Name', 'Destination URL'
-                                        ];
-
-                                        const formatCSVRow = (arr) => arr.map(field => `"${String(field || '').replace(/"/g, '""')}"`).join(',');
-
-                                        const scanData = stats.allScans || stats.recentScans;
-                                        const rows = scanData.map(scan => {
-                                            const dateObj = new Date(scan.timestamp);
-
-                                            // Resolve Attribution Name
-                                            let servedName = 'Standard Redirect';
-                                            if (scan.routing_mode === 'ab') {
-                                                const variant = variants.find(v => v.id === scan.variant_id);
-                                                servedName = variant ? (variant.label || `Variant ${variant.id}`) : 'Unknown Variant';
-                                            } else if (scan.routing_mode === 'scheduled') {
-                                                const schedule = schedules.find(s => s.id === scan.schedule_rule_id);
-                                                servedName = schedule ? (schedule.label || `Schedule ${schedule.id}`) : 'Unknown Schedule';
-                                            }
-
-                                            return formatCSVRow([
-                                                dateObj.toLocaleDateString(),
-                                                dateObj.toLocaleTimeString(),
-                                                scan.ip_address,
-                                                scan.city || 'Unknown',
-                                                scan.country || 'Unknown',
-                                                scan.device_type || 'Unknown',
-                                                scan.os || 'Unknown',
-                                                scan.browser || 'Unknown',
-                                                scan.referrer || 'Direct',
-                                                scan.routing_mode === 'ab' ? 'A/B Testing' : (scan.routing_mode === 'scheduled' ? 'Scheduled' : 'Standard'),
-                                                servedName,
-                                                scan.destination_url
-                                            ]);
-                                        });
-
-                                        const csvContent = "data:text/csv;charset=utf-8," + [headers.join(','), ...rows].join("\n");
-                                        const encodedUri = encodeURI(csvContent);
-                                        const link = document.createElement("a");
-                                        link.setAttribute("href", encodedUri);
-                                        link.setAttribute("download", `switchqr_comprehensive_report_${qr.name.replace(/[^a-z0-9]/gi, '_').toLowerCase()}_${new Date().toISOString().slice(0, 10)}.csv`);
-                                        document.body.appendChild(link);
-                                        link.click();
-                                        document.body.removeChild(link);
-                                    }}
-                                    className="flex items-center gap-1.5 px-3 py-1 text-xs font-semibold text-primary hover:bg-primary/5 rounded-lg transition-colors border border-primary/20"
-                                >
-                                    <span className="material-symbols-outlined text-[16px]">download</span>
-                                    Comprehensive Report
-                                </button>
-                            )}
                         </div>
                         <div className="flex-1 overflow-auto">
                             <table className="min-w-full text-left text-sm">
@@ -1149,12 +1093,10 @@ const QRDetails = () => {
                                             <td className="px-5 py-3">
                                                 <div className="flex items-center gap-2 text-slate-900 dark:text-white">
                                                     <span className="material-symbols-outlined text-[16px] text-slate-400">devices</span>
-                                                    {(scan.device_type || '').includes('Mobile') ? 'Mobile' : 'Desktop'}
+                                                    {scan.user_agent.includes('Mobile') ? 'Mobile' : 'Desktop'}
                                                 </div>
                                             </td>
-                                            <td className="px-5 py-3 text-slate-600 dark:text-slate-400 whitespace-nowrap">
-                                                {scan.city && scan.country ? `${scan.city}, ${scan.country}` : (scan.city || scan.country || 'Unknown')}
-                                            </td>
+                                            <td className="px-5 py-3 text-slate-600 dark:text-slate-400 whitespace-nowrap">{scan.location || 'Unknown'}</td>
                                         </tr>
                                     ))}
                                     {stats.recentScans.length === 0 && (
