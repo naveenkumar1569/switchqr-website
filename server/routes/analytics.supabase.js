@@ -318,10 +318,19 @@ router.get('/:qr_id', supabaseAuth, async (req, res) => {
             scansOverTime: []
         };
 
-        const { data: scans, error: scanError } = await req.supabase
+        // Fetch all scans with date range if provided
+        let query = req.supabase
             .from('scans')
             .select('*')
-            .eq('qr_id', qr_id)
+            .eq('qr_id', qr_id);
+
+        if (days) {
+            const startDate = new Date();
+            startDate.setDate(startDate.getDate() - parseInt(days));
+            query = query.gte('scanned_at', startDate.toISOString());
+        }
+
+        const { data: scans, error: scanError } = await query
             .order('scanned_at', { ascending: false });
 
         if (scanError) throw scanError;
@@ -331,15 +340,25 @@ router.get('/:qr_id', supabaseAuth, async (req, res) => {
             const uniqueIps = new Set(scans.map(s => s.ip_address));
             stats.uniqueScans = uniqueIps.size;
 
-            stats.recentScans = scans.slice(0, 5).map(s => ({
+            // Full dataset for export
+            stats.allScans = scans.map(s => ({
                 id: s.id,
-                qr_name: qr.name,
                 timestamp: s.scanned_at,
-                user_agent: s.browser || 'Unknown',
+                browser: s.browser || 'Unknown',
+                os: s.os || 'Unknown',
+                device_type: s.device_type || 'Unknown',
                 city: s.city || 'Unknown',
                 country: s.country || 'Unknown',
-                ip_address: s.ip_address
+                ip_address: s.ip_address,
+                referrer: s.referrer || 'Direct',
+                destination_url: s.destination_url,
+                routing_mode: s.routing_mode || 'basic',
+                variant_id: s.variant_id,
+                schedule_rule_id: s.schedule_rule_id
             }));
+
+            // Limited set for UI performance
+            stats.recentScans = stats.allScans.slice(0, 5);
 
             // Device Stats
             const deviceCounts = { Mobile: 0, Desktop: 0, Tablet: 0 };
