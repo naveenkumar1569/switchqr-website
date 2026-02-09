@@ -69,11 +69,13 @@ export const apiDelete = (endpoint, token = null) => {
 
 /**
  * Get the short code URL for a QR
+ * Uses REDIRECT_BASE_URL for branded display
  * @param {string} shortCode 
  * @returns {string}
  */
 export const getShortCodeUrl = (shortCode) => {
-    return `${API_BASE_URL}/${shortCode}`;
+    const redirectBaseUrl = import.meta.env.VITE_REDIRECT_BASE_URL || API_BASE_URL;
+    return `${redirectBaseUrl}/r/${shortCode}`;
 };
 
 export { API_BASE_URL };
