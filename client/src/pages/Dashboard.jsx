@@ -5,6 +5,7 @@ import { Link, useSearchParams, useNavigate } from 'react-router-dom';
 import { useToast } from '../context/ToastContext';
 import ConfirmationModal from '../components/ConfirmationModal';
 import { apiGet, apiPost, apiPut, apiDelete, getShortCodeUrl } from '../utils/api';
+import { fetchDashboardStats } from '../utils/analyticsService';
 
 const Dashboard = () => {
     const { token, planInfo } = useAuth();
@@ -47,14 +48,9 @@ const Dashboard = () => {
     };
 
     const fetchStats = async () => {
-        try {
-            const response = await apiGet('/api/stats', token);
-            if (response.ok) {
-                const data = await response.json();
-                setStats(data);
-            }
-        } catch (error) {
-            console.error('Failed to fetch stats', error);
+        const statsData = await fetchDashboardStats(token);
+        if (statsData) {
+            setStats(statsData);
         }
     };
 

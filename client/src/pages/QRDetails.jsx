@@ -9,6 +9,7 @@ import ScheduleList from '../components/ScheduleList';
 import ConfirmationModal from '../components/ConfirmationModal';
 import { apiGet, apiPost, apiPut, apiDelete } from '../utils/api';
 import { getQRImageUrl, getRedirectUrl } from '../utils/qrHelpers';
+import { fetchQRStats } from '../utils/analyticsService';
 
 const QRDetails = () => {
     const { id } = useParams();
@@ -117,15 +118,10 @@ const QRDetails = () => {
                 fetchVariants();
                 fetchSchedules();
 
-                // Fetch Stats
-                const statsRes = await apiGet(`/api/stats/${id}?days=${dateRange}`, token);
-                if (statsRes.ok) {
-                    const statsData = await statsRes.json();
+                // Fetch Stats using centralized service
+                const statsData = await fetchQRStats(token, id, dateRange);
+                if (statsData) {
                     setStats(statsData);
-                } else {
-                    const errText = await statsRes.text();
-                    console.error('Failed to fetch stats:', errText);
-                    // Stats will use default empty values
                 }
 
             } catch (error) {

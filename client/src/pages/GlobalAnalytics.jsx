@@ -1,7 +1,7 @@
 
 import React, { useEffect, useState, useRef } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { apiGet } from '../utils/api';
+import { fetchGlobalStats } from '../utils/analyticsService';
 
 const getFlagEmoji = (countryCode) => {
     if (!countryCode || countryCode === 'Unknown') return '🌐';
@@ -54,68 +54,16 @@ const GlobalAnalytics = () => {
         return () => observer.disconnect();
     }, []);
 
-    // Helper function to get date range parameters
-    const getDateRangeParams = () => {
-        const now = new Date();
-        let startDate, endDate;
-
-        switch (dateRange.type) {
-            case 'days':
-                return `days=${dateRange.value}`;
-
-            case 'current_month':
-                startDate = new Date(now.getFullYear(), now.getMonth(), 1);
-                endDate = now;
-                break;
-
-            case 'last_month':
-                startDate = new Date(now.getFullYear(), now.getMonth() - 1, 1);
-                endDate = new Date(now.getFullYear(), now.getMonth(), 0);
-                break;
-
-            case 'this_year':
-                startDate = new Date(now.getFullYear(), 0, 1);
-                endDate = now;
-                break;
-
-            case 'last_year':
-                startDate = new Date(now.getFullYear() - 1, 0, 1);
-                endDate = new Date(now.getFullYear() - 1, 11, 31);
-                break;
-
-            case 'custom':
-                if (customStartDate && customEndDate) {
-                    return `start=${customStartDate}&end=${customEndDate}`;
-                }
-                return 'days=7'; // fallback
-
-            default:
-                return 'days=7';
-        }
-
-        // Format dates as YYYY-MM-DD
-        const formatDate = (d) => d.toISOString().split('T')[0];
-        return `start=${formatDate(startDate)}&end=${formatDate(endDate)}`;
-    };
-
     useEffect(() => {
-        const fetchGlobalStats = async () => {
-            try {
-                const params = getDateRangeParams();
-                const response = await apiGet(`/api/stats?${params}`, token);
-
-                if (response.ok) {
-                    const stats = await response.json();
-                    setData(stats);
-                }
-            } catch (error) {
-                console.error('Failed to fetch global stats', error);
-            } finally {
-                setLoading(false);
+        const loadStats = async () => {
+            const stats = await fetchGlobalStats(token, dateRange, customStartDate, customEndDate);
+            if (stats) {
+                setData(stats);
             }
+            setLoading(false);
         };
 
-        fetchGlobalStats();
+        loadStats();
     }, [token, dateRange, customStartDate, customEndDate]);
 
     const handleExport = () => {

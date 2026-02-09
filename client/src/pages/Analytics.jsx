@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { apiGet } from '../utils/api';
+import { fetchQRAnalytics } from '../utils/analyticsService';
 
 const Analytics = () => {
     const { id } = useParams();
@@ -10,22 +10,15 @@ const Analytics = () => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const fetchAnalytics = async () => {
-            try {
-                const response = await apiGet(`/api/analytics/${id}`, token);
-
-                if (response.ok) {
-                    const data = await response.json();
-                    setStats(data);
-                }
-            } catch (error) {
-                console.error('Failed to fetch analytics', error);
-            } finally {
-                setLoading(false);
+        const loadAnalytics = async () => {
+            const data = await fetchQRAnalytics(token, id);
+            if (data) {
+                setStats(data);
             }
+            setLoading(false);
         };
 
-        fetchAnalytics();
+        loadAnalytics();
     }, [id, token]);
 
     if (loading) return (
