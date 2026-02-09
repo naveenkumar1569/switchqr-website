@@ -68,14 +68,10 @@ export const apiDelete = (endpoint, token = null) => {
 };
 
 /**
- * Get the short code URL for a QR
- * Uses REDIRECT_BASE_URL for branded display
- * @param {string} shortCode 
- * @returns {string}
+ * Re-export getRedirectUrl as getShortCodeUrl for backward compatibility
+ * The single source of truth is now qrHelpers.js
  */
-export const getShortCodeUrl = (shortCode) => {
-    const redirectBaseUrl = import.meta.env.VITE_REDIRECT_BASE_URL || API_BASE_URL;
-    return `${redirectBaseUrl}/r/${shortCode}`;
-};
+import { getRedirectUrl } from './qrHelpers';
+export const getShortCodeUrl = getRedirectUrl;
 
 export { API_BASE_URL };
