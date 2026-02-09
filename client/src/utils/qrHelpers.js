@@ -5,7 +5,7 @@
  * CRITICAL: All QR generation MUST use this module to ensure immutability.
  */
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://switchqr-backend.onrender.com';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://r.switch-qr.com';
 
 /**
  * Get the redirect URL for a QR code.
