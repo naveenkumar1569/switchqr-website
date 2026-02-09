@@ -195,8 +195,55 @@ const Campaigns = () => {
 
     if (loading) {
         return (
-            <div className="flex items-center justify-center h-64">
-                <div className="text-slate-500 dark:text-slate-400">Loading campaigns...</div>
+            <div className="mx-auto max-w-6xl">
+                {/* Page Header Skeleton */}
+                <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
+                    <div className="flex flex-col gap-2">
+                        <div className="h-10 w-64 bg-slate-200 dark:bg-slate-700 rounded animate-pulse"></div>
+                        <div className="h-5 w-96 bg-slate-200 dark:bg-slate-700 rounded animate-pulse"></div>
+                    </div>
+                    <div className="h-12 w-44 bg-slate-200 dark:bg-slate-700 rounded-xl animate-pulse"></div>
+                </div>
+
+                {/* Search Skeleton */}
+                <div className="mb-8">
+                    <div className="h-12 w-full max-w-md bg-slate-200 dark:bg-slate-700 rounded-xl animate-pulse"></div>
+                </div>
+
+                {/* Section Title Skeleton */}
+                <div className="flex items-center gap-2 mb-6">
+                    <div className="h-6 w-40 bg-slate-200 dark:bg-slate-700 rounded animate-pulse"></div>
+                    <div className="h-5 w-16 bg-slate-200 dark:bg-slate-700 rounded-full animate-pulse"></div>
+                </div>
+
+                {/* Campaign Cards Skeleton Grid */}
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {[1, 2, 3].map(i => (
+                        <div key={i} className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-xl shadow-sm animate-pulse">
+                            <div className="flex flex-col gap-4">
+                                <div className="size-12 rounded-xl bg-slate-200 dark:bg-slate-700"></div>
+                                <div>
+                                    <div className="h-6 w-40 bg-slate-200 dark:bg-slate-700 rounded mb-2"></div>
+                                    <div className="h-4 w-32 bg-slate-200 dark:bg-slate-700 rounded"></div>
+                                </div>
+                            </div>
+                            <div className="grid grid-cols-2 gap-4 border-y border-slate-50 dark:border-slate-800 py-4 mt-6">
+                                <div>
+                                    <div className="h-3 w-16 bg-slate-200 dark:bg-slate-700 rounded mb-2"></div>
+                                    <div className="h-6 w-10 bg-slate-200 dark:bg-slate-700 rounded"></div>
+                                </div>
+                                <div>
+                                    <div className="h-3 w-20 bg-slate-200 dark:bg-slate-700 rounded mb-2"></div>
+                                    <div className="h-6 w-12 bg-slate-200 dark:bg-slate-700 rounded"></div>
+                                </div>
+                            </div>
+                            <div className="flex gap-2 mt-4">
+                                <div className="h-9 flex-1 bg-slate-200 dark:bg-slate-700 rounded-lg"></div>
+                                <div className="h-9 w-9 bg-slate-200 dark:bg-slate-700 rounded-lg"></div>
+                            </div>
+                        </div>
+                    ))}
+                </div>
             </div>
         );
     }

@@ -101,8 +101,65 @@ const GlobalAnalytics = () => {
     };
 
     if (loading) return (
-        <div className="flex items-center justify-center h-64">
-            <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+        <div className="max-w-[1200px] w-full mx-auto flex flex-col gap-8">
+            {/* Header Skeleton */}
+            <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+                <div className="flex flex-col gap-2">
+                    <div className="h-10 w-40 bg-slate-200 dark:bg-slate-700 rounded animate-pulse"></div>
+                    <div className="h-5 w-72 bg-slate-200 dark:bg-slate-700 rounded animate-pulse"></div>
+                </div>
+                <div className="flex items-center gap-3">
+                    <div className="h-10 w-36 bg-slate-200 dark:bg-slate-700 rounded-lg animate-pulse"></div>
+                    <div className="h-10 w-24 bg-slate-200 dark:bg-slate-700 rounded-lg animate-pulse"></div>
+                </div>
+            </div>
+
+            {/* Stats Cards Skeleton */}
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                {[1, 2, 3, 4].map(i => (
+                    <div key={i} className="flex flex-col gap-2 rounded-xl p-5 bg-white dark:bg-surface-dark border border-neutral-border dark:border-border-dark shadow-sm animate-pulse">
+                        <div className="flex justify-between items-start">
+                            <div className="h-4 w-24 bg-slate-200 dark:bg-slate-700 rounded"></div>
+                            <div className="h-5 w-5 bg-slate-200 dark:bg-slate-700 rounded"></div>
+                        </div>
+                        <div className="h-8 w-20 bg-slate-200 dark:bg-slate-700 rounded mt-1"></div>
+                    </div>
+                ))}
+            </div>
+
+            {/* Chart Skeleton */}
+            <div className="flex flex-col rounded-xl bg-white dark:bg-surface-dark border border-neutral-border dark:border-border-dark shadow-sm p-6">
+                <div className="flex justify-between items-center mb-6">
+                    <div>
+                        <div className="h-6 w-40 bg-slate-200 dark:bg-slate-700 rounded animate-pulse mb-2"></div>
+                        <div className="h-4 w-64 bg-slate-200 dark:bg-slate-700 rounded animate-pulse"></div>
+                    </div>
+                </div>
+                <div className="w-full h-[200px] bg-slate-200 dark:bg-slate-700 rounded animate-pulse"></div>
+            </div>
+
+            {/* Bottom Section Skeleton */}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                {/* Device Stats Skeleton */}
+                <div className="rounded-xl bg-white dark:bg-surface-dark border border-neutral-border dark:border-border-dark shadow-sm p-6 animate-pulse">
+                    <div className="h-5 w-32 bg-slate-200 dark:bg-slate-700 rounded mb-4"></div>
+                    <div className="h-32 w-32 mx-auto bg-slate-200 dark:bg-slate-700 rounded-full"></div>
+                </div>
+
+                {/* Location Stats Skeleton */}
+                <div className="lg:col-span-2 rounded-xl bg-white dark:bg-surface-dark border border-neutral-border dark:border-border-dark shadow-sm p-6 animate-pulse">
+                    <div className="h-5 w-40 bg-slate-200 dark:bg-slate-700 rounded mb-4"></div>
+                    <div className="space-y-3">
+                        {[1, 2, 3, 4].map(i => (
+                            <div key={i} className="flex items-center gap-3">
+                                <div className="h-6 w-6 bg-slate-200 dark:bg-slate-700 rounded"></div>
+                                <div className="h-4 flex-1 bg-slate-200 dark:bg-slate-700 rounded"></div>
+                                <div className="h-4 w-12 bg-slate-200 dark:bg-slate-700 rounded"></div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </div>
         </div>
     );
 
