@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { normalizeUrl, validateUrl } from '../utils/urlHelpers';
 
-const VariantCard = ({ variant, onUpdate, onDelete, totalWeight, totalScans, isLeader }) => {
+const VariantCard = ({ variant, onUpdate, onDelete, totalWeight, totalScans, isLeader, isControl }) => {
     const [isEditing, setIsEditing] = useState(false);
     const [editedVariant, setEditedVariant] = useState({
         destination_url: variant.destination_url,
         weight: variant.weight,
-        name: variant.name || variant.label || ''
+        name: isControl ? 'Control (Original URL)' : (variant.name || variant.label || '')
     });
 
     const handleSave = () => {
@@ -28,17 +28,18 @@ const VariantCard = ({ variant, onUpdate, onDelete, totalWeight, totalScans, isL
         setEditedVariant({
             destination_url: variant.destination_url,
             weight: variant.weight,
-            name: variant.name || variant.label || ''
+            name: isControl ? 'Control (Original URL)' : (variant.name || variant.label || '')
         });
         setIsEditing(false);
     };
 
     const toggleEnabled = () => {
+        if (isControl) return; // Control always enabled in this simple logic (or could be added later)
         onUpdate(variant.id, { is_enabled: !variant.is_enabled });
     };
 
     const scanShare = totalScans > 0 ? Math.round(((variant.scan_count || 0) / totalScans) * 100) : 0;
-    const isEnabled = variant.is_enabled !== false; // Default to true if undefined
+    const isEnabled = isControl || variant.is_enabled !== false;
 
     return (
         <div className={`group relative rounded-2xl p-5 transition-all border ${!isEnabled ? 'bg-slate-50/50 dark:bg-slate-900/10 border-slate-200 dark:border-slate-800 opacity-75' : isLeader ? 'bg-indigo-50/30 dark:bg-indigo-900/10 border-indigo-200 dark:border-indigo-800' : 'bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 hover:border-primary/30 shadow-sm'}`}>
@@ -56,6 +57,13 @@ const VariantCard = ({ variant, onUpdate, onDelete, totalWeight, totalScans, isL
                 </div>
             )}
 
+            {isControl && (
+                <div className="absolute -top-3 right-4 px-2 py-1 bg-primary/10 text-primary text-[10px] font-black uppercase tracking-widest rounded border border-primary/20 flex items-center gap-1">
+                    <span className="material-symbols-outlined text-[12px]">star</span>
+                    Baseline
+                </div>
+            )}
+
             {isEditing ? (
                 /* Editing Mode */
                 <div className="space-y-4">
@@ -67,8 +75,9 @@ const VariantCard = ({ variant, onUpdate, onDelete, totalWeight, totalScans, isL
                         <input
                             type="text"
                             value={editedVariant.name}
+                            disabled={isControl}
                             onChange={(e) => setEditedVariant({ ...editedVariant, name: e.target.value })}
-                            className="w-full px-4 py-2.5 text-sm font-medium border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                            className="w-full px-4 py-2.5 text-sm font-medium border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary/20 focus:border-primary disabled:opacity-50"
                             placeholder="e.g., Long Form"
                         />
                     </div>
@@ -155,9 +164,9 @@ const VariantCard = ({ variant, onUpdate, onDelete, totalWeight, totalScans, isL
                         {/* Label & Share */}
                         <div className="flex items-center justify-between gap-2">
                             <div className="flex items-center gap-2 min-w-0">
-                                <span className={`material-symbols-outlined text-[18px] ${isEnabled ? 'text-slate-400' : 'text-slate-300'}`}>label</span>
+                                <span className={`material-symbols-outlined text-[18px] ${isEnabled ? 'text-slate-400' : 'text-slate-300'}`}>{isControl ? 'home' : 'label'}</span>
                                 <span className={`text-sm font-bold truncate ${isEnabled ? 'text-slate-900 dark:text-white' : 'text-slate-400'}`}>
-                                    {variant.name || variant.label || `Variant ${variant.id}`}
+                                    {isControl ? 'Control (Original URL)' : (variant.name || variant.label || `Variant ${variant.id}`)}
                                 </span>
                             </div>
                             {isEnabled && totalScans > 0 && (
@@ -211,13 +220,15 @@ const VariantCard = ({ variant, onUpdate, onDelete, totalWeight, totalScans, isL
 
                     {/* Action Icons - Right Side */}
                     <div className="flex-shrink-0 flex flex-col gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                        <button
-                            onClick={toggleEnabled}
-                            className={`p-2 rounded-lg transition-colors ${isEnabled ? 'text-emerald-500 hover:bg-emerald-50 dark:hover:bg-emerald-900/10' : 'text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'}`}
-                            title={isEnabled ? 'Disable Variant' : 'Enable Variant'}
-                        >
-                            <span className="material-symbols-outlined text-[20px]">{isEnabled ? 'toggle_on' : 'toggle_off'}</span>
-                        </button>
+                        {!isControl && (
+                            <button
+                                onClick={toggleEnabled}
+                                className={`p-2 rounded-lg transition-colors ${isEnabled ? 'text-emerald-500 hover:bg-emerald-50 dark:hover:bg-emerald-900/10' : 'text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'}`}
+                                title={isEnabled ? 'Disable Variant' : 'Enable Variant'}
+                            >
+                                <span className="material-symbols-outlined text-[20px]">{isEnabled ? 'toggle_on' : 'toggle_off'}</span>
+                            </button>
+                        )}
                         <button
                             onClick={() => setIsEditing(true)}
                             className="p-2 text-slate-400 hover:text-primary hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors"
@@ -225,13 +236,15 @@ const VariantCard = ({ variant, onUpdate, onDelete, totalWeight, totalScans, isL
                         >
                             <span className="material-symbols-outlined text-[20px]">edit</span>
                         </button>
-                        <button
-                            onClick={() => onDelete(variant.id)}
-                            className="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/10 rounded-lg transition-colors"
-                            title="Delete"
-                        >
-                            <span className="material-symbols-outlined text-[20px]">delete</span>
-                        </button>
+                        {!isControl && (
+                            <button
+                                onClick={() => onDelete(variant.id)}
+                                className="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/10 rounded-lg transition-colors"
+                                title="Delete"
+                            >
+                                <span className="material-symbols-outlined text-[20px]">delete</span>
+                            </button>
+                        )}
                     </div>
                 </div>
             )}

@@ -28,7 +28,7 @@ router.get('/:id/variants', supabaseAuth, async (req, res) => {
         // Verify ownership
         const { data: qr, error: qrError } = await req.supabase
             .from('qrs')
-            .select('id, ab_testing_enabled')
+            .select('id, ab_testing_enabled, destination_url, ab_control_weight')
             .eq('id', id)
             .eq('owner_id', user.id)
             .single();
@@ -44,16 +44,20 @@ router.get('/:id/variants', supabaseAuth, async (req, res) => {
         if (error) throw error;
 
         // Fetch scan counts per variant
+        // Fetch all scans for this QR to count both variants and the control (null variant_id)
         const { data: scanCounts } = await req.supabase
             .from('scans')
             .select('variant_id')
-            .eq('qr_id', id)
-            .not('variant_id', 'is', null);
+            .eq('qr_id', id);
 
-        const countsMap = (scanCounts || []).reduce((acc, s) => {
-            acc[s.variant_id] = (acc[s.variant_id] || 0) + 1;
-            return acc;
-        }, {});
+        const countsMap = { _control: 0 };
+        (scanCounts || []).forEach(s => {
+            if (s.variant_id) {
+                countsMap[s.variant_id] = (countsMap[s.variant_id] || 0) + 1;
+            } else {
+                countsMap._control++;
+            }
+        });
 
         const mappedVariants = (variants || []).map(v => ({
             ...v,
@@ -64,7 +68,10 @@ router.get('/:id/variants', supabaseAuth, async (req, res) => {
 
         res.json({
             variants: mappedVariants,
-            ab_testing_enabled: qr.ab_testing_enabled
+            control_scan_count: countsMap._control,
+            ab_testing_enabled: qr.ab_testing_enabled,
+            destination_url: qr.destination_url,
+            ab_control_weight: qr.ab_control_weight || 0
         });
     } catch (e) {
         logger.error('Error fetching variants', e);

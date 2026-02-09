@@ -47,6 +47,8 @@ const QRDetails = () => {
     // A/B Testing State
     const [abTestingEnabled, setAbTestingEnabled] = useState(false);
     const [variants, setVariants] = useState([]);
+    const [controlScanCount, setControlScanCount] = useState(0);
+    const [abControlWeight, setAbControlWeight] = useState(100);
     const [loadingVariants, setLoadingVariants] = useState(false);
 
     // Scheduling State
@@ -331,8 +333,10 @@ const QRDetails = () => {
 
             if (response.ok) {
                 const data = await response.json();
-                setVariants(data.variants || []);
+                setVariants((data.variants || []).map(v => ({ ...v, label: v.name })));
                 setAbTestingEnabled(data.ab_testing_enabled || false);
+                setControlScanCount(data.control_scan_count || 0);
+                setAbControlWeight(data.ab_control_weight ?? 100);
             } else {
                 console.error('❌ Failed to fetch variants, status:', response.status);
             }
@@ -364,52 +368,52 @@ const QRDetails = () => {
         }
     };
 
-    const normalizeWeights = (variantsList) => {
+    const normalizeWeights = (variantsList, includeControl = true) => {
         const enabledVariants = variantsList.filter(v => v.is_enabled !== false);
-        if (enabledVariants.length === 0) return variantsList.map(v => ({ ...v, weight: 0 }));
+        const totalSlots = enabledVariants.length + (includeControl ? 1 : 0);
 
-        const baseWeight = Math.floor(100 / enabledVariants.length);
-        const remainder = 100 % enabledVariants.length;
+        if (totalSlots === 0) return { variants: variantsList.map(v => ({ ...v, weight: 0 })), controlWeight: 100 };
 
-        return variantsList.map(v => {
+        const baseWeight = Math.floor(100 / totalSlots);
+        const remainder = 100 % totalSlots;
+
+        let currentRemainder = remainder;
+        const normalizedVariants = variantsList.map(v => {
             if (v.is_enabled === false) return { ...v, weight: 0 };
             const idx = enabledVariants.findIndex(ev => ev.id === v.id);
-            // Give the remainder to the first enabled variant
-            return {
-                ...v,
-                weight: idx === 0 ? baseWeight + remainder : baseWeight
-            };
+            let weight = baseWeight;
+            if (currentRemainder > 0 && idx !== -1) {
+                weight += 1;
+                currentRemainder -= 1;
+            }
+            return { ...v, weight };
         });
+
+        const controlWeight = includeControl ? (baseWeight + currentRemainder) : 0;
+        return { variants: normalizedVariants, controlWeight };
     };
 
     const handleAddVariant = async () => {
         try {
-            // Predict new length for naming
             const newName = `Variant ${variants.length + 1}`;
-
             const response = await apiPost(`/api/qrs/${id}/variants`, {
                 destination_url: qr.destination_url || '',
-                weight: 0, // Will be normalized
+                weight: 0,
                 name: newName
             }, token);
 
             if (response.ok) {
                 const data = await response.json();
                 const newVariant = { ...data, label: data.name };
+                const { variants: updatedList, controlWeight: newControlWeight } = normalizeWeights([...variants, newVariant]);
 
-                // Recalculate all weights to include new one
-                const updatedList = normalizeWeights([...variants, newVariant]);
+                await Promise.all([
+                    apiPut(`/api/qrs/${id}/variants`, { variants: updatedList }, token),
+                    apiPut(`/api/qrs/${id}`, { ab_control_weight: newControlWeight }, token)
+                ]);
 
-                // Bulk update them on server
-                const bulkResponse = await apiPut(`/api/qrs/${id}/variants`, { variants: updatedList }, token);
-                if (bulkResponse.ok) {
-                    const { variants: finalVariants } = await bulkResponse.json();
-                    setVariants(finalVariants.map(v => ({ ...v, label: v.name })));
-                } else {
-                    // Fallback if bulk fails
-                    setVariants(updatedList);
-                }
-
+                setVariants(updatedList.map(v => ({ ...v, label: v.name })));
+                setAbControlWeight(newControlWeight);
                 showSuccess('Variant added and weights balanced');
             } else {
                 const error = await response.json();
@@ -423,11 +427,26 @@ const QRDetails = () => {
 
     const handleUpdateVariant = async (variantId, updates) => {
         try {
+            if (variantId === 'control') {
+                const response = await apiPut(`/api/qrs/${id}`, {
+                    destination_url: updates.destination_url,
+                    ab_control_weight: updates.weight
+                }, token);
+
+                if (response.ok) {
+                    const updatedQr = await response.json();
+                    setQr(updatedQr);
+                    setAbControlWeight(updatedQr.ab_control_weight);
+                    showSuccess('Control URL updated');
+                }
+                return;
+            }
+
             const currentVariant = variants.find(v => v.id === variantId);
             const isEnableToggle = updates.is_enabled !== undefined && updates.is_enabled !== currentVariant.is_enabled;
+            const isWeightChange = updates.weight !== undefined && updates.weight !== currentVariant.weight;
 
-            // If it's just a name/URL change, do a simple update
-            if (!isEnableToggle && updates.weight === undefined) {
+            if (!isEnableToggle && !isWeightChange) {
                 const response = await apiPut(`/api/qrs/${id}/variants/${variantId}`, updates, token);
                 if (response.ok) {
                     const updatedVariant = await response.json();
@@ -437,22 +456,23 @@ const QRDetails = () => {
                 }
             }
 
-            // Otherwise, it's an enable/disable or weight change that affects others
             let newList = variants.map(v => v.id === variantId ? { ...v, ...updates } : v);
+            let newControlWeight = abControlWeight;
 
             if (isEnableToggle) {
-                newList = normalizeWeights(newList);
+                const result = normalizeWeights(newList);
+                newList = result.variants;
+                newControlWeight = result.controlWeight;
             }
 
-            const response = await apiPut(`/api/qrs/${id}/variants`, { variants: newList }, token);
+            await Promise.all([
+                apiPut(`/api/qrs/${id}/variants`, { variants: newList }, token),
+                apiPut(`/api/qrs/${id}`, { ab_control_weight: newControlWeight }, token)
+            ]);
 
-            if (response.ok) {
-                const { variants: finalVariants } = await response.json();
-                setVariants(finalVariants.map(v => ({ ...v, label: v.name })));
-                showSuccess(isEnableToggle ? 'Variant status updated and weights balanced' : 'Variant weights updated');
-            } else {
-                showError('Failed to update variant');
-            }
+            setVariants(newList.map(v => ({ ...v, label: v.name })));
+            setAbControlWeight(newControlWeight);
+            showSuccess('Weights re-balanced');
         } catch (error) {
             console.error('Error updating variant:', error);
             showError('Error updating variant');
@@ -472,20 +492,18 @@ const QRDetails = () => {
 
             if (response.ok) {
                 const remaining = variants.filter(v => v.id !== variantId);
-                const updatedList = normalizeWeights(remaining);
+                const { variants: updatedList, controlWeight: newControlWeight } = normalizeWeights(remaining);
 
-                // Bulk update remains
-                if (updatedList.length > 0) {
-                    await apiPut(`/api/qrs/${id}/variants`, { variants: updatedList }, token);
-                    setVariants(updatedList.map(v => ({ ...v, label: v.name })));
-                } else {
-                    setVariants([]);
-                }
+                await Promise.all([
+                    apiPut(`/api/qrs/${id}/variants`, { variants: updatedList }, token),
+                    apiPut(`/api/qrs/${id}`, { ab_control_weight: newControlWeight }, token)
+                ]);
 
+                setVariants(updatedList.map(v => ({ ...v, label: v.name })));
+                setAbControlWeight(newControlWeight);
                 showSuccess('Variant deleted and weights re-balanced');
 
-                // If less than 2 variants, disable A/B testing
-                if (remaining.length < 2 && abTestingEnabled) {
+                if (remaining.length === 0 && abTestingEnabled) {
                     setAbTestingEnabled(false);
                     await apiPut(`/api/qrs/${id}`, { ab_testing_enabled: false }, token);
                 }

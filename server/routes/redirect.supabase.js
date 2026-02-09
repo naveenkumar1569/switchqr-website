@@ -169,7 +169,9 @@ router.get('/r/:shortCode', async (req, res) => {
                         }
                     }
                     if (routing_mode === 'basic') {
-                        console.log(`🧪 [REDIRECT] No variant matched (Random exceeded total weight). Falling back to basic.`);
+                        console.log(`🧪 [REDIRECT] No variant matched. Attributing to Control (Original URL).`);
+                        routing_mode = 'ab';
+                        variant_id = null; // Explicitly null for Control
                     }
                 }
             } else {
