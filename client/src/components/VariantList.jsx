@@ -28,8 +28,13 @@ const VariantList = ({ variants, onUpdate, onDelete, onAdd }) => {
                 <div className="space-y-4">
                     {(() => {
                         const totalScans = variants.reduce((sum, v) => sum + (v.scan_count || 0), 0);
-                        const maxScans = Math.max(...variants.map(v => v.scan_count || 0));
-                        const leaderId = maxScans > 0 ? variants.find(v => (v.scan_count || 0) === maxScans)?.id : null;
+                        const enabledVariants = variants.filter(v => v.is_enabled !== false);
+                        const maxScans = enabledVariants.length > 0
+                            ? Math.max(...enabledVariants.map(v => v.scan_count || 0))
+                            : 0;
+                        const leaderId = maxScans > 0
+                            ? enabledVariants.find(v => (v.scan_count || 0) === maxScans)?.id
+                            : null;
 
                         return variants.map((variant) => (
                             <VariantCard
@@ -82,6 +87,9 @@ const VariantList = ({ variants, onUpdate, onDelete, onAdd }) => {
 
                         {/* Variants */}
                         {variants.map((variant, index) => {
+                            const isEnabled = variant.is_enabled !== false;
+                            if (!isEnabled) return null;
+
                             const colors = [
                                 'bg-blue-500',
                                 'bg-green-500',
@@ -96,24 +104,25 @@ const VariantList = ({ variants, onUpdate, onDelete, onAdd }) => {
                                     key={variant.id}
                                     className={`${color} transition-all`}
                                     style={{ width: `${variant.weight}%` }}
-                                    title={`${variant.label || `Variant ${variant.id}`}: ${variant.weight}%`}
+                                    title={`${variant.name || variant.label || `Variant ${variant.id}`}: ${variant.weight}%`}
                                 />
                             );
                         })}
                     </div>
-                    <div className="flex flex-wrap gap-3 mt-3">
+                    <div className="flex flex-wrap gap-4 mt-3">
                         {/* Control Legend */}
                         {controlWeight > 0 && (
                             <div className="flex items-center gap-2">
                                 <div className="w-3 h-3 rounded-full bg-slate-400 dark:bg-slate-500" />
                                 <span className="text-xs text-slate-600 dark:text-slate-400">
-                                    Control - Original URL ({controlWeight}%)
+                                    Control ({controlWeight}%)
                                 </span>
                             </div>
                         )}
 
                         {/* Variant Legends */}
                         {variants.map((variant, index) => {
+                            const isEnabled = variant.is_enabled !== false;
                             const colors = [
                                 { bg: 'bg-blue-500', text: 'text-blue-500' },
                                 { bg: 'bg-green-500', text: 'text-green-500' },
@@ -124,10 +133,11 @@ const VariantList = ({ variants, onUpdate, onDelete, onAdd }) => {
                             const color = colors[index % colors.length];
 
                             return (
-                                <div key={variant.id} className="flex items-center gap-2">
-                                    <div className={`w-3 h-3 rounded-full ${color.bg}`} />
-                                    <span className="text-xs text-slate-600 dark:text-slate-400">
-                                        {variant.label || `Variant ${variant.id}`} ({variant.weight}%)
+                                <div key={variant.id} className={`flex items-center gap-2 ${!isEnabled ? 'opacity-50' : ''}`}>
+                                    <div className={`w-3 h-3 rounded-full ${isEnabled ? color.bg : 'bg-slate-300'}`} />
+                                    <span className="text-xs text-slate-600 dark:text-slate-400 font-medium">
+                                        {variant.name || variant.label || `Variant ${variant.id}`} ({isEnabled ? variant.weight : 0}%)
+                                        {!isEnabled && <span className="ml-1 text-[10px] font-bold text-slate-400 uppercase">Disabled</span>}
                                     </span>
                                 </div>
                             );

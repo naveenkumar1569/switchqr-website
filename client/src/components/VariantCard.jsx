@@ -6,7 +6,7 @@ const VariantCard = ({ variant, onUpdate, onDelete, totalWeight, totalScans, isL
     const [editedVariant, setEditedVariant] = useState({
         destination_url: variant.destination_url,
         weight: variant.weight,
-        label: variant.label || ''
+        name: variant.name || variant.label || ''
     });
 
     const handleSave = () => {
@@ -28,34 +28,46 @@ const VariantCard = ({ variant, onUpdate, onDelete, totalWeight, totalScans, isL
         setEditedVariant({
             destination_url: variant.destination_url,
             weight: variant.weight,
-            label: variant.label || ''
+            name: variant.name || variant.label || ''
         });
         setIsEditing(false);
     };
 
+    const toggleEnabled = () => {
+        onUpdate(variant.id, { is_enabled: !variant.is_enabled });
+    };
+
     const scanShare = totalScans > 0 ? Math.round(((variant.scan_count || 0) / totalScans) * 100) : 0;
+    const isEnabled = variant.is_enabled !== false; // Default to true if undefined
 
     return (
-        <div className={`group relative rounded-2xl p-5 transition-all border ${isLeader ? 'bg-indigo-50/30 dark:bg-indigo-900/10 border-indigo-200 dark:border-indigo-800' : 'bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 hover:border-primary/30 shadow-sm'}`}>
-            {isLeader && (
+        <div className={`group relative rounded-2xl p-5 transition-all border ${!isEnabled ? 'bg-slate-50/50 dark:bg-slate-900/10 border-slate-200 dark:border-slate-800 opacity-75' : isLeader ? 'bg-indigo-50/30 dark:bg-indigo-900/10 border-indigo-200 dark:border-indigo-800' : 'bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 hover:border-primary/30 shadow-sm'}`}>
+            {isEnabled && isLeader && (
                 <div className="absolute -top-3 left-4 px-2 py-1 bg-indigo-600 text-white text-[10px] font-black uppercase tracking-widest rounded shadow-lg shadow-indigo-200 dark:shadow-none flex items-center gap-1">
                     <span className="material-symbols-outlined text-[12px]">workspace_premium</span>
                     Leader
                 </div>
             )}
 
+            {!isEnabled && (
+                <div className="absolute -top-3 left-4 px-2 py-1 bg-slate-500 text-white text-[10px] font-black uppercase tracking-widest rounded flex items-center gap-1">
+                    <span className="material-symbols-outlined text-[12px]">block</span>
+                    Disabled
+                </div>
+            )}
+
             {isEditing ? (
                 /* Editing Mode */
                 <div className="space-y-4">
-                    {/* Label */}
+                    {/* Label/Name */}
                     <div>
                         <label className="block text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400 mb-2">
                             Variant Name
                         </label>
                         <input
                             type="text"
-                            value={editedVariant.label}
-                            onChange={(e) => setEditedVariant({ ...editedVariant, label: e.target.value })}
+                            value={editedVariant.name}
+                            onChange={(e) => setEditedVariant({ ...editedVariant, name: e.target.value })}
                             className="w-full px-4 py-2.5 text-sm font-medium border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary/20 focus:border-primary"
                             placeholder="e.g., Long Form"
                         />
@@ -143,12 +155,12 @@ const VariantCard = ({ variant, onUpdate, onDelete, totalWeight, totalScans, isL
                         {/* Label & Share */}
                         <div className="flex items-center justify-between gap-2">
                             <div className="flex items-center gap-2 min-w-0">
-                                <span className="material-symbols-outlined text-slate-400 text-[18px]">label</span>
-                                <span className="text-sm font-bold text-slate-900 dark:text-white truncate">
-                                    {variant.label || `Variant ${variant.id}`}
+                                <span className={`material-symbols-outlined text-[18px] ${isEnabled ? 'text-slate-400' : 'text-slate-300'}`}>label</span>
+                                <span className={`text-sm font-bold truncate ${isEnabled ? 'text-slate-900 dark:text-white' : 'text-slate-400'}`}>
+                                    {variant.name || variant.label || `Variant ${variant.id}`}
                                 </span>
                             </div>
-                            {totalScans > 0 && (
+                            {isEnabled && totalScans > 0 && (
                                 <div className="flex items-center gap-1.5 px-2 py-0.5 rounded bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400 text-[10px] font-black tracking-tighter uppercase whitespace-nowrap">
                                     {scanShare}% Share
                                 </div>
@@ -157,12 +169,12 @@ const VariantCard = ({ variant, onUpdate, onDelete, totalWeight, totalScans, isL
 
                         {/* URL */}
                         <div className="flex items-start gap-2">
-                            <span className="material-symbols-outlined text-slate-400 text-[18px] mt-0.5">link</span>
+                            <span className={`material-symbols-outlined text-[18px] mt-0.5 ${isEnabled ? 'text-slate-400' : 'text-slate-300'}`}>link</span>
                             <a
                                 href={variant.destination_url}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="text-sm text-primary hover:underline break-all font-mono"
+                                className={`text-sm break-all font-mono hover:underline ${isEnabled ? 'text-primary' : 'text-slate-400'}`}
                             >
                                 {variant.destination_url}
                             </a>
@@ -172,15 +184,15 @@ const VariantCard = ({ variant, onUpdate, onDelete, totalWeight, totalScans, isL
                         <div className="space-y-1.5">
                             <div className="flex items-center justify-between">
                                 <div className="flex items-center gap-2">
-                                    <span className="material-symbols-outlined text-slate-400 text-[18px]">analytics</span>
+                                    <span className={`material-symbols-outlined text-[18px] ${isEnabled ? 'text-slate-400' : 'text-slate-300'}`}>analytics</span>
                                     <span className="text-xs font-semibold text-slate-500 uppercase tracking-tight">Traffic Split</span>
                                 </div>
-                                <span className="text-sm font-bold text-slate-900 dark:text-white">{variant.weight}%</span>
+                                <span className={`text-sm font-bold ${isEnabled ? 'text-slate-900 dark:text-white' : 'text-slate-400'}`}>{isEnabled ? variant.weight : 0}%</span>
                             </div>
                             <div className="relative w-full bg-slate-100 dark:bg-slate-800 rounded-full h-1.5">
                                 <div
-                                    className={`absolute top-0 left-0 h-1.5 rounded-full transition-all duration-1000 ${isLeader ? 'bg-indigo-500' : 'bg-primary'}`}
-                                    style={{ width: `${variant.weight}%` }}
+                                    className={`absolute top-0 left-0 h-1.5 rounded-full transition-all duration-1000 ${!isEnabled ? 'bg-slate-300' : isLeader ? 'bg-indigo-500' : 'bg-primary'}`}
+                                    style={{ width: `${isEnabled ? variant.weight : 0}%` }}
                                 />
                             </div>
                         </div>
@@ -188,8 +200,8 @@ const VariantCard = ({ variant, onUpdate, onDelete, totalWeight, totalScans, isL
                         {/* Scans Count */}
                         <div className="flex items-center gap-4 pt-1">
                             <div className="flex items-center gap-1.5">
-                                <span className="material-symbols-outlined text-[16px] text-slate-400">ads_click</span>
-                                <span className="text-sm font-bold text-slate-700 dark:text-slate-300">
+                                <span className={`material-symbols-outlined text-[16px] ${isEnabled ? 'text-slate-400' : 'text-slate-300'}`}>ads_click</span>
+                                <span className={`text-sm font-bold ${isEnabled ? 'text-slate-700 dark:text-slate-300' : 'text-slate-400'}`}>
                                     {variant.scan_count || 0}
                                 </span>
                                 <span className="text-[11px] font-medium text-slate-400 uppercase tracking-wide">scans</span>
@@ -199,6 +211,13 @@ const VariantCard = ({ variant, onUpdate, onDelete, totalWeight, totalScans, isL
 
                     {/* Action Icons - Right Side */}
                     <div className="flex-shrink-0 flex flex-col gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <button
+                            onClick={toggleEnabled}
+                            className={`p-2 rounded-lg transition-colors ${isEnabled ? 'text-emerald-500 hover:bg-emerald-50 dark:hover:bg-emerald-900/10' : 'text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'}`}
+                            title={isEnabled ? 'Disable Variant' : 'Enable Variant'}
+                        >
+                            <span className="material-symbols-outlined text-[20px]">{isEnabled ? 'toggle_on' : 'toggle_off'}</span>
+                        </button>
                         <button
                             onClick={() => setIsEditing(true)}
                             className="p-2 text-slate-400 hover:text-primary hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors"

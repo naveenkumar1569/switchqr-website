@@ -157,6 +157,59 @@ router.put('/:id/variants/:variantId', supabaseAuth, async (req, res) => {
     }
 });
 
+// PUT /api/qrs/:id/variants (Bulk Update)
+router.put('/:id/variants', supabaseAuth, async (req, res) => {
+    const { id } = req.params;
+    const { variants } = req.body; // Expect array of {id, name, weight, is_enabled...}
+
+    if (!Array.isArray(variants)) {
+        return res.status(400).json({ error: 'Variants must be an array' });
+    }
+
+    try {
+        const { data: { user }, error: authError } = await req.supabase.auth.getUser();
+        if (authError || !user) return res.status(401).json({ error: 'Unauthorized' });
+
+        // Verify ownership
+        const { data: qr, error: qrError } = await req.supabase
+            .from('qrs')
+            .select('id')
+            .eq('id', id)
+            .eq('owner_id', user.id)
+            .single();
+
+        if (qrError || !qr) return res.status(404).json({ error: 'QR not found' });
+
+        // Perform updates. Supabase doesn't have a built-in "bulk update different rows with different values" 
+        // in one simple call easily that returns everything nicely without UPSERT.
+        // But we can use multiple updates in a loop or a sophisticated upsert if we have unique IDs.
+        // For simplicity and safety (since variants are usually < 10), we'll do individual updates.
+
+        const results = [];
+        for (const v of variants) {
+            const { data, error } = await req.supabase
+                .from('variants')
+                .update({
+                    name: v.name,
+                    destination_url: v.destination_url,
+                    weight: v.weight,
+                    is_enabled: v.is_enabled
+                })
+                .eq('id', v.id)
+                .eq('qr_id', id)
+                .select()
+                .single();
+
+            if (!error && data) results.push(data);
+        }
+
+        res.json({ variants: results });
+    } catch (e) {
+        logger.error('Error in bulk variant update', e);
+        res.status(500).json({ error: 'Server error' });
+    }
+});
+
 // DELETE /api/qrs/:id/variants/:variantId
 router.delete('/:id/variants/:variantId', supabaseAuth, async (req, res) => {
     const { id, variantId } = req.params;

@@ -364,25 +364,53 @@ const QRDetails = () => {
         }
     };
 
+    const normalizeWeights = (variantsList) => {
+        const enabledVariants = variantsList.filter(v => v.is_enabled !== false);
+        if (enabledVariants.length === 0) return variantsList.map(v => ({ ...v, weight: 0 }));
+
+        const baseWeight = Math.floor(100 / enabledVariants.length);
+        const remainder = 100 % enabledVariants.length;
+
+        return variantsList.map(v => {
+            if (v.is_enabled === false) return { ...v, weight: 0 };
+            const idx = enabledVariants.findIndex(ev => ev.id === v.id);
+            // Give the remainder to the first enabled variant
+            return {
+                ...v,
+                weight: idx === 0 ? baseWeight + remainder : baseWeight
+            };
+        });
+    };
+
     const handleAddVariant = async () => {
         try {
+            // Predict new length for naming
+            const newName = `Variant ${variants.length + 1}`;
+
             const response = await apiPost(`/api/qrs/${id}/variants`, {
-                destination_url: qr.destination_url,
-                weight: 50,
-                name: `Variant ${variants.length + 1}`
+                destination_url: qr.destination_url || '',
+                weight: 0, // Will be normalized
+                name: newName
             }, token);
 
             if (response.ok) {
                 const data = await response.json();
-                // Map database field 'name' to 'label' for frontend consistency if needed, 
-                // or just update components to use 'name'. I'll keep 'label' as a virtual field 
-                // for the UI while using 'name' for DB.
-                const newVariant = {
-                    ...data,
-                    label: data.name
-                };
-                setVariants([...variants, newVariant]);
-                showSuccess('Variant added');
+                const newVariant = { ...data, label: data.name };
+
+                // Recalculate all weights to include new one
+                const updatedList = normalizeWeights([...variants, newVariant]);
+
+                // Bulk update them on server
+                const bulkResponse = await apiPut(`/api/qrs/${id}/variants`, { variants: updatedList }, token);
+                if (bulkResponse.ok) {
+                    const { variants: finalVariants } = await bulkResponse.json();
+                    setVariants(finalVariants.map(v => ({ ...v, label: v.name })));
+                } else {
+                    // Fallback if bulk fails
+                    setVariants(updatedList);
+                }
+
+                showSuccess('Variant added and weights balanced');
             } else {
                 const error = await response.json();
                 showError(error.error || 'Failed to add variant');
@@ -395,12 +423,33 @@ const QRDetails = () => {
 
     const handleUpdateVariant = async (variantId, updates) => {
         try {
-            const response = await apiPut(`/api/qrs/${id}/variants/${variantId}`, updates, token);
+            const currentVariant = variants.find(v => v.id === variantId);
+            const isEnableToggle = updates.is_enabled !== undefined && updates.is_enabled !== currentVariant.is_enabled;
+
+            // If it's just a name/URL change, do a simple update
+            if (!isEnableToggle && updates.weight === undefined) {
+                const response = await apiPut(`/api/qrs/${id}/variants/${variantId}`, updates, token);
+                if (response.ok) {
+                    const updatedVariant = await response.json();
+                    setVariants(variants.map(v => v.id === variantId ? { ...updatedVariant, label: updatedVariant.name } : v));
+                    showSuccess('Variant updated');
+                    return;
+                }
+            }
+
+            // Otherwise, it's an enable/disable or weight change that affects others
+            let newList = variants.map(v => v.id === variantId ? { ...v, ...updates } : v);
+
+            if (isEnableToggle) {
+                newList = normalizeWeights(newList);
+            }
+
+            const response = await apiPut(`/api/qrs/${id}/variants`, { variants: newList }, token);
 
             if (response.ok) {
-                const updatedVariant = await response.json();
-                setVariants(variants.map(v => v.id === variantId ? updatedVariant : v));
-                showSuccess('Variant updated');
+                const { variants: finalVariants } = await response.json();
+                setVariants(finalVariants.map(v => ({ ...v, label: v.name })));
+                showSuccess(isEnableToggle ? 'Variant status updated and weights balanced' : 'Variant weights updated');
             } else {
                 showError('Failed to update variant');
             }
@@ -422,12 +471,23 @@ const QRDetails = () => {
             const response = await apiDelete(`/api/qrs/${id}/variants/${variantId}`, token);
 
             if (response.ok) {
-                setVariants(variants.filter(v => v.id !== variantId));
-                showSuccess('Variant deleted');
+                const remaining = variants.filter(v => v.id !== variantId);
+                const updatedList = normalizeWeights(remaining);
+
+                // Bulk update remains
+                if (updatedList.length > 0) {
+                    await apiPut(`/api/qrs/${id}/variants`, { variants: updatedList }, token);
+                    setVariants(updatedList.map(v => ({ ...v, label: v.name })));
+                } else {
+                    setVariants([]);
+                }
+
+                showSuccess('Variant deleted and weights re-balanced');
 
                 // If less than 2 variants, disable A/B testing
-                if (variants.length <= 2 && abTestingEnabled) {
+                if (remaining.length < 2 && abTestingEnabled) {
                     setAbTestingEnabled(false);
+                    await apiPut(`/api/qrs/${id}`, { ab_testing_enabled: false }, token);
                 }
             } else {
                 showError('Failed to delete variant');
