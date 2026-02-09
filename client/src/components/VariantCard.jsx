@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { normalizeUrl, validateUrl } from '../utils/urlHelpers';
 
-const VariantCard = ({ variant, onUpdate, onDelete, totalWeight }) => {
+const VariantCard = ({ variant, onUpdate, onDelete, totalWeight, totalScans, isLeader }) => {
     const [isEditing, setIsEditing] = useState(false);
     const [editedVariant, setEditedVariant] = useState({
         destination_url: variant.destination_url,
@@ -33,10 +33,17 @@ const VariantCard = ({ variant, onUpdate, onDelete, totalWeight }) => {
         setIsEditing(false);
     };
 
-    const trafficPercentage = variant.percentage_of_traffic || 0;
+    const scanShare = totalScans > 0 ? Math.round(((variant.scan_count || 0) / totalScans) * 100) : 0;
 
     return (
-        <div className="group relative rounded-2xl p-5 transition-all bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-primary/30">
+        <div className={`group relative rounded-2xl p-5 transition-all border ${isLeader ? 'bg-indigo-50/30 dark:bg-indigo-900/10 border-indigo-200 dark:border-indigo-800' : 'bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 hover:border-primary/30 shadow-sm'}`}>
+            {isLeader && (
+                <div className="absolute -top-3 left-4 px-2 py-1 bg-indigo-600 text-white text-[10px] font-black uppercase tracking-widest rounded shadow-lg shadow-indigo-200 dark:shadow-none flex items-center gap-1">
+                    <span className="material-symbols-outlined text-[12px]">workspace_premium</span>
+                    Leader
+                </div>
+            )}
+
             {isEditing ? (
                 /* Editing Mode */
                 <div className="space-y-4">
@@ -87,7 +94,7 @@ const VariantCard = ({ variant, onUpdate, onDelete, totalWeight }) => {
                                 background: rgb(124, 58, 237);
                                 cursor: pointer;
                                 border: 3px solid white;
-                                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                                shadow: 0 2px 4px rgba(0,0,0,0.1);
                             }
                             .custom-slider::-moz-range-thumb {
                                 width: 18px;
@@ -96,7 +103,7 @@ const VariantCard = ({ variant, onUpdate, onDelete, totalWeight }) => {
                                 background: rgb(124, 58, 237);
                                 cursor: pointer;
                                 border: 3px solid white;
-                                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                                shadow: 0 2px 4px rgba(0,0,0,0.1);
                             }
                         `}</style>
                         <input
@@ -132,13 +139,20 @@ const VariantCard = ({ variant, onUpdate, onDelete, totalWeight }) => {
                 /* View Mode */
                 <div className="flex items-start gap-4">
                     {/* Content */}
-                    <div className="flex-1 min-w-0 space-y-2.5">
-                        {/* Label */}
-                        <div className="flex items-center gap-2">
-                            <span className="material-symbols-outlined text-slate-400 text-[18px]">label</span>
-                            <span className="text-sm font-semibold text-slate-900 dark:text-white truncate">
-                                {variant.label || `Variant ${variant.id}`}
-                            </span>
+                    <div className="flex-1 min-w-0 space-y-3">
+                        {/* Label & Share */}
+                        <div className="flex items-center justify-between gap-2">
+                            <div className="flex items-center gap-2 min-w-0">
+                                <span className="material-symbols-outlined text-slate-400 text-[18px]">label</span>
+                                <span className="text-sm font-bold text-slate-900 dark:text-white truncate">
+                                    {variant.label || `Variant ${variant.id}`}
+                                </span>
+                            </div>
+                            {totalScans > 0 && (
+                                <div className="flex items-center gap-1.5 px-2 py-0.5 rounded bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400 text-[10px] font-black tracking-tighter uppercase whitespace-nowrap">
+                                    {scanShare}% Share
+                                </div>
+                            )}
                         </div>
 
                         {/* URL */}
@@ -155,47 +169,39 @@ const VariantCard = ({ variant, onUpdate, onDelete, totalWeight }) => {
                         </div>
 
                         {/* Traffic Weight */}
-                        <div className="flex items-start gap-2">
-                            <span className="material-symbols-outlined text-slate-400 text-[18px] mt-0.5">analytics</span>
-                            <div className="flex-1 min-w-0">
-                                <div className="flex items-center justify-between mb-1.5">
-                                    <span className="text-xs font-medium text-slate-500 dark:text-slate-400">
-                                        Traffic Weight
-                                    </span>
-                                    <span className="text-sm font-bold text-primary">
-                                        {variant.weight}%
-                                    </span>
+                        <div className="space-y-1.5">
+                            <div className="flex items-center justify-between">
+                                <div className="flex items-center gap-2">
+                                    <span className="material-symbols-outlined text-slate-400 text-[18px]">analytics</span>
+                                    <span className="text-xs font-semibold text-slate-500 uppercase tracking-tight">Traffic Split</span>
                                 </div>
-                                <div className="relative w-full bg-slate-200 dark:bg-slate-700 rounded-full h-2">
-                                    <div
-                                        className="absolute top-0 left-0 bg-primary h-2 rounded-full transition-all"
-                                        style={{ width: `${variant.weight}%` }}
-                                    />
-                                </div>
+                                <span className="text-sm font-bold text-slate-900 dark:text-white">{variant.weight}%</span>
+                            </div>
+                            <div className="relative w-full bg-slate-100 dark:bg-slate-800 rounded-full h-1.5">
+                                <div
+                                    className={`absolute top-0 left-0 h-1.5 rounded-full transition-all duration-1000 ${isLeader ? 'bg-indigo-500' : 'bg-primary'}`}
+                                    style={{ width: `${variant.weight}%` }}
+                                />
                             </div>
                         </div>
 
-                        {/* Stats */}
-                        {variant.scan_count > 0 && (
-                            <div className="flex items-center gap-2 pt-1">
-                                <span className="inline-flex items-center gap-1.5 px-2 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-xs">
-                                    <span className="material-symbols-outlined text-[14px] text-slate-500">bar_chart</span>
-                                    <span className="font-semibold text-slate-700 dark:text-slate-300">
-                                        {variant.scan_count} scans
-                                    </span>
-                                    <span className="text-slate-500 dark:text-slate-400">
-                                        ({trafficPercentage}%)
-                                    </span>
+                        {/* Scans Count */}
+                        <div className="flex items-center gap-4 pt-1">
+                            <div className="flex items-center gap-1.5">
+                                <span className="material-symbols-outlined text-[16px] text-slate-400">ads_click</span>
+                                <span className="text-sm font-bold text-slate-700 dark:text-slate-300">
+                                    {variant.scan_count || 0}
                                 </span>
+                                <span className="text-[11px] font-medium text-slate-400 uppercase tracking-wide">scans</span>
                             </div>
-                        )}
+                        </div>
                     </div>
 
                     {/* Action Icons - Right Side */}
-                    <div className="flex-shrink-0 flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <div className="flex-shrink-0 flex flex-col gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                         <button
                             onClick={() => setIsEditing(true)}
-                            className="p-2 text-slate-400 hover:text-primary hover:bg-primary/5 rounded-lg transition-colors"
+                            className="p-2 text-slate-400 hover:text-primary hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors"
                             title="Edit"
                         >
                             <span className="material-symbols-outlined text-[20px]">edit</span>

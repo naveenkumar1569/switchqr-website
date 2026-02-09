@@ -26,15 +26,23 @@ const VariantList = ({ variants, onUpdate, onDelete, onAdd }) => {
             {/* Variants */}
             {variants.length > 0 ? (
                 <div className="space-y-4">
-                    {variants.map((variant) => (
-                        <VariantCard
-                            key={variant.id}
-                            variant={variant}
-                            onUpdate={onUpdate}
-                            onDelete={onDelete}
-                            totalWeight={totalWeight}
-                        />
-                    ))}
+                    {(() => {
+                        const totalScans = variants.reduce((sum, v) => sum + (v.scan_count || 0), 0);
+                        const maxScans = Math.max(...variants.map(v => v.scan_count || 0));
+                        const leaderId = maxScans > 0 ? variants.find(v => (v.scan_count || 0) === maxScans)?.id : null;
+
+                        return variants.map((variant) => (
+                            <VariantCard
+                                key={variant.id}
+                                variant={variant}
+                                onUpdate={onUpdate}
+                                onDelete={onDelete}
+                                totalWeight={totalWeight}
+                                totalScans={totalScans}
+                                isLeader={variant.id === leaderId}
+                            />
+                        ));
+                    })()}
                 </div>
             ) : (
                 <div className="text-center py-8 border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-xl">
