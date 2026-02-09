@@ -44,6 +44,18 @@ router.get('/:id/schedules', supabaseAuth, async (req, res) => {
 
         if (error) throw error;
 
+        // Fetch scan counts per schedule
+        const { data: scanCounts } = await req.supabase
+            .from('scans')
+            .select('schedule_rule_id')
+            .eq('qr_id', id)
+            .not('schedule_rule_id', 'is', null);
+
+        const countsMap = (scanCounts || []).reduce((acc, s) => {
+            acc[s.schedule_rule_id] = (acc[s.schedule_rule_id] || 0) + 1;
+            return acc;
+        }, {});
+
         const mappedSchedules = (schedules || []).map(s => ({
             ...s,
             is_active: s.active,
@@ -52,7 +64,8 @@ router.get('/:id/schedules', supabaseAuth, async (req, res) => {
             recurrence_days: s.days ? JSON.stringify(s.days.map(d => {
                 const map = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
                 return map[d];
-            })) : '[]'
+            })) : '[]',
+            scan_count: countsMap[s.id] || 0
         }));
 
         res.json({

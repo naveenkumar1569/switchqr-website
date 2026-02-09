@@ -258,22 +258,32 @@ const ScheduleRuleCard = ({ schedule, isActive, onUpdate, onDelete }) => {
                             </div>
                         </div>
 
-                        {/* Status Badge */}
-                        {status && (
-                            <div className="flex items-center gap-2 pt-1">
-                                {status.badge && (
-                                    <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-primary/10 text-primary text-xs font-semibold">
-                                        <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
-                                        {status.text}
-                                    </span>
-                                )}
-                                {!status.badge && (
-                                    <span className={`text-xs font-medium ${status.color}`}>
-                                        {status.text}
-                                    </span>
-                                )}
+                        {/* Status Badge & Scans */}
+                        <div className="flex items-center gap-4 pt-1">
+                            {status && (
+                                <>
+                                    {status.badge && (
+                                        <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-primary/10 text-primary text-xs font-semibold">
+                                            <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
+                                            {status.text}
+                                        </span>
+                                    )}
+                                    {!status.badge && (
+                                        <span className={`text-xs font-medium ${status.color}`}>
+                                            {status.text}
+                                        </span>
+                                    )}
+                                </>
+                            )}
+
+                            <div className="flex items-center gap-1.5 ml-auto">
+                                <span className="material-symbols-outlined text-[16px] text-slate-400">ads_click</span>
+                                <span className="text-sm font-bold text-slate-700 dark:text-slate-300">
+                                    {schedule.scan_count || 0}
+                                </span>
+                                <span className="text-[11px] font-medium text-slate-400 uppercase tracking-wide">scans</span>
                             </div>
-                        )}
+                        </div>
                     </div>
 
                     {/* Action Icons - Right Side */}
