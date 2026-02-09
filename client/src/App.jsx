@@ -1,23 +1,35 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate, Outlet } from 'react-router-dom';
+import React, { Suspense } from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { ToastProvider } from './context/ToastContext';
 import ErrorBoundary from './components/ErrorBoundary';
+
+// Eager load auth pages (needed immediately)
 import Login from './pages/Login';
 import Register from './pages/Register';
-import TermsOfService from './pages/TermsOfService';
-import Dashboard from './pages/Dashboard';
-import Analytics from './pages/Analytics';
-import Campaigns from './pages/Campaigns';
-import CampaignDetails from './pages/CampaignDetails';
 
-import Layout from './components/Layout';
+// Lazy load all other pages for better initial load performance
+const TermsOfService = React.lazy(() => import('./pages/TermsOfService'));
+const Dashboard = React.lazy(() => import('./pages/Dashboard'));
+const Analytics = React.lazy(() => import('./pages/Analytics'));
+const Campaigns = React.lazy(() => import('./pages/Campaigns'));
+const CampaignDetails = React.lazy(() => import('./pages/CampaignDetails'));
+const Layout = React.lazy(() => import('./components/Layout'));
+const CreateQR = React.lazy(() => import('./pages/CreateQR'));
+const GlobalAnalytics = React.lazy(() => import('./pages/GlobalAnalytics'));
+const QRDetails = React.lazy(() => import('./pages/QRDetails'));
+const Settings = React.lazy(() => import('./pages/Settings'));
+const Billing = React.lazy(() => import('./pages/Billing'));
 
-import CreateQR from './pages/CreateQR';
-import GlobalAnalytics from './pages/GlobalAnalytics';
-import QRDetails from './pages/QRDetails';
-import Settings from './pages/Settings';
-import Billing from './pages/Billing';
+// Loading fallback component
+const PageLoader = () => (
+  <div className="flex flex-col items-center justify-center min-h-screen bg-background-light dark:bg-background-dark">
+    <div className="flex flex-col items-center gap-4">
+      <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-primary"></div>
+      <p className="text-sm text-text-subtle">Loading...</p>
+    </div>
+  </div>
+);
 
 const PrivateRoute = () => {
   const { token, loading, bootState, planLoadError, BOOT_STATE } = useAuth();
@@ -39,7 +51,13 @@ const PrivateRoute = () => {
     // Still allow access, Layout can show warning banner
   }
 
-  return token ? <Layout /> : <Navigate to="/login" />;
+  return token ? (
+    <Suspense fallback={<PageLoader />}>
+      <Layout />
+    </Suspense>
+  ) : (
+    <Navigate to="/login" />
+  );
 };
 
 function App() {
@@ -48,23 +66,25 @@ function App() {
       <AuthProvider>
         <ToastProvider>
           <Router>
-            <Routes>
-              <Route path="/login" element={<Login />} />
-              <Route path="/register" element={<Register />} />
-              <Route path="/terms" element={<TermsOfService />} />
+            <Suspense fallback={<PageLoader />}>
+              <Routes>
+                <Route path="/login" element={<Login />} />
+                <Route path="/register" element={<Register />} />
+                <Route path="/terms" element={<TermsOfService />} />
 
-              <Route element={<PrivateRoute />}>
-                <Route path="/" element={<Dashboard />} />
-                <Route path="/campaigns" element={<Campaigns />} />
-                <Route path="/campaigns/:id" element={<CampaignDetails />} />
-                <Route path="/analytics" element={<GlobalAnalytics />} />
-                <Route path="/analytics/:id" element={<Analytics />} />
-                <Route path="/qrs/create" element={<CreateQR />} />
-                <Route path="/qrs/:id" element={<QRDetails />} />
-                <Route path="/settings" element={<Settings />} />
-                <Route path="/billing" element={<Billing />} />
-              </Route>
-            </Routes>
+                <Route element={<PrivateRoute />}>
+                  <Route path="/" element={<Dashboard />} />
+                  <Route path="/campaigns" element={<Campaigns />} />
+                  <Route path="/campaigns/:id" element={<CampaignDetails />} />
+                  <Route path="/analytics" element={<GlobalAnalytics />} />
+                  <Route path="/analytics/:id" element={<Analytics />} />
+                  <Route path="/qrs/create" element={<CreateQR />} />
+                  <Route path="/qrs/:id" element={<QRDetails />} />
+                  <Route path="/settings" element={<Settings />} />
+                  <Route path="/billing" element={<Billing />} />
+                </Route>
+              </Routes>
+            </Suspense>
           </Router>
         </ToastProvider>
       </AuthProvider>
@@ -73,3 +93,4 @@ function App() {
 }
 
 export default App;
+
