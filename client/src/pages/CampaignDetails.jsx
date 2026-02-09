@@ -76,8 +76,99 @@ const CampaignDetails = () => {
 
     if (loading) {
         return (
-            <div className="flex items-center justify-center h-screen">
-                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+            <div className="max-w-7xl mx-auto px-6 py-8">
+                {/* Breadcrumb Skeleton */}
+                <div className="flex items-center gap-2 mb-6">
+                    <div className="h-4 w-20 bg-slate-200 dark:bg-slate-700 rounded animate-pulse"></div>
+                    <div className="h-4 w-4 bg-slate-200 dark:bg-slate-700 rounded animate-pulse"></div>
+                    <div className="h-4 w-32 bg-slate-200 dark:bg-slate-700 rounded animate-pulse"></div>
+                </div>
+
+                {/* Header Skeleton */}
+                <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8">
+                    <div>
+                        <div className="flex items-center gap-3 mb-2">
+                            <div className="h-10 w-64 bg-slate-200 dark:bg-slate-700 rounded animate-pulse"></div>
+                            <div className="h-6 w-16 bg-slate-200 dark:bg-slate-700 rounded-full animate-pulse"></div>
+                        </div>
+                        <div className="h-5 w-96 bg-slate-200 dark:bg-slate-700 rounded animate-pulse"></div>
+                    </div>
+                    <div className="flex items-center gap-3">
+                        <div className="h-10 w-36 bg-slate-200 dark:bg-slate-700 rounded-lg animate-pulse"></div>
+                        <div className="h-10 w-28 bg-slate-200 dark:bg-slate-700 rounded-lg animate-pulse"></div>
+                    </div>
+                </div>
+
+                {/* Stats Cards Skeleton */}
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+                    {[1, 2, 3, 4].map(i => (
+                        <div key={i} className="bg-white dark:bg-[#1e1726] border border-slate-100 dark:border-slate-800 p-6 rounded-xl shadow-sm animate-pulse">
+                            <div className="h-4 w-24 bg-slate-200 dark:bg-slate-700 rounded mb-3"></div>
+                            <div className="h-9 w-20 bg-slate-200 dark:bg-slate-700 rounded"></div>
+                        </div>
+                    ))}
+                </div>
+
+                {/* Analytics Grid Skeleton */}
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
+                    {/* Top QRs Skeleton */}
+                    <div className="lg:col-span-2 bg-white dark:bg-[#1e1726] border border-slate-100 dark:border-slate-800 p-6 rounded-xl shadow-sm animate-pulse">
+                        <div className="h-6 w-48 bg-slate-200 dark:bg-slate-700 rounded mb-2"></div>
+                        <div className="h-4 w-64 bg-slate-200 dark:bg-slate-700 rounded mb-6"></div>
+                        <div className="space-y-4">
+                            {[1, 2, 3, 4, 5].map(i => (
+                                <div key={i} className="grid grid-cols-[120px_1fr_60px] items-center gap-4">
+                                    <div className="h-4 w-24 bg-slate-200 dark:bg-slate-700 rounded"></div>
+                                    <div className="h-6 bg-slate-200 dark:bg-slate-700 rounded-full"></div>
+                                    <div className="h-4 w-12 bg-slate-200 dark:bg-slate-700 rounded ml-auto"></div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* Device Chart Skeleton */}
+                    <div className="bg-white dark:bg-[#1e1726] border border-slate-100 dark:border-slate-800 p-6 rounded-xl shadow-sm animate-pulse">
+                        <div className="h-6 w-32 bg-slate-200 dark:bg-slate-700 rounded mb-2"></div>
+                        <div className="h-4 w-40 bg-slate-200 dark:bg-slate-700 rounded mb-8"></div>
+                        <div className="size-48 mx-auto bg-slate-200 dark:bg-slate-700 rounded-full mb-8"></div>
+                        <div className="space-y-3">
+                            {[1, 2, 3].map(i => (
+                                <div key={i} className="flex items-center justify-between">
+                                    <div className="flex items-center gap-2">
+                                        <div className="size-3 bg-slate-200 dark:bg-slate-700 rounded-full"></div>
+                                        <div className="h-4 w-16 bg-slate-200 dark:bg-slate-700 rounded"></div>
+                                    </div>
+                                    <div className="h-4 w-10 bg-slate-200 dark:bg-slate-700 rounded"></div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+
+                {/* Bottom Section Skeleton */}
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <div className="bg-white dark:bg-[#1e1726] border border-slate-100 dark:border-slate-800 rounded-xl overflow-hidden shadow-sm animate-pulse">
+                        <div className="p-6">
+                            <div className="h-6 w-40 bg-slate-200 dark:bg-slate-700 rounded mb-2"></div>
+                            <div className="h-4 w-56 bg-slate-200 dark:bg-slate-700 rounded"></div>
+                        </div>
+                        <div className="h-64 bg-slate-200 dark:bg-slate-700"></div>
+                    </div>
+                    <div className="lg:col-span-2 bg-white dark:bg-[#1e1726] border border-slate-100 dark:border-slate-800 rounded-xl overflow-hidden shadow-sm animate-pulse">
+                        <div className="p-6 border-b border-slate-100 dark:border-slate-800">
+                            <div className="h-6 w-48 bg-slate-200 dark:bg-slate-700 rounded"></div>
+                        </div>
+                        <div className="p-6 space-y-4">
+                            {[1, 2, 3].map(i => (
+                                <div key={i} className="flex items-center gap-4">
+                                    <div className="size-8 bg-slate-200 dark:bg-slate-700 rounded"></div>
+                                    <div className="flex-1 h-4 bg-slate-200 dark:bg-slate-700 rounded"></div>
+                                    <div className="h-4 w-16 bg-slate-200 dark:bg-slate-700 rounded"></div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
             </div>
         );
     }
