@@ -167,7 +167,7 @@ router.put('/:id/variants/:variantId', supabaseAuth, async (req, res) => {
 // PUT /api/qrs/:id/variants (Bulk Update)
 router.put('/:id/variants', supabaseAuth, async (req, res) => {
     const { id } = req.params;
-    const { variants } = req.body; // Expect array of {id, name, weight, is_enabled...}
+    const { variants, ab_control_weight } = req.body; // Expect array of variants and optional control weight
 
     if (!Array.isArray(variants)) {
         return res.status(400).json({ error: 'Variants must be an array' });
@@ -210,7 +210,14 @@ router.put('/:id/variants', supabaseAuth, async (req, res) => {
             if (!error && data) results.push(data);
         }
 
-        res.json({ variants: results });
+        if (ab_control_weight !== undefined) {
+            await req.supabase
+                .from('qrs')
+                .update({ ab_control_weight })
+                .eq('id', id);
+        }
+
+        res.json({ variants: results, ab_control_weight });
     } catch (e) {
         logger.error('Error in bulk variant update', e);
         res.status(500).json({ error: 'Server error' });
