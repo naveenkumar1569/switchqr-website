@@ -186,7 +186,13 @@ router.get('/r/:shortCode', async (req, res) => {
             routing_mode,
             variant_id,
             schedule_rule_id
-        }).catch(err => logger.error('Failed to log scan', err));
+        }).catch(err => {
+            logger.error(`❌ [REDIRECT] Scan logging failed for code ${shortCode}:`, {
+                error: err.message,
+                details: err.details,
+                code: err.code
+            });
+        });
 
         // 5. Redirect
         res.redirect(destination_url);
