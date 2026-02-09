@@ -367,13 +367,20 @@ const QRDetails = () => {
     const handleAddVariant = async () => {
         try {
             const response = await apiPost(`/api/qrs/${id}/variants`, {
-                destination_url: 'https://example.com',
+                destination_url: qr.destination_url,
                 weight: 50,
-                label: `Variant ${variants.length + 1}`
+                name: `Variant ${variants.length + 1}`
             }, token);
 
             if (response.ok) {
-                const newVariant = await response.json();
+                const data = await response.json();
+                // Map database field 'name' to 'label' for frontend consistency if needed, 
+                // or just update components to use 'name'. I'll keep 'label' as a virtual field 
+                // for the UI while using 'name' for DB.
+                const newVariant = {
+                    ...data,
+                    label: data.name
+                };
                 setVariants([...variants, newVariant]);
                 showSuccess('Variant added');
             } else {

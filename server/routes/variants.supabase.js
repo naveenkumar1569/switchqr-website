@@ -112,6 +112,51 @@ router.post('/:id/variants', supabaseAuth, async (req, res) => {
     }
 });
 
+// PUT /api/qrs/:id/variants/:variantId
+router.put('/:id/variants/:variantId', supabaseAuth, async (req, res) => {
+    const { id, variantId } = req.params;
+    const { name, destination_url, weight, is_enabled } = req.body;
+
+    try {
+        const { data: { user }, error: authError } = await req.supabase.auth.getUser();
+        if (authError || !user) return res.status(401).json({ error: 'Unauthorized' });
+
+        // Verify ownership
+        const { data: qr, error: qrError } = await req.supabase
+            .from('qrs')
+            .select('id')
+            .eq('id', id)
+            .eq('owner_id', user.id)
+            .single();
+
+        if (qrError || !qr) return res.status(404).json({ error: 'QR not found' });
+
+        const updates = {};
+        if (name !== undefined) updates.name = name;
+        if (destination_url !== undefined) updates.destination_url = destination_url;
+        if (weight !== undefined) updates.weight = weight;
+        if (is_enabled !== undefined) updates.is_enabled = is_enabled;
+
+        const { data: variant, error } = await req.supabase
+            .from('variants')
+            .update(updates)
+            .eq('id', variantId)
+            .eq('qr_id', id)
+            .select()
+            .single();
+
+        if (error) {
+            logger.error('Error updating variant', error);
+            throw error;
+        }
+
+        res.json(variant);
+    } catch (e) {
+        logger.error('Error in variant update route', e);
+        res.status(500).json({ error: 'Server error' });
+    }
+});
+
 // DELETE /api/qrs/:id/variants/:variantId
 router.delete('/:id/variants/:variantId', supabaseAuth, async (req, res) => {
     const { id, variantId } = req.params;
