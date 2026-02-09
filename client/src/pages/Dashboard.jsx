@@ -220,7 +220,11 @@ const Dashboard = () => {
                         </div>
                     </div>
                     <p className="text-sm font-medium text-slate-500 dark:text-slate-400">Total QRs</p>
-                    <h3 className="text-3xl font-bold text-slate-900 dark:text-white mt-1">{qrs.length}</h3>
+                    {loading ? (
+                        <div className="h-9 w-16 bg-slate-200 dark:bg-slate-700 rounded animate-pulse mt-1"></div>
+                    ) : (
+                        <h3 className="text-3xl font-bold text-slate-900 dark:text-white mt-1">{qrs.length}</h3>
+                    )}
                 </div>
 
                 {/* Total Scans */}
@@ -232,7 +236,11 @@ const Dashboard = () => {
                     </div>
                     <p className="text-sm font-medium text-slate-500 dark:text-slate-400">Total Scans</p>
                     <div className="flex items-baseline gap-2 mt-1">
-                        <h3 className="text-3xl font-bold text-slate-900 dark:text-white">{stats?.totalScans || 0}</h3>
+                        {loading ? (
+                            <div className="h-9 w-20 bg-slate-200 dark:bg-slate-700 rounded animate-pulse"></div>
+                        ) : (
+                            <h3 className="text-3xl font-bold text-slate-900 dark:text-white">{stats?.totalScans || 0}</h3>
+                        )}
                     </div>
                 </div>
 
@@ -244,7 +252,11 @@ const Dashboard = () => {
                         </div>
                     </div>
                     <p className="text-sm font-medium text-slate-500 dark:text-slate-400">Active QRs</p>
-                    <h3 className="text-3xl font-bold text-slate-900 dark:text-white mt-1">{activeQrs}</h3>
+                    {loading ? (
+                        <div className="h-9 w-12 bg-slate-200 dark:bg-slate-700 rounded animate-pulse mt-1"></div>
+                    ) : (
+                        <h3 className="text-3xl font-bold text-slate-900 dark:text-white mt-1">{activeQrs}</h3>
+                    )}
                 </div>
 
                 {/* Top Campaign */}
@@ -255,9 +267,13 @@ const Dashboard = () => {
                         </div>
                     </div>
                     <p className="text-sm font-medium text-slate-500 dark:text-slate-400">Top Campaign</p>
-                    <h3 className="text-xl font-bold text-slate-900 dark:text-white mt-2 truncate" title={stats?.topQr?.name || 'N/A'}>
-                        {stats?.topQr?.name || 'N/A'}
-                    </h3>
+                    {loading ? (
+                        <div className="h-7 w-32 bg-slate-200 dark:bg-slate-700 rounded animate-pulse mt-2"></div>
+                    ) : (
+                        <h3 className="text-xl font-bold text-slate-900 dark:text-white mt-2 truncate" title={stats?.topQr?.name || 'N/A'}>
+                            {stats?.topQr?.name || 'N/A'}
+                        </h3>
+                    )}
                 </div>
             </section>
 
@@ -448,6 +464,39 @@ const Dashboard = () => {
                                     </td>
                                 </tr>
                             ))}
+                            {loading && (
+                                <>
+                                    {[1, 2, 3].map(i => (
+                                        <tr key={`skeleton-${i}`} className="animate-pulse">
+                                            <td className="px-6 py-4">
+                                                <div className="flex items-center">
+                                                    <div className="h-10 w-10 bg-slate-200 dark:bg-slate-700 rounded-md"></div>
+                                                    <div className="ml-4">
+                                                        <div className="h-4 w-32 bg-slate-200 dark:bg-slate-700 rounded mb-2"></div>
+                                                        <div className="h-3 w-24 bg-slate-200 dark:bg-slate-700 rounded"></div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td className="px-6 py-4">
+                                                <div className="h-4 w-40 bg-slate-200 dark:bg-slate-700 rounded mb-2"></div>
+                                                <div className="h-3 w-32 bg-slate-200 dark:bg-slate-700 rounded"></div>
+                                            </td>
+                                            <td className="px-6 py-4">
+                                                <div className="h-6 w-16 bg-slate-200 dark:bg-slate-700 rounded-full"></div>
+                                            </td>
+                                            <td className="px-6 py-4">
+                                                <div className="h-4 w-8 bg-slate-200 dark:bg-slate-700 rounded"></div>
+                                            </td>
+                                            <td className="px-6 py-4">
+                                                <div className="h-4 w-28 bg-slate-200 dark:bg-slate-700 rounded"></div>
+                                            </td>
+                                            <td className="px-6 py-4 text-right">
+                                                <div className="h-6 w-6 bg-slate-200 dark:bg-slate-700 rounded ml-auto"></div>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </>
+                            )}
                             {filteredQrs.length === 0 && !loading && (
                                 <tr>
                                     <td colSpan="6" className="px-6 py-12 text-center text-slate-500">
