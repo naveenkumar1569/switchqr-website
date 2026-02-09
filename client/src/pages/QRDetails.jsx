@@ -824,7 +824,7 @@ const QRDetails = () => {
                                     <img
                                         alt="QR Code"
                                         className="size-48 object-contain"
-                                        src={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(`${import.meta.env.VITE_API_BASE_URL}/r/${qr.short_code}`)}`}
+                                        src={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(`${import.meta.env.VITE_REDIRECT_BASE_URL || import.meta.env.VITE_API_BASE_URL}/r/${qr.short_code}`)}`}
                                     />
                                     {/* Logo Overlay */}
                                     {logoPreview && (
@@ -919,7 +919,7 @@ const QRDetails = () => {
                                             let extension = downloadFormat;
                                             let sizeParam = downloadFormat === 'png' ? `${downloadSize}x${downloadSize}` : '1024x1024';
 
-                                            const encodedData = encodeURIComponent(`${import.meta.env.VITE_API_BASE_URL}/r/${qr.short_code}`);
+                                            const encodedData = encodeURIComponent(`${import.meta.env.VITE_REDIRECT_BASE_URL || import.meta.env.VITE_API_BASE_URL}/r/${qr.short_code}`);
                                             const url = `https://api.qrserver.com/v1/create-qr-code/?size=${sizeParam}&data=${encodedData}&format=${apiFormat}`;
 
                                             const response = await fetch(url);

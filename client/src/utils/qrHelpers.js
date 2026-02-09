@@ -5,7 +5,7 @@
  * CRITICAL: All QR generation MUST use this module to ensure immutability.
  */
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://r.switch-qr.com';
+const REDIRECT_BASE_URL = import.meta.env.VITE_REDIRECT_BASE_URL || 'https://r.switch-qr.com';
 
 /**
  * Get the redirect URL for a QR code.
@@ -17,7 +17,7 @@ export const getRedirectUrl = (shortCode) => {
     if (!shortCode) {
         throw new Error('Cannot generate redirect URL without short_code');
     }
-    return `${API_BASE_URL}/r/${shortCode}`;
+    return `${REDIRECT_BASE_URL}/r/${shortCode}`;
 };
 
 /**
