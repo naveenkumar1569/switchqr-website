@@ -21,7 +21,8 @@ const GlobalAnalytics = () => {
         recentScans: [],
         deviceStats: { Mobile: 0, Desktop: 0, Tablet: 0 },
         scansOverTime: [],
-        locationStats: []
+        locationStats: [],
+        hourlyStats: []
     });
     const [loading, setLoading] = useState(true);
     const [dateRange, setDateRange] = useState({ type: 'days', value: 30, label: 'Last 30 Days' });
@@ -712,8 +713,54 @@ const GlobalAnalytics = () => {
                         </div>
                     </div>
                 )}
+
+                {/* Peak Scanning Times */}
+                <div className="bg-white dark:bg-surface-dark border border-neutral-border dark:border-border-dark rounded-xl p-6 shadow-sm">
+                    <div className="mb-6">
+                        <h3 className="text-xl font-bold text-text-main dark:text-white mb-1">Peak Scanning Times</h3>
+                        <p className="text-sm text-text-muted dark:text-gray-400">Hourly distribution of scans throughout the day</p>
+                    </div>
+                    <div className="space-y-2">
+                        {data.hourlyStats && data.hourlyStats.length > 0 ? (
+                            (() => {
+                                const maxCount = Math.max(...data.hourlyStats.map(h => h.count), 1);
+                                const peakHour = data.hourlyStats.reduce((max, h) => h.count > max.count ? h : max, { hour: 0, count: 0 });
+
+                                return data.hourlyStats.map(({ hour, count }) => {
+                                    const isPeak = hour === peakHour.hour && count > 0;
+                                    const percentage = maxCount > 0 ? (count / maxCount) * 100 : 0;
+                                    const hourLabel = hour === 0 ? '12 AM' : hour < 12 ? `${hour} AM` : hour === 12 ? '12 PM' : `${hour - 12} PM`;
+
+                                    return (
+                                        <div key={hour} className="flex items-center gap-3">
+                                            <div className="w-16 text-right">
+                                                <span className="text-xs font-medium text-text-muted dark:text-gray-400">{hourLabel}</span>
+                                            </div>
+                                            <div className="flex-1 h-8 bg-slate-100 dark:bg-slate-800 rounded-md overflow-hidden relative">
+                                                <div
+                                                    className={`h-full transition-all ${isPeak ? 'bg-primary' : 'bg-primary/70'}`}
+                                                    style={{ width: `${percentage}%` }}
+                                                ></div>
+                                            </div>
+                                            <div className="w-12 text-left">
+                                                <span className={`text-sm font-bold ${isPeak ? 'text-primary' : 'text-text-main dark:text-white'}`}>
+                                                    {count}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    );
+                                });
+                            })()
+                        ) : (
+                            <div className="text-center py-10 flex flex-col items-center gap-3">
+                                <span className="material-symbols-outlined text-text-muted dark:text-gray-600 text-4xl">schedule</span>
+                                <p className="text-text-muted dark:text-gray-500 text-sm font-medium">No hourly data available yet</p>
+                            </div>
+                        )}
+                    </div>
+                </div>
             </div>
-        </div>
+        </div >
     );
 };
 

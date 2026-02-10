@@ -63,7 +63,8 @@ router.get('/', supabaseAuth, async (req, res) => {
             recentScans: [],
             deviceStats: { Mobile: 0, Desktop: 0, Tablet: 0 },
             scansOverTime: [],
-            locationStats: []
+            locationStats: [],
+            hourlyStats: []
         };
 
         if (qrIds.length > 0) {
@@ -273,6 +274,23 @@ router.get('/', supabaseAuth, async (req, res) => {
                     }
                     stats.scansOverTime = Object.keys(months).sort().map(monthKey => ({ date: monthKey, count: 0 }));
                 }
+
+                // Hourly Stats (Peak Scanning Times)
+                const hourlyMap = {};
+                for (let h = 0; h < 24; h++) {
+                    hourlyMap[h] = 0;
+                }
+
+                scans.forEach(s => {
+                    const scanDate = new Date(s.scanned_at);
+                    const hour = scanDate.getHours();
+                    hourlyMap[hour]++;
+                });
+
+                stats.hourlyStats = Object.keys(hourlyMap).map(h => ({
+                    hour: parseInt(h),
+                    count: hourlyMap[h]
+                }));
             }
         }
 
