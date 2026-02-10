@@ -599,9 +599,9 @@ const GlobalAnalytics = () => {
                     </div>
                     <div className="space-y-6">
                         {[
-                            { name: 'Mobile (iOS)', icon: 'phone_iphone', value: Math.round(data.deviceStats?.Mobile * 0.6) || 0, total: data.deviceStats?.Mobile || 0 }, // Mocking breakdown
-                            { name: 'Mobile (Android)', icon: 'android', value: Math.round(data.deviceStats?.Mobile * 0.4) || 0, total: data.deviceStats?.Mobile || 0 }, // Mocking breakdown
-                            { name: 'Desktop (Web)', icon: 'desktop_windows', value: data.deviceStats?.Desktop || 0, total: data.deviceStats?.Desktop || 0 },
+                            { name: 'Mobile (iOS)', icon: 'phone_iphone', value: data.deviceStats?.iOS || 0 },
+                            { name: 'Mobile (Android)', icon: 'android', value: data.deviceStats?.Android || 0 },
+                            { name: 'Desktop (Web)', icon: 'desktop_windows', value: data.deviceStats?.Desktop || 0 },
                         ].map((device, i) => (
                             <div key={i}>
                                 <div className="flex justify-between text-sm mb-2">
@@ -622,11 +622,11 @@ const GlobalAnalytics = () => {
                         <div className="flex gap-4">
                             <div className="flex-1">
                                 <div className="text-xs text-slate-400 uppercase font-semibold mb-1">Dominant OS</div>
-                                <div className="text-lg font-bold text-slate-800 dark:text-white">iOS 17.0</div>
+                                <div className="text-lg font-bold text-slate-800 dark:text-white">{data.dominantOS || 'N/A'}</div>
                             </div>
                             <div className="flex-1">
                                 <div className="text-xs text-slate-400 uppercase font-semibold mb-1">Avg Screen</div>
-                                <div className="text-lg font-bold text-slate-800 dark:text-white">390x844</div>
+                                <div className="text-lg font-bold text-slate-800 dark:text-white">Unknown</div>
                             </div>
                         </div>
                     </div>

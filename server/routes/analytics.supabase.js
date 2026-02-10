@@ -105,22 +105,37 @@ router.get('/', supabaseAuth, async (req, res) => {
                 const topQrId = Object.keys(qrCounts).reduce((a, b) => qrCounts[a] > qrCounts[b] ? a : b, null);
                 stats.topQr = topQrId ? { name: qrMap[topQrId] || 'Untitled QR' } : 'N/A';
 
-                // Device Stats
-                const deviceCounts = { Mobile: 0, Desktop: 0, Tablet: 0 };
+                // Device Stats & OS
+                const deviceCounts = { Mobile: 0, Desktop: 0, Tablet: 0, iOS: 0, Android: 0 };
+                const osCounts = {};
+
                 scans.forEach(s => {
-                    // Simple heuristic mapping
                     const type = s.device_type || 'Desktop';
-                    if (type.includes('Mobile') || type.includes('Phone')) deviceCounts.Mobile++;
+                    const os = (s.os || '').toLowerCase();
+
+                    if (type.includes('Mobile') || type.includes('Phone')) {
+                        deviceCounts.Mobile++;
+                        if (os.includes('ios')) deviceCounts.iOS++;
+                        else if (os.includes('android')) deviceCounts.Android++;
+                    }
                     else if (type.includes('Tablet') || type.includes('iPad')) deviceCounts.Tablet++;
                     else deviceCounts.Desktop++;
+
+                    if (s.os && s.os !== 'null' && s.os !== 'Other 0.0.0') {
+                        osCounts[s.os] = (osCounts[s.os] || 0) + 1;
+                    }
                 });
-                // Calculate percentages
+
                 const total = scans.length;
                 stats.deviceStats = {
-                    Mobile: Math.round((deviceCounts.Mobile / total) * 100),
-                    Tablet: Math.round((deviceCounts.Tablet / total) * 100),
-                    Desktop: Math.round((deviceCounts.Desktop / total) * 100)
+                    Mobile: Math.round((deviceCounts.Mobile / total) * 100) || 0,
+                    Tablet: Math.round((deviceCounts.Tablet / total) * 100) || 0,
+                    Desktop: Math.round((deviceCounts.Desktop / total) * 100) || 0,
+                    iOS: Math.round((deviceCounts.iOS / total) * 100) || 0,
+                    Android: Math.round((deviceCounts.Android / total) * 100) || 0
                 };
+
+                stats.dominantOS = Object.keys(osCounts).reduce((a, b) => osCounts[a] > osCounts[b] ? a : b, 'N/A');
 
                 // Location Stats (Aggregated)
                 const locationMap = {};
@@ -401,20 +416,37 @@ router.get('/:qr_id', supabaseAuth, async (req, res) => {
                 ip_address: s.ip_address
             }));
 
-            // Device Stats
-            const deviceCounts = { Mobile: 0, Desktop: 0, Tablet: 0 };
+            // Device Stats & OS
+            const deviceCounts = { Mobile: 0, Desktop: 0, Tablet: 0, iOS: 0, Android: 0 };
+            const osCounts = {};
+
             scans.forEach(s => {
                 const type = s.device_type || 'Desktop';
-                if (type.includes('Mobile') || type.includes('Phone')) deviceCounts.Mobile++;
+                const os = (s.os || '').toLowerCase();
+
+                if (type.includes('Mobile') || type.includes('Phone')) {
+                    deviceCounts.Mobile++;
+                    if (os.includes('ios')) deviceCounts.iOS++;
+                    else if (os.includes('android')) deviceCounts.Android++;
+                }
                 else if (type.includes('Tablet') || type.includes('iPad')) deviceCounts.Tablet++;
                 else deviceCounts.Desktop++;
+
+                if (s.os && s.os !== 'null' && s.os !== 'Other 0.0.0') {
+                    osCounts[s.os] = (osCounts[s.os] || 0) + 1;
+                }
             });
+
             const total = scans.length;
             stats.deviceStats = {
-                Mobile: Math.round((deviceCounts.Mobile / total) * 100),
-                Tablet: Math.round((deviceCounts.Tablet / total) * 100),
-                Desktop: Math.round((deviceCounts.Desktop / total) * 100)
+                Mobile: Math.round((deviceCounts.Mobile / total) * 100) || 0,
+                Tablet: Math.round((deviceCounts.Tablet / total) * 100) || 0,
+                Desktop: Math.round((deviceCounts.Desktop / total) * 100) || 0,
+                iOS: Math.round((deviceCounts.iOS / total) * 100) || 0,
+                Android: Math.round((deviceCounts.Android / total) * 100) || 0
             };
+
+            stats.dominantOS = Object.keys(osCounts).reduce((a, b) => osCounts[a] > osCounts[b] ? a : b, 'N/A');
 
             // Scans Over Time
             const timeline = {};
@@ -486,20 +518,37 @@ router.get('/analytics/:qr_id', supabaseAuth, async (req, res) => {
             const uniqueIps = new Set(scans.map(s => s.ip_address));
             stats.uniqueScans = uniqueIps.size;
 
-            // Device Stats
-            const deviceCounts = { Mobile: 0, Desktop: 0, Tablet: 0 };
+            // Device Stats & OS
+            const deviceCounts = { Mobile: 0, Desktop: 0, Tablet: 0, iOS: 0, Android: 0 };
+            const osCounts = {};
+
             scans.forEach(s => {
                 const type = s.device_type || 'Desktop';
-                if (type.includes('Mobile') || type.includes('Phone')) deviceCounts.Mobile++;
+                const os = (s.os || '').toLowerCase();
+
+                if (type.includes('Mobile') || type.includes('Phone')) {
+                    deviceCounts.Mobile++;
+                    if (os.includes('ios')) deviceCounts.iOS++;
+                    else if (os.includes('android')) deviceCounts.Android++;
+                }
                 else if (type.includes('Tablet') || type.includes('iPad')) deviceCounts.Tablet++;
                 else deviceCounts.Desktop++;
+
+                if (s.os && s.os !== 'null' && s.os !== 'Other 0.0.0') {
+                    osCounts[s.os] = (osCounts[s.os] || 0) + 1;
+                }
             });
+
             const total = scans.length;
             stats.deviceStats = {
-                Mobile: Math.round((deviceCounts.Mobile / total) * 100),
-                Tablet: Math.round((deviceCounts.Tablet / total) * 100),
-                Desktop: Math.round((deviceCounts.Desktop / total) * 100)
+                Mobile: Math.round((deviceCounts.Mobile / total) * 100) || 0,
+                Tablet: Math.round((deviceCounts.Tablet / total) * 100) || 0,
+                Desktop: Math.round((deviceCounts.Desktop / total) * 100) || 0,
+                iOS: Math.round((deviceCounts.iOS / total) * 100) || 0,
+                Android: Math.round((deviceCounts.Android / total) * 100) || 0
             };
+
+            stats.dominantOS = Object.keys(osCounts).reduce((a, b) => osCounts[a] > osCounts[b] ? a : b, 'N/A');
 
             // Scans Over Time (Last 7 days or custom)
             const numDays = parseInt(days) || 30;
