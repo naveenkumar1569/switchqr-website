@@ -508,7 +508,7 @@ const GlobalAnalytics = () => {
                 </div>
 
                 {data.hourlyHeatmap && Object.keys(data.hourlyHeatmap).length > 0 ? (
-                    <div className="overflow-x-auto pb-2">
+                    <div className="overflow-x-auto pb-2 px-1">
                         <div className="min-w-[700px]">
                             {/* Header Hours */}
                             <div className="grid gap-1 mb-2" style={{ gridTemplateColumns: '50px repeat(24, 1fr)' }}>
@@ -532,7 +532,7 @@ const GlobalAnalytics = () => {
                                             return (
                                                 <div
                                                     key={hour}
-                                                    className={`h-8 rounded ${getHeatmapOpacity(count)} transition-all hover:ring-2 hover:ring-primary hover:ring-offset-1 dark:hover:ring-offset-surface-dark cursor-pointer relative group`}
+                                                    className={`h-8 rounded ${getHeatmapOpacity(count)} transition-all hover:ring-2 hover:ring-primary hover:ring-offset-1 hover:z-10 dark:hover:ring-offset-surface-dark cursor-pointer relative group`}
                                                     title={`${day} ${formatHour(hour)}: ${count} scans`}
                                                 >
                                                     {/* Tooltip */}
