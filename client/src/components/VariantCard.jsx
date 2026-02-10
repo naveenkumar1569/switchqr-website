@@ -43,26 +43,29 @@ const VariantCard = ({ variant, onUpdate, onDelete, totalWeight, totalScans, isL
 
     return (
         <div className={`group relative rounded-2xl p-5 transition-all border ${!isEnabled ? 'bg-slate-50/50 dark:bg-slate-900/10 border-slate-200 dark:border-slate-800 opacity-75' : isLeader ? 'bg-indigo-50/30 dark:bg-indigo-900/10 border-indigo-200 dark:border-indigo-800' : 'bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 hover:border-primary/30 shadow-sm'}`}>
-            {isEnabled && isLeader && (
-                <div className="absolute -top-3 left-4 px-2 py-1 bg-indigo-600 text-white text-[10px] font-black uppercase tracking-widest rounded shadow-lg shadow-indigo-200 dark:shadow-none flex items-center gap-1">
-                    <span className="material-symbols-outlined text-[12px]">workspace_premium</span>
-                    Leader
-                </div>
-            )}
+            {/* Status Badges Container */}
+            <div className="absolute -top-3 left-4 flex items-center gap-2">
+                {isEnabled && isLeader && (
+                    <div className="px-2 py-1 bg-indigo-600 text-white text-[10px] font-black uppercase tracking-widest rounded shadow-lg shadow-indigo-200 dark:shadow-none flex items-center gap-1">
+                        <span className="material-symbols-outlined text-[12px]">workspace_premium</span>
+                        Leader
+                    </div>
+                )}
 
-            {!isEnabled && (
-                <div className="absolute -top-3 left-4 px-2 py-1 bg-slate-500 text-white text-[10px] font-black uppercase tracking-widest rounded flex items-center gap-1">
-                    <span className="material-symbols-outlined text-[12px]">block</span>
-                    Disabled
-                </div>
-            )}
+                {!isEnabled && (
+                    <div className="px-2 py-1 bg-slate-500 text-white text-[10px] font-black uppercase tracking-widest rounded flex items-center gap-1">
+                        <span className="material-symbols-outlined text-[12px]">block</span>
+                        Disabled
+                    </div>
+                )}
 
-            {isControl && (
-                <div className="absolute -top-3 left-4 px-2 py-1 bg-primary text-white text-[10px] font-black uppercase tracking-widest rounded shadow-lg shadow-primary/20 flex items-center gap-1">
-                    <span className="material-symbols-outlined text-[12px]">star</span>
-                    Baseline
-                </div>
-            )}
+                {isControl && (
+                    <div className="px-2 py-1 bg-primary text-white text-[10px] font-black uppercase tracking-widest rounded shadow-lg shadow-primary/20 flex items-center gap-1">
+                        <span className="material-symbols-outlined text-[12px]">star</span>
+                        Baseline
+                    </div>
+                )}
+            </div>
 
             {isEditing ? (
                 /* Editing Mode */
