@@ -569,15 +569,21 @@ const GlobalAnalytics = () => {
             {/* Bottom Row */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {/* Device Distribution */}
-                <div className="bg-white dark:bg-surface-dark rounded-2xl shadow-soft p-6 md:p-8 border border-slate-100/50 dark:border-slate-800 flex flex-col h-full">
-                    <h2 className="text-lg font-bold text-slate-900 dark:text-white mb-6">Device Distribution</h2>
-                    <div className="flex-1 flex flex-col justify-center space-y-6">
+                {/* Device Distribution */}
+                <div className="bg-white dark:bg-surface-dark rounded-2xl shadow-soft p-6 md:p-8 border border-slate-100/50 dark:border-slate-800 flex flex-col justify-between">
+                    <div className="flex justify-between items-center mb-6">
+                        <h2 className="text-lg font-bold text-slate-900 dark:text-white">Device Distribution</h2>
+                        <button className="text-primary hover:bg-primary/5 dark:hover:bg-primary/20 p-1 rounded-lg transition-colors">
+                            <span className="material-symbols-outlined text-xl">more_horiz</span>
+                        </button>
+                    </div>
+                    <div className="space-y-6">
                         {[
-                            { name: 'Mobile', icon: 'phone_iphone', value: data.deviceStats?.Mobile || 0, opacity: '' },
-                            { name: 'Tablet', icon: 'tablet_mac', value: data.deviceStats?.Tablet || 0, opacity: '/70' },
-                            { name: 'Desktop', icon: 'desktop_windows', value: data.deviceStats?.Desktop || 0, opacity: '/40' },
-                        ].map(device => (
-                            <div key={device.name}>
+                            { name: 'Mobile (iOS)', icon: 'phone_iphone', value: Math.round(data.deviceStats?.Mobile * 0.6) || 0, total: data.deviceStats?.Mobile || 0 }, // Mocking breakdown
+                            { name: 'Mobile (Android)', icon: 'android', value: Math.round(data.deviceStats?.Mobile * 0.4) || 0, total: data.deviceStats?.Mobile || 0 }, // Mocking breakdown
+                            { name: 'Desktop (Web)', icon: 'desktop_windows', value: data.deviceStats?.Desktop || 0, total: data.deviceStats?.Desktop || 0 },
+                        ].map((device, i) => (
+                            <div key={i}>
                                 <div className="flex justify-between text-sm mb-2">
                                     <span className="font-medium text-slate-700 dark:text-slate-300 flex items-center gap-2">
                                         <span className="material-symbols-outlined text-slate-400 dark:text-slate-500 text-base">{device.icon}</span>
@@ -586,27 +592,40 @@ const GlobalAnalytics = () => {
                                     <span className="font-bold text-slate-900 dark:text-white">{device.value}%</span>
                                 </div>
                                 <div className="h-3 w-full bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
-                                    <div className={`h-full bg-primary${device.opacity} rounded-full transition-all duration-1000`}
+                                    <div className={`h-full ${i === 1 ? 'bg-primary/70' : i === 2 ? 'bg-primary/40' : 'bg-primary'} rounded-full`}
                                         style={{ width: `${device.value}%` }}></div>
                                 </div>
                             </div>
                         ))}
                     </div>
+                    <div className="mt-8 pt-6 border-t border-slate-100 dark:border-slate-800">
+                        <div className="flex gap-4">
+                            <div className="flex-1">
+                                <div className="text-xs text-slate-400 uppercase font-semibold mb-1">Dominant OS</div>
+                                <div className="text-lg font-bold text-slate-800 dark:text-white">iOS 17.0</div>
+                            </div>
+                            <div className="flex-1">
+                                <div className="text-xs text-slate-400 uppercase font-semibold mb-1">Avg Screen</div>
+                                <div className="text-lg font-bold text-slate-800 dark:text-white">390x844</div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 {/* Top Locations */}
-                <div className="bg-white dark:bg-surface-dark rounded-2xl shadow-soft p-6 md:p-8 border border-slate-100/50 dark:border-slate-800 flex flex-col h-full">
-                    <h2 className="text-lg font-bold text-slate-900 dark:text-white mb-6">Top Locations</h2>
-                    <div className="space-y-1 flex-1">
+                <div className="bg-white dark:bg-surface-dark rounded-2xl shadow-soft p-6 md:p-8 border border-slate-100/50 dark:border-slate-800">
+                    <div className="flex justify-between items-center mb-6">
+                        <h2 className="text-lg font-bold text-slate-900 dark:text-white">Top Locations</h2>
+                        <button className="text-sm text-primary font-medium hover:underline">View All</button>
+                    </div>
+                    <div className="space-y-4">
                         {data.locationStats && data.locationStats.length > 0 ? (
                             (() => {
-                                const top = data.locationStats.slice(0, 5);
-                                const total = data.totalScans || 1;
-
+                                const top = data.locationStats.slice(0, 4);
                                 return top.map((loc, i) => (
-                                    <div key={i} className="flex items-center justify-between group hover:bg-slate-50 dark:hover:bg-slate-800/50 p-3 rounded-lg transition-colors -mx-2">
+                                    <div key={i} className="flex items-center justify-between group hover:bg-slate-50 dark:hover:bg-slate-800/50 p-2 rounded-lg transition-colors -mx-2">
                                         <div className="flex items-center gap-4">
-                                            <div className="w-10 h-10 rounded-full overflow-hidden bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-2xl border border-slate-100 dark:border-slate-700">
+                                            <div className="w-10 h-10 rounded-full overflow-hidden shadow-sm border border-slate-100 dark:border-slate-700 relative flex items-center justify-center bg-slate-50 dark:bg-slate-800 text-xl">
                                                 {getFlagEmoji(loc.country)}
                                             </div>
                                             <div>
@@ -620,8 +639,8 @@ const GlobalAnalytics = () => {
                                         </div>
                                         <div className="text-right">
                                             <div className="font-bold text-slate-900 dark:text-white text-sm">{loc.count.toLocaleString()}</div>
-                                            <div className="text-xs text-slate-400 dark:text-slate-500 font-medium">
-                                                {Math.round((loc.count / total) * 100)}%
+                                            <div className="text-xs text-emerald-600 font-medium flex items-center justify-end gap-0.5">
+                                                <span className="material-symbols-outlined text-[10px]">arrow_upward</span> 12%
                                             </div>
                                         </div>
                                     </div>
@@ -634,21 +653,20 @@ const GlobalAnalytics = () => {
                             </div>
                         )}
                     </div>
-                    {/* Distribution bar */}
-                    {data.locationStats && data.locationStats.length > 0 && (
-                        <div className="mt-6 pt-4 border-t border-slate-100 dark:border-slate-800">
-                            <div className="h-1.5 w-full bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden flex">
-                                {data.locationStats.slice(0, 4).map((loc, i) => {
-                                    const total = data.totalScans || 1;
-                                    const opacities = ['', '/70', '/40', '/20'];
-                                    return (
-                                        <div key={i} className={`h-full bg-primary${opacities[i]}`}
-                                            style={{ width: `${(loc.count / total) * 100}%` }}></div>
-                                    );
-                                })}
-                            </div>
+                    <div className="mt-6">
+                        <div className="h-1.5 w-full bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden flex">
+                            <div className="h-full bg-primary" style={{ width: '40%' }}></div>
+                            <div className="h-full bg-primary/70" style={{ width: '25%' }}></div>
+                            <div className="h-full bg-primary/40" style={{ width: '20%' }}></div>
+                            <div className="h-full bg-primary/20" style={{ width: '15%' }}></div>
                         </div>
-                    )}
+                        <div className="flex justify-between text-[10px] text-slate-400 mt-2 font-medium uppercase tracking-wide">
+                            <span>America</span>
+                            <span>Europe</span>
+                            <span>Asia</span>
+                            <span>Other</span>
+                        </div>
+                    </div>
                 </div>
             </div>
 
