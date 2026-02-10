@@ -467,7 +467,10 @@ const GlobalAnalytics = () => {
                                 );
                             })}
 
-                            {/* Dots */}
+                        </svg>
+
+                        {/* Dots (In a separate SVG to prevent oval distortion from preserveAspectRatio="none") */}
+                        <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox={`0 0 ${graphWidth} ${chartHeight}`}>
                             {data.scansOverTime.map((d, i) => {
                                 const x = (i / (data.scansOverTime.length - 1 || 1)) * graphWidth;
                                 const y = chartHeight - ((d.count / maxScans) * (chartHeight - 50));
