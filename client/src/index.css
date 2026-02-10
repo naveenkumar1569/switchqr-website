@@ -73,8 +73,8 @@
 }
 
 .sparkline path {
-  stroke-dasharray: 1000;
-  stroke-dashoffset: 1000;
+  stroke-dasharray: 10000;
+  stroke-dashoffset: 10000;
   animation: sparkline-draw 2s ease-out forwards;
 }
 
