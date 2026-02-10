@@ -1203,33 +1203,42 @@ const QRDetails = () => {
 
                 {/* Detailed Breakdown Cards */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {/* Device Types */}
-                    <div className="bg-white dark:bg-[#1e1726] rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm p-5">
-                        <h4 className="font-bold text-slate-900 dark:text-white mb-4">Device Types</h4>
-                        <div className="space-y-3">
-                            {Object.entries(stats.deviceStats).map(([device, percent]) => {
-                                // Backend already returns percentages, use them directly
-                                let color = 'bg-primary';
-                                if (device === 'Desktop') color = 'bg-blue-400';
-                                if (device === 'Tablet') color = 'bg-emerald-400';
-
-                                return (
-                                    <div key={device}>
-                                        <div className="flex items-center justify-between text-sm">
-                                            <div className="flex items-center gap-2">
-                                                <span className="material-symbols-outlined text-slate-400 text-[18px]">
-                                                    {device === 'Mobile' ? 'smartphone' : device === 'Desktop' ? 'computer' : 'tablet_mac'}
-                                                </span>
-                                                <span className="text-slate-600 dark:text-slate-300">{device}</span>
-                                            </div>
-                                            <span className="font-semibold text-slate-900 dark:text-white">{percent}%</span>
+                    <div className="bg-white dark:bg-[#1e1726] rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm p-6 flex flex-col justify-between">
+                        <div>
+                            <h4 className="font-bold text-slate-900 dark:text-white mb-6">Device Distribution</h4>
+                            <div className="space-y-6">
+                                {[
+                                    { name: 'Mobile (iOS)', icon: 'phone_iphone', value: stats.deviceStats?.iOS || 0 },
+                                    { name: 'Mobile (Android)', icon: 'android', value: stats.deviceStats?.Android || 0 },
+                                    { name: 'Desktop (Web)', icon: 'desktop_windows', value: stats.deviceStats?.Desktop || 0 },
+                                ].map((device, i) => (
+                                    <div key={i}>
+                                        <div className="flex justify-between text-sm mb-2">
+                                            <span className="font-medium text-slate-700 dark:text-slate-300 flex items-center gap-2">
+                                                <span className="material-symbols-outlined text-slate-400 dark:text-slate-500 text-base">{device.icon}</span>
+                                                {device.name}
+                                            </span>
+                                            <span className="font-bold text-slate-900 dark:text-white">{device.value}%</span>
                                         </div>
-                                        <div className="w-full bg-slate-100 dark:bg-slate-800 rounded-full h-2 mt-1">
-                                            <div className={`${color} h-2 rounded-full`} style={{ width: `${Math.min(percent, 100)}%` }}></div>
+                                        <div className="h-2 w-full bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
+                                            <div className={`h-full ${i === 1 ? 'bg-primary/70' : i === 2 ? 'bg-primary/40' : 'bg-primary'} rounded-full`}
+                                                style={{ width: `${device.value}%` }}></div>
                                         </div>
                                     </div>
-                                );
-                            })}
+                                ))}
+                            </div>
+                        </div>
+                        <div className="mt-8 pt-6 border-t border-slate-100 dark:border-slate-800">
+                            <div className="flex gap-4">
+                                <div className="flex-1">
+                                    <div className="text-xs text-slate-400 uppercase font-semibold mb-1">Dominant OS</div>
+                                    <div className="text-lg font-bold text-slate-800 dark:text-white">{stats.dominantOS || 'N/A'}</div>
+                                </div>
+                                <div className="flex-1">
+                                    <div className="text-xs text-slate-400 uppercase font-semibold mb-1">Avg Screen</div>
+                                    <div className="text-lg font-bold text-slate-800 dark:text-white">Unknown</div>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
