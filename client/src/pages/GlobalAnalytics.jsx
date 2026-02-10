@@ -407,12 +407,12 @@ const GlobalAnalytics = () => {
                         ))}
                     </div>
 
-                    <div className="flex-1 relative grid-bg rounded-lg border border-slate-50 dark:border-slate-800 group" ref={containerRef}>
+                    <div className="flex-1 relative grid-bg rounded-lg border border-slate-50 dark:border-slate-800 group overflow-hidden" ref={containerRef}>
 
                         {/* Hover Tooltip */}
                         {hoveredPoint !== null && data.scansOverTime[hoveredPoint] && (
                             <div
-                                className="absolute z-20 pointer-events-none transition-all duration-200 ease-out"
+                                className="absolute z-30 pointer-events-none transition-all duration-200 ease-out"
                                 style={{
                                     left: `${(hoveredPoint / (data.scansOverTime.length - 1 || 1)) * 100}%`,
                                     top: '-12px',
@@ -430,13 +430,13 @@ const GlobalAnalytics = () => {
                         {/* Vertical Guide Line */}
                         {hoveredPoint !== null && (
                             <div
-                                className="absolute top-0 bottom-0 w-[1px] bg-primary/30 border-l border-dashed border-primary/50 pointer-events-none transition-all duration-200"
+                                className="absolute top-0 bottom-0 w-[1px] bg-primary/30 border-l border-dashed border-primary/50 pointer-events-none transition-all duration-200 z-10"
                                 style={{ left: `${(hoveredPoint / (data.scansOverTime.length - 1 || 1)) * 100}%` }}
                             />
                         )}
 
-                        {/* Chart SVG */}
-                        <svg className="w-full h-full" viewBox={`0 0 ${graphWidth} ${chartHeight}`}>
+                        {/* Chart SVG — Line and Area ONLY. preserveAspectRatio="none" stretches to fill container. */}
+                        <svg className="absolute inset-0 w-full h-full" viewBox={`0 0 ${graphWidth} ${chartHeight}`} preserveAspectRatio="none">
                             <defs>
                                 <linearGradient id="chartGradient" x1="0" y1="0" x2="0" y2="1">
                                     <stop offset="0%" stopColor="#6b26d9" stopOpacity="0.4" />
@@ -449,36 +449,49 @@ const GlobalAnalytics = () => {
 
                             {/* Area fill */}
                             {data.scansOverTime.length > 1 && (
-                                <path d={`${pathD} V ${chartHeight} H 0 Z`} fill="url(#chartGradient)" vectorEffect="non-scaling-stroke" />
+                                <path d={`${pathD} V ${chartHeight} H 0 Z`} fill="url(#chartGradient)" />
                             )}
 
                             {/* Line */}
                             <path d={pathD} fill="none" stroke="#6b26d9" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"
-                                vectorEffect="non-scaling-stroke" filter="url(#lineShadow)" className="transition-all duration-300" />
-
-                            {/* Interactive hover areas */}
-                            {data.scansOverTime.map((d, i) => {
-                                const x = (i / (data.scansOverTime.length - 1 || 1)) * graphWidth;
-                                const width = graphWidth / (data.scansOverTime.length || 1);
-                                return (
-                                    <rect key={`hover-${i}`} x={x - width / 2} y="0" width={width} height={chartHeight}
-                                        fill="transparent" style={{ cursor: 'pointer' }}
-                                        onMouseEnter={() => setHoveredPoint(i)} onMouseLeave={() => setHoveredPoint(null)} />
-                                );
-                            })}
-
-                            {/* Dots */}
-                            {data.scansOverTime.map((d, i) => {
-                                const x = (i / (data.scansOverTime.length - 1 || 1)) * graphWidth;
-                                const y = chartHeight - ((d.count / maxScans) * (chartHeight - 50));
-                                const isHovered = hoveredPoint === i;
-                                return (
-                                    <circle key={i} cx={x} cy={y} fill="white" r={isHovered ? "5" : "4"} stroke="#6b26d9"
-                                        strokeWidth="2" vectorEffect="non-scaling-stroke"
-                                        className="dark:fill-surface-dark transition-all duration-300" />
-                                );
-                            })}
+                                vectorEffect="non-scaling-stroke" filter="url(#lineShadow)" />
                         </svg>
+
+                        {/* Dots — HTML divs, always perfect circles, percentage-positioned */}
+                        {data.scansOverTime.map((d, i) => {
+                            const leftPct = (i / (data.scansOverTime.length - 1 || 1)) * 100;
+                            const topPct = (1 - (d.count / maxScans) * ((chartHeight - 50) / chartHeight)) * 100;
+                            const isHovered = hoveredPoint === i;
+                            return (
+                                <div
+                                    key={`dot-${i}`}
+                                    className={`absolute rounded-full border-2 border-[#6b26d9] bg-white dark:bg-surface-dark pointer-events-none z-20 transition-all duration-200 ${isHovered ? 'w-[10px] h-[10px] shadow-md' : 'w-[8px] h-[8px]'}`}
+                                    style={{
+                                        left: `${leftPct}%`,
+                                        top: `${topPct}%`,
+                                        transform: 'translate(-50%, -50%)'
+                                    }}
+                                />
+                            );
+                        })}
+
+                        {/* Interactive hover zones — HTML divs, pixel-perfect mouse alignment */}
+                        {data.scansOverTime.map((d, i) => {
+                            const leftPct = (i / (data.scansOverTime.length - 1 || 1)) * 100;
+                            const widthPct = 100 / (data.scansOverTime.length || 1);
+                            return (
+                                <div
+                                    key={`hover-${i}`}
+                                    className="absolute top-0 bottom-0 cursor-pointer z-10"
+                                    style={{
+                                        left: `${leftPct - widthPct / 2}%`,
+                                        width: `${widthPct}%`
+                                    }}
+                                    onMouseEnter={() => setHoveredPoint(i)}
+                                    onMouseLeave={() => setHoveredPoint(null)}
+                                />
+                            );
+                        })}
                     </div>
                 </div>
                 {/* X Axis Labels */}
