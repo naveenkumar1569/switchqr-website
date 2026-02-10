@@ -294,6 +294,27 @@ router.get('/', supabaseAuth, async (req, res) => {
                 hour: parseInt(h),
                 count: hourlyMap[h]
             }));
+
+            // Hourly Heatmap (Day × Hour) - v2 feature
+            const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+            const heatmapData = {};
+
+            // Initialize all days with 24 hours of zeros
+            daysOfWeek.forEach(day => {
+                heatmapData[day] = Array(24).fill(0);
+            });
+
+            if (scans && scans.length > 0) {
+                scans.forEach(s => {
+                    const scanDate = new Date(s.scanned_at);
+                    const dayIndex = scanDate.getDay(); // 0 = Sunday, 6 = Saturday
+                    const hour = scanDate.getHours(); // 0-23
+                    const dayName = daysOfWeek[dayIndex];
+                    heatmapData[dayName][hour]++;
+                });
+            }
+
+            stats.hourlyHeatmap = heatmapData;
         }
 
         res.json(stats);

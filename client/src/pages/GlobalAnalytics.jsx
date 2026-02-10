@@ -22,7 +22,8 @@ const GlobalAnalytics = () => {
         deviceStats: { Mobile: 0, Desktop: 0, Tablet: 0 },
         scansOverTime: [],
         locationStats: [],
-        hourlyStats: []
+        hourlyStats: [],
+        hourlyHeatmap: {}
     });
     const [loading, setLoading] = useState(true);
     const [dateRange, setDateRange] = useState({ type: 'days', value: 30, label: 'Last 30 Days' });
@@ -755,6 +756,112 @@ const GlobalAnalytics = () => {
                             <div className="text-center py-10 flex flex-col items-center gap-3">
                                 <span className="material-symbols-outlined text-text-muted dark:text-gray-600 text-4xl">schedule</span>
                                 <p className="text-text-muted dark:text-gray-500 text-sm font-medium">No hourly data available yet</p>
+                            </div>
+                        )}
+                    </div>
+                </div>
+
+                {/* Peak Scanning Times - Heatmap (Day × Hour) - v2 */}
+                <div className="bg-white dark:bg-surface-dark border border-neutral-border dark:border-border-dark rounded-xl p-6 shadow-sm">
+                    <div className="mb-6">
+                        <h3 className="text-xl font-bold text-text-main dark:text-white mb-1">Peak Scanning Times</h3>
+                        <p className="text-sm text-text-muted dark:text-gray-400">Scan activity by day of week and hour of day</p>
+                    </div>
+                    <div>
+                        {data.hourlyHeatmap && Object.keys(data.hourlyHeatmap).length > 0 ? (
+                            (() => {
+                                const daysOrder = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+                                const hours = Array.from({ length: 24 }, (_, i) => i);
+
+                                // Calculate max value for color scaling
+                                let maxValue = 0;
+                                Object.values(data.hourlyHeatmap).forEach(dayData => {
+                                    dayData.forEach(count => {
+                                        if (count > maxValue) maxValue = count;
+                                    });
+                                });
+
+                                const getColor = (value) => {
+                                    if (value === 0) return 'bg-slate-50 dark:bg-slate-900';
+                                    const intensity = maxValue > 0 ? value / maxValue : 0;
+                                    if (intensity >= 0.8) return 'bg-primary';
+                                    if (intensity >= 0.6) return 'bg-primary/80';
+                                    if (intensity >= 0.4) return 'bg-primary/60';
+                                    if (intensity >= 0.2) return 'bg-primary/40';
+                                    return 'bg-primary/20';
+                                };
+
+                                const formatHour = (hour) => {
+                                    if (hour === 0) return '12 AM';
+                                    if (hour < 12) return `${hour} AM`;
+                                    if (hour === 12) return '12 PM';
+                                    return `${hour - 12} PM`;
+                                };
+
+                                return (
+                                    <div className="overflow-x-auto">
+                                        <div className="min-w-[800px]">
+                                            {/* Hour labels */}
+                                            <div className="flex mb-2">
+                                                <div className="w-16"></div>
+                                                <div className="flex-1 grid grid-cols-24 gap-1">
+                                                    {hours.map(hour => (
+                                                        <div key={hour} className="text-center">
+                                                            <span className="text-[10px] text-text-muted dark:text-gray-400">
+                                                                {hour % 6 === 0 ? formatHour(hour).split(' ')[0] : ''}
+                                                            </span>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            </div>
+
+                                            {/* Heatmap grid */}
+                                            {daysOrder.map(day => (
+                                                <div key={day} className="flex items-center mb-1">
+                                                    <div className="w-16 text-right pr-3">
+                                                        <span className="text-xs font-medium text-text-muted dark:text-gray-400">{day}</span>
+                                                    </div>
+                                                    <div className="flex-1 grid grid-cols-24 gap-1">
+                                                        {hours.map(hour => {
+                                                            const count = data.hourlyHeatmap[day]?.[hour] || 0;
+                                                            return (
+                                                                <div
+                                                                    key={hour}
+                                                                    className={`h-8 rounded ${getColor(count)} transition-all hover:ring-2 hover:ring-primary hover:ring-offset-1 cursor-pointer relative group`}
+                                                                    title={`${day} ${formatHour(hour)}: ${count} scans`}
+                                                                >
+                                                                    {/* Tooltip */}
+                                                                    <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 text-xs rounded opacity-0 group-hover:opacity-100 pointer-events-none whitespace-nowrap z-10 transition-opacity">
+                                                                        {day} {formatHour(hour)}: <strong>{count}</strong>
+                                                                    </div>
+                                                                </div>
+                                                            );
+                                                        })}
+                                                    </div>
+                                                </div>
+                                            ))}
+
+                                            {/* Legend */}
+                                            <div className="flex items-center justify-center gap-2 mt-4 pt-4 border-t border-neutral-border dark:border-border-dark">
+                                                <span className="text-xs text-text-muted dark:text-gray-400">Less</span>
+                                                <div className="flex gap-1">
+                                                    <div className="w-6 h-6 rounded bg-slate-50 dark:bg-slate-900 border border-neutral-border dark:border-border-dark"></div>
+                                                    <div className="w-6 h-6 rounded bg-primary/20"></div>
+                                                    <div className="w-6 h-6 rounded bg-primary/40"></div>
+                                                    <div className="w-6 h-6 rounded bg-primary/60"></div>
+                                                    <div className="w-6 h-6 rounded bg-primary/80"></div>
+                                                    <div className="w-6 h-6 rounded bg-primary"></div>
+                                                </div>
+                                                <span className="text-xs text-text-muted dark:text-gray-400">More</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                );
+                            })()
+                        ) : (
+                            <div className="text-center py-10 flex flex-col items-center gap-3">
+                                <span className="material-symbols-outlined text-text-muted dark:text-gray-600 text-4xl">grid_on</span>
+                                <p className="text-text-muted dark:text-gray-500 text-sm font-medium">No scan activity yet</p>
                             </div>
                         )}
                     </div>
