@@ -1377,6 +1377,9 @@ const QRDetails = () => {
 
                                 <VariantList
                                     variants={variants}
+                                    controlWeight={abControlWeight}
+                                    controlScanCount={controlScanCount}
+                                    mainUrl={qr.destination_url}
                                     onUpdate={handleUpdateVariant}
                                     onDelete={handleDeleteVariant}
                                     onAdd={handleAddVariant}
