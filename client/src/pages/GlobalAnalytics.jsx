@@ -24,7 +24,7 @@ const GlobalAnalytics = () => {
         locationStats: []
     });
     const [loading, setLoading] = useState(true);
-    const [dateRange, setDateRange] = useState({ type: 'days', value: 7, label: 'Last 7 Days' });
+    const [dateRange, setDateRange] = useState({ type: 'days', value: 30, label: 'Last 30 Days' });
     const [showRangeMenu, setShowRangeMenu] = useState(false);
     const [hoveredPoint, setHoveredPoint] = useState(null);
     const [showCustomRange, setShowCustomRange] = useState(false);

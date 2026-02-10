@@ -8,6 +8,7 @@ if (process.env.NODE_ENV !== 'production') {
 const logger = require('./utils/logger');
 
 const app = express();
+app.set('trust proxy', true);
 const PORT = process.env.PORT || 5001;
 
 // Database mode: 'supabase' or 'sqlite' (for legacy/migration)

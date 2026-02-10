@@ -32,17 +32,12 @@ router.get('/', supabaseAuth, async (req, res) => {
             // Custom date range
             startDate = new Date(start);
             endDate = new Date(end);
-        } else if (days) {
-            // Days-based range
-            const numDays = parseInt(days) || 7;
+        } else {
+            // Default to last 30 days (standardized)
+            const numDays = parseInt(days) || 30;
             endDate = new Date();
             startDate = new Date();
             startDate.setDate(startDate.getDate() - (numDays - 1));
-        } else {
-            // Default to last 7 days
-            endDate = new Date();
-            startDate = new Date();
-            startDate.setDate(startDate.getDate() - 6);
         }
 
         // Normalize to start of day for startDate and end of day for endDate
@@ -318,10 +313,17 @@ router.get('/:qr_id', supabaseAuth, async (req, res) => {
             scansOverTime: []
         };
 
+        // Parse date range
+        const numDays = parseInt(days) || 30;
+        const startDate = new Date();
+        startDate.setDate(startDate.getDate() - (numDays - 1));
+        startDate.setHours(0, 0, 0, 0);
+
         const { data: scans, error: scanError } = await req.supabase
             .from('scans')
             .select('*')
             .eq('qr_id', qr_id)
+            .gte('scanned_at', startDate.toISOString())
             .order('scanned_at', { ascending: false });
 
         if (scanError) throw scanError;
@@ -373,8 +375,7 @@ router.get('/:qr_id', supabaseAuth, async (req, res) => {
                 Desktop: Math.round((deviceCounts.Desktop / total) * 100)
             };
 
-            // Scans Over Time (Last 7 days or custom)
-            const numDays = parseInt(days) || 7;
+            // Scans Over Time
             const timeline = {};
             for (let i = numDays - 1; i >= 0; i--) {
                 const d = new Date();
@@ -460,7 +461,7 @@ router.get('/analytics/:qr_id', supabaseAuth, async (req, res) => {
             };
 
             // Scans Over Time (Last 7 days or custom)
-            const numDays = parseInt(days) || 7;
+            const numDays = parseInt(days) || 30;
             const timeline = {};
             for (let i = numDays - 1; i >= 0; i--) {
                 const d = new Date();

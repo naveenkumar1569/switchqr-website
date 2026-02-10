@@ -25,7 +25,7 @@ const QRDetails = () => {
         recentScans: []
     });
     const [loading, setLoading] = useState(true);
-    const [dateRange, setDateRange] = useState(7);
+    const [dateRange, setDateRange] = useState(30);
     const [showRangeMenu, setShowRangeMenu] = useState(false);
 
     // Rename State
