@@ -348,21 +348,32 @@ const QRDetails = () => {
     }
 
     const handleToggleABTesting = async () => {
+        const newValue = !abTestingEnabled;
+
+        // Optimistic Update
+        setAbTestingEnabled(newValue);
+        setQr(prev => ({ ...prev, ab_testing_enabled: newValue }));
+
         try {
-            // Use standard PUT endpoint to update QR
-            const response = await apiPut(`/api/qrs/${id}`, { ab_testing_enabled: !abTestingEnabled }, token);
+            const response = await apiPut(`/api/qrs/${id}`, { ab_testing_enabled: newValue }, token);
 
             if (response.ok) {
                 const data = await response.json();
+                // Synchronize with server response just in case
                 setAbTestingEnabled(data.ab_testing_enabled);
-                // Also update local QR state to reflect change
                 setQr(prev => ({ ...prev, ab_testing_enabled: data.ab_testing_enabled }));
                 showSuccess(data.ab_testing_enabled ? 'A/B Testing Enabled' : 'A/B Testing Disabled');
             } else {
+                // Rollback on failure
+                setAbTestingEnabled(!newValue);
+                setQr(prev => ({ ...prev, ab_testing_enabled: !newValue }));
                 const error = await response.json();
                 showError(error.error || 'Failed to toggle A/B testing');
             }
         } catch (error) {
+            // Rollback on network error
+            setAbTestingEnabled(!newValue);
+            setQr(prev => ({ ...prev, ab_testing_enabled: !newValue }));
             console.error('Error toggling A/B testing:', error);
             showError('Error toggling A/B testing');
         }
@@ -552,25 +563,32 @@ const QRDetails = () => {
     }
 
     const handleToggleScheduling = async () => {
+        const newValue = !schedulingEnabled;
+
+        // Optimistic Update
+        setSchedulingEnabled(newValue);
+        setQr(prev => ({ ...prev, scheduling_enabled: newValue }));
+
         try {
-            // Use standard PUT endpoint
-            const response = await apiPut(`/api/qrs/${id}`, { scheduling_enabled: !schedulingEnabled }, token);
+            const response = await apiPut(`/api/qrs/${id}`, { scheduling_enabled: newValue }, token);
 
             if (response.ok) {
                 const data = await response.json();
+                // Synchronize with server response just in case
                 setSchedulingEnabled(data.scheduling_enabled);
                 setQr(prev => ({ ...prev, scheduling_enabled: data.scheduling_enabled }));
-
-                // If scheduling enabled, logic might auto-disable AB testing if backend enforces it? 
-                // Backend qrs.supabase.js doesn't auto-disable, but they might be mutually exclusive in UI logic?
-                // Backend: scheduling takes priority, but both can be true.
-
                 showSuccess(data.scheduling_enabled ? 'Scheduling Enabled' : 'Scheduling Disabled');
             } else {
+                // Rollback on failure
+                setSchedulingEnabled(!newValue);
+                setQr(prev => ({ ...prev, scheduling_enabled: !newValue }));
                 const error = await response.json();
                 showError(error.error || 'Failed to toggle scheduling');
             }
         } catch (error) {
+            // Rollback on network error
+            setSchedulingEnabled(!newValue);
+            setQr(prev => ({ ...prev, scheduling_enabled: !newValue }));
             console.error('Error toggling scheduling:', error);
             showError('Error toggling scheduling');
         }
