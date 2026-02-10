@@ -168,16 +168,18 @@ router.get('/:id', supabaseAuth, async (req, res) => {
         // 4. Aggregation Logic
         const qrStats = (qrs || []).map(qr => {
             const qrScans = scans.filter(s => s.qr_id === qr.id);
+            const uniqueIps = new Set(qrScans.map(s => s.ip_address));
 
             return {
                 ...qr,
                 scan_count: qrScans.length,
-                unique_scans: qrScans.length, // Fallback as we don't have IP Tracking yet
+                unique_scans: uniqueIps.size,
                 trend: [0, 0, 0, 0, 0, 0, qrScans.length] // Mock 7-day trend
             };
         });
 
         const totalScans = scans.length;
+        const totalUniques = new Set(scans.map(s => s.ip_address)).size;
         const deviceStats = { Mobile: 0, Desktop: 0, Tablet: 0 };
         scans.forEach(s => {
             const type = (s.device_type || 'Desktop').toLowerCase();
@@ -214,7 +216,7 @@ router.get('/:id', supabaseAuth, async (req, res) => {
             qrs: qrStats,
             qr_count: qrStats.length,
             total_scans: totalScans,
-            unique_visitors: totalScans, // Fallback
+            unique_visitors: totalUniques,
             device_stats: devicePercents,
             geo_stats: geoStats
         };
