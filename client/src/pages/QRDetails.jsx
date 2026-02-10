@@ -969,7 +969,7 @@ const QRDetails = () => {
                                     <div className="flex items-center gap-2 p-3 bg-slate-50 dark:bg-slate-900/50 rounded-lg border border-slate-200 dark:border-slate-700">
                                         <span className="material-symbols-outlined text-slate-400 text-[18px]">folder</span>
                                         <span className="text-sm text-slate-700 dark:text-slate-300">
-                                            {qr.campaign_name || 'No Campaign'}
+                                            {campaigns.find(c => String(c.id) === String(qr.campaign_id))?.name || qr.campaign_name || 'No Campaign'}
                                         </span>
                                     </div>
                                 </div>
