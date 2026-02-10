@@ -407,7 +407,7 @@ const GlobalAnalytics = () => {
                         ))}
                     </div>
 
-                    <div className="flex-1 relative grid-bg rounded-lg border border-slate-50 dark:border-slate-800 group overflow-hidden" ref={containerRef}>
+                    <div className="flex-1 relative grid-bg rounded-lg border border-slate-50 dark:border-slate-800 group" ref={containerRef}>
 
                         {/* Hover Tooltip */}
                         {hoveredPoint !== null && data.scansOverTime[hoveredPoint] && (
