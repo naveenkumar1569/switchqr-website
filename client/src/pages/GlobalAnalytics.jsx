@@ -247,8 +247,8 @@ const GlobalAnalytics = () => {
                     <button
                         onClick={handleExport}
                         className={`flex items-center gap-2 px-4 py-2.5 rounded-lg transition-colors text-sm font-medium group ${planInfo?.features?.csv_export
-                                ? 'bg-primary/5 hover:bg-primary/10 text-primary dark:bg-primary/10 dark:hover:bg-primary/20'
-                                : 'bg-gray-100 dark:bg-gray-800 text-gray-400 cursor-not-allowed'
+                            ? 'bg-primary/5 hover:bg-primary/10 text-primary dark:bg-primary/10 dark:hover:bg-primary/20'
+                            : 'bg-gray-100 dark:bg-gray-800 text-gray-400 cursor-not-allowed'
                             }`}
                         disabled={!planInfo?.features?.csv_export}
                     >
@@ -569,9 +569,9 @@ const GlobalAnalytics = () => {
             {/* Bottom Row */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {/* Device Distribution */}
-                <div className="bg-white dark:bg-surface-dark rounded-2xl shadow-soft p-6 md:p-8 border border-slate-100/50 dark:border-slate-800 flex flex-col justify-between">
+                <div className="bg-white dark:bg-surface-dark rounded-2xl shadow-soft p-6 md:p-8 border border-slate-100/50 dark:border-slate-800 flex flex-col h-full">
                     <h2 className="text-lg font-bold text-slate-900 dark:text-white mb-6">Device Distribution</h2>
-                    <div className="space-y-6">
+                    <div className="flex-1 flex flex-col justify-center space-y-6">
                         {[
                             { name: 'Mobile', icon: 'phone_iphone', value: data.deviceStats?.Mobile || 0, opacity: '' },
                             { name: 'Tablet', icon: 'tablet_mac', value: data.deviceStats?.Tablet || 0, opacity: '/70' },
@@ -595,9 +595,9 @@ const GlobalAnalytics = () => {
                 </div>
 
                 {/* Top Locations */}
-                <div className="bg-white dark:bg-surface-dark rounded-2xl shadow-soft p-6 md:p-8 border border-slate-100/50 dark:border-slate-800">
+                <div className="bg-white dark:bg-surface-dark rounded-2xl shadow-soft p-6 md:p-8 border border-slate-100/50 dark:border-slate-800 flex flex-col h-full">
                     <h2 className="text-lg font-bold text-slate-900 dark:text-white mb-6">Top Locations</h2>
-                    <div className="space-y-1">
+                    <div className="space-y-1 flex-1">
                         {data.locationStats && data.locationStats.length > 0 ? (
                             (() => {
                                 const top = data.locationStats.slice(0, 5);
@@ -647,52 +647,6 @@ const GlobalAnalytics = () => {
                                     );
                                 })}
                             </div>
-                        </div>
-                    )}
-                </div>
-            </div>
-
-            {/* Peak Scanning Hours (v1 - preserved) */}
-            <div className="bg-white dark:bg-surface-dark rounded-2xl shadow-soft p-6 md:p-8 border border-slate-100/50 dark:border-slate-800">
-                <div className="mb-6">
-                    <h2 className="text-lg font-bold text-slate-900 dark:text-white">Peak Scanning Hours</h2>
-                    <p className="text-sm text-slate-500 dark:text-slate-400">Hourly distribution of scans throughout the day</p>
-                </div>
-                <div className="space-y-2">
-                    {data.hourlyStats && data.hourlyStats.length > 0 ? (
-                        (() => {
-                            const maxCount = Math.max(...data.hourlyStats.map(h => h.count), 1);
-                            const peakHour = data.hourlyStats.reduce((max, h) => h.count > max.count ? h : max, { hour: 0, count: 0 });
-
-                            return data.hourlyStats.map(({ hour, count }) => {
-                                const isPeak = hour === peakHour.hour && count > 0;
-                                const percentage = maxCount > 0 ? (count / maxCount) * 100 : 0;
-                                const hourLabel = formatHour(hour);
-
-                                return (
-                                    <div key={hour} className="flex items-center gap-3">
-                                        <div className="w-16 text-right">
-                                            <span className="text-xs font-medium text-slate-400 dark:text-slate-500">{hourLabel}</span>
-                                        </div>
-                                        <div className="flex-1 h-8 bg-slate-100 dark:bg-slate-800 rounded-md overflow-hidden relative">
-                                            <div
-                                                className={`h-full transition-all duration-500 ${isPeak ? 'bg-primary shadow-glow' : 'bg-primary/60'}`}
-                                                style={{ width: `${percentage}%` }}
-                                            ></div>
-                                        </div>
-                                        <div className="w-12 text-left">
-                                            <span className={`text-sm font-bold ${isPeak ? 'text-primary' : 'text-slate-700 dark:text-slate-300'}`}>
-                                                {count}
-                                            </span>
-                                        </div>
-                                    </div>
-                                );
-                            });
-                        })()
-                    ) : (
-                        <div className="text-center py-10 flex flex-col items-center gap-3">
-                            <span className="material-symbols-outlined text-slate-300 dark:text-slate-600 text-4xl">schedule</span>
-                            <p className="text-slate-400 dark:text-slate-500 text-sm font-medium">No hourly data available yet</p>
                         </div>
                     )}
                 </div>
