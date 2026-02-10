@@ -11,6 +11,10 @@ export default {
                 "primary": "#6b26d9",
                 "primary-hover": "#5e1eb3",
                 "primary-dark": "#5b1da8",
+                "primary-50": "#f3e8ff",
+                "primary-100": "#e9d5ff",
+                "primary-200": "#d8b4fe",
+                "primary-600": "#7e22ce",
                 "secondary": "#8b5cf6",
                 "success": "#10b981",
                 "error": "#ef4444",
@@ -35,6 +39,10 @@ export default {
                 "xl": "0.75rem",
                 "2xl": "1rem",
                 "full": "9999px"
+            },
+            boxShadow: {
+                'soft': '0 4px 20px -2px rgba(0, 0, 0, 0.05)',
+                'glow': '0 4px 20px -2px rgba(107, 38, 217, 0.25)',
             }
         },
     },

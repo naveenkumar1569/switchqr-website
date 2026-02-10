@@ -33,7 +33,6 @@ const GlobalAnalytics = () => {
     const [customStartDate, setCustomStartDate] = useState('');
     const [customEndDate, setCustomEndDate] = useState('');
     const [graphWidth, setGraphWidth] = useState(800);
-    const [hoveredSegment, setHoveredSegment] = useState(null);
     const containerRef = useRef(null);
 
     // Measure container width for sharp graph rendering
@@ -43,16 +42,11 @@ const GlobalAnalytics = () => {
                 setGraphWidth(containerRef.current.clientWidth);
             }
         };
-
-        // Initial measurement
         updateWidth();
-
-        // Resize observer for robust updates
         const observer = new ResizeObserver(updateWidth);
         if (containerRef.current) {
             observer.observe(containerRef.current);
         }
-
         return () => observer.disconnect();
     }, []);
 
@@ -64,19 +58,13 @@ const GlobalAnalytics = () => {
             }
             setLoading(false);
         };
-
         loadStats();
     }, [token, dateRange, customStartDate, customEndDate]);
 
     const handleExport = () => {
         if (!data.recentScans.length) return;
-
-        // Headers: Split Date/Time and Location for better accuracy
         const headers = ['Date', 'Time', 'QR Name', 'Browser/Device', 'City', 'Country', 'IP Address'];
-
-        // Rows: Wrap in quotes to handle commas within data (like in timestamps or strings)
         const formatCSVRow = (arr) => arr.map(field => `"${String(field).replace(/"/g, '""')}"`).join(',');
-
         const rows = data.recentScans.map(scan => {
             const dateObj = new Date(scan.timestamp);
             return formatCSVRow([
@@ -89,10 +77,7 @@ const GlobalAnalytics = () => {
                 scan.ip_address
             ]);
         });
-
-        const csvContent = "data:text/csv;charset=utf-8,"
-            + [headers.join(','), ...rows].join("\n");
-
+        const csvContent = "data:text/csv;charset=utf-8," + [headers.join(','), ...rows].join("\n");
         const encodedUri = encodeURI(csvContent);
         const link = document.createElement("a");
         link.setAttribute("href", encodedUri);
@@ -102,9 +87,9 @@ const GlobalAnalytics = () => {
         document.body.removeChild(link);
     };
 
+    // Loading Skeleton
     if (loading) return (
-        <div className="max-w-[1200px] w-full mx-auto flex flex-col gap-8">
-            {/* Header Skeleton */}
+        <div className="max-w-7xl w-full mx-auto space-y-8">
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
                 <div className="flex flex-col gap-2">
                     <div className="h-10 w-40 bg-slate-200 dark:bg-slate-700 rounded animate-pulse"></div>
@@ -115,64 +100,44 @@ const GlobalAnalytics = () => {
                     <div className="h-10 w-24 bg-slate-200 dark:bg-slate-700 rounded-lg animate-pulse"></div>
                 </div>
             </div>
-
-            {/* Stats Cards Skeleton */}
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 {[1, 2, 3, 4].map(i => (
-                    <div key={i} className="flex flex-col gap-2 rounded-xl p-5 bg-white dark:bg-surface-dark border border-neutral-border dark:border-border-dark shadow-sm animate-pulse">
-                        <div className="flex justify-between items-start">
-                            <div className="h-4 w-24 bg-slate-200 dark:bg-slate-700 rounded"></div>
-                            <div className="h-5 w-5 bg-slate-200 dark:bg-slate-700 rounded"></div>
-                        </div>
-                        <div className="h-8 w-20 bg-slate-200 dark:bg-slate-700 rounded mt-1"></div>
+                    <div key={i} className="bg-white dark:bg-surface-dark rounded-xl p-6 shadow-soft border border-slate-100/50 dark:border-slate-800 animate-pulse">
+                        <div className="h-10 w-10 bg-slate-200 dark:bg-slate-700 rounded-lg mb-4"></div>
+                        <div className="h-4 w-24 bg-slate-200 dark:bg-slate-700 rounded mb-2"></div>
+                        <div className="h-8 w-20 bg-slate-200 dark:bg-slate-700 rounded"></div>
                     </div>
                 ))}
             </div>
-
-            {/* Chart Skeleton */}
-            <div className="flex flex-col rounded-xl bg-white dark:bg-surface-dark border border-neutral-border dark:border-border-dark shadow-sm p-6">
-                <div className="flex justify-between items-center mb-6">
-                    <div>
-                        <div className="h-6 w-40 bg-slate-200 dark:bg-slate-700 rounded animate-pulse mb-2"></div>
-                        <div className="h-4 w-64 bg-slate-200 dark:bg-slate-700 rounded animate-pulse"></div>
-                    </div>
-                </div>
-                <div className="w-full h-[200px] bg-slate-200 dark:bg-slate-700 rounded animate-pulse"></div>
+            <div className="bg-white dark:bg-surface-dark rounded-2xl shadow-soft p-8 border border-slate-100/50 dark:border-slate-800 animate-pulse">
+                <div className="h-6 w-40 bg-slate-200 dark:bg-slate-700 rounded mb-2"></div>
+                <div className="h-4 w-64 bg-slate-200 dark:bg-slate-700 rounded mb-8"></div>
+                <div className="w-full h-[300px] bg-slate-100 dark:bg-slate-800 rounded"></div>
             </div>
-
-            {/* Bottom Section Skeleton */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                {/* Device Stats Skeleton */}
-                <div className="rounded-xl bg-white dark:bg-surface-dark border border-neutral-border dark:border-border-dark shadow-sm p-6 animate-pulse">
-                    <div className="h-5 w-32 bg-slate-200 dark:bg-slate-700 rounded mb-4"></div>
-                    <div className="h-32 w-32 mx-auto bg-slate-200 dark:bg-slate-700 rounded-full"></div>
-                </div>
-
-                {/* Location Stats Skeleton */}
-                <div className="lg:col-span-2 rounded-xl bg-white dark:bg-surface-dark border border-neutral-border dark:border-border-dark shadow-sm p-6 animate-pulse">
-                    <div className="h-5 w-40 bg-slate-200 dark:bg-slate-700 rounded mb-4"></div>
-                    <div className="space-y-3">
-                        {[1, 2, 3, 4].map(i => (
-                            <div key={i} className="flex items-center gap-3">
-                                <div className="h-6 w-6 bg-slate-200 dark:bg-slate-700 rounded"></div>
-                                <div className="h-4 flex-1 bg-slate-200 dark:bg-slate-700 rounded"></div>
-                                <div className="h-4 w-12 bg-slate-200 dark:bg-slate-700 rounded"></div>
-                            </div>
-                        ))}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                {[1, 2].map(i => (
+                    <div key={i} className="bg-white dark:bg-surface-dark rounded-2xl shadow-soft p-8 border border-slate-100/50 dark:border-slate-800 animate-pulse">
+                        <div className="h-6 w-40 bg-slate-200 dark:bg-slate-700 rounded mb-6"></div>
+                        <div className="space-y-4">
+                            {[1, 2, 3].map(j => (
+                                <div key={j} className="h-12 bg-slate-100 dark:bg-slate-800 rounded"></div>
+                            ))}
+                        </div>
                     </div>
-                </div>
+                ))}
             </div>
         </div>
     );
 
+    // Chart calculations
     const maxScans = Math.max(...data.scansOverTime.map(d => d.count), 10);
+    const chartHeight = 300;
     const points = data.scansOverTime.map((d, i) => {
         const x = (i / (data.scansOverTime.length - 1 || 1)) * graphWidth;
-        const y = 200 - ((d.count / maxScans) * 150);
+        const y = chartHeight - ((d.count / maxScans) * (chartHeight - 50));
         return { x, y };
     });
 
-    // Generate smooth cubic bezier path
     const pathD = points.length > 1
         ? points.reduce((acc, point, i, arr) => {
             if (i === 0) return `M ${point.x} ${point.y}`;
@@ -181,138 +146,152 @@ const GlobalAnalytics = () => {
             const cp2x = prev.x + (point.x - prev.x) / 2;
             return `${acc} C ${cp1x} ${prev.y}, ${cp2x} ${point.y}, ${point.x} ${point.y}`;
         }, "")
-        : `M 0 200 L ${graphWidth} 200`; // Flat line if no data
+        : `M 0 ${chartHeight} L ${graphWidth} ${chartHeight}`;
+
+    // Unique Visitor %
+    const visitorPercent = data.totalScans > 0 ? Math.round((data.uniqueScans / data.totalScans) * 100) : 0;
+
+    // Y-axis labels for chart
+    const yAxisLabels = [0, 1, 2, 3, 4].map(i => Math.round(maxScans * (1 - i / 4)));
+
+    // Format hour helper
+    const formatHour = (hour) => {
+        if (hour === 0) return '12 AM';
+        if (hour < 12) return `${hour} AM`;
+        if (hour === 12) return '12 PM';
+        return `${hour - 12} PM`;
+    };
+
+    // Heatmap helpers
+    const daysOrder = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+    const hours = Array.from({ length: 24 }, (_, i) => i);
+    let heatmapMax = 0;
+    if (data.hourlyHeatmap) {
+        Object.values(data.hourlyHeatmap).forEach(dayData => {
+            if (Array.isArray(dayData)) {
+                dayData.forEach(count => { if (count > heatmapMax) heatmapMax = count; });
+            }
+        });
+    }
+
+    const getHeatmapOpacity = (value) => {
+        if (!value || heatmapMax === 0) return 'bg-primary/5';
+        const intensity = value / heatmapMax;
+        if (intensity >= 0.9) return 'bg-primary shadow-glow';
+        if (intensity >= 0.8) return 'bg-primary/90';
+        if (intensity >= 0.7) return 'bg-primary/80';
+        if (intensity >= 0.6) return 'bg-primary/70';
+        if (intensity >= 0.5) return 'bg-primary/60';
+        if (intensity >= 0.4) return 'bg-primary/50';
+        if (intensity >= 0.3) return 'bg-primary/40';
+        if (intensity >= 0.2) return 'bg-primary/30';
+        if (intensity >= 0.1) return 'bg-primary/20';
+        return 'bg-primary/10';
+    };
 
     return (
-        <div className="max-w-[1200px] w-full mx-auto flex flex-col gap-8">
-            {/* Page Header */}
-            <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
-                <div className="flex flex-col gap-2">
-                    <h2 className="text-text-dark dark:text-white text-3xl md:text-4xl font-black tracking-tight">Analytics</h2>
-                    <p className="text-text-subtle dark:text-gray-400 text-base">Track your QR code performance across all campaigns.</p>
+        <div className="max-w-7xl w-full mx-auto space-y-8">
+            {/* Header Section */}
+            <header className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+                <div>
+                    <h1 className="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white tracking-tight">Analytics</h1>
+                    <p className="text-slate-500 dark:text-slate-400 mt-1 text-sm md:text-base">Track your QR performance and audience engagement across all campaigns.</p>
                 </div>
                 <div className="flex items-center gap-3">
                     {/* Date Range Picker */}
-                    <div className="relative">
+                    <div className="relative group">
                         <button
-                            className="flex items-center gap-2 h-10 px-4 bg-white dark:bg-surface-dark border border-border-light dark:border-border-dark rounded-lg text-text-dark dark:text-white text-sm font-medium hover:bg-gray-50 dark:hover:bg-slate-800 transition-colors"
+                            className="flex items-center gap-2 bg-white dark:bg-surface-dark border border-slate-200 dark:border-slate-700 hover:border-primary/50 hover:text-primary transition-colors px-4 py-2.5 rounded-lg shadow-sm text-sm font-medium text-slate-600 dark:text-slate-300"
                             onClick={() => setShowRangeMenu(!showRangeMenu)}
                         >
-                            <span className="material-symbols-outlined text-[20px]">calendar_today</span>
+                            <span className="material-symbols-outlined text-lg text-slate-400 group-hover:text-primary">calendar_today</span>
                             <span>{dateRange.label}</span>
-                            <span className="material-symbols-outlined text-[20px]">expand_more</span>
+                            <span className="material-symbols-outlined text-lg text-slate-400">expand_more</span>
                         </button>
                         {showRangeMenu && (
-                            <div className="absolute top-full mt-2 right-0 w-48 bg-white dark:bg-surface-dark border border-border-light dark:border-border-dark rounded-lg shadow-lg z-10 py-1">
-                                <button
-                                    onClick={() => { setDateRange({ type: 'days', value: 7, label: 'Last 7 Days' }); setShowRangeMenu(false); }}
-                                    className="block w-full text-left px-4 py-2 text-sm text-text-dark dark:text-white hover:bg-gray-50 dark:hover:bg-slate-800"
-                                >
-                                    Last 7 Days
-                                </button>
-                                <button
-                                    onClick={() => { setDateRange({ type: 'days', value: 30, label: 'Last 30 Days' }); setShowRangeMenu(false); }}
-                                    className="block w-full text-left px-4 py-2 text-sm text-text-dark dark:text-white hover:bg-gray-50 dark:hover:bg-slate-800"
-                                >
-                                    Last 30 Days
-                                </button>
-                                <div className="border-t border-border-light dark:border-border-dark my-1"></div>
-                                <button
-                                    onClick={() => { setDateRange({ type: 'current_month', label: 'Current Month' }); setShowRangeMenu(false); }}
-                                    className="block w-full text-left px-4 py-2 text-sm text-text-dark dark:text-white hover:bg-gray-50 dark:hover:bg-slate-800"
-                                >
-                                    Current Month
-                                </button>
-                                <button
-                                    onClick={() => { setDateRange({ type: 'last_month', label: 'Last Month' }); setShowRangeMenu(false); }}
-                                    className="block w-full text-left px-4 py-2 text-sm text-text-dark dark:text-white hover:bg-gray-50 dark:hover:bg-slate-800"
-                                >
-                                    Last Month
-                                </button>
-                                <div className="border-t border-border-light dark:border-border-dark my-1"></div>
-                                <button
-                                    onClick={() => { setDateRange({ type: 'this_year', label: 'This Year' }); setShowRangeMenu(false); }}
-                                    className="block w-full text-left px-4 py-2 text-sm text-text-dark dark:text-white hover:bg-gray-50 dark:hover:bg-slate-800"
-                                >
-                                    This Year
-                                </button>
-                                <button
-                                    onClick={() => { setDateRange({ type: 'last_year', label: 'Last Year' }); setShowRangeMenu(false); }}
-                                    className="block w-full text-left px-4 py-2 text-sm text-text-dark dark:text-white hover:bg-gray-50 dark:hover:bg-slate-800"
-                                >
-                                    Last Year
-                                </button>
-                                <div className="border-t border-border-light dark:border-border-dark my-1"></div>
-                                <button
-                                    onClick={() => { setShowCustomRange(true); setShowRangeMenu(false); }}
-                                    className="block w-full text-left px-4 py-2 text-sm text-text-dark dark:text-white hover:bg-gray-50 dark:hover:bg-slate-800"
-                                >
-                                    Custom Range...
-                                </button>
+                            <div className="absolute top-full mt-2 right-0 w-48 bg-white dark:bg-surface-dark border border-slate-200 dark:border-slate-700 rounded-lg shadow-lg z-20 py-1">
+                                {[
+                                    { type: 'days', value: 7, label: 'Last 7 Days' },
+                                    { type: 'days', value: 30, label: 'Last 30 Days' },
+                                ].map(opt => (
+                                    <button key={opt.label} onClick={() => { setDateRange(opt); setShowRangeMenu(false); }}
+                                        className="block w-full text-left px-4 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800"
+                                    >{opt.label}</button>
+                                ))}
+                                <div className="border-t border-slate-100 dark:border-slate-700 my-1"></div>
+                                {[
+                                    { type: 'current_month', label: 'Current Month' },
+                                    { type: 'last_month', label: 'Last Month' },
+                                ].map(opt => (
+                                    <button key={opt.label} onClick={() => { setDateRange(opt); setShowRangeMenu(false); }}
+                                        className="block w-full text-left px-4 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800"
+                                    >{opt.label}</button>
+                                ))}
+                                <div className="border-t border-slate-100 dark:border-slate-700 my-1"></div>
+                                {[
+                                    { type: 'this_year', label: 'This Year' },
+                                    { type: 'last_year', label: 'Last Year' },
+                                ].map(opt => (
+                                    <button key={opt.label} onClick={() => { setDateRange(opt); setShowRangeMenu(false); }}
+                                        className="block w-full text-left px-4 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800"
+                                    >{opt.label}</button>
+                                ))}
+                                <div className="border-t border-slate-100 dark:border-slate-700 my-1"></div>
+                                <button onClick={() => { setShowCustomRange(true); setShowRangeMenu(false); }}
+                                    className="block w-full text-left px-4 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800"
+                                >Custom Range...</button>
                             </div>
                         )}
                     </div>
+                    {/* Export */}
                     <button
                         onClick={handleExport}
-                        className={`flex items-center justify-center h-10 px-4 rounded-lg text-sm font-bold transition-colors ${planInfo?.features?.csv_export
-                            ? 'bg-[#ece8f2] dark:bg-primary/20 text-text-dark dark:text-white hover:bg-[#e2ddec] dark:hover:bg-primary/30'
-                            : 'bg-gray-100 dark:bg-gray-800 text-gray-400 cursor-not-allowed'
+                        className={`flex items-center gap-2 px-4 py-2.5 rounded-lg transition-colors text-sm font-medium group ${planInfo?.features?.csv_export
+                                ? 'bg-primary/5 hover:bg-primary/10 text-primary dark:bg-primary/10 dark:hover:bg-primary/20'
+                                : 'bg-gray-100 dark:bg-gray-800 text-gray-400 cursor-not-allowed'
                             }`}
                         disabled={!planInfo?.features?.csv_export}
                     >
-                        <span className="material-symbols-outlined text-[20px] mr-2">download</span>
-                        <span>Export</span>
+                        <span className="material-symbols-outlined text-lg group-hover:translate-y-0.5 transition-transform">download</span>
+                        Export
                     </button>
                 </div>
-            </div>
+            </header>
 
             {/* Custom Range Modal */}
             {showCustomRange && (
                 <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 px-4" onClick={() => setShowCustomRange(false)}>
-                    <div className="bg-white dark:bg-surface-dark rounded-xl p-6 max-w-md w-full border border-border-light dark:border-border-dark shadow-xl" onClick={(e) => e.stopPropagation()}>
+                    <div className="bg-white dark:bg-surface-dark rounded-xl p-6 max-w-md w-full border border-slate-200 dark:border-slate-700 shadow-xl" onClick={(e) => e.stopPropagation()}>
                         <div className="flex justify-between items-center mb-4">
-                            <h3 className="text-lg font-bold text-text-dark dark:text-white">Custom Date Range</h3>
-                            <button onClick={() => setShowCustomRange(false)} className="text-text-subtle hover:text-text-dark dark:hover:text-white">
+                            <h3 className="text-lg font-bold text-slate-900 dark:text-white">Custom Date Range</h3>
+                            <button onClick={() => setShowCustomRange(false)} className="text-slate-400 hover:text-slate-600 dark:hover:text-white">
                                 <span className="material-symbols-outlined">close</span>
                             </button>
                         </div>
                         <div className="space-y-4">
                             <div>
-                                <label className="block text-sm font-medium text-text-dark dark:text-white mb-2">Start Date</label>
-                                <input
-                                    type="date"
-                                    value={customStartDate}
-                                    onChange={(e) => setCustomStartDate(e.target.value)}
-                                    className="w-full px-3 py-2 bg-white dark:bg-slate-800 border border-border-light dark:border-border-dark rounded-lg text-text-dark dark:text-white focus:outline-none focus:ring-2 focus:ring-primary"
-                                />
+                                <label className="block text-sm font-medium text-slate-700 dark:text-white mb-2">Start Date</label>
+                                <input type="date" value={customStartDate} onChange={(e) => setCustomStartDate(e.target.value)}
+                                    className="w-full px-3 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary" />
                             </div>
                             <div>
-                                <label className="block text-sm font-medium text-text-dark dark:text-white mb-2">End Date</label>
-                                <input
-                                    type="date"
-                                    value={customEndDate}
-                                    onChange={(e) => setCustomEndDate(e.target.value)}
-                                    className="w-full px-3 py-2 bg-white dark:bg-slate-800 border border-border-light dark:border-border-dark rounded-lg text-text-dark dark:text-white focus:outline-none focus:ring-2 focus:ring-primary"
-                                />
+                                <label className="block text-sm font-medium text-slate-700 dark:text-white mb-2">End Date</label>
+                                <input type="date" value={customEndDate} onChange={(e) => setCustomEndDate(e.target.value)}
+                                    className="w-full px-3 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary" />
                             </div>
                             <div className="flex gap-3 pt-2">
-                                <button
-                                    onClick={() => setShowCustomRange(false)}
-                                    className="flex-1 px-4 py-2 bg-gray-100 dark:bg-slate-800 text-text-dark dark:text-white rounded-lg hover:bg-gray-200 dark:hover:bg-slate-700 transition-colors"
-                                >
+                                <button onClick={() => setShowCustomRange(false)}
+                                    className="flex-1 px-4 py-2 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-white rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
                                     Cancel
                                 </button>
-                                <button
-                                    onClick={() => {
-                                        if (customStartDate && customEndDate) {
-                                            const label = `${customStartDate} to ${customEndDate}`;
-                                            setDateRange({ type: 'custom', label });
-                                            setShowCustomRange(false);
-                                        }
-                                    }}
+                                <button onClick={() => {
+                                    if (customStartDate && customEndDate) {
+                                        setDateRange({ type: 'custom', label: `${customStartDate} to ${customEndDate}` });
+                                        setShowCustomRange(false);
+                                    }
+                                }}
                                     disabled={!customStartDate || !customEndDate}
-                                    className="flex-1 px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-hover transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                                >
+                                    className="flex-1 px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-hover transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
                                     Apply
                                 </button>
                             </div>
@@ -321,553 +300,429 @@ const GlobalAnalytics = () => {
                 </div>
             )}
 
-            {/* KPI Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {/* KPI Section */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 {/* Total Scans */}
-                <div className="flex flex-col gap-2 rounded-xl p-5 bg-white dark:bg-surface-dark border border-neutral-border dark:border-border-dark shadow-sm">
-                    <div className="flex justify-between items-start">
-                        <p className="text-text-main dark:text-white text-sm font-medium">Total Scans</p>
-                        <span className="material-symbols-outlined text-text-muted dark:text-gray-400 text-[20px]">qr_code_scanner</span>
+                <div className="bg-white dark:bg-surface-dark rounded-xl p-6 shadow-soft hover:shadow-lg transition-shadow border border-slate-100/50 dark:border-slate-800">
+                    <div className="flex justify-between items-start mb-4">
+                        <div className="p-2 bg-primary/10 rounded-lg">
+                            <span className="material-symbols-outlined text-primary text-xl">qr_code_scanner</span>
+                        </div>
                     </div>
-                    <div className="flex items-end gap-2 mt-1">
-                        <p className="text-text-main dark:text-white text-2xl font-bold leading-none">{data.totalScans.toLocaleString()}</p>
-                    </div>
+                    <div className="mb-1 text-slate-500 dark:text-slate-400 text-sm font-medium">Total Scans</div>
+                    <div className="text-3xl font-bold text-slate-900 dark:text-white mb-4">{data.totalScans.toLocaleString()}</div>
+                    <svg className="w-full h-12 sparkline" viewBox="0 0 120 40" fill="none" preserveAspectRatio="none">
+                        <defs>
+                            <linearGradient id="sparkGrad1" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="0%" stopColor="#6b26d9" stopOpacity="0.2" />
+                                <stop offset="100%" stopColor="#6b26d9" stopOpacity="0" />
+                            </linearGradient>
+                        </defs>
+                        {data.scansOverTime.length > 1 && (() => {
+                            const sparkMax = Math.max(...data.scansOverTime.map(d => d.count), 1);
+                            const sparkPoints = data.scansOverTime.map((d, i) => {
+                                const x = (i / (data.scansOverTime.length - 1)) * 120;
+                                const y = 38 - ((d.count / sparkMax) * 36);
+                                return `${x},${y}`;
+                            }).join(' L ');
+                            const lastPoint = data.scansOverTime[data.scansOverTime.length - 1];
+                            return (
+                                <>
+                                    <path d={`M ${sparkPoints}`} stroke="#6b26d9" strokeWidth="2" strokeLinecap="round" vectorEffect="non-scaling-stroke" />
+                                    <path d={`M ${sparkPoints} V 40 H 0 Z`} fill="url(#sparkGrad1)" style={{ opacity: 0.5 }} />
+                                </>
+                            );
+                        })()}
+                    </svg>
                 </div>
-                {/* Unique Scans */}
-                <div className="flex flex-col gap-2 rounded-xl p-5 bg-white dark:bg-surface-dark border border-neutral-border dark:border-border-dark shadow-sm">
-                    <div className="flex justify-between items-start">
-                        <p className="text-text-main dark:text-white text-sm font-medium">Unique Scans</p>
-                        <span className="material-symbols-outlined text-text-muted dark:text-gray-400 text-[20px]">person_outline</span>
+
+                {/* Unique Visitors */}
+                <div className="bg-white dark:bg-surface-dark rounded-xl p-6 shadow-soft hover:shadow-lg transition-shadow border border-slate-100/50 dark:border-slate-800">
+                    <div className="flex justify-between items-start mb-4">
+                        <div className="p-2 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+                            <span className="material-symbols-outlined text-blue-600 dark:text-blue-400 text-xl">person_outline</span>
+                        </div>
                     </div>
-                    <div className="flex items-end gap-2 mt-1">
-                        <p className="text-text-main dark:text-white text-2xl font-bold leading-none">{data.uniqueScans.toLocaleString()}</p>
-                    </div>
+                    <div className="mb-1 text-slate-500 dark:text-slate-400 text-sm font-medium">Unique Visitors</div>
+                    <div className="text-3xl font-bold text-slate-900 dark:text-white mb-4">{data.uniqueScans.toLocaleString()}</div>
+                    <svg className="w-full h-12 sparkline" viewBox="0 0 120 40" fill="none" preserveAspectRatio="none">
+                        {data.scansOverTime.length > 1 && (() => {
+                            const sparkMax = Math.max(...data.scansOverTime.map(d => d.count), 1);
+                            const sparkPoints = data.scansOverTime.map((d, i) => {
+                                const x = (i / (data.scansOverTime.length - 1)) * 120;
+                                const y = 38 - ((d.count / sparkMax) * 36) + (Math.sin(i * 0.5) * 3);
+                                return `${x},${y}`;
+                            }).join(' L ');
+                            return <path d={`M ${sparkPoints}`} stroke="#3b82f6" strokeWidth="2" strokeLinecap="round" vectorEffect="non-scaling-stroke" />;
+                        })()}
+                    </svg>
                 </div>
+
                 {/* Unique Visitor % */}
-                <div className="flex flex-col gap-2 rounded-xl p-5 bg-white dark:bg-surface-dark border border-neutral-border dark:border-border-dark shadow-sm">
-                    <div className="flex justify-between items-start">
-                        <p className="text-text-main dark:text-white text-sm font-medium">Unique Visitor %</p>
-                        <span className="material-symbols-outlined text-text-muted dark:text-gray-400 text-[20px]">trending_up</span>
+                <div className="bg-white dark:bg-surface-dark rounded-xl p-6 shadow-soft hover:shadow-lg transition-shadow border border-slate-100/50 dark:border-slate-800">
+                    <div className="flex justify-between items-start mb-4">
+                        <div className="p-2 bg-amber-50 dark:bg-amber-900/20 rounded-lg">
+                            <span className="material-symbols-outlined text-amber-600 dark:text-amber-400 text-xl">touch_app</span>
+                        </div>
                     </div>
-                    <div className="flex items-end gap-2 mt-1">
-                        <p className="text-text-main dark:text-white text-2xl font-bold leading-none">
-                            {data.totalScans > 0 ? Math.round((data.uniqueScans / data.totalScans) * 100) : 0}%
-                        </p>
+                    <div className="mb-1 text-slate-500 dark:text-slate-400 text-sm font-medium">Unique Visitor %</div>
+                    <div className="text-3xl font-bold text-slate-900 dark:text-white mb-4">{visitorPercent}%</div>
+                    <div className="h-2 w-full bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
+                        <div className="h-full bg-amber-500 rounded-full transition-all duration-1000" style={{ width: `${visitorPercent}%` }}></div>
                     </div>
                 </div>
-                {/* Top QR */}
-                <div className="flex flex-col gap-2 rounded-xl p-5 bg-white dark:bg-surface-dark border border-neutral-border dark:border-border-dark shadow-sm">
-                    <div className="flex justify-between items-start">
-                        <p className="text-text-main dark:text-white text-sm font-medium">Top Performing QR</p>
-                        <span className="material-symbols-outlined text-text-muted dark:text-gray-400 text-[20px]">emoji_events</span>
+
+                {/* Top Performer */}
+                <div className="bg-white dark:bg-surface-dark rounded-xl p-6 shadow-soft hover:shadow-lg transition-shadow border border-slate-100/50 dark:border-slate-800 flex flex-col justify-between">
+                    <div className="flex justify-between items-start mb-4">
+                        <div className="p-2 bg-primary/10 rounded-lg">
+                            <span className="material-symbols-outlined text-primary text-xl">star</span>
+                        </div>
                     </div>
-                    <div className="flex items-end gap-2 mt-1">
-                        <p className="text-text-main dark:text-white text-xl font-bold leading-none truncate">
+                    <div>
+                        <div className="mb-1 text-slate-500 dark:text-slate-400 text-sm font-medium">Top Performer</div>
+                        <div className="text-xl font-bold text-slate-900 dark:text-white truncate">
                             {typeof data.topQr === 'object' ? data.topQr?.name : (data.topQr || 'N/A')}
-                        </p>
+                        </div>
+                    </div>
+                    <div className="h-2 w-full bg-slate-100 dark:bg-slate-800 rounded-full mt-4 overflow-hidden">
+                        <div className="h-full bg-primary w-3/4 rounded-full"></div>
                     </div>
                 </div>
             </div>
 
-            {/* Main Chart Section */}
-            <div className="flex flex-col rounded-xl bg-white dark:bg-surface-dark border border-neutral-border dark:border-border-dark shadow-sm p-6">
-                <div className="flex flex-wrap justify-between items-center gap-4 mb-6">
+            {/* Scans Over Time Chart */}
+            <div className="bg-white dark:bg-surface-dark rounded-2xl shadow-soft p-6 md:p-8 border border-slate-100/50 dark:border-slate-800">
+                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
                     <div>
-                        <h3 className="text-text-main dark:text-white text-lg font-bold">Scans over time</h3>
-                        <p className="text-text-muted dark:text-gray-400 text-sm">Visualizing scan frequency for {dateRange.label.toLowerCase()}.</p>
+                        <h2 className="text-lg font-bold text-slate-900 dark:text-white">Scans Over Time</h2>
+                        <p className="text-sm text-slate-500 dark:text-slate-400">Daily scan volume trends for {dateRange.label.toLowerCase()}</p>
                     </div>
                 </div>
-                <div className="relative w-full h-[250px]" ref={containerRef}>
-                    {/* Vertical Hover Guide Line */}
-                    {hoveredPoint !== null && (
-                        <div
-                            className="absolute top-0 bottom-[50px] w-[1px] bg-[#6D28D9]/20 pointer-events-none transition-all duration-300 ease-out"
-                            style={{ left: `${(hoveredPoint / (data.scansOverTime.length - 1 || 1)) * 100}%` }}
-                        />
-                    )}
+                <div className="relative h-[300px] w-full grid-bg rounded-lg border border-slate-50 dark:border-slate-800 overflow-visible group" ref={containerRef}>
+                    {/* Y Axis Labels */}
+                    <div className="absolute -left-10 top-0 h-full flex flex-col justify-between text-xs text-slate-400 dark:text-slate-500 font-medium py-2">
+                        {yAxisLabels.map((label, i) => (
+                            <span key={i}>{label.toLocaleString()}</span>
+                        ))}
+                    </div>
 
                     {/* Hover Tooltip */}
                     {hoveredPoint !== null && data.scansOverTime[hoveredPoint] && (
                         <div
-                            className="absolute z-20 pointer-events-none transition-all duration-300 ease-out"
+                            className="absolute z-20 pointer-events-none transition-all duration-200 ease-out"
                             style={{
                                 left: `${(hoveredPoint / (data.scansOverTime.length - 1 || 1)) * 100}%`,
-                                top: '10px',
+                                top: '-12px',
                                 transform: 'translateX(-50%)'
                             }}
                         >
-                            <div className="bg-white dark:bg-[#1e1726] border-l-4 border-[#6D28D9] rounded-lg shadow-xl px-4 py-3 flex flex-col min-w-[140px] border border-slate-200/50 dark:border-white/5">
-                                <div className="text-[10px] font-black text-[#6e5393] dark:text-gray-400 uppercase tracking-widest mb-1 leading-none">
-                                    {data.scansOverTime[hoveredPoint].date}
-                                </div>
-                                <div className="flex justify-between items-center text-sm">
-                                    <span className="text-[#140f1a] dark:text-white/80">Scans:</span>
-                                    <span className="font-black text-[#6D28D9]">
-                                        {data.scansOverTime[hoveredPoint].count.toLocaleString()}
-                                    </span>
-                                </div>
+                            <div className="bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-xs py-1.5 px-3 rounded-lg whitespace-nowrap shadow-lg flex flex-col items-center">
+                                <span className="font-bold">{data.scansOverTime[hoveredPoint].count.toLocaleString()} Scans</span>
+                                <span className="text-slate-400 dark:text-slate-500 text-[10px]">{data.scansOverTime[hoveredPoint].date}</span>
+                                <div className="w-2 h-2 bg-slate-900 dark:bg-white rotate-45 absolute -bottom-1"></div>
                             </div>
                         </div>
                     )}
 
-                    <svg className="w-full h-full overflow-visible" viewBox={`0 0 ${graphWidth} 250`} preserveAspectRatio="none" style={{ shapeRendering: 'geometricPrecision' }}>
-                        {/* Grid Lines - Neutral light gray #F1F5F9 */}
-                        {[0, 50, 100, 150, 200].map(y => (
-                            <line key={y} stroke="#F1F5F9" className="dark:stroke-white/5" strokeWidth="1" x1="0" x2={graphWidth} y1={y} y2={y} vectorEffect="non-scaling-stroke" />
-                        ))}
+                    {/* Vertical Guide Line */}
+                    {hoveredPoint !== null && (
+                        <div
+                            className="absolute top-0 bottom-0 w-[1px] bg-primary/30 border-l border-dashed border-primary/50 pointer-events-none transition-all duration-200"
+                            style={{ left: `${(hoveredPoint / (data.scansOverTime.length - 1 || 1)) * 100}%` }}
+                        />
+                    )}
 
+                    {/* Chart SVG */}
+                    <svg className="w-full h-full" viewBox={`0 0 ${graphWidth} ${chartHeight}`} preserveAspectRatio="none">
                         <defs>
-                            <linearGradient id="chartGradient" x1="0" x2="0" y1="0" y2="1">
-                                <stop offset="0%" stopColor="#6D28D9" stopOpacity="0.1" />
-                                <stop offset="100%" stopColor="#6D28D9" stopOpacity="0" />
+                            <linearGradient id="chartGradient" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="0%" stopColor="#6b26d9" stopOpacity="0.4" />
+                                <stop offset="100%" stopColor="#6b26d9" stopOpacity="0" />
                             </linearGradient>
+                            <filter id="lineShadow" x="-20%" y="-20%" width="140%" height="140%">
+                                <feDropShadow dx="0" dy="4" stdDeviation="6" floodColor="#6b26d9" floodOpacity="0.2" />
+                            </filter>
                         </defs>
 
-                        {/* Curved Path Area */}
+                        {/* Area fill */}
                         {data.scansOverTime.length > 1 && (
-                            <path
-                                d={`${pathD} V 250 H 0 Z`}
-                                fill="url(#chartGradient)"
-                                vectorEffect="non-scaling-stroke"
-                            />
+                            <path d={`${pathD} V ${chartHeight} H 0 Z`} fill="url(#chartGradient)" vectorEffect="non-scaling-stroke" />
                         )}
 
-                        {/* Curved Line Path - 2px Solid #6D28D9 */}
-                        <path
-                            d={pathD}
-                            fill="none"
-                            stroke="#6D28D9"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="2"
-                            vectorEffect="non-scaling-stroke"
-                            className="transition-all duration-300"
-                        />
+                        {/* Line */}
+                        <path d={pathD} fill="none" stroke="#6b26d9" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"
+                            vectorEffect="non-scaling-stroke" filter="url(#lineShadow)" className="transition-all duration-300" />
 
-                        {/* Invisible hover areas */}
+                        {/* Interactive hover areas */}
                         {data.scansOverTime.map((d, i) => {
                             const x = (i / (data.scansOverTime.length - 1 || 1)) * graphWidth;
                             const width = graphWidth / (data.scansOverTime.length || 1);
                             return (
-                                <rect
-                                    key={`hover-${i}`}
-                                    x={x - width / 2}
-                                    y="0"
-                                    width={width}
-                                    height="200"
-                                    fill="transparent"
-                                    style={{ cursor: 'pointer' }}
-                                    onMouseEnter={() => setHoveredPoint(i)}
-                                    onMouseLeave={() => setHoveredPoint(null)}
-                                />
+                                <rect key={`hover-${i}`} x={x - width / 2} y="0" width={width} height={chartHeight}
+                                    fill="transparent" style={{ cursor: 'pointer' }}
+                                    onMouseEnter={() => setHoveredPoint(i)} onMouseLeave={() => setHoveredPoint(null)} />
                             );
                         })}
 
-                        {/* Dots for Data Points - 4px radius, 2px stroke */}
+                        {/* Dots */}
                         {data.scansOverTime.map((d, i) => {
                             const x = (i / (data.scansOverTime.length - 1 || 1)) * graphWidth;
-                            const y = 200 - ((d.count / maxScans) * 150);
+                            const y = chartHeight - ((d.count / maxScans) * (chartHeight - 50));
                             const isHovered = hoveredPoint === i;
                             return (
-                                <circle
-                                    key={i}
-                                    cx={x}
-                                    cy={y}
-                                    fill="white"
-                                    r={isHovered ? "5" : "4"}
-                                    stroke="#6D28D9"
-                                    strokeWidth="2"
-                                    vectorEffect="non-scaling-stroke"
-                                    className="dark:fill-[#181220] transition-all duration-300"
-                                />
-                            );
-                        })}
-
-                        {/* X-Axis Labels */}
-                        {data.scansOverTime.map((d, i) => {
-                            const totalPoints = data.scansOverTime.length;
-                            const x = (i / (totalPoints - 1 || 1)) * graphWidth;
-
-                            // Determine skip interval based on total points
-                            // Goal: Show max ~8-10 labels
-                            let interval = 1;
-                            if (totalPoints > 14) interval = 2;
-                            if (totalPoints > 21) interval = 3;
-                            if (totalPoints > 30) interval = 5; // For 30 days, show ~6 labels
-                            if (totalPoints > 60) interval = 10;
-
-                            // Always show first and last, otherwise respect interval
-                            const isFirst = i === 0;
-                            const isLast = i === totalPoints - 1;
-                            const shouldShow = isFirst || isLast || (i % interval === 0);
-
-                            if (!shouldShow) return null;
-
-                            // Format date as "5 Feb"
-                            const dateObj = new Date(d.date + 'T00:00:00');
-                            const day = dateObj.getDate();
-                            const month = dateObj.toLocaleDateString('en-US', { month: 'short' });
-                            const label = `${day} ${month}`;
-
-                            const textAnchor = isFirst ? "start" : isLast ? "end" : "middle";
-
-                            return (
-                                <text
-                                    key={`label-${i}`}
-                                    x={x}
-                                    y="235"
-                                    fill="currentColor"
-                                    className="text-[10px] font-medium text-text-muted dark:text-gray-400"
-                                    textAnchor={textAnchor}
-                                >
-                                    {label}
-                                </text>
+                                <circle key={i} cx={x} cy={y} fill="white" r={isHovered ? "5" : "4"} stroke="#6b26d9"
+                                    strokeWidth="2" vectorEffect="non-scaling-stroke"
+                                    className="dark:fill-surface-dark transition-all duration-300" />
                             );
                         })}
                     </svg>
                 </div>
+                {/* X Axis Labels */}
+                <div className="flex justify-between text-xs text-slate-400 dark:text-slate-500 font-medium mt-4 px-2">
+                    {data.scansOverTime.filter((_, i) => {
+                        const total = data.scansOverTime.length;
+                        let interval = 1;
+                        if (total > 14) interval = 2;
+                        if (total > 21) interval = 3;
+                        if (total > 30) interval = 5;
+                        if (total > 60) interval = 10;
+                        return i === 0 || i === total - 1 || i % interval === 0;
+                    }).map((d, i) => {
+                        const dateObj = new Date(d.date + 'T00:00:00');
+                        const day = dateObj.getDate();
+                        const month = dateObj.toLocaleDateString('en-US', { month: 'short' });
+                        return <span key={i}>{day} {month}</span>;
+                    })}
+                </div>
             </div>
 
-            {/* Bottom Row Grid */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-                {/* Device Split Chart */}
-                <div className="flex flex-col rounded-xl bg-white dark:bg-surface-dark border border-neutral-border dark:border-border-dark shadow-sm p-6">
-                    <h3 className="text-text-main dark:text-white text-lg font-bold mb-6">Device Split</h3>
-                    <div className="flex items-center justify-center flex-1 mb-6">
-                        <div className="relative size-44 transition-all duration-300">
-                            <svg className="size-full rotate-[-90deg]" viewBox="-5 -5 46 46">
-                                {/* Background Track */}
-                                <path
-                                    className="text-gray-100 dark:text-gray-800/40"
-                                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    strokeWidth="7"
-                                ></path>
-                                {/* Mobile Segment - #6D28D9 */}
-                                <path
-                                    className="cursor-pointer"
-                                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
-                                    fill="none"
-                                    stroke="#6D28D9"
-                                    strokeDasharray={`${data.deviceStats?.Mobile || 0}, 100`}
-                                    strokeWidth={hoveredSegment === 'mobile' ? 9 : 7}
-                                    strokeLinecap="butt"
-                                    style={{
-                                        opacity: hoveredSegment === 'mobile' || !hoveredSegment ? 1 : 0.4,
-                                        transition: 'all 0.3s ease-out',
-                                        filter: hoveredSegment === 'mobile' ? 'drop-shadow(0 0 4px rgba(109, 40, 217, 0.4))' : 'none'
-                                    }}
-                                    onMouseEnter={() => setHoveredSegment('mobile')}
-                                    onMouseLeave={() => setHoveredSegment(null)}
-                                ></path>
-                                {/* Tablet - #8B5CF6 */}
-                                <path
-                                    className="cursor-pointer"
-                                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
-                                    fill="none"
-                                    stroke="#8B5CF6"
-                                    strokeDasharray={`${data.deviceStats?.Tablet || 0}, 100`}
-                                    strokeDashoffset={`-${data.deviceStats?.Mobile || 0}`}
-                                    strokeWidth={hoveredSegment === 'tablet' ? 9 : 7}
-                                    strokeLinecap="butt"
-                                    style={{
-                                        opacity: hoveredSegment === 'tablet' || !hoveredSegment ? 1 : 0.4,
-                                        transition: 'all 0.3s ease-out',
-                                        filter: hoveredSegment === 'tablet' ? 'drop-shadow(0 0 4px rgba(139, 92, 246, 0.4))' : 'none'
-                                    }}
-                                    onMouseEnter={() => setHoveredSegment('tablet')}
-                                    onMouseLeave={() => setHoveredSegment(null)}
-                                ></path>
-                                {/* Desktop - #C084FC */}
-                                <path
-                                    className="cursor-pointer"
-                                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
-                                    fill="none"
-                                    stroke="#C084FC"
-                                    strokeDasharray={`${data.deviceStats?.Desktop || 0}, 100`}
-                                    strokeDashoffset={`-${(data.deviceStats?.Mobile || 0) + (data.deviceStats?.Tablet || 0)}`}
-                                    strokeWidth={hoveredSegment === 'desktop' ? 9 : 7}
-                                    strokeLinecap="butt"
-                                    style={{
-                                        opacity: hoveredSegment === 'desktop' || !hoveredSegment ? 1 : 0.4,
-                                        transition: 'all 0.3s ease-out',
-                                        filter: hoveredSegment === 'desktop' ? 'drop-shadow(0 0 4px rgba(192, 132, 252, 0.4))' : 'none'
-                                    }}
-                                    onMouseEnter={() => setHoveredSegment('desktop')}
-                                    onMouseLeave={() => setHoveredSegment(null)}
-                                ></path>
-                            </svg>
-                            <div className="absolute inset-0 flex items-center justify-center flex-col pointer-events-none transition-all duration-300 gap-1">
-                                {hoveredSegment ? (
-                                    <>
-                                        <span className="text-[10px] font-bold uppercase tracking-widest text-text-muted dark:text-gray-400">
-                                            {hoveredSegment}
-                                        </span>
-                                        <span className="text-2xl font-black text-[#6D28D9] dark:text-primary-light leading-none">
-                                            {data.deviceStats?.[hoveredSegment.charAt(0).toUpperCase() + hoveredSegment.slice(1)] || 0}%
-                                        </span>
-                                    </>
-                                ) : (
-                                    <>
-                                        <span className="text-3xl font-black text-text-main dark:text-white leading-none">
-                                            {data.totalScans.toLocaleString()}
-                                        </span>
-                                        <span className="text-[10px] font-bold uppercase tracking-[0.15em] text-text-muted dark:text-gray-400 leading-tight">
-                                            Total Scans
-                                        </span>
-                                    </>
-                                )}
+            {/* Peak Scanning Times Heatmap */}
+            <div className="bg-white dark:bg-surface-dark rounded-2xl shadow-soft p-6 md:p-8 border border-slate-100/50 dark:border-slate-800">
+                <div className="mb-6">
+                    <h2 className="text-lg font-bold text-slate-900 dark:text-white">Peak Scanning Times</h2>
+                    <p className="text-sm text-slate-500 dark:text-slate-400">Heatmap of activity by hour and day</p>
+                </div>
+
+                {data.hourlyHeatmap && Object.keys(data.hourlyHeatmap).length > 0 ? (
+                    <div className="overflow-x-auto pb-2">
+                        <div className="min-w-[700px]">
+                            {/* Header Hours */}
+                            <div className="grid gap-1 mb-2" style={{ gridTemplateColumns: '50px repeat(24, 1fr)' }}>
+                                <div></div>
+                                {hours.map(h => (
+                                    h % 3 === 0 ? (
+                                        <div key={h} className="text-[10px] text-slate-400 dark:text-slate-500 text-center col-span-3">
+                                            {formatHour(h).replace(' ', '')}
+                                        </div>
+                                    ) : null
+                                ))}
+                            </div>
+
+                            {/* Days Rows */}
+                            <div className="space-y-1.5">
+                                {daysOrder.map(day => (
+                                    <div key={day} className="grid gap-1 items-center" style={{ gridTemplateColumns: '50px repeat(24, 1fr)' }}>
+                                        <div className="text-xs font-medium text-slate-500 dark:text-slate-400">{day}</div>
+                                        {hours.map(hour => {
+                                            const count = data.hourlyHeatmap[day]?.[hour] || 0;
+                                            return (
+                                                <div
+                                                    key={hour}
+                                                    className={`h-8 rounded ${getHeatmapOpacity(count)} transition-all hover:ring-2 hover:ring-primary hover:ring-offset-1 dark:hover:ring-offset-surface-dark cursor-pointer relative group`}
+                                                    title={`${day} ${formatHour(hour)}: ${count} scans`}
+                                                >
+                                                    {/* Tooltip */}
+                                                    <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2.5 py-1.5 bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-xs rounded-lg opacity-0 group-hover:opacity-100 pointer-events-none whitespace-nowrap z-10 transition-opacity shadow-lg">
+                                                        <span className="font-bold">{count} scans</span>
+                                                        <br />
+                                                        <span className="text-slate-400 dark:text-slate-500 text-[10px]">{day} {formatHour(hour)}</span>
+                                                        <div className="w-2 h-2 bg-slate-900 dark:bg-white rotate-45 absolute -bottom-1 left-1/2 -translate-x-1/2"></div>
+                                                    </div>
+                                                </div>
+                                            );
+                                        })}
+                                    </div>
+                                ))}
                             </div>
                         </div>
+                        {/* Legend */}
+                        <div className="flex justify-end items-center gap-2 mt-4 text-xs text-slate-400 dark:text-slate-500">
+                            <span>Low</span>
+                            <div className="flex gap-1">
+                                <div className="w-3 h-3 rounded bg-primary/10"></div>
+                                <div className="w-3 h-3 rounded bg-primary/40"></div>
+                                <div className="w-3 h-3 rounded bg-primary/70"></div>
+                                <div className="w-3 h-3 rounded bg-primary"></div>
+                            </div>
+                            <span>High</span>
+                        </div>
                     </div>
-                    <div className="flex flex-col gap-3">
+                ) : (
+                    <div className="text-center py-10 flex flex-col items-center gap-3">
+                        <span className="material-symbols-outlined text-slate-300 dark:text-slate-600 text-4xl">grid_on</span>
+                        <p className="text-slate-400 dark:text-slate-500 text-sm font-medium">No scan activity yet</p>
+                    </div>
+                )}
+            </div>
+
+            {/* Bottom Row */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                {/* Device Distribution */}
+                <div className="bg-white dark:bg-surface-dark rounded-2xl shadow-soft p-6 md:p-8 border border-slate-100/50 dark:border-slate-800 flex flex-col justify-between">
+                    <h2 className="text-lg font-bold text-slate-900 dark:text-white mb-6">Device Distribution</h2>
+                    <div className="space-y-6">
                         {[
-                            { name: 'Mobile', color: '#6D28D9' },
-                            { name: 'Tablet', color: '#8B5CF6' },
-                            { name: 'Desktop', color: '#C084FC' }
-                        ].map((device) => (
-                            <div key={device.name} className="flex justify-between items-center text-sm group cursor-pointer" onMouseEnter={() => setHoveredSegment(device.name.toLowerCase())} onMouseLeave={() => setHoveredSegment(null)}>
-                                <div className="flex items-center gap-2">
-                                    <div className="size-3 rounded-full transition-transform group-hover:scale-125" style={{ backgroundColor: device.color }}></div>
-                                    <span className="text-text-main dark:text-white font-medium group-hover:text-[#6D28D9] dark:group-hover:text-primary-light transition-colors">{device.name}</span>
+                            { name: 'Mobile', icon: 'phone_iphone', value: data.deviceStats?.Mobile || 0, opacity: '' },
+                            { name: 'Tablet', icon: 'tablet_mac', value: data.deviceStats?.Tablet || 0, opacity: '/70' },
+                            { name: 'Desktop', icon: 'desktop_windows', value: data.deviceStats?.Desktop || 0, opacity: '/40' },
+                        ].map(device => (
+                            <div key={device.name}>
+                                <div className="flex justify-between text-sm mb-2">
+                                    <span className="font-medium text-slate-700 dark:text-slate-300 flex items-center gap-2">
+                                        <span className="material-symbols-outlined text-slate-400 dark:text-slate-500 text-base">{device.icon}</span>
+                                        {device.name}
+                                    </span>
+                                    <span className="font-bold text-slate-900 dark:text-white">{device.value}%</span>
                                 </div>
-                                <span className="text-text-muted dark:text-gray-400 font-bold">{data.deviceStats?.[device.name] || 0}%</span>
+                                <div className="h-3 w-full bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
+                                    <div className={`h-full bg-primary${device.opacity} rounded-full transition-all duration-1000`}
+                                        style={{ width: `${device.value}%` }}></div>
+                                </div>
                             </div>
                         ))}
                     </div>
                 </div>
 
                 {/* Top Locations */}
-                <div className="flex flex-col rounded-xl bg-white dark:bg-surface-dark border border-neutral-border dark:border-border-dark shadow-sm p-6">
-                    <h3 className="text-text-main dark:text-white text-lg font-bold mb-6">Top Locations</h3>
-                    <div className="flex flex-col gap-5">
+                <div className="bg-white dark:bg-surface-dark rounded-2xl shadow-soft p-6 md:p-8 border border-slate-100/50 dark:border-slate-800">
+                    <h2 className="text-lg font-bold text-slate-900 dark:text-white mb-6">Top Locations</h2>
+                    <div className="space-y-1">
                         {data.locationStats && data.locationStats.length > 0 ? (
                             (() => {
                                 const top = data.locationStats.slice(0, 5);
                                 const total = data.totalScans || 1;
 
                                 return top.map((loc, i) => (
-                                    <div key={i} className="flex flex-col gap-2">
-                                        <div className="flex justify-between items-center text-sm">
-                                            <div className="flex items-center gap-2">
-                                                <span className="text-xl" title={loc.countryName}>{getFlagEmoji(loc.country)}</span>
-                                                <div className="flex flex-col">
-                                                    <span className="text-text-main dark:text-white font-bold leading-none">
-                                                        {loc.countryName}
-                                                    </span>
-                                                    <span className="text-[10px] text-text-muted dark:text-gray-400 font-medium uppercase tracking-wider mt-0.5">
-                                                        {loc.city !== 'Unknown' ? loc.city : 'Various Cities'}
-                                                    </span>
+                                    <div key={i} className="flex items-center justify-between group hover:bg-slate-50 dark:hover:bg-slate-800/50 p-3 rounded-lg transition-colors -mx-2">
+                                        <div className="flex items-center gap-4">
+                                            <div className="w-10 h-10 rounded-full overflow-hidden bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-2xl border border-slate-100 dark:border-slate-700">
+                                                {getFlagEmoji(loc.country)}
+                                            </div>
+                                            <div>
+                                                <div className="font-bold text-slate-900 dark:text-white text-sm">
+                                                    {loc.city !== 'Unknown' ? loc.city : loc.countryName}
+                                                </div>
+                                                <div className="text-xs text-slate-500 dark:text-slate-400">
+                                                    {loc.countryName}
                                                 </div>
                                             </div>
-                                            <div className="flex flex-col items-end">
-                                                <span className="font-black text-[#6D28D9] dark:text-primary-light">
-                                                    {loc.count.toLocaleString()}
-                                                </span>
-                                                <span className="text-[10px] text-text-muted dark:text-gray-400 font-bold uppercase">
-                                                    {Math.round((loc.count / total) * 100)}%
-                                                </span>
-                                            </div>
                                         </div>
-                                        <div className="w-full bg-neutral-border/30 dark:bg-slate-800 rounded-full h-1.5 overflow-hidden">
-                                            <div
-                                                className="bg-[#6D28D9] h-1.5 rounded-full transition-all duration-1000 ease-out"
-                                                style={{ width: `${(loc.count / total) * 100}%` }}
-                                            ></div>
+                                        <div className="text-right">
+                                            <div className="font-bold text-slate-900 dark:text-white text-sm">{loc.count.toLocaleString()}</div>
+                                            <div className="text-xs text-slate-400 dark:text-slate-500 font-medium">
+                                                {Math.round((loc.count / total) * 100)}%
+                                            </div>
                                         </div>
                                     </div>
                                 ));
                             })()
                         ) : (
                             <div className="text-center py-10 flex flex-col items-center gap-3">
-                                <span className="material-symbols-outlined text-text-muted dark:text-gray-600 text-4xl">location_on</span>
-                                <p className="text-text-muted dark:text-gray-500 text-sm font-medium">No scan locations detected yet</p>
+                                <span className="material-symbols-outlined text-slate-300 dark:text-slate-600 text-4xl">location_on</span>
+                                <p className="text-slate-400 dark:text-slate-500 text-sm font-medium">No scan locations detected yet</p>
                             </div>
                         )}
                     </div>
-                </div>
-
-                {/* Upsell Card */}
-                {!planInfo?.features?.advanced_analytics && (
-                    <div className="flex flex-col rounded-xl bg-white dark:bg-surface-dark border border-neutral-border dark:border-border-dark shadow-sm overflow-hidden h-full">
-                        <div className="h-32 w-full bg-gradient-to-br from-primary to-indigo-600 relative">
-                            <div className="absolute inset-0 bg-white/10 backdrop-blur-[1px]"></div>
-                        </div>
-                        <div className="p-6 flex flex-col justify-between flex-1 gap-4">
-                            <div className="flex flex-col gap-2">
-                                <div className="flex items-center gap-2 mb-1">
-                                    <span className="material-symbols-outlined text-primary text-[24px]">lock</span>
-                                    <p className="text-text-main dark:text-white text-lg font-bold leading-tight">Unlock attribution</p>
-                                </div>
-                                <p className="text-text-muted dark:text-gray-400 text-sm leading-relaxed">
-                                    Gain deeper insights with city-level data, OS stats, and browser analytics.
-                                </p>
-                            </div>
-                            <button
-                                onClick={() => window.location.href = '/billing'}
-                                className="w-full cursor-pointer items-center justify-center rounded-lg h-10 px-4 bg-primary text-white text-sm font-bold shadow-md hover:bg-primary/90 transition-all flex gap-2 group"
-                            >
-                                <span>Upgrade Pro</span>
-                                <span className="material-symbols-outlined text-[18px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
-                            </button>
-                        </div>
-                    </div>
-                )}
-
-                {/* Peak Scanning Times */}
-                <div className="bg-white dark:bg-surface-dark border border-neutral-border dark:border-border-dark rounded-xl p-6 shadow-sm">
-                    <div className="mb-6">
-                        <h3 className="text-xl font-bold text-text-main dark:text-white mb-1">Peak Scanning Times</h3>
-                        <p className="text-sm text-text-muted dark:text-gray-400">Hourly distribution of scans throughout the day</p>
-                    </div>
-                    <div className="space-y-2">
-                        {data.hourlyStats && data.hourlyStats.length > 0 ? (
-                            (() => {
-                                const maxCount = Math.max(...data.hourlyStats.map(h => h.count), 1);
-                                const peakHour = data.hourlyStats.reduce((max, h) => h.count > max.count ? h : max, { hour: 0, count: 0 });
-
-                                return data.hourlyStats.map(({ hour, count }) => {
-                                    const isPeak = hour === peakHour.hour && count > 0;
-                                    const percentage = maxCount > 0 ? (count / maxCount) * 100 : 0;
-                                    const hourLabel = hour === 0 ? '12 AM' : hour < 12 ? `${hour} AM` : hour === 12 ? '12 PM' : `${hour - 12} PM`;
-
+                    {/* Distribution bar */}
+                    {data.locationStats && data.locationStats.length > 0 && (
+                        <div className="mt-6 pt-4 border-t border-slate-100 dark:border-slate-800">
+                            <div className="h-1.5 w-full bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden flex">
+                                {data.locationStats.slice(0, 4).map((loc, i) => {
+                                    const total = data.totalScans || 1;
+                                    const opacities = ['', '/70', '/40', '/20'];
                                     return (
-                                        <div key={hour} className="flex items-center gap-3">
-                                            <div className="w-16 text-right">
-                                                <span className="text-xs font-medium text-text-muted dark:text-gray-400">{hourLabel}</span>
-                                            </div>
-                                            <div className="flex-1 h-8 bg-slate-100 dark:bg-slate-800 rounded-md overflow-hidden relative">
-                                                <div
-                                                    className={`h-full transition-all ${isPeak ? 'bg-primary' : 'bg-primary/70'}`}
-                                                    style={{ width: `${percentage}%` }}
-                                                ></div>
-                                            </div>
-                                            <div className="w-12 text-left">
-                                                <span className={`text-sm font-bold ${isPeak ? 'text-primary' : 'text-text-main dark:text-white'}`}>
-                                                    {count}
-                                                </span>
-                                            </div>
-                                        </div>
+                                        <div key={i} className={`h-full bg-primary${opacities[i]}`}
+                                            style={{ width: `${(loc.count / total) * 100}%` }}></div>
                                     );
-                                });
-                            })()
-                        ) : (
-                            <div className="text-center py-10 flex flex-col items-center gap-3">
-                                <span className="material-symbols-outlined text-text-muted dark:text-gray-600 text-4xl">schedule</span>
-                                <p className="text-text-muted dark:text-gray-500 text-sm font-medium">No hourly data available yet</p>
+                                })}
                             </div>
-                        )}
-                    </div>
+                        </div>
+                    )}
                 </div>
+            </div>
 
-                {/* Peak Scanning Times - Heatmap (Day × Hour) - v2 */}
-                <div className="bg-white dark:bg-surface-dark border border-neutral-border dark:border-border-dark rounded-xl p-6 shadow-sm">
-                    <div className="mb-6">
-                        <h3 className="text-xl font-bold text-text-main dark:text-white mb-1">Peak Scanning Times</h3>
-                        <p className="text-sm text-text-muted dark:text-gray-400">Scan activity by day of week and hour of day</p>
-                    </div>
-                    <div>
-                        {data.hourlyHeatmap && Object.keys(data.hourlyHeatmap).length > 0 ? (
-                            (() => {
-                                const daysOrder = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-                                const hours = Array.from({ length: 24 }, (_, i) => i);
+            {/* Peak Scanning Hours (v1 - preserved) */}
+            <div className="bg-white dark:bg-surface-dark rounded-2xl shadow-soft p-6 md:p-8 border border-slate-100/50 dark:border-slate-800">
+                <div className="mb-6">
+                    <h2 className="text-lg font-bold text-slate-900 dark:text-white">Peak Scanning Hours</h2>
+                    <p className="text-sm text-slate-500 dark:text-slate-400">Hourly distribution of scans throughout the day</p>
+                </div>
+                <div className="space-y-2">
+                    {data.hourlyStats && data.hourlyStats.length > 0 ? (
+                        (() => {
+                            const maxCount = Math.max(...data.hourlyStats.map(h => h.count), 1);
+                            const peakHour = data.hourlyStats.reduce((max, h) => h.count > max.count ? h : max, { hour: 0, count: 0 });
 
-                                // Calculate max value for color scaling
-                                let maxValue = 0;
-                                Object.values(data.hourlyHeatmap).forEach(dayData => {
-                                    dayData.forEach(count => {
-                                        if (count > maxValue) maxValue = count;
-                                    });
-                                });
-
-                                const getColor = (value) => {
-                                    if (value === 0) return 'bg-slate-50 dark:bg-slate-900';
-                                    const intensity = maxValue > 0 ? value / maxValue : 0;
-                                    if (intensity >= 0.8) return 'bg-primary';
-                                    if (intensity >= 0.6) return 'bg-primary/80';
-                                    if (intensity >= 0.4) return 'bg-primary/60';
-                                    if (intensity >= 0.2) return 'bg-primary/40';
-                                    return 'bg-primary/20';
-                                };
-
-                                const formatHour = (hour) => {
-                                    if (hour === 0) return '12 AM';
-                                    if (hour < 12) return `${hour} AM`;
-                                    if (hour === 12) return '12 PM';
-                                    return `${hour - 12} PM`;
-                                };
+                            return data.hourlyStats.map(({ hour, count }) => {
+                                const isPeak = hour === peakHour.hour && count > 0;
+                                const percentage = maxCount > 0 ? (count / maxCount) * 100 : 0;
+                                const hourLabel = formatHour(hour);
 
                                 return (
-                                    <div className="overflow-x-auto">
-                                        <div className="min-w-[800px]">
-                                            {/* Hour labels */}
-                                            <div className="flex mb-2">
-                                                <div className="w-16"></div>
-                                                <div className="flex-1 grid grid-cols-24 gap-1">
-                                                    {hours.map(hour => (
-                                                        <div key={hour} className="text-center">
-                                                            <span className="text-[10px] text-text-muted dark:text-gray-400">
-                                                                {hour % 6 === 0 ? formatHour(hour).split(' ')[0] : ''}
-                                                            </span>
-                                                        </div>
-                                                    ))}
-                                                </div>
-                                            </div>
-
-                                            {/* Heatmap grid */}
-                                            {daysOrder.map(day => (
-                                                <div key={day} className="flex items-center mb-1">
-                                                    <div className="w-16 text-right pr-3">
-                                                        <span className="text-xs font-medium text-text-muted dark:text-gray-400">{day}</span>
-                                                    </div>
-                                                    <div className="flex-1 grid grid-cols-24 gap-1">
-                                                        {hours.map(hour => {
-                                                            const count = data.hourlyHeatmap[day]?.[hour] || 0;
-                                                            return (
-                                                                <div
-                                                                    key={hour}
-                                                                    className={`h-8 rounded ${getColor(count)} transition-all hover:ring-2 hover:ring-primary hover:ring-offset-1 cursor-pointer relative group`}
-                                                                    title={`${day} ${formatHour(hour)}: ${count} scans`}
-                                                                >
-                                                                    {/* Tooltip */}
-                                                                    <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 text-xs rounded opacity-0 group-hover:opacity-100 pointer-events-none whitespace-nowrap z-10 transition-opacity">
-                                                                        {day} {formatHour(hour)}: <strong>{count}</strong>
-                                                                    </div>
-                                                                </div>
-                                                            );
-                                                        })}
-                                                    </div>
-                                                </div>
-                                            ))}
-
-                                            {/* Legend */}
-                                            <div className="flex items-center justify-center gap-2 mt-4 pt-4 border-t border-neutral-border dark:border-border-dark">
-                                                <span className="text-xs text-text-muted dark:text-gray-400">Less</span>
-                                                <div className="flex gap-1">
-                                                    <div className="w-6 h-6 rounded bg-slate-50 dark:bg-slate-900 border border-neutral-border dark:border-border-dark"></div>
-                                                    <div className="w-6 h-6 rounded bg-primary/20"></div>
-                                                    <div className="w-6 h-6 rounded bg-primary/40"></div>
-                                                    <div className="w-6 h-6 rounded bg-primary/60"></div>
-                                                    <div className="w-6 h-6 rounded bg-primary/80"></div>
-                                                    <div className="w-6 h-6 rounded bg-primary"></div>
-                                                </div>
-                                                <span className="text-xs text-text-muted dark:text-gray-400">More</span>
-                                            </div>
+                                    <div key={hour} className="flex items-center gap-3">
+                                        <div className="w-16 text-right">
+                                            <span className="text-xs font-medium text-slate-400 dark:text-slate-500">{hourLabel}</span>
+                                        </div>
+                                        <div className="flex-1 h-8 bg-slate-100 dark:bg-slate-800 rounded-md overflow-hidden relative">
+                                            <div
+                                                className={`h-full transition-all duration-500 ${isPeak ? 'bg-primary shadow-glow' : 'bg-primary/60'}`}
+                                                style={{ width: `${percentage}%` }}
+                                            ></div>
+                                        </div>
+                                        <div className="w-12 text-left">
+                                            <span className={`text-sm font-bold ${isPeak ? 'text-primary' : 'text-slate-700 dark:text-slate-300'}`}>
+                                                {count}
+                                            </span>
                                         </div>
                                     </div>
                                 );
-                            })()
-                        ) : (
-                            <div className="text-center py-10 flex flex-col items-center gap-3">
-                                <span className="material-symbols-outlined text-text-muted dark:text-gray-600 text-4xl">grid_on</span>
-                                <p className="text-text-muted dark:text-gray-500 text-sm font-medium">No scan activity yet</p>
-                            </div>
-                        )}
-                    </div>
+                            });
+                        })()
+                    ) : (
+                        <div className="text-center py-10 flex flex-col items-center gap-3">
+                            <span className="material-symbols-outlined text-slate-300 dark:text-slate-600 text-4xl">schedule</span>
+                            <p className="text-slate-400 dark:text-slate-500 text-sm font-medium">No hourly data available yet</p>
+                        </div>
+                    )}
                 </div>
             </div>
-        </div >
+
+            {/* Upsell Card */}
+            {!planInfo?.features?.advanced_analytics && (
+                <div className="bg-white dark:bg-surface-dark rounded-2xl shadow-soft overflow-hidden border border-slate-100/50 dark:border-slate-800">
+                    <div className="h-32 w-full bg-gradient-to-br from-primary to-indigo-600 relative">
+                        <div className="absolute inset-0 bg-white/10 backdrop-blur-[1px]"></div>
+                    </div>
+                    <div className="p-6 md:p-8 flex flex-col gap-4">
+                        <div className="flex items-center gap-2 mb-1">
+                            <span className="material-symbols-outlined text-primary text-[24px]">lock</span>
+                            <p className="text-slate-900 dark:text-white text-lg font-bold leading-tight">Unlock attribution</p>
+                        </div>
+                        <p className="text-slate-500 dark:text-slate-400 text-sm leading-relaxed">
+                            Gain deeper insights with city-level data, OS stats, and browser analytics.
+                        </p>
+                        <button
+                            onClick={() => window.location.href = '/billing'}
+                            className="w-full cursor-pointer items-center justify-center rounded-lg h-10 px-4 bg-primary text-white text-sm font-bold shadow-md hover:bg-primary/90 transition-all flex gap-2 group"
+                        >
+                            <span>Upgrade Pro</span>
+                            <span className="material-symbols-outlined text-[18px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                        </button>
+                    </div>
+                </div>
+            )}
+        </div>
     );
 };
 
