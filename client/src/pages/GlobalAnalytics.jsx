@@ -536,11 +536,11 @@ const GlobalAnalytics = () => {
                                                     title={`${day} ${formatHour(hour)}: ${count} scans`}
                                                 >
                                                     {/* Tooltip */}
-                                                    <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2.5 py-1.5 bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-xs rounded-lg opacity-0 group-hover:opacity-100 pointer-events-none whitespace-nowrap z-10 transition-opacity shadow-lg">
+                                                    <div className={`absolute ${day === 'Mon' ? 'top-full mt-2' : 'bottom-full mb-2'} left-1/2 -translate-x-1/2 px-2.5 py-1.5 bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-xs rounded-lg opacity-0 group-hover:opacity-100 pointer-events-none whitespace-nowrap z-50 transition-opacity shadow-lg`}>
                                                         <span className="font-bold">{count} scans</span>
                                                         <br />
                                                         <span className="text-slate-400 dark:text-slate-500 text-[10px]">{day} {formatHour(hour)}</span>
-                                                        <div className="w-2 h-2 bg-slate-900 dark:bg-white rotate-45 absolute -bottom-1 left-1/2 -translate-x-1/2"></div>
+                                                        <div className={`w-2 h-2 bg-slate-900 dark:bg-white rotate-45 absolute ${day === 'Mon' ? '-top-1' : '-bottom-1'} left-1/2 -translate-x-1/2`}></div>
                                                     </div>
                                                 </div>
                                             );
