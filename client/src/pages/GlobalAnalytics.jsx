@@ -399,84 +399,87 @@ const GlobalAnalytics = () => {
                         <p className="text-sm text-slate-500 dark:text-slate-400">Daily scan volume trends for {dateRange.label.toLowerCase()}</p>
                     </div>
                 </div>
-                <div className="relative h-[300px] w-full grid-bg rounded-lg border border-slate-50 dark:border-slate-800 overflow-visible group" ref={containerRef}>
+                <div className="flex gap-4 h-[300px]">
                     {/* Y Axis Labels */}
-                    <div className="absolute -left-10 top-0 h-full flex flex-col justify-between text-xs text-slate-400 dark:text-slate-500 font-medium py-2">
+                    <div className="w-10 flex flex-col justify-between text-xs text-slate-400 dark:text-slate-500 font-medium py-2 text-right">
                         {yAxisLabels.map((label, i) => (
                             <span key={i}>{label.toLocaleString()}</span>
                         ))}
                     </div>
 
-                    {/* Hover Tooltip */}
-                    {hoveredPoint !== null && data.scansOverTime[hoveredPoint] && (
-                        <div
-                            className="absolute z-20 pointer-events-none transition-all duration-200 ease-out"
-                            style={{
-                                left: `${(hoveredPoint / (data.scansOverTime.length - 1 || 1)) * 100}%`,
-                                top: '-12px',
-                                transform: 'translateX(-50%)'
-                            }}
-                        >
-                            <div className="bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-xs py-1.5 px-3 rounded-lg whitespace-nowrap shadow-lg flex flex-col items-center">
-                                <span className="font-bold">{data.scansOverTime[hoveredPoint].count.toLocaleString()} Scans</span>
-                                <span className="text-slate-400 dark:text-slate-500 text-[10px]">{data.scansOverTime[hoveredPoint].date}</span>
-                                <div className="w-2 h-2 bg-slate-900 dark:bg-white rotate-45 absolute -bottom-1"></div>
+                    <div className="flex-1 relative grid-bg rounded-lg border border-slate-50 dark:border-slate-800 group" ref={containerRef}>
+
+                        {/* Hover Tooltip */}
+                        {hoveredPoint !== null && data.scansOverTime[hoveredPoint] && (
+                            <div
+                                className="absolute z-20 pointer-events-none transition-all duration-200 ease-out"
+                                style={{
+                                    left: `${(hoveredPoint / (data.scansOverTime.length - 1 || 1)) * 100}%`,
+                                    top: '-12px',
+                                    transform: 'translateX(-50%)'
+                                }}
+                            >
+                                <div className="bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-xs py-1.5 px-3 rounded-lg whitespace-nowrap shadow-lg flex flex-col items-center">
+                                    <span className="font-bold">{data.scansOverTime[hoveredPoint].count.toLocaleString()} Scans</span>
+                                    <span className="text-slate-400 dark:text-slate-500 text-[10px]">{data.scansOverTime[hoveredPoint].date}</span>
+                                    <div className="w-2 h-2 bg-slate-900 dark:bg-white rotate-45 absolute -bottom-1"></div>
+                                </div>
                             </div>
-                        </div>
-                    )}
-
-                    {/* Vertical Guide Line */}
-                    {hoveredPoint !== null && (
-                        <div
-                            className="absolute top-0 bottom-0 w-[1px] bg-primary/30 border-l border-dashed border-primary/50 pointer-events-none transition-all duration-200"
-                            style={{ left: `${(hoveredPoint / (data.scansOverTime.length - 1 || 1)) * 100}%` }}
-                        />
-                    )}
-
-                    {/* Chart SVG */}
-                    <svg className="w-full h-full" viewBox={`0 0 ${graphWidth} ${chartHeight}`} preserveAspectRatio="none">
-                        <defs>
-                            <linearGradient id="chartGradient" x1="0" y1="0" x2="0" y2="1">
-                                <stop offset="0%" stopColor="#6b26d9" stopOpacity="0.4" />
-                                <stop offset="100%" stopColor="#6b26d9" stopOpacity="0" />
-                            </linearGradient>
-                            <filter id="lineShadow" x="-20%" y="-20%" width="140%" height="140%">
-                                <feDropShadow dx="0" dy="4" stdDeviation="6" floodColor="#6b26d9" floodOpacity="0.2" />
-                            </filter>
-                        </defs>
-
-                        {/* Area fill */}
-                        {data.scansOverTime.length > 1 && (
-                            <path d={`${pathD} V ${chartHeight} H 0 Z`} fill="url(#chartGradient)" vectorEffect="non-scaling-stroke" />
                         )}
 
-                        {/* Line */}
-                        <path d={pathD} fill="none" stroke="#6b26d9" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"
-                            vectorEffect="non-scaling-stroke" filter="url(#lineShadow)" className="transition-all duration-300" />
+                        {/* Vertical Guide Line */}
+                        {hoveredPoint !== null && (
+                            <div
+                                className="absolute top-0 bottom-0 w-[1px] bg-primary/30 border-l border-dashed border-primary/50 pointer-events-none transition-all duration-200"
+                                style={{ left: `${(hoveredPoint / (data.scansOverTime.length - 1 || 1)) * 100}%` }}
+                            />
+                        )}
 
-                        {/* Interactive hover areas */}
-                        {data.scansOverTime.map((d, i) => {
-                            const x = (i / (data.scansOverTime.length - 1 || 1)) * graphWidth;
-                            const width = graphWidth / (data.scansOverTime.length || 1);
-                            return (
-                                <rect key={`hover-${i}`} x={x - width / 2} y="0" width={width} height={chartHeight}
-                                    fill="transparent" style={{ cursor: 'pointer' }}
-                                    onMouseEnter={() => setHoveredPoint(i)} onMouseLeave={() => setHoveredPoint(null)} />
-                            );
-                        })}
+                        {/* Chart SVG */}
+                        <svg className="w-full h-full" viewBox={`0 0 ${graphWidth} ${chartHeight}`} preserveAspectRatio="none">
+                            <defs>
+                                <linearGradient id="chartGradient" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="0%" stopColor="#6b26d9" stopOpacity="0.4" />
+                                    <stop offset="100%" stopColor="#6b26d9" stopOpacity="0" />
+                                </linearGradient>
+                                <filter id="lineShadow" x="-20%" y="-20%" width="140%" height="140%">
+                                    <feDropShadow dx="0" dy="4" stdDeviation="6" floodColor="#6b26d9" floodOpacity="0.2" />
+                                </filter>
+                            </defs>
 
-                        {/* Dots */}
-                        {data.scansOverTime.map((d, i) => {
-                            const x = (i / (data.scansOverTime.length - 1 || 1)) * graphWidth;
-                            const y = chartHeight - ((d.count / maxScans) * (chartHeight - 50));
-                            const isHovered = hoveredPoint === i;
-                            return (
-                                <circle key={i} cx={x} cy={y} fill="white" r={isHovered ? "5" : "4"} stroke="#6b26d9"
-                                    strokeWidth="2" vectorEffect="non-scaling-stroke"
-                                    className="dark:fill-surface-dark transition-all duration-300" />
-                            );
-                        })}
-                    </svg>
+                            {/* Area fill */}
+                            {data.scansOverTime.length > 1 && (
+                                <path d={`${pathD} V ${chartHeight} H 0 Z`} fill="url(#chartGradient)" vectorEffect="non-scaling-stroke" />
+                            )}
+
+                            {/* Line */}
+                            <path d={pathD} fill="none" stroke="#6b26d9" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"
+                                vectorEffect="non-scaling-stroke" filter="url(#lineShadow)" className="transition-all duration-300" />
+
+                            {/* Interactive hover areas */}
+                            {data.scansOverTime.map((d, i) => {
+                                const x = (i / (data.scansOverTime.length - 1 || 1)) * graphWidth;
+                                const width = graphWidth / (data.scansOverTime.length || 1);
+                                return (
+                                    <rect key={`hover-${i}`} x={x - width / 2} y="0" width={width} height={chartHeight}
+                                        fill="transparent" style={{ cursor: 'pointer' }}
+                                        onMouseEnter={() => setHoveredPoint(i)} onMouseLeave={() => setHoveredPoint(null)} />
+                                );
+                            })}
+
+                            {/* Dots */}
+                            {data.scansOverTime.map((d, i) => {
+                                const x = (i / (data.scansOverTime.length - 1 || 1)) * graphWidth;
+                                const y = chartHeight - ((d.count / maxScans) * (chartHeight - 50));
+                                const isHovered = hoveredPoint === i;
+                                return (
+                                    <circle key={i} cx={x} cy={y} fill="white" r={isHovered ? "5" : "4"} stroke="#6b26d9"
+                                        strokeWidth="2" vectorEffect="non-scaling-stroke"
+                                        className="dark:fill-surface-dark transition-all duration-300" />
+                                );
+                            })}
+                        </svg>
+                    </div>
                 </div>
                 {/* X Axis Labels */}
                 <div className="flex justify-between text-xs text-slate-400 dark:text-slate-500 font-medium mt-4 px-2">
