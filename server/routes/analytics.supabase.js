@@ -275,7 +275,7 @@ router.get('/', supabaseAuth, async (req, res) => {
                     stats.scansOverTime = Object.keys(months).sort().map(monthKey => ({ date: monthKey, count: 0 }));
                 }
 
-                // Hourly Stats (Peak Scanning Times)
+                // Hourly Stats (Peak Scanning Times) - runs for all date ranges
                 const hourlyMap = {};
                 for (let h = 0; h < 24; h++) {
                     hourlyMap[h] = 0;
