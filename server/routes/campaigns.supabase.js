@@ -154,7 +154,7 @@ router.get('/:id', supabaseAuth, async (req, res) => {
 
             let query = req.supabase
                 .from('scans')
-                .select('qr_id, device_type, country, scanned_at, ip_address')
+                .select('qr_id, device_type, os, country, scanned_at, ip_address')
                 .in('qr_id', qrIds);
 
             // Apply date filter
@@ -165,7 +165,7 @@ router.get('/:id', supabaseAuth, async (req, res) => {
             if (!scansError) scans = fetchedScans || [];
         }
 
-        // 4. Aggregation Logic
+        // 4. Aggregation Logic & Device Stats
         const qrStats = (qrs || []).map(qr => {
             const qrScans = scans.filter(s => s.qr_id === qr.id);
             const uniqueIps = new Set(qrScans.map(s => s.ip_address));
@@ -180,24 +180,36 @@ router.get('/:id', supabaseAuth, async (req, res) => {
 
         const totalScans = scans.length;
         const totalUniques = new Set(scans.map(s => s.ip_address)).size;
-        const deviceStats = { Mobile: 0, Desktop: 0, Tablet: 0 };
+
+        const deviceCounts = { Mobile: 0, Desktop: 0, Tablet: 0, iOS: 0, Android: 0 };
+        const osCounts = {};
+
         scans.forEach(s => {
-            const type = (s.device_type || 'Desktop').toLowerCase();
-            if (type.includes('iphone') || type.includes('android') || type.includes('mobile')) {
-                deviceStats.Mobile++;
-            } else if (type.includes('ipad') || type.includes('tablet')) {
-                deviceStats.Tablet++;
-            } else {
-                deviceStats.Desktop++;
+            const type = s.device_type || 'Desktop';
+            const os = (s.os || '').toLowerCase();
+
+            if (type.includes('Mobile') || type.includes('Phone')) {
+                deviceCounts.Mobile++;
+                if (os.includes('ios')) deviceCounts.iOS++;
+                else if (os.includes('android')) deviceCounts.Android++;
+            }
+            else if (type.includes('Tablet') || type.includes('iPad')) deviceCounts.Tablet++;
+            else deviceCounts.Desktop++;
+
+            if (s.os && s.os !== 'null' && s.os !== 'Other 0.0.0') {
+                osCounts[s.os] = (osCounts[s.os] || 0) + 1;
             }
         });
 
-        // Convert device counts to percentages for the frontend
-        const devicePercents = {
-            Mobile: totalScans > 0 ? Math.round(((deviceStats.Mobile || 0) / totalScans) * 100) : 0,
-            Desktop: totalScans > 0 ? Math.round(((deviceStats.Desktop || 0) / totalScans) * 100) : 0,
-            Tablet: totalScans > 0 ? Math.round(((deviceStats.Tablet || 0) / totalScans) * 100) : 0
+        const deviceStats = {
+            Mobile: totalScans > 0 ? Math.round(((deviceCounts.Mobile || 0) / totalScans) * 100) : 0,
+            Desktop: totalScans > 0 ? Math.round(((deviceCounts.Desktop || 0) / totalScans) * 100) : 0,
+            Tablet: totalScans > 0 ? Math.round(((deviceCounts.Tablet || 0) / totalScans) * 100) : 0,
+            iOS: totalScans > 0 ? Math.round(((deviceCounts.iOS || 0) / totalScans) * 100) : 0,
+            Android: totalScans > 0 ? Math.round(((deviceCounts.Android || 0) / totalScans) * 100) : 0
         };
+
+        const dominantOS = Object.keys(osCounts).reduce((a, b) => osCounts[a] > osCounts[b] ? a : b, 'N/A');
 
         const geoStatsMap = scans.reduce((acc, s) => {
             if (s.country) {
@@ -217,7 +229,8 @@ router.get('/:id', supabaseAuth, async (req, res) => {
             qr_count: qrStats.length,
             total_scans: totalScans,
             unique_visitors: totalUniques,
-            device_stats: devicePercents,
+            device_stats: deviceStats,
+            dominantOS: dominantOS,
             geo_stats: geoStats
         };
 

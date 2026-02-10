@@ -183,10 +183,6 @@ const CampaignDetails = () => {
     // Derived helpers
     const maxScanCount = Math.max(...(campaign.qrs?.map(q => q.scan_count) || [0]), 1);
 
-    // Calculate device percentages
-    const mobilePercent = campaign.device_stats?.Mobile || 0;
-    const desktopPercent = campaign.device_stats?.Desktop || 0;
-    const tabletPercent = campaign.device_stats?.Tablet || 0;
 
     // Top 3 countries for hotspots
     const topThreeCountries = (campaign.geo_stats || []).slice(0, 3);
@@ -333,62 +329,44 @@ const CampaignDetails = () => {
                     </div>
                 </div>
 
-                {/* Device Split (SVG Donut) */}
-                <div className="bg-white dark:bg-[#1e1726] border border-slate-100 dark:border-slate-800 p-6 rounded-xl shadow-sm flex flex-col">
-                    <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-1">Device Split</h3>
-                    <p className="text-sm text-slate-500 dark:text-slate-400 mb-8">Traffic source by OS</p>
+                <div className="bg-white dark:bg-[#1e1726] border border-slate-100 dark:border-slate-800 p-6 rounded-xl shadow-sm flex flex-col justify-between">
+                    <div>
+                        <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-1">Device Distribution</h3>
+                        <p className="text-sm text-slate-500 dark:text-slate-400 mb-8">Traffic source by real OS data</p>
 
-                    <div className="relative size-48 mx-auto mb-8">
-                        <svg className="size-full -rotate-90" viewBox="0 0 36 36">
-                            {/* Background */}
-                            <circle className="stroke-slate-100 dark:stroke-slate-800" cx="18" cy="18" fill="none" r="16" strokeWidth="3"></circle>
-                            {/* Mobile (Primary) */}
-                            {mobilePercent > 0 && (
-                                <circle
-                                    className="stroke-primary transition-all duration-1000 ease-out"
-                                    cx="18" cy="18" fill="none" r="16"
-                                    strokeWidth="3"
-                                    strokeDasharray={`${mobilePercent}, 100`}
-                                ></circle>
-                            )}
-                            {/* Android/Other (Cyan) */}
-                            {desktopPercent > 0 && (
-                                <circle
-                                    className="stroke-sky-400 transition-all duration-1000 ease-out"
-                                    cx="18" cy="18" fill="none" r="16"
-                                    strokeWidth="3"
-                                    strokeDasharray={`${desktopPercent}, 100`}
-                                    strokeDashoffset={`-${mobilePercent}`}
-                                ></circle>
-                            )}
-                        </svg>
-                        <div className="absolute inset-0 flex flex-col items-center justify-center">
-                            <span className="text-2xl font-bold text-slate-900 dark:text-white">{mobilePercent}%</span>
-                            <span className="text-[10px] text-slate-400 uppercase font-bold tracking-widest">Mobile</span>
+                        <div className="space-y-6">
+                            {[
+                                { name: 'Mobile (iOS)', icon: 'phone_iphone', value: campaign.device_stats?.iOS || 0 },
+                                { name: 'Mobile (Android)', icon: 'android', value: campaign.device_stats?.Android || 0 },
+                                { name: 'Desktop (Web)', icon: 'desktop_windows', value: campaign.device_stats?.Desktop || 0 },
+                            ].map((device, i) => (
+                                <div key={i}>
+                                    <div className="flex justify-between text-sm mb-2">
+                                        <span className="font-medium text-slate-700 dark:text-slate-300 flex items-center gap-2">
+                                            <span className="material-symbols-outlined text-slate-400 dark:text-slate-500 text-base">{device.icon}</span>
+                                            {device.name}
+                                        </span>
+                                        <span className="font-bold text-slate-900 dark:text-white">{device.value}%</span>
+                                    </div>
+                                    <div className="h-2 w-full bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
+                                        <div className={`h-full ${i === 1 ? 'bg-primary/70' : i === 2 ? 'bg-primary/40' : 'bg-primary'} rounded-full`}
+                                            style={{ width: `${device.value}%` }}></div>
+                                    </div>
+                                </div>
+                            ))}
                         </div>
                     </div>
 
-                    <div className="space-y-3 mt-auto">
-                        <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-2">
-                                <div className="size-3 rounded-full bg-primary"></div>
-                                <span className="text-sm text-slate-700 dark:text-slate-300">Mobile</span>
+                    <div className="mt-8 pt-6 border-t border-slate-100 dark:border-slate-800">
+                        <div className="flex gap-4">
+                            <div className="flex-1">
+                                <div className="text-xs text-slate-400 uppercase font-semibold mb-1">Dominant OS</div>
+                                <div className="text-lg font-bold text-slate-800 dark:text-white">{campaign.dominantOS || 'N/A'}</div>
                             </div>
-                            <span className="text-sm font-bold text-slate-900 dark:text-white">{mobilePercent}%</span>
-                        </div>
-                        <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-2">
-                                <div className="size-3 rounded-full bg-sky-400"></div>
-                                <span className="text-sm text-slate-700 dark:text-slate-300">Desktop</span>
+                            <div className="flex-1">
+                                <div className="text-xs text-slate-400 uppercase font-semibold mb-1">Avg Screen</div>
+                                <div className="text-lg font-bold text-slate-800 dark:text-white">Unknown</div>
                             </div>
-                            <span className="text-sm font-bold text-slate-900 dark:text-white">{desktopPercent}%</span>
-                        </div>
-                        <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-2">
-                                <div className="size-3 rounded-full bg-slate-300"></div>
-                                <span className="text-sm text-slate-700 dark:text-slate-300">Tablet</span>
-                            </div>
-                            <span className="text-sm font-bold text-slate-900 dark:text-white">{tabletPercent}%</span>
                         </div>
                     </div>
                 </div>
