@@ -436,7 +436,7 @@ const GlobalAnalytics = () => {
                         )}
 
                         {/* Chart SVG */}
-                        <svg className="w-full h-full" viewBox={`0 0 ${graphWidth} ${chartHeight}`} preserveAspectRatio="none">
+                        <svg className="w-full h-full" viewBox={`0 0 ${graphWidth} ${chartHeight}`}>
                             <defs>
                                 <linearGradient id="chartGradient" x1="0" y1="0" x2="0" y2="1">
                                     <stop offset="0%" stopColor="#6b26d9" stopOpacity="0.4" />
@@ -467,10 +467,7 @@ const GlobalAnalytics = () => {
                                 );
                             })}
 
-                        </svg>
-
-                        {/* Dots (In a separate SVG to prevent oval distortion from preserveAspectRatio="none") */}
-                        <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox={`0 0 ${graphWidth} ${chartHeight}`}>
+                            {/* Dots */}
                             {data.scansOverTime.map((d, i) => {
                                 const x = (i / (data.scansOverTime.length - 1 || 1)) * graphWidth;
                                 const y = chartHeight - ((d.count / maxScans) * (chartHeight - 50));
@@ -681,30 +678,32 @@ const GlobalAnalytics = () => {
             </div>
 
             {/* Upsell Card */}
-            {!planInfo?.features?.advanced_analytics && (
-                <div className="bg-white dark:bg-surface-dark rounded-2xl shadow-soft overflow-hidden border border-slate-100/50 dark:border-slate-800">
-                    <div className="h-32 w-full bg-gradient-to-br from-primary to-indigo-600 relative">
-                        <div className="absolute inset-0 bg-white/10 backdrop-blur-[1px]"></div>
-                    </div>
-                    <div className="p-6 md:p-8 flex flex-col gap-4">
-                        <div className="flex items-center gap-2 mb-1">
-                            <span className="material-symbols-outlined text-primary text-[24px]">lock</span>
-                            <p className="text-slate-900 dark:text-white text-lg font-bold leading-tight">Unlock attribution</p>
+            {
+                !planInfo?.features?.advanced_analytics && (
+                    <div className="bg-white dark:bg-surface-dark rounded-2xl shadow-soft overflow-hidden border border-slate-100/50 dark:border-slate-800">
+                        <div className="h-32 w-full bg-gradient-to-br from-primary to-indigo-600 relative">
+                            <div className="absolute inset-0 bg-white/10 backdrop-blur-[1px]"></div>
                         </div>
-                        <p className="text-slate-500 dark:text-slate-400 text-sm leading-relaxed">
-                            Gain deeper insights with city-level data, OS stats, and browser analytics.
-                        </p>
-                        <button
-                            onClick={() => window.location.href = '/billing'}
-                            className="w-full cursor-pointer items-center justify-center rounded-lg h-10 px-4 bg-primary text-white text-sm font-bold shadow-md hover:bg-primary/90 transition-all flex gap-2 group"
-                        >
-                            <span>Upgrade Pro</span>
-                            <span className="material-symbols-outlined text-[18px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
-                        </button>
+                        <div className="p-6 md:p-8 flex flex-col gap-4">
+                            <div className="flex items-center gap-2 mb-1">
+                                <span className="material-symbols-outlined text-primary text-[24px]">lock</span>
+                                <p className="text-slate-900 dark:text-white text-lg font-bold leading-tight">Unlock attribution</p>
+                            </div>
+                            <p className="text-slate-500 dark:text-slate-400 text-sm leading-relaxed">
+                                Gain deeper insights with city-level data, OS stats, and browser analytics.
+                            </p>
+                            <button
+                                onClick={() => window.location.href = '/billing'}
+                                className="w-full cursor-pointer items-center justify-center rounded-lg h-10 px-4 bg-primary text-white text-sm font-bold shadow-md hover:bg-primary/90 transition-all flex gap-2 group"
+                            >
+                                <span>Upgrade Pro</span>
+                                <span className="material-symbols-outlined text-[18px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                            </button>
+                        </div>
                     </div>
-                </div>
-            )}
-        </div>
+                )
+            }
+        </div >
     );
 };
 
