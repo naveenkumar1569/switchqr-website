@@ -58,7 +58,7 @@ const VariantCard = ({ variant, onUpdate, onDelete, totalWeight, totalScans, isL
             )}
 
             {isControl && (
-                <div className="absolute -top-3 right-4 px-2 py-1 bg-primary/10 text-primary text-[10px] font-black uppercase tracking-widest rounded border border-primary/20 flex items-center gap-1">
+                <div className="absolute -top-3 left-4 px-2 py-1 bg-primary text-white text-[10px] font-black uppercase tracking-widest rounded shadow-lg shadow-primary/20 flex items-center gap-1">
                     <span className="material-symbols-outlined text-[12px]">star</span>
                     Baseline
                 </div>
@@ -170,7 +170,7 @@ const VariantCard = ({ variant, onUpdate, onDelete, totalWeight, totalScans, isL
                                 </span>
                             </div>
                             {isEnabled && totalScans > 0 && (
-                                <div className="flex items-center gap-1.5 px-2 py-0.5 rounded bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400 text-[10px] font-black tracking-tighter uppercase whitespace-nowrap">
+                                <div className="flex items-center gap-1.5 px-2 py-0.5 rounded bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400 text-[10px] font-bold uppercase whitespace-nowrap">
                                     {scanShare}% Share
                                 </div>
                             )}
