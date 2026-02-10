@@ -341,10 +341,10 @@ const GlobalAnalytics = () => {
                         <p className="text-text-main dark:text-white text-2xl font-bold leading-none">{data.uniqueScans.toLocaleString()}</p>
                     </div>
                 </div>
-                {/* Scan Rate */}
+                {/* Unique Visitor % */}
                 <div className="flex flex-col gap-2 rounded-xl p-5 bg-white dark:bg-surface-dark border border-neutral-border dark:border-border-dark shadow-sm">
                     <div className="flex justify-between items-start">
-                        <p className="text-text-main dark:text-white text-sm font-medium">Scan Rate</p>
+                        <p className="text-text-main dark:text-white text-sm font-medium">Unique Visitor %</p>
                         <span className="material-symbols-outlined text-text-muted dark:text-gray-400 text-[20px]">trending_up</span>
                     </div>
                     <div className="flex items-end gap-2 mt-1">
