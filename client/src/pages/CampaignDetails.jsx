@@ -30,7 +30,12 @@ const COUNTRY_COORDINATES = {
     'AR': { top: '80%', left: '32%' },
     'EG': { top: '38%', left: '55%' },
     'BE': { top: '24%', left: '47%' },
-    'LT': { top: '21%', left: '53%' }
+    'LT': { top: '21%', left: '53%' },
+    'AD': { top: '33%', left: '46%' },
+    'FI': { top: '15%', left: '55%' },
+    'IL': { top: '38%', left: '58%' },
+    'NZ': { top: '85%', left: '92%' },
+    'SE': { top: '18%', left: '52%' }
 };
 
 const CampaignDetails = () => {
@@ -454,10 +459,6 @@ const CampaignDetails = () => {
                 <div className="lg:col-span-2 bg-white dark:bg-[#1e1726] border border-slate-100 dark:border-slate-800 rounded-xl overflow-hidden flex flex-col shadow-sm">
                     <div className="p-6 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between bg-white dark:bg-[#1e1726]">
                         <h3 className="text-xl font-bold text-slate-900 dark:text-white">QR Performance List</h3>
-                        <Link to="/campaigns" className="text-primary text-sm font-bold flex items-center gap-1 hover:underline">
-                            View All Assets
-                            <span className="material-symbols-outlined text-sm">open_in_new</span>
-                        </Link>
                     </div>
                     <div className="overflow-x-auto">
                         <table className="w-full text-left bg-white dark:bg-[#1e1726]">
