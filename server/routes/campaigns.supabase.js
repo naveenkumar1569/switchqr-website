@@ -154,7 +154,7 @@ router.get('/:id', supabaseAuth, async (req, res) => {
 
             let query = req.supabase
                 .from('scans')
-                .select('qr_id, device_type, country, scanned_at')
+                .select('qr_id, device_type, country, scanned_at, ip_address')
                 .in('qr_id', qrIds);
 
             // Apply date filter
