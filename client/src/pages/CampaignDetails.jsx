@@ -240,27 +240,39 @@ const CampaignDetails = () => {
             {/* Key Metrics Cards */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
                 {/* Total Scans */}
-                <div className="bg-white dark:bg-[#1e1726] border border-slate-100 dark:border-slate-800 p-6 rounded-xl shadow-sm">
-                    <p className="text-sm font-medium text-slate-400 mb-1">Total Scans</p>
+                <div className="bg-white dark:bg-[#1e1726] border border-slate-100 dark:border-slate-800 p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow">
+                    <div className="flex justify-between items-start mb-4">
+                        <div className="p-2 bg-primary/10 rounded-lg">
+                            <span className="material-symbols-outlined text-primary text-xl">qr_code_scanner</span>
+                        </div>
+                    </div>
+                    <p className="text-sm font-medium text-slate-500 dark:text-slate-400 mb-1">Total Scans</p>
                     <div className="flex items-baseline gap-2">
                         <span className="text-3xl font-bold tracking-tight text-slate-900 dark:text-white">{campaign.total_scans?.toLocaleString()}</span>
-                        {/* Mock growth */}
-                        {/* Growth data not available */}
                     </div>
                 </div>
 
                 {/* Unique Visitors */}
-                <div className="bg-white dark:bg-[#1e1726] border border-slate-100 dark:border-slate-800 p-6 rounded-xl shadow-sm">
-                    <p className="text-sm font-medium text-slate-400 mb-1">Unique Visitors</p>
+                <div className="bg-white dark:bg-[#1e1726] border border-slate-100 dark:border-slate-800 p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow">
+                    <div className="flex justify-between items-start mb-4">
+                        <div className="p-2 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+                            <span className="material-symbols-outlined text-blue-600 dark:text-blue-400 text-xl">group</span>
+                        </div>
+                    </div>
+                    <p className="text-sm font-medium text-slate-500 dark:text-slate-400 mb-1">Unique Visitors</p>
                     <div className="flex items-baseline gap-2">
                         <span className="text-3xl font-bold tracking-tight text-slate-900 dark:text-white">{campaign.unique_visitors?.toLocaleString()}</span>
-                        {/* Growth data not available */}
                     </div>
                 </div>
 
                 {/* Peak Activity */}
-                <div className="bg-white dark:bg-[#1e1726] border border-slate-100 dark:border-slate-800 p-6 rounded-xl shadow-sm">
-                    <p className="text-sm font-medium text-slate-400 mb-1">Peak Activity</p>
+                <div className="bg-white dark:bg-[#1e1726] border border-slate-100 dark:border-slate-800 p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow">
+                    <div className="flex justify-between items-start mb-4">
+                        <div className="p-2 bg-amber-50 dark:bg-amber-900/20 rounded-lg">
+                            <span className="material-symbols-outlined text-amber-600 dark:text-amber-400 text-xl">schedule</span>
+                        </div>
+                    </div>
+                    <p className="text-sm font-medium text-slate-500 dark:text-slate-400 mb-1">Peak Activity</p>
                     <div className="flex items-baseline gap-2">
                         <span className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">{campaign.peak_activity?.hour || 'N/A'}</span>
                         <span className="text-slate-400 text-sm font-medium">{campaign.peak_activity?.day || 'N/A'}</span>
@@ -268,8 +280,13 @@ const CampaignDetails = () => {
                 </div>
 
                 {/* Total Assets */}
-                <div className="bg-white dark:bg-[#1e1726] border border-slate-100 dark:border-slate-800 p-6 rounded-xl shadow-sm">
-                    <p className="text-sm font-medium text-slate-400 mb-1">Total QR Assets</p>
+                <div className="bg-white dark:bg-[#1e1726] border border-slate-100 dark:border-slate-800 p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow">
+                    <div className="flex justify-between items-start mb-4">
+                        <div className="p-2 bg-emerald-50 dark:bg-emerald-900/20 rounded-lg">
+                            <span className="material-symbols-outlined text-emerald-600 dark:text-emerald-400 text-xl">inventory_2</span>
+                        </div>
+                    </div>
+                    <p className="text-sm font-medium text-slate-500 dark:text-slate-400 mb-1">Total QR Assets</p>
                     <div className="flex items-baseline gap-2">
                         <span className="text-3xl font-bold tracking-tight text-slate-900 dark:text-white">{campaign.qr_count}</span>
                         <span className="text-slate-400 text-sm font-medium">In folder</span>
