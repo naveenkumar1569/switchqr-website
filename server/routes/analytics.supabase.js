@@ -25,7 +25,7 @@ router.get('/', supabaseAuth, async (req, res) => {
         if (authError || !user) return res.status(401).json({ error: 'Unauthorized' });
 
         // Parse date range parameters
-        const { days, start, end } = req.query;
+        const { days, start, end, tz } = req.query;
         let startDate, endDate;
 
         if (start && end) {
@@ -167,20 +167,45 @@ router.get('/', supabaseAuth, async (req, res) => {
                 // Scans Over Time - Intelligent aggregation based on date range
                 const daysDiff = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24));
 
+                const timeline = {};
                 if (daysDiff <= 31) {
                     // Daily aggregation for up to 31 days
-                    const timeline = {};
-                    for (let i = 0; i < daysDiff; i++) {
-                        const d = new Date(startDate);
-                        d.setDate(d.getDate() + i);
-                        const key = d.toISOString().split('T')[0];
-                        timeline[key] = 0;
+                    if (tz) {
+                        try {
+                            for (let i = 0; i < daysDiff; i++) {
+                                const d = new Date(startDate);
+                                d.setDate(d.getDate() + i);
+                                const key = new Intl.DateTimeFormat('en-CA', { timeZone: tz }).format(d);
+                                timeline[key] = 0;
+                            }
+                            scans.forEach(s => {
+                                const key = new Intl.DateTimeFormat('en-CA', { timeZone: tz }).format(new Date(s.scanned_at));
+                                if (timeline[key] !== undefined) timeline[key]++;
+                            });
+                        } catch (e) {
+                            for (let i = 0; i < daysDiff; i++) {
+                                const d = new Date(startDate);
+                                d.setDate(d.getDate() + i);
+                                const key = d.toISOString().split('T')[0];
+                                timeline[key] = 0;
+                            }
+                            scans.forEach(s => {
+                                const key = s.scanned_at.split('T')[0];
+                                if (timeline[key] !== undefined) timeline[key]++;
+                            });
+                        }
+                    } else {
+                        for (let i = 0; i < daysDiff; i++) {
+                            const d = new Date(startDate);
+                            d.setDate(d.getDate() + i);
+                            const key = d.toISOString().split('T')[0];
+                            timeline[key] = 0;
+                        }
+                        scans.forEach(s => {
+                            const key = s.scanned_at.split('T')[0];
+                            if (timeline[key] !== undefined) timeline[key]++;
+                        });
                     }
-
-                    scans.forEach(s => {
-                        const key = s.scanned_at.split('T')[0];
-                        if (timeline[key] !== undefined) timeline[key]++;
-                    });
 
                     stats.scansOverTime = Object.keys(timeline).sort().map(date => ({
                         date,
@@ -300,7 +325,19 @@ router.get('/', supabaseAuth, async (req, res) => {
             if (scans && scans.length > 0) {
                 scans.forEach(s => {
                     const scanDate = new Date(s.scanned_at);
-                    const hour = scanDate.getHours();
+                    let hour;
+                    if (tz) {
+                        try {
+                            const formatter = new Intl.DateTimeFormat('en-US', { hour: 'numeric', hour12: false, timeZone: tz });
+                            const parts = formatter.formatToParts(scanDate);
+                            const hourPart = parts.find(p => p.type === 'hour');
+                            hour = parseInt(hourPart.value) % 24;
+                        } catch (e) {
+                            hour = scanDate.getHours();
+                        }
+                    } else {
+                        hour = scanDate.getHours();
+                    }
                     hourlyMap[hour]++;
                 });
             }
@@ -322,10 +359,31 @@ router.get('/', supabaseAuth, async (req, res) => {
             if (scans && scans.length > 0) {
                 scans.forEach(s => {
                     const scanDate = new Date(s.scanned_at);
-                    const dayIndex = scanDate.getDay(); // 0 = Sunday, 6 = Saturday
-                    const hour = scanDate.getHours(); // 0-23
-                    const dayName = daysOfWeek[dayIndex];
-                    heatmapData[dayName][hour]++;
+                    let dayName, hour;
+
+                    if (tz) {
+                        try {
+                            const formatter = new Intl.DateTimeFormat('en-US', {
+                                hour: 'numeric',
+                                hour12: false,
+                                weekday: 'short',
+                                timeZone: tz
+                            });
+                            const parts = formatter.formatToParts(scanDate);
+                            hour = parseInt(parts.find(p => p.type === 'hour').value) % 24;
+                            dayName = parts.find(p => p.type === 'weekday').value;
+                        } catch (e) {
+                            dayName = daysOfWeek[scanDate.getDay()];
+                            hour = scanDate.getHours();
+                        }
+                    } else {
+                        dayName = daysOfWeek[scanDate.getDay()];
+                        hour = scanDate.getHours();
+                    }
+
+                    if (heatmapData[dayName]) {
+                        heatmapData[dayName][hour]++;
+                    }
                 });
             }
 

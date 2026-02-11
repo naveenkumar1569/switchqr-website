@@ -62,7 +62,8 @@ const CampaignDetails = () => {
     const fetchCampaignDetails = async () => {
         setLoading(true);
         try {
-            const response = await apiGet(`/api/campaigns/${id}?days=${days}`, token);
+            const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+            const response = await apiGet(`/api/campaigns/${id}?days=${days}&tz=${encodeURIComponent(tz)}`, token);
 
             if (response.ok) {
                 const data = await response.json();

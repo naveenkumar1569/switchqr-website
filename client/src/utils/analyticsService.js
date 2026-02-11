@@ -72,7 +72,8 @@ export const buildDateRangeParams = (dateRange, customStartDate = null, customEn
  */
 export const fetchDashboardStats = async (token) => {
     try {
-        const response = await apiGet('/api/stats', token);
+        const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        const response = await apiGet(`/api/stats?tz=${encodeURIComponent(tz)}`, token);
         if (response.ok) {
             return await response.json();
         }
@@ -95,7 +96,8 @@ export const fetchDashboardStats = async (token) => {
 export const fetchGlobalStats = async (token, dateRange, customStartDate = null, customEndDate = null) => {
     try {
         const params = buildDateRangeParams(dateRange, customStartDate, customEndDate);
-        const response = await apiGet(`/api/stats?${params}`, token);
+        const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        const response = await apiGet(`/api/stats?${params}&tz=${encodeURIComponent(tz)}`, token);
         if (response.ok) {
             return await response.json();
         }
@@ -116,7 +118,8 @@ export const fetchGlobalStats = async (token, dateRange, customStartDate = null,
  */
 export const fetchQRStats = async (token, qrId, days = 7) => {
     try {
-        const response = await apiGet(`/api/stats/${qrId}?days=${days}`, token);
+        const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        const response = await apiGet(`/api/stats/${qrId}?days=${days}&tz=${encodeURIComponent(tz)}`, token);
         if (response.ok) {
             return await response.json();
         }
@@ -136,7 +139,8 @@ export const fetchQRStats = async (token, qrId, days = 7) => {
  */
 export const fetchQRAnalytics = async (token, qrId) => {
     try {
-        const response = await apiGet(`/api/analytics/${qrId}`, token);
+        const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        const response = await apiGet(`/api/analytics/${qrId}?tz=${encodeURIComponent(tz)}`, token);
         if (response.ok) {
             return await response.json();
         }

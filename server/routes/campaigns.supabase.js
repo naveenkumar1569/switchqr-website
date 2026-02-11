@@ -148,7 +148,8 @@ router.get('/:id', supabaseAuth, async (req, res) => {
         // 3. Fetch Scans for all QRs in this campaign for aggregation (with time filtering)
         let scans = [];
         if (qrIds.length > 0) {
-            const days = parseInt(req.query.days) || 30;
+            const { days: daysQuery, tz } = req.query;
+            const days = parseInt(daysQuery) || 30;
             const startDate = new Date();
             startDate.setDate(startDate.getDate() - days);
 
@@ -185,7 +186,18 @@ router.get('/:id', supabaseAuth, async (req, res) => {
             // Per QR Peak hour
             const qrHourCounts = {};
             qrScans.forEach(s => {
-                const hour = new Date(s.scanned_at).getHours();
+                const scanDate = new Date(s.scanned_at);
+                let hour;
+                if (tz) {
+                    try {
+                        const formatter = new Intl.DateTimeFormat('en-US', { hour: 'numeric', hour12: false, timeZone: tz });
+                        hour = parseInt(formatter.formatToParts(scanDate).find(p => p.type === 'hour').value) % 24;
+                    } catch (e) {
+                        hour = scanDate.getHours();
+                    }
+                } else {
+                    hour = scanDate.getHours();
+                }
                 qrHourCounts[hour] = (qrHourCounts[hour] || 0) + 1;
             });
             const peakHour = Object.keys(qrHourCounts).length > 0
@@ -224,9 +236,28 @@ router.get('/:id', supabaseAuth, async (req, res) => {
             }
 
             // Peak Activity
-            const date = new Date(s.scanned_at);
-            const hour = date.getHours();
-            const day = date.getDay();
+            const scanDate = new Date(s.scanned_at);
+            let hour, day;
+
+            if (tz) {
+                try {
+                    const formatter = new Intl.DateTimeFormat('en-US', { hour: 'numeric', hour12: false, timeZone: tz });
+                    const parts = formatter.formatToParts(scanDate);
+                    hour = parseInt(parts.find(p => p.type === 'hour').value) % 24;
+                    // For day index, we still need getDay() but relative to tz.
+                    // Intl.DateTimeFormat with weekday: 'numeric' would give 1-7 or similar, let's use getDay() fallback if tz fails
+                    // Actually, let's use a more robust way for day index
+                    const dateStr = scanDate.toLocaleString('en-US', { timeZone: tz });
+                    day = new Date(dateStr).getDay();
+                } catch (e) {
+                    hour = scanDate.getHours();
+                    day = scanDate.getDay();
+                }
+            } else {
+                hour = scanDate.getHours();
+                day = scanDate.getDay();
+            }
+
             hourCounts[hour] = (hourCounts[hour] || 0) + 1;
             dayCounts[day] = (dayCounts[day] || 0) + 1;
         });
