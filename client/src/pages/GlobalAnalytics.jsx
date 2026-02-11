@@ -659,8 +659,8 @@ const GlobalAnalytics = () => {
                                         </div>
                                         <div className="text-right">
                                             <div className="font-bold text-slate-900 dark:text-white text-sm">{loc.count.toLocaleString()}</div>
-                                            <div className="text-xs text-emerald-600 font-medium flex items-center justify-end gap-0.5">
-                                                <span className="material-symbols-outlined text-[10px]">arrow_upward</span> 12%
+                                            <div className={`text-xs ${loc.trend >= 0 ? 'text-emerald-600' : 'text-rose-600'} font-medium flex items-center justify-end gap-0.5`}>
+                                                <span className="material-symbols-outlined text-[10px]">{loc.trend >= 0 ? 'arrow_upward' : 'arrow_downward'}</span> {Math.abs(loc.trend)}%
                                             </div>
                                         </div>
                                     </div>
@@ -673,20 +673,26 @@ const GlobalAnalytics = () => {
                             </div>
                         )}
                     </div>
-                    <div className="mt-6">
-                        <div className="h-1.5 w-full bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden flex">
-                            <div className="h-full bg-primary" style={{ width: '40%' }}></div>
-                            <div className="h-full bg-primary/70" style={{ width: '25%' }}></div>
-                            <div className="h-full bg-primary/40" style={{ width: '20%' }}></div>
-                            <div className="h-full bg-primary/20" style={{ width: '15%' }}></div>
+
+                    {data.regionStats && data.regionStats.length > 0 && (
+                        <div className="mt-6">
+                            <div className="h-1.5 w-full bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden flex">
+                                {data.regionStats.slice(0, 4).map((reg, idx) => (
+                                    <div
+                                        key={idx}
+                                        className={`h-full ${idx === 0 ? 'bg-primary' : idx === 1 ? 'bg-primary/70' : idx === 2 ? 'bg-primary/40' : 'bg-primary/20'}`}
+                                        style={{ width: `${reg.percentage}%` }}
+                                        title={`${reg.name}: ${reg.count} scans (${reg.percentage}%)`}
+                                    ></div>
+                                ))}
+                            </div>
+                            <div className="flex justify-between text-[10px] text-slate-400 mt-2 font-medium uppercase tracking-wide">
+                                {data.regionStats.slice(0, 4).map((reg, idx) => (
+                                    <span key={idx}>{reg.name}</span>
+                                ))}
+                            </div>
                         </div>
-                        <div className="flex justify-between text-[10px] text-slate-400 mt-2 font-medium uppercase tracking-wide">
-                            <span>America</span>
-                            <span>Europe</span>
-                            <span>Asia</span>
-                            <span>Other</span>
-                        </div>
-                    </div>
+                    )}
                 </div>
             </div>
 

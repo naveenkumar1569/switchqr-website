@@ -7,6 +7,7 @@
 const express = require('express');
 const { getAuthenticatedClient } = require('../utils/supabase');
 const logger = require('../utils/logger');
+const { getContinent } = require('../utils/geoMapping');
 
 const router = express.Router();
 
@@ -68,16 +69,24 @@ router.get('/', supabaseAuth, async (req, res) => {
         };
 
         if (qrIds.length > 0) {
-            // Fetch scans within the date range
-            const { data: scans, error: scanError } = await req.supabase
+            // Calculate comparison period
+            const periodMs = endDate.getTime() - startDate.getTime();
+            const prevStartDate = new Date(startDate.getTime() - periodMs);
+
+            // Fetch scans within the date range (including comparison period)
+            const { data: allScans, error: scanError } = await req.supabase
                 .from('scans')
                 .select('*')
                 .in('qr_id', qrIds)
-                .gte('scanned_at', startDate.toISOString())
+                .gte('scanned_at', prevStartDate.toISOString())
                 .lte('scanned_at', endDate.toISOString())
                 .order('scanned_at', { ascending: false });
 
             if (scanError) throw scanError;
+
+            // Separate current and previous scans
+            const scans = allScans.filter(s => new Date(s.scanned_at) >= startDate);
+            const prevScans = allScans.filter(s => new Date(s.scanned_at) < startDate);
 
             if (scans && scans.length > 0) {
                 stats.totalScans = scans.length;
@@ -137,8 +146,10 @@ router.get('/', supabaseAuth, async (req, res) => {
 
                 stats.dominantOS = Object.keys(osCounts).reduce((a, b) => osCounts[a] > osCounts[b] ? a : b, 'N/A');
 
-                // Location Stats (Aggregated)
+                // Location Stats (Aggregated) with Trends
                 const locationMap = {};
+                const prevLocationMap = {};
+
                 scans.forEach(s => {
                     const country = s.country || 'Unknown';
                     const city = s.city || 'Unknown';
@@ -149,10 +160,26 @@ router.get('/', supabaseAuth, async (req, res) => {
                     locationMap[key].count++;
                 });
 
+                prevScans.forEach(s => {
+                    const country = s.country || 'Unknown';
+                    const city = s.city || 'Unknown';
+                    const key = `${country}:${city}`;
+                    if (!prevLocationMap[key]) {
+                        prevLocationMap[key] = { count: 0 };
+                    }
+                    prevLocationMap[key].count++;
+                });
+
                 const regionNames = new Intl.DisplayNames(['en'], { type: 'region' });
                 stats.locationStats = Object.values(locationMap)
                     .sort((a, b) => b.count - a.count)
                     .map(loc => {
+                        const key = `${loc.country || 'Unknown'}:${loc.city || 'Unknown'}`;
+                        const prevCount = prevLocationMap[key]?.count || 0;
+                        let trend = 0;
+                        if (prevCount === 0 && loc.count > 0) trend = 100;
+                        else if (prevCount > 0) trend = Math.round(((loc.count - prevCount) / prevCount) * 100);
+
                         let countryName = loc.country;
                         if (loc.country && loc.country !== 'Unknown') {
                             try {
@@ -161,8 +188,24 @@ router.get('/', supabaseAuth, async (req, res) => {
                                 // Fallback to code
                             }
                         }
-                        return { ...loc, countryName };
+                        return { ...loc, countryName, trend };
                     });
+
+                // Region / Continent Stats
+                const regionMap = {};
+                scans.forEach(s => {
+                    const continent = getContinent(s.country);
+                    if (!regionMap[continent]) regionMap[continent] = 0;
+                    regionMap[continent]++;
+                });
+
+                stats.regionStats = Object.keys(regionMap)
+                    .map(name => ({
+                        name,
+                        count: regionMap[name],
+                        percentage: Math.round((regionMap[name] / scans.length) * 100)
+                    }))
+                    .sort((a, b) => b.count - a.count);
 
                 // Scans Over Time - Intelligent aggregation based on date range
                 const daysDiff = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24));
