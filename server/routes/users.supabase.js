@@ -38,14 +38,26 @@ router.get('/profile', supabaseAuth, async (req, res) => {
 
         if (error) {
             logger.error('Error fetching profile', error);
-            // If internal error, return 500. If just missing, return user object with default plan
+        }
+
+        // Fallback name logic from Auth metadata (e.g. Google or Register form)
+        let firstName = profile?.first_name || '';
+        let lastName = profile?.last_name || '';
+
+        if (!firstName && !lastName) {
+            const fullName = user.user_metadata?.full_name || '';
+            if (fullName) {
+                const parts = fullName.trim().split(' ');
+                firstName = parts[0] || '';
+                lastName = parts.slice(1).join(' ') || '';
+            }
         }
 
         const responseData = {
             id: user.id,
             email: user.email,
-            first_name: profile?.first_name || '',
-            last_name: profile?.last_name || '',
+            first_name: firstName,
+            last_name: lastName,
             job_title: profile?.job_title || '',
             bio: profile?.bio || '',
             company: profile?.company || '',

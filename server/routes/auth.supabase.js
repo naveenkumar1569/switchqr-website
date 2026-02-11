@@ -63,13 +63,20 @@ router.post('/register', async (req, res) => {
             });
         }
 
+        // Helper to split full_name
+        const fullName = data.user.user_metadata?.full_name || name || '';
+        const parts = fullName.trim().split(' ');
+        const firstName = parts[0] || '';
+        const lastName = parts.slice(1).join(' ') || '';
+
         // 2. Return Legacy Format
         res.status(201).json({
             token: data.session.access_token,
             user: {
                 id: data.user.id,
                 email: data.user.email,
-                name: data.user.user_metadata?.full_name || name
+                first_name: firstName,
+                last_name: lastName
             }
         });
 
@@ -99,12 +106,19 @@ router.post('/login', async (req, res) => {
             return res.status(400).json({ error: error.message === 'Invalid login credentials' ? 'Invalid credentials' : error.message });
         }
 
+        // Helper to split full_name
+        const fullName = data.user.user_metadata?.full_name || '';
+        const parts = fullName.trim().split(' ');
+        const firstName = parts[0] || '';
+        const lastName = parts.slice(1).join(' ') || '';
+
         res.json({
             token: data.session.access_token,
             user: {
                 id: data.user.id,
                 email: data.user.email,
-                name: data.user.user_metadata?.full_name
+                first_name: firstName,
+                last_name: lastName
             }
         });
     } catch (e) {

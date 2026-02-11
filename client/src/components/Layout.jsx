@@ -65,9 +65,13 @@ const Layout = () => {
                     )}
 
                     <div className="flex items-center gap-3 px-3 py-2 mt-2">
-                        <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-primary to-purple-400"></div>
+                        <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-primary to-purple-400 flex items-center justify-center text-white font-bold">
+                            {(user?.first_name?.[0] || user?.email?.[0] || 'U').toUpperCase()}
+                        </div>
                         <div className="flex flex-col overflow-hidden">
-                            <span className="text-sm font-semibold text-slate-900 dark:text-white truncate">{user?.email || 'User'}</span>
+                            <span className="text-sm font-semibold text-slate-900 dark:text-white truncate">
+                                {user?.first_name ? `${user.first_name} ${user.last_name || ''}`.trim() : (user?.email || 'User')}
+                            </span>
                             <button onClick={logout} className="text-xs text-left text-slate-500 dark:text-slate-400 hover:text-primary">Logout</button>
                         </div>
                     </div>
