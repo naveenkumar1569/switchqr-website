@@ -258,12 +258,12 @@ const CampaignDetails = () => {
                     </div>
                 </div>
 
-                {/* Avg Conversion */}
+                {/* Peak Activity */}
                 <div className="bg-white dark:bg-[#1e1726] border border-slate-100 dark:border-slate-800 p-6 rounded-xl shadow-sm">
-                    <p className="text-sm font-medium text-slate-400 mb-1">Avg. Conversion</p>
+                    <p className="text-sm font-medium text-slate-400 mb-1">Peak Activity</p>
                     <div className="flex items-baseline gap-2">
-                        <span className="text-3xl font-bold tracking-tight text-slate-900 dark:text-white">{campaign.avg_conversion || 0}%</span>
-                        {/* Growth data not available */}
+                        <span className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">{campaign.peak_activity?.hour || 'N/A'}</span>
+                        <span className="text-slate-400 text-sm font-medium">{campaign.peak_activity?.day || 'N/A'}</span>
                     </div>
                 </div>
 
@@ -445,7 +445,7 @@ const CampaignDetails = () => {
                                     <th className="px-6 py-4 font-bold">QR Asset Name</th>
                                     <th className="px-6 py-4 font-bold">Scans</th>
                                     <th className="px-6 py-4 font-bold">Uniques</th>
-                                    <th className="px-6 py-4 font-bold">Conversion</th>
+                                    <th className="px-6 py-4 font-bold">Peak Hour</th>
                                     <th className="px-6 py-4 font-bold">Trends (7d)</th>
                                 </tr>
                             </thead>
@@ -468,8 +468,8 @@ const CampaignDetails = () => {
                                             {/* We don't track unique per QR in the list summary efficiently yet, using placeholder or maybe scan_count * 0.8 */}
                                             {qr.unique_scans || 0}
                                         </td>
-                                        <td className="px-6 py-4">
-                                            <span className="text-sm font-bold text-slate-400">0%</span>
+                                        <td className="px-6 py-4 text-sm font-bold text-slate-900 dark:text-white">
+                                            {qr.peak_hour}
                                         </td>
                                         <td className="px-6 py-4">
                                             <div className="flex items-end gap-1 h-8">

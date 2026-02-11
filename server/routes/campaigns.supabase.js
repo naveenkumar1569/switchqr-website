@@ -166,14 +166,37 @@ router.get('/:id', supabaseAuth, async (req, res) => {
         }
 
         // 4. Aggregation Logic & Device Stats
+        const hourCounts = {};
+        const dayCounts = {};
+        const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+
+        const formatHour = (h) => {
+            if (h === null || h === undefined) return 'N/A';
+            const hour = parseInt(h);
+            const ampm = hour >= 12 ? 'PM' : 'AM';
+            const h12 = hour % 12 || 12;
+            return `${h12} ${ampm}`;
+        };
+
         const qrStats = (qrs || []).map(qr => {
             const qrScans = scans.filter(s => s.qr_id === qr.id);
             const uniqueIps = new Set(qrScans.map(s => s.ip_address));
+
+            // Per QR Peak hour
+            const qrHourCounts = {};
+            qrScans.forEach(s => {
+                const hour = new Date(s.scanned_at).getHours();
+                qrHourCounts[hour] = (qrHourCounts[hour] || 0) + 1;
+            });
+            const peakHour = Object.keys(qrHourCounts).length > 0
+                ? Object.keys(qrHourCounts).reduce((a, b) => qrHourCounts[a] > qrHourCounts[b] ? a : b)
+                : null;
 
             return {
                 ...qr,
                 scan_count: qrScans.length,
                 unique_scans: uniqueIps.size,
+                peak_hour: formatHour(peakHour),
                 trend: [0, 0, 0, 0, 0, 0, qrScans.length] // Mock 7-day trend
             };
         });
@@ -199,6 +222,13 @@ router.get('/:id', supabaseAuth, async (req, res) => {
             if (s.os && s.os !== 'null' && s.os !== 'Other 0.0.0') {
                 osCounts[s.os] = (osCounts[s.os] || 0) + 1;
             }
+
+            // Peak Activity
+            const date = new Date(s.scanned_at);
+            const hour = date.getHours();
+            const day = date.getDay();
+            hourCounts[hour] = (hourCounts[hour] || 0) + 1;
+            dayCounts[day] = (dayCounts[day] || 0) + 1;
         });
 
         const deviceStats = {
@@ -209,7 +239,21 @@ router.get('/:id', supabaseAuth, async (req, res) => {
             Android: totalScans > 0 ? Math.round(((deviceCounts.Android || 0) / totalScans) * 100) : 0
         };
 
-        const dominantOS = Object.keys(osCounts).reduce((a, b) => osCounts[a] > osCounts[b] ? a : b, 'N/A');
+        const dominantOS = Object.keys(osCounts).length > 0
+            ? Object.keys(osCounts).reduce((a, b) => osCounts[a] > osCounts[b] ? a : b)
+            : 'N/A';
+
+        const peakHourVal = Object.keys(hourCounts).length > 0
+            ? Object.keys(hourCounts).reduce((a, b) => hourCounts[a] > hourCounts[b] ? a : b)
+            : null;
+        const peakDayVal = Object.keys(dayCounts).length > 0
+            ? Object.keys(dayCounts).reduce((a, b) => dayCounts[a] > dayCounts[b] ? a : b)
+            : null;
+
+        const peakActivity = {
+            hour: formatHour(peakHourVal),
+            day: peakDayVal !== null ? daysOfWeek[peakDayVal] : 'N/A'
+        };
 
         const geoStatsMap = scans.reduce((acc, s) => {
             if (s.country) {
@@ -231,6 +275,7 @@ router.get('/:id', supabaseAuth, async (req, res) => {
             unique_visitors: totalUniques,
             device_stats: deviceStats,
             dominantOS: dominantOS,
+            peak_activity: peakActivity,
             geo_stats: geoStats
         };
 
