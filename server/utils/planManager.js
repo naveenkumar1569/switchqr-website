@@ -60,7 +60,7 @@ async function resolveUserPlan(userId) {
         // Fetch profile with admin client (Bypasses RLS)
         const { data: profile, error } = await admin
             .from('profiles')
-            .select('plan, plan_expires_at')
+            .select('plan, plan_expires_at, subscription_status, current_period_end')
             .eq('id', userId)
             .maybeSingle();
 
@@ -76,6 +76,7 @@ async function resolveUserPlan(userId) {
 
         const storedPlan = profile.plan || 'free';
         const planExpiresAt = profile.plan_expires_at;
+        const subscriptionStatus = profile.subscription_status;
 
         let effectivePlan = storedPlan;
 
@@ -83,7 +84,21 @@ async function resolveUserPlan(userId) {
         let daysRemaining = null;
         let isTrial = false;
 
-        if (planExpiresAt) {
+        // 1. Active Subscription: Always Pro, No Expiry Banner
+        if (subscriptionStatus === 'active' || subscriptionStatus === 'trialing') {
+            effectivePlan = storedPlan;
+            isTrial = false;
+
+            if (subscriptionStatus === 'trialing' && planExpiresAt) {
+                isTrial = true;
+                const expiryDate = new Date(planExpiresAt);
+                const now = new Date();
+                const diffTime = Math.abs(expiryDate - now);
+                daysRemaining = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            }
+        }
+        // 2. Fixed Term / Manual Trial / Canceled Subscription (Run-out phase)
+        else if (planExpiresAt) {
             const expiryDate = new Date(planExpiresAt);
             const now = new Date();
 
@@ -92,16 +107,19 @@ async function resolveUserPlan(userId) {
                 logger.info('[PLAN_MANAGER] Plan expired', { userId, storedPlan, planExpiresAt });
             } else {
                 // If it has an expiry date and is NOT expired, it's a trial (or term-limited plan)
+                // This covers the current manual "Pro Trial" case.
                 isTrial = true;
                 const diffTime = Math.abs(expiryDate - now);
                 daysRemaining = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
             }
         }
+        // 3. Lifetime / Manual Paid (No expiry, No sub status) -> Remains Stored Plan (Pro)
 
         const planInfo = {
             plan: storedPlan,
             effectivePlan: effectivePlan,
             plan_expires_at: planExpiresAt || null,
+            subscription_status: subscriptionStatus || null,
             is_trial: isTrial,
             days_remaining: daysRemaining,
             qr_limit: PLAN_CONFIG.limits[effectivePlan] || 5,
