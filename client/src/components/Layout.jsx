@@ -45,6 +45,29 @@ const Layout = () => {
                 </nav>
 
                 <div className="p-4 mt-auto border-t border-border-light dark:border-border-dark flex flex-col gap-4">
+                    {/* Trial Banner for Pro Users */}
+                    {planInfo?.is_trial && (
+                        <div className="rounded-xl bg-gradient-to-br from-indigo-50 to-purple-50 dark:from-indigo-900/20 dark:to-purple-900/20 p-4 border border-indigo-100 dark:border-indigo-800/50 mb-4">
+                            <div className="flex items-center gap-2 mb-2 text-indigo-900 dark:text-indigo-100">
+                                <span className="material-symbols-outlined text-indigo-600 dark:text-indigo-400 text-sm">timelapse</span>
+                                <span className="text-xs font-bold uppercase tracking-wider">Pro Trial</span>
+                            </div>
+                            <div className="flex items-end justify-between mb-2">
+                                <span className="text-3xl font-bold text-indigo-700 dark:text-indigo-300 leading-none">{planInfo.days_remaining}</span>
+                                <span className="text-xs text-indigo-600 dark:text-indigo-400 font-medium mb-1">days left</span>
+                            </div>
+                            <p className="text-xs text-indigo-600/80 dark:text-indigo-300/80 mb-3 leading-snug">
+                                Enjoying Pro? Upgrade now to keep these features.
+                            </p>
+                            <button
+                                onClick={() => window.location.href = '/billing'}
+                                className="w-full cursor-pointer items-center justify-center rounded-lg h-9 bg-indigo-600 text-white text-xs font-bold hover:bg-indigo-700 transition-all shadow-sm shadow-indigo-500/20"
+                            >
+                                Keep Pro Plan
+                            </button>
+                        </div>
+                    )}
+
                     {/* Upgrade Banner for Free Users */}
                     {(planInfo?.effectivePlan === 'free' || !planInfo?.effectivePlan) && (
                         <div className="rounded-xl bg-gray-50 dark:bg-gray-800 p-4 border border-gray-100 dark:border-gray-700">

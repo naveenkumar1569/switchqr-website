@@ -80,6 +80,9 @@ async function resolveUserPlan(userId) {
         let effectivePlan = storedPlan;
 
         // Compute expiration logic
+        let daysRemaining = null;
+        let isTrial = false;
+
         if (planExpiresAt) {
             const expiryDate = new Date(planExpiresAt);
             const now = new Date();
@@ -87,6 +90,11 @@ async function resolveUserPlan(userId) {
             if (expiryDate <= now) {
                 effectivePlan = 'free';
                 logger.info('[PLAN_MANAGER] Plan expired', { userId, storedPlan, planExpiresAt });
+            } else {
+                // If it has an expiry date and is NOT expired, it's a trial (or term-limited plan)
+                isTrial = true;
+                const diffTime = Math.abs(expiryDate - now);
+                daysRemaining = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
             }
         }
 
@@ -94,6 +102,8 @@ async function resolveUserPlan(userId) {
             plan: storedPlan,
             effectivePlan: effectivePlan,
             plan_expires_at: planExpiresAt || null,
+            is_trial: isTrial,
+            days_remaining: daysRemaining,
             qr_limit: PLAN_CONFIG.limits[effectivePlan] || 5,
             features: PLAN_CONFIG.features[effectivePlan] || PLAN_CONFIG.features.free
         };
