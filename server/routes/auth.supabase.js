@@ -79,6 +79,7 @@ router.post('/register', async (req, res) => {
                 }, { onConflict: 'id' });
 
             if (profileError) {
+                console.error('[TRIAL_APPLY_FAILED]', data.user.id, profileError.message);
                 logger.error('[TRIAL_ERROR] Failed to apply trial', {
                     userId: data.user.id,
                     error: profileError.message
@@ -88,6 +89,7 @@ router.post('/register', async (req, res) => {
                 console.log('[TRIAL_APPLIED]', data.user.id, trialExpiresAt.toISOString());
             }
         } catch (trialError) {
+            console.error('[TRIAL_APPLY_FAILED]', data.user.id, trialError.message);
             logger.error('[TRIAL_ERROR] Exception applying trial', {
                 userId: data.user.id,
                 error: trialError.message

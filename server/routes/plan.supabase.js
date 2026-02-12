@@ -92,14 +92,47 @@ router.get('/', supabaseAuth, async (req, res) => {
             // Don't fail, just default to free
         }
 
-        const storedPlan = profile?.plan || 'free';
-        const planExpiresAt = profile?.plan_expires_at;
-        const subscriptionStatus = profile?.subscription_status;
+        // Handle missing profile row safely
+        if (!profile) {
+            // No profile row exists - return free plan defaults
+            const { count, error: countError } = await req.supabase
+                .from('qrs')
+                .select('*', { count: 'exact', head: true })
+                .eq('owner_id', user.id)
+                .neq('status', 'deleted')
+                .eq('status', 'active');
+
+            if (countError) {
+                logger.error('Error counting QRs', { error: countError.message });
+            }
+
+            console.log('[PLAN_RESOLVE]', user.id, {
+                storedPlan: 'free',
+                effectivePlan: 'free',
+                qr_limit: 5,
+                plan_expires_at: null,
+                subscription_status: null
+            });
+
+            return res.json({
+                plan: 'free',
+                effectivePlan: 'free',
+                plan_expires_at: null,
+                subscription_status: null,
+                qr_limit: 5,
+                qr_count: count || 0,
+                features: PLAN_CONFIG.features.free
+            });
+        }
+
+        const storedPlan = profile.plan || 'free';
+        const planExpiresAt = profile.plan_expires_at;
+        const subscriptionStatus = profile.subscription_status;
 
         // 3. Compute Effective Plan with STRICT precedence
         let effectivePlan = storedPlan;
 
-        // Priority 1: Active subscription always wins
+        // Priority 1: Active subscription always wins (ignore plan_expires_at)
         if (subscriptionStatus === 'active') {
             effectivePlan = storedPlan;
         }
@@ -117,6 +150,7 @@ router.get('/', supabaseAuth, async (req, res) => {
                 });
             }
         }
+        // Priority 3: Use stored plan (trial pro stays pro)
 
         // 4. Get QR Count
         const { count, error: countError } = await req.supabase
@@ -131,12 +165,23 @@ router.get('/', supabaseAuth, async (req, res) => {
             return res.status(500).json({ error: 'Failed to count QRs' });
         }
 
+        const qrLimit = PLAN_CONFIG.limits[effectivePlan] || 5;
+
+        // 5. Log plan resolution
+        console.log('[PLAN_RESOLVE]', user.id, {
+            storedPlan,
+            effectivePlan,
+            qr_limit: qrLimit,
+            plan_expires_at: planExpiresAt || null,
+            subscription_status: subscriptionStatus || null
+        });
+
         res.json({
             plan: storedPlan,
             effectivePlan: effectivePlan,
             plan_expires_at: planExpiresAt || null,
             subscription_status: subscriptionStatus || null,
-            qr_limit: PLAN_CONFIG.limits[effectivePlan] || 5,
+            qr_limit: qrLimit,
             qr_count: count || 0,
             features: PLAN_CONFIG.features[effectivePlan] || PLAN_CONFIG.features.free
         });
