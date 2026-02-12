@@ -66,7 +66,7 @@ const Footer = () => {
                     <p className="text-sm text-gray-400">© {new Date().getFullYear()} SwitchQR Inc. All rights reserved.</p>
                     <div className="flex gap-6">
                         <Link to="/coming-soon/privacy-policy" className="text-sm text-gray-400 hover:text-gray-600">Privacy Policy</Link>
-                        <a href="https://www.switch-qr.com/terms" className="text-sm text-gray-400 hover:text-gray-600">Terms of Service</a>
+                        <Link to="/terms" className="text-sm text-gray-400 hover:text-gray-600">Terms of Service</Link>
                     </div>
                 </div>
             </div>

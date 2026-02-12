@@ -9,6 +9,7 @@ import Careers from './pages/Careers';
 import CaseStudy from './pages/CaseStudy';
 import IndustryUseCase from './pages/IndustryUseCase';
 import ComingSoon from './pages/ComingSoon';
+import Terms from './pages/Terms';
 import Layout from './Layout'; // Import the global Layout
 
 function App() {
@@ -24,6 +25,7 @@ function App() {
                     <Route path="/case-studies" element={<SuccessStories />} />
                     <Route path="/case-studies/:slug" element={<CaseStudy />} />
                     <Route path="/industries/:slug" element={<IndustryUseCase />} />
+                    <Route path="/terms" element={<Terms />} />
                     <Route path="/coming-soon/:page" element={<ComingSoon />} />
                     <Route path="*" element={<Navigate to="/" replace />} />
                 </Routes>
