@@ -141,3 +141,20 @@
   fill: currentColor !important;
   color: currentColor !important;
 }
+
+/* Premium Tooltip System */
+.tooltip-container {
+  @apply relative inline-flex items-center cursor-help;
+}
+
+.tooltip-content {
+  @apply absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-2 bg-slate-900 dark:bg-slate-800 text-white text-xs rounded-lg shadow-xl opacity-0 invisible translate-y-1 transition-all duration-200 z-[100] whitespace-nowrap pointer-events-none border border-slate-700 dark:border-slate-600;
+}
+
+.tooltip-container:hover .tooltip-content {
+  @apply opacity-100 visible translate-y-0;
+}
+
+.tooltip-arrow {
+  @apply absolute top-full left-1/2 -translate-x-1/2 border-8 border-transparent border-t-slate-900 dark:border-t-slate-800;
+}

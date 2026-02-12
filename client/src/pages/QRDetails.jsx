@@ -775,9 +775,13 @@ const QRDetails = () => {
                     <div className="flex items-start justify-between">
                         <div className="flex items-center gap-1">
                             <span className="text-slate-500 text-sm font-medium">Unique IPs</span>
-                            <span className="material-symbols-outlined text-slate-400 text-[14px] cursor-help" title="Count of distinct IP addresses. Users on shared networks are counted as one.">
-                                help_outline
-                            </span>
+                            <div className="tooltip-container">
+                                <span className="material-symbols-outlined text-slate-400 text-[14px]">help_outline</span>
+                                <div className="tooltip-content">
+                                    Count of distinct IP addresses. Users on shared networks are counted as one.
+                                    <div className="tooltip-arrow"></div>
+                                </div>
+                            </div>
                         </div>
                         <span className="p-1.5 rounded-md bg-blue-50 text-blue-600 dark:bg-blue-900/20 dark:text-blue-400">
                             <span className="material-symbols-outlined text-[20px]">person_outline</span>
@@ -999,9 +1003,13 @@ const QRDetails = () => {
                             <div className="flex items-center justify-between">
                                 <div className="flex items-center gap-1">
                                     <span className="text-sm text-slate-600 dark:text-slate-400">Unique Ratio</span>
-                                    <span className="material-symbols-outlined text-slate-400 text-[12px] cursor-help" title="Percentage of scans from unique IPs">
-                                        help_outline
-                                    </span>
+                                    <div className="tooltip-container">
+                                        <span className="material-symbols-outlined text-slate-400 text-[12px]">help_outline</span>
+                                        <div className="tooltip-content">
+                                            Percentage of scans from unique IPs
+                                            <div className="tooltip-arrow"></div>
+                                        </div>
+                                    </div>
                                 </div>
                                 <span className="text-lg font-bold text-emerald-600 dark:text-emerald-400">
                                     {(stats?.totalScans || 0) > 0 ? Math.round(((stats?.uniqueScans || 0) / stats.totalScans) * 100) : 0}%
