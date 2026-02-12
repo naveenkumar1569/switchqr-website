@@ -136,36 +136,7 @@ router.get('/:id', supabaseAuth, async (req, res) => {
     }
 });
 
-// Helper to get user plan info
-async function getUserPlan(user_id, client) {
-    // 1. Get Profile
-    const { data: profile } = await client
-        .from('profiles')
-        .select('plan')
-        .eq('id', user_id)
-        .maybeSingle();
-
-    const plan = profile?.plan || 'free';
-
-    // Limits Config (Matched with PLAN_CONFIG)
-    const LIMITS = {
-        free: 5,
-        starter: 100,
-        pro: 1000
-    };
-
-    const FEATURES = {
-        free: { scheduling: false, ab_testing: false, campaigns: false },
-        starter: { scheduling: true, ab_testing: false, campaigns: false },
-        pro: { scheduling: true, ab_testing: true, campaigns: true }
-    };
-
-    return {
-        type: plan,
-        limit: LIMITS[plan],
-        features: FEATURES[plan]
-    };
-}
+const { resolveUserPlan } = require('../utils/planManager');
 
 // CREATE QR
 router.post('/', supabaseAuth, async (req, res) => {
@@ -182,7 +153,7 @@ router.post('/', supabaseAuth, async (req, res) => {
         if (authError || !user) return res.status(401).json({ error: 'Unauthorized' });
 
         // PLAN ENFORCEMENT
-        const plan = await getUserPlan(user.id, req.supabase);
+        const plan = await resolveUserPlan(user.id);
 
         // 1. Check Feature Access
         if (scheduling_enabled && !plan.features.scheduling) {
@@ -201,9 +172,9 @@ router.post('/', supabaseAuth, async (req, res) => {
 
         if (countError) throw countError;
 
-        if (count >= plan.limit) {
+        if (count >= plan.qr_limit) {
             return res.status(403).json({
-                error: `QR Limit Reached (${count}/${plan.limit}). Please upgrade.`,
+                error: `QR Limit Reached (${count}/${plan.qr_limit}). Please upgrade.`,
                 upgrade_required: true
             });
         }
@@ -253,7 +224,7 @@ router.put('/:id', supabaseAuth, async (req, res) => {
         if (authError || !user) return res.status(401).json({ error: 'Unauthorized' });
 
         // PLAN ENFORCEMENT
-        const plan = await getUserPlan(user.id, req.supabase);
+        const plan = await resolveUserPlan(user.id);
 
         if (updates.scheduling_enabled && !plan.features.scheduling) {
             return res.status(403).json({ error: 'Scheduling not available on your plan' });

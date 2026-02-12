@@ -66,11 +66,12 @@ const supabaseAuth = (req, res, next) => {
     next();
 };
 
+const { resolveUserPlan } = require('../utils/planManager');
+
 // ============================================
 // GET PLAN DETAILS
 // ============================================
 router.get('/', supabaseAuth, async (req, res) => {
-    console.log('🔎 [DEBUG] GET /api/plan (Supabase Version) Hit');
     try {
         // 1. Get User ID
         const { data: { user }, error: userError } = await req.supabase.auth.getUser();
@@ -79,66 +80,10 @@ router.get('/', supabaseAuth, async (req, res) => {
             return res.status(401).json({ error: 'Invalid authentication' });
         }
 
-        // 2. Get Profile (Plan + Subscription Info)
-        const { data: profile, error: profileError } = await req.supabase
-            .from('profiles')
-            .select('plan, plan_expires_at')
-            .eq('id', user.id)
-            .maybeSingle();
+        // 2. Resolve Plan using Admin Client (Bypasses RLS)
+        const planInfo = await resolveUserPlan(user.id);
 
-        if (profileError) {
-            logger.error('Error fetching profile', { error: profileError.message });
-            // Don't fail, just default to free
-        }
-
-        // Handle missing profile row safely
-        if (!profile) {
-            // No profile row exists - check if they have QRs before defaulting
-            const { count, error: countError } = await req.supabase
-                .from('qrs')
-                .select('*', { count: 'exact', head: true })
-                .eq('owner_id', user.id)
-                .neq('status', 'deleted')
-                .eq('status', 'active');
-
-            console.log('[PLAN_RESOLVE_MISSING_PROFILE]', user.id);
-
-            return res.json({
-                plan: 'free',
-                effectivePlan: 'free',
-                plan_expires_at: null,
-                qr_limit: 5,
-                qr_count: count || 0,
-                features: PLAN_CONFIG.features.free
-            });
-        }
-
-        const storedPlan = profile.plan || 'free';
-        const planExpiresAt = profile.plan_expires_at;
-
-        // 3. Compute Effective Plan with STRICT precedence
-        let effectivePlan = storedPlan;
-
-        // Priority 1: Check if trial/plan has expired
-        if (planExpiresAt) {
-            const expiryDate = new Date(planExpiresAt);
-            const now = new Date();
-
-            if (expiryDate <= now) {
-                effectivePlan = 'free';
-                console.log('[TRIAL_EXPIRED]', user.id, {
-                    storedPlan,
-                    planExpiresAt,
-                    effectivePlan
-                });
-            } else {
-                // Trial is active
-                effectivePlan = storedPlan;
-            }
-        }
-        // Priority 2: Use stored plan (pro stays pro)
-
-        // 4. Get QR Count
+        // 3. Get QR Count (This can stay with authenticated client as QRs should have RLS)
         const { count, error: countError } = await req.supabase
             .from('qrs')
             .select('*', { count: 'exact', head: true })
@@ -148,29 +93,15 @@ router.get('/', supabaseAuth, async (req, res) => {
 
         if (countError) {
             logger.error('Error counting QRs', { error: countError.message });
-            return res.status(500).json({ error: 'Failed to count QRs' });
         }
 
-        const qrLimit = PLAN_CONFIG.limits[effectivePlan] || 5;
+        const response = {
+            ...planInfo,
+            qr_count: count || 0
+        };
 
-        // 5. Log plan resolution
-        console.log('[PLAN_RESOLVE]', user.id, {
-            storedPlan,
-            effectivePlan,
-            qr_limit: qrLimit,
-            plan_expires_at: planExpiresAt || null,
-            subscription_status: subscriptionStatus || null
-        });
-
-        res.json({
-            plan: storedPlan,
-            effectivePlan: effectivePlan,
-            plan_expires_at: planExpiresAt || null,
-            subscription_status: subscriptionStatus || null,
-            qr_limit: qrLimit,
-            qr_count: count || 0,
-            features: PLAN_CONFIG.features[effectivePlan] || PLAN_CONFIG.features.free
-        });
+        console.log('[PLAN_RESOLVE_FINAL]', user.id, response);
+        res.json(response);
 
     } catch (error) {
         logger.error('Error in plan route', { error: error.message });

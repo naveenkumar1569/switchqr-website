@@ -230,7 +230,11 @@ export const AuthProvider = ({ children }) => {
                 const response = await apiGet('/api/plan', token);
                 if (response.ok) {
                     const data = await response.json();
-                    setPlanInfo(data);
+                    const normalizedPlan = {
+                        ...data,
+                        effectivePlan: resolveEffectivePlan(data)
+                    };
+                    setPlanInfo(normalizedPlan);
                     setPlanLoadError(null);
                 }
             } catch (error) {
