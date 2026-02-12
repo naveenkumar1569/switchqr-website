@@ -157,7 +157,7 @@ export const fetchQRAnalytics = async (token, qrId) => {
  */
 export const DEFAULT_STATS = {
     totalScans: 0,
-    uniqueScans: 0,
+    uniqueVisitors: 0,
     scansOverTime: [],
     deviceStats: { Mobile: 0, Desktop: 0, Tablet: 0 },
     recentScans: [],

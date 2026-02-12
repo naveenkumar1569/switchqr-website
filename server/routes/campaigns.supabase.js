@@ -172,7 +172,7 @@ router.get('/:id', supabaseAuth, async (req, res) => {
                 .in('qr_id', qrIds);
 
             // Apply date filter
-            query = query.gte('scanned_at', startDate.toISOString());
+            query = query.gte('scanned_at', startDate.toISOString()).limit(10000);
 
             const { data: fetchedScans, error: scansError } = await query;
 
@@ -238,7 +238,7 @@ router.get('/:id', supabaseAuth, async (req, res) => {
             return {
                 ...qr,
                 scan_count: qrScans.length,
-                unique_scans: uniqueIps.size,
+                unique_visitors: uniqueIps.size,
                 peak_hour: formatHour(peakHour),
                 trend: [0, 0, 0, 0, 0, 0, qrScans.length] // Mock 7-day trend
             };

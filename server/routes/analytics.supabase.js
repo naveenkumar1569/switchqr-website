@@ -70,7 +70,7 @@ router.get('/', supabaseAuth, async (req, res) => {
         // Default Stats
         const stats = {
             totalScans: 0,
-            uniqueScans: 0,
+            uniqueVisitors: 0,
             topQr: 'N/A',
             recentScans: [],
             deviceStats: { Mobile: 0, Desktop: 0, Tablet: 0 },
@@ -91,7 +91,8 @@ router.get('/', supabaseAuth, async (req, res) => {
                 .in('qr_id', qrIds)
                 .gte('scanned_at', prevStartDate.toISOString())
                 .lte('scanned_at', endDate.toISOString())
-                .order('scanned_at', { ascending: false });
+                .order('scanned_at', { ascending: false })
+                .limit(10000);
 
             if (scanError) throw scanError;
 
@@ -102,9 +103,9 @@ router.get('/', supabaseAuth, async (req, res) => {
             if (scans && scans.length > 0) {
                 stats.totalScans = scans.length;
 
-                // Unique IPs
+                // Unique IPs (renamed to Unique Visitors)
                 const uniqueIps = new Set(scans.map(s => s.ip_address));
-                stats.uniqueScans = uniqueIps.size;
+                stats.uniqueVisitors = uniqueIps.size;
 
                 // Recent Scans (Top 5)
                 stats.recentScans = scans.slice(0, 5).map(s => ({
@@ -491,7 +492,7 @@ router.get('/:qr_id', supabaseAuth, async (req, res) => {
         // Default Stats
         const stats = {
             totalScans: 0,
-            uniqueScans: 0,
+            uniqueVisitors: 0,
             topQr: qr.name,
             recentScans: [],
             deviceStats: { Mobile: 0, Desktop: 0, Tablet: 0 },
@@ -509,14 +510,15 @@ router.get('/:qr_id', supabaseAuth, async (req, res) => {
             .select('*')
             .eq('qr_id', qr_id)
             .gte('scanned_at', startDate.toISOString())
-            .order('scanned_at', { ascending: false });
+            .order('scanned_at', { ascending: false })
+            .limit(10000);
 
         if (scanError) throw scanError;
 
         if (scans && scans.length > 0) {
             stats.totalScans = scans.length;
             const uniqueIps = new Set(scans.map(s => s.ip_address));
-            stats.uniqueScans = uniqueIps.size;
+            stats.uniqueVisitors = uniqueIps.size;
 
             // Calculate Top Location from ALL scans
             const locationCounts = {};
@@ -630,14 +632,15 @@ router.get('/analytics/:qr_id', supabaseAuth, async (req, res) => {
             .from('scans')
             .select('*')
             .eq('qr_id', qr_id)
-            .order('scanned_at', { ascending: false });
+            .order('scanned_at', { ascending: false })
+            .limit(10000);
 
         if (scanError) throw scanError;
 
         // Initialize stats
         const stats = {
             totalScans: 0,
-            uniqueScans: 0,
+            uniqueVisitors: 0,
             deviceStats: { Mobile: 0, Desktop: 0, Tablet: 0 },
             scansOverTime: []
         };
@@ -645,7 +648,7 @@ router.get('/analytics/:qr_id', supabaseAuth, async (req, res) => {
         if (scans && scans.length > 0) {
             stats.totalScans = scans.length;
             const uniqueIps = new Set(scans.map(s => s.ip_address));
-            stats.uniqueScans = uniqueIps.size;
+            stats.uniqueVisitors = uniqueIps.size;
 
             // Device Stats & OS
             const deviceCounts = { Mobile: 0, Desktop: 0, Tablet: 0, iOS: 0, Android: 0 };

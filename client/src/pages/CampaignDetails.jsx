@@ -262,7 +262,7 @@ const CampaignDetails = () => {
                     </div>
                     <p className="text-sm font-medium text-slate-500 dark:text-slate-400 mb-1">Unique Visitors</p>
                     <div className="flex items-baseline gap-2">
-                        <span className="text-3xl font-bold tracking-tight text-slate-900 dark:text-white">{campaign.unique_visitors?.toLocaleString()}</span>
+                        <span className="text-3xl font-bold tracking-tight text-slate-900 dark:text-white">{campaign.unique_visitors || 0}</span>
                     </div>
                 </div>
 
@@ -462,7 +462,7 @@ const CampaignDetails = () => {
                                 <tr className="text-xs uppercase tracking-wider text-slate-500 dark:text-slate-400 bg-slate-50 dark:bg-slate-800/50">
                                     <th className="px-6 py-4 font-bold">QR Asset Name</th>
                                     <th className="px-6 py-4 font-bold">Scans</th>
-                                    <th className="px-6 py-4 font-bold">Uniques</th>
+                                    <th className="px-6 py-4 font-bold">Unique Visitors</th>
                                     <th className="px-6 py-4 font-bold">Peak Hour</th>
                                     <th className="px-6 py-4 font-bold">Trends (7d)</th>
                                 </tr>
@@ -483,8 +483,7 @@ const CampaignDetails = () => {
                                         </td>
                                         <td className="px-6 py-4 text-sm font-bold text-slate-900 dark:text-white">{qr.scan_count}</td>
                                         <td className="px-6 py-4 text-sm text-slate-700 dark:text-slate-300">
-                                            {/* We don't track unique per QR in the list summary efficiently yet, using placeholder or maybe scan_count * 0.8 */}
-                                            {qr.unique_scans || 0}
+                                            {qr.unique_visitors || 0}
                                         </td>
                                         <td className="px-6 py-4 text-sm font-bold text-slate-900 dark:text-white">
                                             {qr.peak_hour}

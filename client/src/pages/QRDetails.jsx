@@ -774,7 +774,7 @@ const QRDetails = () => {
                 <div className="bg-white dark:bg-[#1e1726] rounded-xl p-5 border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col justify-between h-28">
                     <div className="flex items-start justify-between">
                         <div className="flex items-center gap-1">
-                            <span className="text-slate-500 text-sm font-medium">Unique IPs</span>
+                            <span className="text-slate-500 text-sm font-medium">Unique Visitors</span>
                             <div className="tooltip-container">
                                 <span className="material-symbols-outlined text-slate-400 text-[14px]">help_outline</span>
                                 <div className="tooltip-content">
@@ -788,7 +788,7 @@ const QRDetails = () => {
                         </span>
                     </div>
                     <div>
-                        <span className="text-3xl font-bold text-slate-900 dark:text-white">{stats.uniqueScans}</span>
+                        <span className="text-3xl font-bold text-slate-900 dark:text-white">{stats.uniqueVisitors}</span>
                     </div>
                 </div>
 
@@ -993,6 +993,10 @@ const QRDetails = () => {
                                 <span className="text-lg font-bold text-slate-900 dark:text-white">{Math.round((stats?.totalScans || 0) / 30)}</span>
                             </div>
                             <div className="flex items-center justify-between">
+                                <span className="text-sm text-slate-600 dark:text-slate-400">Unique Visitors</span>
+                                <span className="text-lg font-bold text-slate-900 dark:text-white">{stats.uniqueVisitors || 0}</span>
+                            </div>
+                            <div className="flex items-center justify-between">
                                 <span className="text-sm text-slate-600 dark:text-slate-400">Peak Day Scans</span>
                                 <span className="text-lg font-bold text-slate-900 dark:text-white">
                                     {(stats?.scansOverTime && stats.scansOverTime.length > 0)
@@ -1012,7 +1016,7 @@ const QRDetails = () => {
                                     </div>
                                 </div>
                                 <span className="text-lg font-bold text-emerald-600 dark:text-emerald-400">
-                                    {(stats?.totalScans || 0) > 0 ? Math.round(((stats?.uniqueScans || 0) / stats.totalScans) * 100) : 0}%
+                                    {(stats?.totalScans || 0) > 0 ? Math.round(((stats?.uniqueVisitors || 0) / stats.totalScans) * 100) : 0}%
                                 </span>
                             </div>
                         </div>

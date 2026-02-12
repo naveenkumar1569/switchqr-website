@@ -149,7 +149,7 @@ const GlobalAnalytics = () => {
         : `M 0 ${chartHeight} L ${graphWidth} ${chartHeight}`;
 
     // Unique Visitor %
-    const visitorPercent = data.totalScans > 0 ? Math.round((data.uniqueScans / data.totalScans) * 100) : 0;
+    const visitorPercent = data.totalScans > 0 ? Math.round((data.uniqueVisitors / data.totalScans) * 100) : 0;
 
     // Y-axis labels for chart
     const yAxisLabels = [0, 1, 2, 3, 4].map(i => Math.round(maxScans * (1 - i / 4)));
@@ -344,7 +344,7 @@ const GlobalAnalytics = () => {
                         </div>
                     </div>
                     <div className="mb-1 text-slate-500 dark:text-slate-400 text-sm font-medium">Unique Visitors</div>
-                    <div className="text-3xl font-bold text-slate-900 dark:text-white mb-4">{data.uniqueScans.toLocaleString()}</div>
+                    <div className="text-3xl font-bold text-slate-900 dark:text-white mb-4">{data.uniqueVisitors.toLocaleString()}</div>
                     <svg className="w-full h-12 sparkline" viewBox="0 0 120 40" fill="none" preserveAspectRatio="none">
                         {data.scansOverTime.length > 1 && (() => {
                             const sparkMax = Math.max(...data.scansOverTime.map(d => d.count), 1);

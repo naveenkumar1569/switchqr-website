@@ -63,6 +63,16 @@ const Analytics = () => {
                     <p className="text-sm font-medium text-slate-500 dark:text-slate-400">Total Scans</p>
                     <h3 className="text-3xl font-bold text-slate-900 dark:text-white mt-1">{analytics.totalScans || scans.length}</h3>
                 </div>
+
+                <div className="bg-surface-light dark:bg-surface-dark p-6 rounded-xl border border-border-light dark:border-border-dark shadow-sm">
+                    <div className="flex items-start justify-between mb-4">
+                        <div className="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg text-blue-600 dark:text-blue-400">
+                            <span className="material-symbols-outlined">group</span>
+                        </div>
+                    </div>
+                    <p className="text-sm font-medium text-slate-500 dark:text-slate-400">Unique Visitors</p>
+                    <h3 className="text-3xl font-bold text-slate-900 dark:text-white mt-1">{analytics.uniqueVisitors || 0}</h3>
+                </div>
             </section>
 
             {/* Recent Scans List */}
