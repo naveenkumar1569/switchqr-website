@@ -39,6 +39,20 @@ export const AuthProvider = ({ children }) => {
         const savedPlan = localStorage.getItem('plan_info');
         return savedPlan ? JSON.parse(savedPlan) : null;
     });
+
+    // Client-side robustness: ensure effectivePlan is always derived
+    const resolveEffectivePlan = (data) => {
+        if (!data) return null;
+        if (data.effectivePlan) return data.effectivePlan;
+
+        // Fallback for older backend or missing field
+        const plan = data.plan || 'free';
+        if (data.plan_expires_at) {
+            const isExpired = new Date(data.plan_expires_at) <= new Date();
+            return isExpired ? 'free' : plan;
+        }
+        return plan;
+    };
     const [bootState, setBootState] = useState(BOOT_STATE.INITIALIZING);
     const [planLoadError, setPlanLoadError] = useState(null);
 
@@ -63,7 +77,12 @@ export const AuthProvider = ({ children }) => {
             const planResponse = await planPromise;
             if (planResponse.ok) {
                 const planData = await planResponse.json();
-                setPlanInfo(planData);
+                // Ensure effectivePlan exists for components
+                const normalizedPlan = {
+                    ...planData,
+                    effectivePlan: resolveEffectivePlan(planData)
+                };
+                setPlanInfo(normalizedPlan);
                 setPlanLoadError(null);
             } else {
                 // Plan API returned error, use default
@@ -177,7 +196,7 @@ export const AuthProvider = ({ children }) => {
 
     // Persist plan info when it changes
     useEffect(() => {
-        if (planInfo && planInfo.plan !== 'free') {
+        if (planInfo) {
             localStorage.setItem('plan_info', JSON.stringify(planInfo));
         }
     }, [planInfo]);

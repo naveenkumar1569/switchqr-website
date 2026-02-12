@@ -80,10 +80,9 @@ router.get('/', supabaseAuth, async (req, res) => {
         }
 
         // 2. Get Profile (Plan + Subscription Info)
-        // We use maybeSingle() because profile might not exist yet if triggers aren't set up
         const { data: profile, error: profileError } = await req.supabase
             .from('profiles')
-            .select('plan, plan_expires_at, subscription_status, plan_source, current_period_end')
+            .select('plan, plan_expires_at')
             .eq('id', user.id)
             .maybeSingle();
 
@@ -94,7 +93,7 @@ router.get('/', supabaseAuth, async (req, res) => {
 
         // Handle missing profile row safely
         if (!profile) {
-            // No profile row exists - return free plan defaults
+            // No profile row exists - check if they have QRs before defaulting
             const { count, error: countError } = await req.supabase
                 .from('qrs')
                 .select('*', { count: 'exact', head: true })
@@ -102,23 +101,12 @@ router.get('/', supabaseAuth, async (req, res) => {
                 .neq('status', 'deleted')
                 .eq('status', 'active');
 
-            if (countError) {
-                logger.error('Error counting QRs', { error: countError.message });
-            }
-
-            console.log('[PLAN_RESOLVE]', user.id, {
-                storedPlan: 'free',
-                effectivePlan: 'free',
-                qr_limit: 5,
-                plan_expires_at: null,
-                subscription_status: null
-            });
+            console.log('[PLAN_RESOLVE_MISSING_PROFILE]', user.id);
 
             return res.json({
                 plan: 'free',
                 effectivePlan: 'free',
                 plan_expires_at: null,
-                subscription_status: null,
                 qr_limit: 5,
                 qr_count: count || 0,
                 features: PLAN_CONFIG.features.free
@@ -127,17 +115,12 @@ router.get('/', supabaseAuth, async (req, res) => {
 
         const storedPlan = profile.plan || 'free';
         const planExpiresAt = profile.plan_expires_at;
-        const subscriptionStatus = profile.subscription_status;
 
         // 3. Compute Effective Plan with STRICT precedence
         let effectivePlan = storedPlan;
 
-        // Priority 1: Active subscription always wins (ignore plan_expires_at)
-        if (subscriptionStatus === 'active') {
-            effectivePlan = storedPlan;
-        }
-        // Priority 2: Check if trial/plan has expired
-        else if (planExpiresAt) {
+        // Priority 1: Check if trial/plan has expired
+        if (planExpiresAt) {
             const expiryDate = new Date(planExpiresAt);
             const now = new Date();
 
@@ -148,9 +131,12 @@ router.get('/', supabaseAuth, async (req, res) => {
                     planExpiresAt,
                     effectivePlan
                 });
+            } else {
+                // Trial is active
+                effectivePlan = storedPlan;
             }
         }
-        // Priority 3: Use stored plan (trial pro stays pro)
+        // Priority 2: Use stored plan (pro stays pro)
 
         // 4. Get QR Count
         const { count, error: countError } = await req.supabase
