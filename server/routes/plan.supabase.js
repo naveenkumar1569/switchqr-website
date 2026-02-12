@@ -79,11 +79,11 @@ router.get('/', supabaseAuth, async (req, res) => {
             return res.status(401).json({ error: 'Invalid authentication' });
         }
 
-        // 2. Get Profile (Plan)
+        // 2. Get Profile (Plan + Subscription Info)
         // We use maybeSingle() because profile might not exist yet if triggers aren't set up
         const { data: profile, error: profileError } = await req.supabase
             .from('profiles')
-            .select('plan')
+            .select('plan, plan_expires_at, subscription_status, plan_source, current_period_end')
             .eq('id', user.id)
             .maybeSingle();
 
@@ -92,9 +92,33 @@ router.get('/', supabaseAuth, async (req, res) => {
             // Don't fail, just default to free
         }
 
-        const plan = profile?.plan || 'free';
+        const storedPlan = profile?.plan || 'free';
+        const planExpiresAt = profile?.plan_expires_at;
+        const subscriptionStatus = profile?.subscription_status;
 
-        // 3. Get QR Count
+        // 3. Compute Effective Plan with STRICT precedence
+        let effectivePlan = storedPlan;
+
+        // Priority 1: Active subscription always wins
+        if (subscriptionStatus === 'active') {
+            effectivePlan = storedPlan;
+        }
+        // Priority 2: Check if trial/plan has expired
+        else if (planExpiresAt) {
+            const expiryDate = new Date(planExpiresAt);
+            const now = new Date();
+
+            if (expiryDate <= now) {
+                effectivePlan = 'free';
+                console.log('[TRIAL_EXPIRED]', user.id, {
+                    storedPlan,
+                    planExpiresAt,
+                    effectivePlan
+                });
+            }
+        }
+
+        // 4. Get QR Count
         const { count, error: countError } = await req.supabase
             .from('qrs')
             .select('*', { count: 'exact', head: true })
@@ -108,11 +132,13 @@ router.get('/', supabaseAuth, async (req, res) => {
         }
 
         res.json({
-            plan,
-            plan_expires_at: null, // Not currently tracked in Supabase schema
-            qr_limit: PLAN_CONFIG.limits[plan] || 5,
+            plan: storedPlan,
+            effectivePlan: effectivePlan,
+            plan_expires_at: planExpiresAt || null,
+            subscription_status: subscriptionStatus || null,
+            qr_limit: PLAN_CONFIG.limits[effectivePlan] || 5,
             qr_count: count || 0,
-            features: PLAN_CONFIG.features[plan] || PLAN_CONFIG.features.free
+            features: PLAN_CONFIG.features[effectivePlan] || PLAN_CONFIG.features.free
         });
 
     } catch (error) {

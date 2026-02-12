@@ -7,6 +7,7 @@
 
 const express = require('express');
 const { createClient } = require('@supabase/supabase-js');
+const { getAdminClient } = require('../utils/supabase');
 const logger = require('../utils/logger');
 
 const router = express.Router();
@@ -63,13 +64,44 @@ router.post('/register', async (req, res) => {
             });
         }
 
+        // 2. Apply 7-day Pro trial using Admin client
+        try {
+            const adminClient = getAdminClient();
+            const trialExpiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000); // 7 days from now
+
+            const { error: profileError } = await adminClient
+                .from('profiles')
+                .upsert({
+                    id: data.user.id,
+                    plan: 'pro',
+                    plan_expires_at: trialExpiresAt.toISOString(),
+                    updated_at: new Date().toISOString()
+                }, { onConflict: 'id' });
+
+            if (profileError) {
+                logger.error('[TRIAL_ERROR] Failed to apply trial', {
+                    userId: data.user.id,
+                    error: profileError.message
+                });
+                // Don't fail registration, just log the error
+            } else {
+                console.log('[TRIAL_APPLIED]', data.user.id, trialExpiresAt.toISOString());
+            }
+        } catch (trialError) {
+            logger.error('[TRIAL_ERROR] Exception applying trial', {
+                userId: data.user.id,
+                error: trialError.message
+            });
+            // Don't fail registration
+        }
+
         // Helper to split full_name
         const fullName = data.user.user_metadata?.full_name || name || '';
         const parts = fullName.trim().split(' ');
         const firstName = parts[0] || '';
         const lastName = parts.slice(1).join(' ') || '';
 
-        // 2. Return Legacy Format
+        // 3. Return Legacy Format
         res.status(201).json({
             token: data.session.access_token,
             user: {
