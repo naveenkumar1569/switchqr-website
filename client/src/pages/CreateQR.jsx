@@ -156,7 +156,7 @@ const CreateQR = () => {
             // This ensures QR creation never blocks on plan loading
             const QR_LIMIT = planInfo?.qr_limit ?? 5; // Default to free tier limit
             const currentCount = planInfo?.qr_count ?? 0;
-            const planName = planInfo?.plan ?? 'free';
+            const planName = planInfo?.effectivePlan ?? 'free';
 
             // Show info if using degraded defaults
             if (!planInfo) {

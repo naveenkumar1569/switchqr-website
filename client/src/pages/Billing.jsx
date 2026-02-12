@@ -8,7 +8,7 @@ const Billing = () => {
     const [userEmail, setUserEmail] = useState('');
 
     // Use plan info from context
-    const currentPlan = planInfo?.plan || 'free';
+    const currentPlan = planInfo?.effectivePlan || 'free';
     const QR_LIMIT = planInfo?.qr_limit || 5;
     const qrCount = planInfo?.qr_count || 0;
 

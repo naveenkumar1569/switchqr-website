@@ -253,7 +253,7 @@ const Settings = () => {
                                 <button
                                     key={p}
                                     onClick={() => handlePlanChange(p)}
-                                    className={`px-4 py-2 rounded-lg text-sm font-bold border-2 capitalize transition-all ${(planInfo?.plan || 'free') === p
+                                    className={`px-4 py-2 rounded-lg text-sm font-bold border-2 capitalize transition-all ${(planInfo?.effectivePlan || 'free') === p
                                         ? 'border-primary bg-primary/10 text-primary'
                                         : 'border-slate-200 dark:border-slate-700 hover:border-primary/50 text-slate-600 dark:text-slate-300 bg-white dark:bg-slate-800'
                                         }`}
@@ -279,7 +279,7 @@ const Settings = () => {
                                 <p className="text-sm text-slate-500 dark:text-slate-400">Manage your subscription and billing details.</p>
                             </div>
                             <span className="inline-flex items-center rounded-full bg-violet-50 dark:bg-violet-900/30 px-3 py-1 text-sm font-bold text-primary ring-1 ring-inset ring-violet-700/10 dark:ring-violet-500/30 capitalize">
-                                {planInfo?.plan || 'Free'} Plan
+                                {planInfo?.effectivePlan || 'Free'} Plan
                             </span>
                         </div>
 

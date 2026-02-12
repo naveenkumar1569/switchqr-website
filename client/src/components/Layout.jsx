@@ -46,7 +46,7 @@ const Layout = () => {
 
                 <div className="p-4 mt-auto border-t border-border-light dark:border-border-dark flex flex-col gap-4">
                     {/* Upgrade Banner for Free Users */}
-                    {(planInfo?.plan === 'free' || !planInfo?.plan) && (
+                    {(planInfo?.effectivePlan === 'free' || !planInfo?.effectivePlan) && (
                         <div className="rounded-xl bg-gray-50 dark:bg-gray-800 p-4 border border-gray-100 dark:border-gray-700">
                             <div className="flex items-center gap-2 mb-2 text-slate-900 dark:text-white">
                                 <span className="material-symbols-outlined text-primary text-sm">bolt</span>

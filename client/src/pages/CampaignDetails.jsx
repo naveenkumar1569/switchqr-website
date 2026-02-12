@@ -296,7 +296,7 @@ const CampaignDetails = () => {
             </div>
 
             {/* Upsell Banner - Only show if not Pro */}
-            {planInfo?.plan !== 'pro' && (
+            {planInfo?.effectivePlan !== 'pro' && (
                 <div className="bg-gradient-to-r from-violet-50 to-white dark:from-slate-800 dark:to-slate-900 border border-violet-100 dark:border-slate-700 rounded-xl p-5 mb-8 flex flex-col md:flex-row items-center justify-between gap-4 shadow-sm">
                     <div className="flex items-center gap-4">
                         <div className="size-10 bg-primary rounded-lg flex items-center justify-center text-white shadow-lg shadow-primary/30">
