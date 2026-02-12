@@ -992,7 +992,7 @@ const QRDetails = () => {
                                 <span className="text-sm text-slate-600 dark:text-slate-400">Peak Day Scans</span>
                                 <span className="text-lg font-bold text-slate-900 dark:text-white">
                                     {(stats?.scansOverTime && stats.scansOverTime.length > 0)
-                                        ? Math.max(...stats.scansOverTime.map(d => d?.scans || 0))
+                                        ? Math.max(...stats.scansOverTime.map(d => d?.count || 0))
                                         : 0}
                                 </span>
                             </div>
