@@ -323,7 +323,7 @@ const CampaignDetails = () => {
                     <div className="flex justify-between items-start mb-6">
                         <div>
                             <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-1">Top Performing QRs</h3>
-                            <p className="text-sm text-slate-500 dark:text-slate-400">Total Scans by Asset (Last 30 Days)</p>
+                            <p className="text-sm text-slate-500 dark:text-slate-400">Total Scans by Asset ({timeRanges.find(r => r.value === days)?.label || `Last ${days} Days`})</p>
                         </div>
 
                     </div>
@@ -350,7 +350,7 @@ const CampaignDetails = () => {
                 <div className="bg-white dark:bg-[#1e1726] border border-slate-100 dark:border-slate-800 p-6 rounded-xl shadow-sm flex flex-col justify-between">
                     <div>
                         <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-1">Device Distribution</h3>
-                        <p className="text-sm text-slate-500 dark:text-slate-400 mb-8">Traffic source by real OS data</p>
+                        <p className="text-sm text-slate-500 dark:text-slate-400 mb-8">Traffic source by real OS data ({timeRanges.find(r => r.value === days)?.label || `Last ${days} Days`})</p>
 
                         <div className="space-y-6">
                             {[
@@ -396,7 +396,7 @@ const CampaignDetails = () => {
                 <div className="bg-white dark:bg-[#1e1726] border border-slate-100 dark:border-slate-800 rounded-xl overflow-hidden shadow-sm flex flex-col">
                     <div className="p-6 pb-2">
                         <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-1">Geo-Distribution</h3>
-                        <p className="text-sm text-slate-500 dark:text-slate-400">Top scanning locations worldwide</p>
+                        <p className="text-sm text-slate-500 dark:text-slate-400">Top scanning locations worldwide ({timeRanges.find(r => r.value === days)?.label || `Last ${days} Days`})</p>
                     </div>
                     <div className="h-64 bg-slate-50 dark:bg-slate-900/50 relative overflow-hidden group">
                         {/* World Map Image */}

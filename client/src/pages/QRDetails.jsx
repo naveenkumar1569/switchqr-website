@@ -766,7 +766,7 @@ const QRDetails = () => {
                     </div>
                     <div>
                         <span className="text-3xl font-bold text-slate-900 dark:text-white">{stats.totalScans}</span>
-                        <span className="text-xs text-slate-400 ml-2">Lifetime scans</span>
+                        <span className="text-xs text-slate-400 ml-2">Last {dateRange} days</span>
                     </div>
                 </div>
 

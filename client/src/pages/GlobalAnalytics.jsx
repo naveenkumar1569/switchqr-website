@@ -517,7 +517,7 @@ const GlobalAnalytics = () => {
             <div className="bg-white dark:bg-surface-dark rounded-2xl shadow-soft p-6 md:p-8 border border-slate-100/50 dark:border-slate-800">
                 <div className="mb-6">
                     <h2 className="text-lg font-bold text-slate-900 dark:text-white">Peak Scanning Times</h2>
-                    <p className="text-sm text-slate-500 dark:text-slate-400">Heatmap of activity by hour and day</p>
+                    <p className="text-sm text-slate-500 dark:text-slate-400">Heatmap of activity by hour and day ({dateRange.label})</p>
                 </div>
 
                 {data.hourlyHeatmap && Object.keys(data.hourlyHeatmap).length > 0 ? (
@@ -592,7 +592,7 @@ const GlobalAnalytics = () => {
                 {/* Device Distribution */}
                 <div className="bg-white dark:bg-surface-dark rounded-2xl shadow-soft p-6 md:p-8 border border-slate-100/50 dark:border-slate-800 flex flex-col justify-between">
                     <div className="flex justify-between items-center mb-6">
-                        <h2 className="text-lg font-bold text-slate-900 dark:text-white">Device Distribution</h2>
+                        <h2 className="text-lg font-bold text-slate-900 dark:text-white">Device Distribution ({dateRange.label})</h2>
                         <button className="text-primary hover:bg-primary/5 dark:hover:bg-primary/20 p-1 rounded-lg transition-colors">
                             <span className="material-symbols-outlined text-xl">more_horiz</span>
                         </button>
@@ -635,7 +635,7 @@ const GlobalAnalytics = () => {
                 {/* Top Locations */}
                 <div className="bg-white dark:bg-surface-dark rounded-2xl shadow-soft p-6 md:p-8 border border-slate-100/50 dark:border-slate-800">
                     <div className="flex justify-between items-center mb-6">
-                        <h2 className="text-lg font-bold text-slate-900 dark:text-white">Top Locations</h2>
+                        <h2 className="text-lg font-bold text-slate-900 dark:text-white">Top Locations ({dateRange.label})</h2>
                         <button className="text-sm text-primary font-medium hover:underline">View All</button>
                     </div>
                     <div className="space-y-4">
