@@ -196,8 +196,24 @@ router.get('/r/:shortCode', async (req, res) => {
             });
         });
 
-        // 5. Redirect
-        res.redirect(destination_url);
+        // 5. Redirect with Hardened Fallback
+        // Force text/html to prevent "download" behavior in some browsers/proxies
+        res.setHeader('Content-Type', 'text/html');
+        res.status(302);
+        res.send(`
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <meta charset="UTF-8">
+                <meta http-equiv="refresh" content="0;url=${destination_url}">
+                <title>Redirecting...</title>
+                <script>window.location.href = "${destination_url}";</script>
+            </head>
+            <body>
+                <p>Redirecting you to <a href="${destination_url}">${destination_url}</a>...</p>
+            </body>
+            </html>
+        `);
 
     } catch (e) {
         logger.error('Redirect error', e);
