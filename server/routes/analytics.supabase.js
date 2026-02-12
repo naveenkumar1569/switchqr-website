@@ -19,6 +19,17 @@ const supabaseAuth = (req, res, next) => {
     next();
 };
 
+const normalizeTimezone = (tz) => {
+    if (!tz) return null;
+    if (tz.includes('Kolcata')) return 'Asia/Kolkata';
+    try {
+        Intl.DateTimeFormat(undefined, { timeZone: tz });
+        return tz;
+    } catch (e) {
+        return null;
+    }
+};
+
 // GET /api/stats (Overview)
 router.get('/', supabaseAuth, async (req, res) => {
     try {
@@ -210,19 +221,22 @@ router.get('/', supabaseAuth, async (req, res) => {
                 // Scans Over Time - Intelligent aggregation based on date range
                 const daysDiff = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24));
 
+                const normalizedTz = normalizeTimezone(tz);
+
                 const timeline = {};
                 if (daysDiff <= 31) {
                     // Daily aggregation for up to 31 days
-                    if (tz) {
+                    if (normalizedTz) {
                         try {
+                            const dailyFormatter = new Intl.DateTimeFormat('en-CA', { timeZone: normalizedTz });
                             for (let i = 0; i < daysDiff; i++) {
                                 const d = new Date(startDate);
                                 d.setDate(d.getDate() + i);
-                                const key = new Intl.DateTimeFormat('en-CA', { timeZone: tz }).format(d);
+                                const key = dailyFormatter.format(d);
                                 timeline[key] = 0;
                             }
                             scans.forEach(s => {
-                                const key = new Intl.DateTimeFormat('en-CA', { timeZone: tz }).format(new Date(s.scanned_at));
+                                const key = dailyFormatter.format(new Date(s.scanned_at));
                                 if (timeline[key] !== undefined) timeline[key]++;
                             });
                         } catch (e) {
@@ -366,13 +380,20 @@ router.get('/', supabaseAuth, async (req, res) => {
             }
 
             if (scans && scans.length > 0) {
+                const normalizedTz = normalizeTimezone(tz);
+                let hourFormat = null;
+                if (normalizedTz) {
+                    try {
+                        hourFormat = new Intl.DateTimeFormat('en-US', { hour: 'numeric', hour12: false, timeZone: normalizedTz });
+                    } catch (e) { }
+                }
+
                 scans.forEach(s => {
                     const scanDate = new Date(s.scanned_at);
                     let hour;
-                    if (tz) {
+                    if (hourFormat) {
                         try {
-                            const formatter = new Intl.DateTimeFormat('en-US', { hour: 'numeric', hour12: false, timeZone: tz });
-                            const parts = formatter.formatToParts(scanDate);
+                            const parts = hourFormat.formatToParts(scanDate);
                             const hourPart = parts.find(p => p.type === 'hour');
                             hour = parseInt(hourPart.value) % 24;
                         } catch (e) {
@@ -400,19 +421,26 @@ router.get('/', supabaseAuth, async (req, res) => {
             });
 
             if (scans && scans.length > 0) {
+                const normalizedTz = normalizeTimezone(tz);
+                let heatFormatter = null;
+                if (normalizedTz) {
+                    try {
+                        heatFormatter = new Intl.DateTimeFormat('en-US', {
+                            hour: 'numeric',
+                            hour12: false,
+                            weekday: 'short',
+                            timeZone: normalizedTz
+                        });
+                    } catch (e) { }
+                }
+
                 scans.forEach(s => {
                     const scanDate = new Date(s.scanned_at);
                     let dayName, hour;
 
-                    if (tz) {
+                    if (heatFormatter) {
                         try {
-                            const formatter = new Intl.DateTimeFormat('en-US', {
-                                hour: 'numeric',
-                                hour12: false,
-                                weekday: 'short',
-                                timeZone: tz
-                            });
-                            const parts = formatter.formatToParts(scanDate);
+                            const parts = heatFormatter.formatToParts(scanDate);
                             hour = parseInt(parts.find(p => p.type === 'hour').value) % 24;
                             dayName = parts.find(p => p.type === 'weekday').value;
                         } catch (e) {

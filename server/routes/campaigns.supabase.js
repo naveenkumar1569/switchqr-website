@@ -18,6 +18,19 @@ const supabaseAuth = (req, res, next) => {
     next();
 };
 
+const normalizeTimezone = (tz) => {
+    if (!tz) return null;
+    // Common typo from client (Asia/Kolcata -> Asia/Kolkata)
+    if (tz.includes('Kolcata')) return 'Asia/Kolkata';
+    try {
+        Intl.DateTimeFormat(undefined, { timeZone: tz });
+        return tz;
+    } catch (e) {
+        logger.warn(`Invalid timezone provided: ${tz}, falling back to system time`);
+        return null;
+    }
+};
+
 // GET /api/campaigns - List user's campaigns
 router.get('/', supabaseAuth, async (req, res) => {
     try {
@@ -171,6 +184,23 @@ router.get('/:id', supabaseAuth, async (req, res) => {
         const dayCounts = {};
         const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
+        // Normalize timezone early
+        const normalizedTz = normalizeTimezone(req.query.tz);
+
+        // CREATE INTEL OBJECTS ONCE (Optimization)
+        let hourFormatter = null;
+        if (normalizedTz) {
+            try {
+                hourFormatter = new Intl.DateTimeFormat('en-US', {
+                    hour: 'numeric',
+                    hour12: false,
+                    timeZone: normalizedTz
+                });
+            } catch (e) {
+                logger.error('Failed to create hourFormatter', e);
+            }
+        }
+
         const formatHour = (h) => {
             if (h === null || h === undefined) return 'N/A';
             const hour = parseInt(h);
@@ -188,10 +218,11 @@ router.get('/:id', supabaseAuth, async (req, res) => {
             qrScans.forEach(s => {
                 const scanDate = new Date(s.scanned_at);
                 let hour;
-                if (tz) {
+
+                if (hourFormatter) {
                     try {
-                        const formatter = new Intl.DateTimeFormat('en-US', { hour: 'numeric', hour12: false, timeZone: tz });
-                        hour = parseInt(formatter.formatToParts(scanDate).find(p => p.type === 'hour').value) % 24;
+                        const parts = hourFormatter.formatToParts(scanDate);
+                        hour = parseInt(parts.find(p => p.type === 'hour').value) % 24;
                     } catch (e) {
                         hour = scanDate.getHours();
                     }
@@ -239,16 +270,12 @@ router.get('/:id', supabaseAuth, async (req, res) => {
             const scanDate = new Date(s.scanned_at);
             let hour, day;
 
-            if (tz) {
+            if (normalizedTz) {
                 try {
-                    const formatter = new Intl.DateTimeFormat('en-US', { hour: 'numeric', hour12: false, timeZone: tz });
-                    const parts = formatter.formatToParts(scanDate);
-                    hour = parseInt(parts.find(p => p.type === 'hour').value) % 24;
-                    // For day index, we still need getDay() but relative to tz.
-                    // Intl.DateTimeFormat with weekday: 'numeric' would give 1-7 or similar, let's use getDay() fallback if tz fails
-                    // Actually, let's use a more robust way for day index
-                    const dateStr = scanDate.toLocaleString('en-US', { timeZone: tz });
-                    day = new Date(dateStr).getDay();
+                    const dateStr = scanDate.toLocaleString('en-US', { timeZone: normalizedTz });
+                    const tzDate = new Date(dateStr);
+                    hour = tzDate.getHours();
+                    day = tzDate.getDay();
                 } catch (e) {
                     hour = scanDate.getHours();
                     day = scanDate.getDay();
