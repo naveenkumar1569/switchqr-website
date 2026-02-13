@@ -163,7 +163,7 @@ const Careers = () => {
 
                 <footer className="px-4 md:px-40 flex justify-center py-10 border-t border-gray-100">
                     <div className="flex flex-col max-w-[960px] flex-1 text-center">
-                        <p className="text-text-muted text-xs">© 2024 SwitchQR. Operated by 100% locally-sourced synthetic intelligence.</p>
+                        <p className="text-text-muted text-xs">© 2026 SwitchQR. Operated by 100% locally-sourced synthetic intelligence.</p>
                     </div>
                 </footer>
             </main>

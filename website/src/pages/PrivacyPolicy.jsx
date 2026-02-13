@@ -80,12 +80,12 @@ const PrivacyPolicy = () => {
                         </h2>
                         <ul className="grid grid-cols-1 md:grid-cols-2 gap-4 text-slate-600 dark:text-slate-300">
                             {[
-                                { icon: 'lan', text: 'provide, operate, and maintain the Services' },
-                                { icon: 'manage_accounts', text: 'create and manage user accounts' },
-                                { icon: 'support_agent', text: 'respond to support requests' },
-                                { icon: 'trending_up', text: 'improve performance and reliability' },
-                                { icon: 'security', text: 'detect and prevent fraud or abuse' },
-                                { icon: 'campaign', text: 'communicate important service info' },
+                                { icon: 'lan', text: 'Provide, operate, and maintain the Services' },
+                                { icon: 'manage_accounts', text: 'Create and manage user accounts' },
+                                { icon: 'support_agent', text: 'Respond to support requests' },
+                                { icon: 'trending_up', text: 'Improve performance and reliability' },
+                                { icon: 'security', text: 'Detect and prevent fraud or abuse' },
+                                { icon: 'campaign', text: 'Communicate important service info' },
                             ].map((item, idx) => (
                                 <li key={idx} className="flex items-start gap-3 bg-white dark:bg-background-dark p-4 rounded-xl border border-primary/10 shadow-sm shadow-primary/5">
                                     <span className="material-symbols-outlined text-primary">{item.icon}</span>
@@ -124,9 +124,9 @@ const PrivacyPolicy = () => {
                         <div className="space-y-4 text-slate-600 dark:text-slate-300 leading-relaxed">
                             <p>We may share information with:</p>
                             <ul className="list-disc pl-5 space-y-2">
-                                <li>service providers that support hosting, infrastructure, analytics, email delivery, and payment processing</li>
-                                <li>legal authorities when required by law</li>
-                                <li>parties necessary to protect the security and integrity of the Services</li>
+                                <li>Service providers that support hosting, infrastructure, analytics, email delivery, and payment processing</li>
+                                <li>Legal authorities when required by law</li>
+                                <li>Parties necessary to protect the security and integrity of the Services</li>
                             </ul>
                             <p className="mt-6 font-bold text-primary italic">We do not sell personal information.</p>
                         </div>
@@ -180,9 +180,9 @@ const PrivacyPolicy = () => {
                             Your rights and choices
                         </h2>
                         <ul className="list-disc pl-5 space-y-2 text-slate-600 dark:text-slate-300">
-                            <li>update your account information at any time</li>
-                            <li>request deletion of your account by contacting support@switch-qr.com</li>
-                            <li>control cookies through browser settings</li>
+                            <li>Update your account information at any time</li>
+                            <li>Request deletion of your account by contacting support@switch-qr.com</li>
+                            <li>Control cookies through browser settings</li>
                         </ul>
                     </section>
 

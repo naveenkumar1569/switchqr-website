@@ -15,8 +15,8 @@ const Pricing = () => {
             ctaStyle: 'secondary',
             features: [
                 '5 Dynamic QR Codes',
-                '5 Edit Destination Link',
-                'Standard support',
+                '5 Edit Destination Links',
+                'Standard Support',
             ],
         },
         {
@@ -29,9 +29,9 @@ const Pricing = () => {
             features: [
                 'Everything in Free, plus:',
                 '50 Dynamic QR Codes',
-                '100 Edit Destination Link',
-                'Basic analytics dashboard',
-                'Custom colors & logos',
+                '100 Edit Destination Links',
+                'Basic Analytics Dashboard',
+                'Custom Colors & Logos',
             ],
         },
         {
@@ -45,11 +45,11 @@ const Pricing = () => {
             features: [
                 'Everything in Starter, plus:',
                 '1000 Dynamic QR Codes',
-                'Unlimited Edit Destination Link',
+                'Unlimited Edit Destination Links',
                 'Unlimited Campaigns',
-                'Advanced pixel tracking',
-                '5 Team seats',
-                'Priority email support',
+                'Advanced Pixel Tracking',
+                '5 Team Seats',
+                'Priority Email Support',
             ],
         },
     ];
@@ -76,7 +76,7 @@ const Pricing = () => {
     const comparisonData = {
         'QR Management': [
             { feature: 'Dynamic QR Codes', free: '5', starter: '50', pro: '1000' },
-            { feature: 'Edit Destination Link', free: '5', starter: '100', pro: 'Unlimited' },
+            { feature: 'Edit Destination Links', free: '5', starter: '100', pro: 'Unlimited' },
             { feature: 'Campaigns', free: '-', starter: '-', pro: 'Unlimited' },
         ],
         'Analytics': [
