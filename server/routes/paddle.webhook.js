@@ -90,7 +90,8 @@ router.post('/', async (req, res) => {
 
     const eventType = event.event_type;
     const eventId = event.event_id;
-    const data = event.data;
+    // Normalize payload (simulation events sometimes put fields at root)
+    const payload = event.data || event;
 
     const admin = getAdminClient();
 
@@ -125,10 +126,10 @@ router.post('/', async (req, res) => {
         switch (eventType) {
             case 'subscription.created':
             case 'subscription.updated': {
-                const user = await findUser(data);
+                const user = await findUser(payload);
 
                 if (!user) {
-                    logger.warn('[PADDLE_USER_RESOLVE_FAILED]', { eventId, customerId: data.customer_id });
+                    logger.warn('[PADDLE_USER_RESOLVE_FAILED]', { eventId, customerId: payload.customer_id });
                     return res.status(200).json({ status: 'ignored', message: 'User not found' });
                 }
 
@@ -139,7 +140,7 @@ router.post('/', async (req, res) => {
                     email: user.email
                 });
 
-                const item = data.items?.[0];
+                const item = payload.items?.[0];
                 const productId = item?.price?.product_id || item?.product?.id;
                 const priceId = item?.price?.id;
 
@@ -148,10 +149,10 @@ router.post('/', async (req, res) => {
                     PRICE_PLAN_MAP[priceId] ||
                     'free';
 
-                const status = data.status;
+                const status = payload.status;
                 // Use next_billed_at or current_billing_period.ends_at
                 // Paddle docs: current_billing_period.ends_at is standard for expiry logic
-                const currentPeriodEnd = data.current_billing_period?.ends_at || data.next_billed_at;
+                const currentPeriodEnd = payload.current_billing_period?.ends_at || payload.next_billed_at;
 
                 // [TAG] PLAN_RESOLVED
                 logger.info('[PADDLE_PLAN_RESOLVED]', {
@@ -163,8 +164,8 @@ router.post('/', async (req, res) => {
                 const { error } = await admin
                     .from('profiles')
                     .update({
-                        subscription_id: data.id,
-                        paddle_customer_id: data.customer_id,
+                        subscription_id: payload.id,
+                        paddle_customer_id: payload.customer_id,
                         subscription_status: status,
                         plan: plan,
                         current_period_end: currentPeriodEnd, // Maps to either current_period_end or plan_expires_at based on schema preference. Using current_period_end per user request.
@@ -179,7 +180,7 @@ router.post('/', async (req, res) => {
                     userId: user.id,
                     status,
                     plan,
-                    subscriptionId: data.id
+                    subscriptionId: payload.id
                 });
                 break;
             }
@@ -193,23 +194,23 @@ router.post('/', async (req, res) => {
                         subscription_status: 'canceled',
                         updated_at: new Date().toISOString()
                     })
-                    .eq('subscription_id', data.id);
+                    .eq('subscription_id', payload.id);
 
                 if (error) throw error;
 
                 // [TAG] PROFILE_UPDATED
                 logger.info('[PADDLE_PROFILE_UPDATED]', {
                     status: 'canceled',
-                    subscriptionId: data.id
+                    subscriptionId: payload.id
                 });
                 break;
             }
 
             case 'transaction.completed': {
-                const user = await findUser(data);
+                const user = await findUser(payload);
 
                 if (!user) {
-                    logger.warn('[PADDLE_USER_RESOLVE_FAILED]', { eventId, transactionId: data.id });
+                    logger.warn('[PADDLE_USER_RESOLVE_FAILED]', { eventId, transactionId: payload.id });
                     return res.status(200).json({ status: 'ignored', message: 'User not found' });
                 }
 
@@ -221,7 +222,7 @@ router.post('/', async (req, res) => {
                 });
 
                 // Paddle sends total in minor units string (e.g. "900")
-                const amountMinor = data.details?.totals?.total ? parseInt(data.details.totals.total) : 0;
+                const amountMinor = payload.details?.totals?.total ? parseInt(payload.details.totals.total) : 0;
 
                 // Idempotent Insert (ON CONFLICT DO NOTHING implied by if check or specific upsert)
                 // Since we want to log RECORDED only if new, we check existence first or use upsert with return
@@ -230,13 +231,13 @@ router.post('/', async (req, res) => {
                 const { error } = await admin
                     .from('transactions')
                     .upsert({
-                        id: data.id,
+                        id: payload.id,
                         user_id: user.id,
-                        subscription_id: data.subscription_id,
+                        subscription_id: payload.subscription_id,
                         amount_minor: amountMinor,
-                        currency: data.currency_code,
-                        status: data.status || 'completed',
-                        created_at: data.created_at
+                        currency: payload.currency_code,
+                        status: payload.status || 'completed',
+                        created_at: payload.created_at
                     }, { onConflict: 'id' });
 
                 if (error) throw error;
@@ -244,7 +245,7 @@ router.post('/', async (req, res) => {
                 // [TAG] TRANSACTION_RECORDED
                 logger.info('[PADDLE_TRANSACTION_RECORDED]', {
                     userId: user.id,
-                    transactionId: data.id,
+                    transactionId: payload.id,
                     amountMinor
                 });
                 break;
