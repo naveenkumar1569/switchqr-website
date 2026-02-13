@@ -57,6 +57,8 @@ app.use(cors());
 const paddleWebhookRoutes = require('./routes/paddle.webhook');
 
 // Webhook route MUST be registered before global express.json to preserve raw body
+// Webhook route MUST be registered before global express.json to preserve raw body
+app.use('/api/paddle-webhook', express.raw({ type: '*/*' }), paddleWebhookRoutes);
 app.use('/api/paddle/webhook', express.raw({ type: '*/*' }), paddleWebhookRoutes);
 
 // General Middleware
