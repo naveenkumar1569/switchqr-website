@@ -9,7 +9,6 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 
 // Lazy load all other pages for better initial load performance
-const TermsOfService = React.lazy(() => import('./pages/TermsOfService'));
 const Dashboard = React.lazy(() => import('./pages/Dashboard'));
 const Analytics = React.lazy(() => import('./pages/Analytics'));
 const Campaigns = React.lazy(() => import('./pages/Campaigns'));
@@ -70,7 +69,6 @@ function App() {
               <Routes>
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
-                <Route path="/terms" element={<TermsOfService />} />
 
                 <Route element={<PrivateRoute />}>
                   <Route path="/" element={<Dashboard />} />
