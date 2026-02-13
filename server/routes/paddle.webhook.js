@@ -42,7 +42,7 @@ function verifyPaddleSignature(signatureHeader, rawBodyBuffer, secret) {
 const { getAdminClient } = require('../utils/supabase');
 
 // Map Paddle price IDs to our plan names
-// Replace these with your actual Paddle price IDs
+// Replace these with your actual Paddle price IDs from the dashboard
 const PRICE_PLAN_MAP = {
     'pri_01jh...': 'starter',
     'pri_02jh...': 'pro'
@@ -51,6 +51,11 @@ const PRICE_PLAN_MAP = {
 // Note: In index.js, this router is registered at /api/paddle/webhook
 // with express.raw({ type: '*/*' }), so we use '/' here.
 router.post('/', async (req, res) => {
+    logger.info('[PADDLE_WEBHOOK_RECEIVED]', {
+        url: req.originalUrl,
+        method: req.method
+    });
+
     const signature = req.get('Paddle-Signature');
     const rawBodyBuffer = req.body; // Buffer from express.raw
 
@@ -80,13 +85,36 @@ router.post('/', async (req, res) => {
 
     const admin = getAdminClient();
 
+    /**
+     * Helper to find a user by user_id in custom_data or paddle_customer_id in profile
+     */
+    const findUserId = async (data) => {
+        // 1. Try custom_data.user_id (preferred for new signups)
+        const customUserId = data.custom_data?.user_id;
+        if (customUserId) return customUserId;
+
+        // 2. Try falling back to paddle_customer_id lookup (important for renewals/updates)
+        const customerId = data.customer_id;
+        if (customerId) {
+            const { data: profile, error } = await admin
+                .from('profiles')
+                .select('id')
+                .eq('paddle_customer_id', customerId)
+                .maybeSingle();
+
+            if (profile) return profile.id;
+        }
+
+        return null;
+    };
+
     try {
         switch (eventType) {
             case 'subscription.created':
             case 'subscription.updated': {
-                const userId = data.custom_data?.user_id;
+                const userId = await findUserId(data);
                 if (!userId) {
-                    logger.warn('[PADDLE_WEBHOOK_SKIP] No user_id in custom_data', { eventId });
+                    logger.warn('[PADDLE_WEBHOOK_SKIP] Could not map user', { eventId, customerId: data.customer_id });
                     break;
                 }
 
@@ -108,13 +136,11 @@ router.post('/', async (req, res) => {
                     .eq('id', userId);
 
                 if (error) throw error;
-                logger.info('[PADDLE_WEBHOOK_PROCESSED] Subscription updated', { userId, status, plan });
+                logger.info('[PADDLE_PROFILE_UPDATED]', { userId, status, plan, type: eventType });
                 break;
             }
 
             case 'subscription.canceled': {
-                // When canceled, it stays active until the end of the period.
-                // Paddle marks status as 'canceled' but we only want to update the status column.
                 const { error } = await admin
                     .from('profiles')
                     .update({
@@ -124,16 +150,19 @@ router.post('/', async (req, res) => {
                     .eq('subscription_id', data.id);
 
                 if (error) throw error;
-                logger.info('[PADDLE_WEBHOOK_PROCESSED] Subscription canceled', { subscriptionId: data.id });
+                logger.info('[PADDLE_PROFILE_UPDATED] (Canceled)', { subscriptionId: data.id });
                 break;
             }
 
             case 'transaction.completed': {
-                const userId = data.custom_data?.user_id;
+                const userId = await findUserId(data);
                 if (!userId) {
-                    logger.warn('[PADDLE_WEBHOOK_SKIP] No user_id in transaction custom_data', { eventId });
+                    logger.warn('[PADDLE_WEBHOOK_SKIP] Could not map user for transaction', { eventId });
                     break;
                 }
+
+                // Paddle sends total in minor units string (e.g. "900")
+                const amountMinor = parseInt(data.details.totals.total);
 
                 const { error } = await admin
                     .from('transactions')
@@ -141,30 +170,34 @@ router.post('/', async (req, res) => {
                         id: data.id,
                         user_id: userId,
                         subscription_id: data.subscription_id,
-                        amount: parseFloat(data.details.totals.total) / 100,
+                        amount_minor: amountMinor,
                         currency: data.currency_code,
                         status: 'completed',
                         created_at: data.created_at
                     });
 
                 if (error) throw error;
-                logger.info('[PADDLE_WEBHOOK_PROCESSED] Transaction recorded', { userId, transactionId: data.id });
+                logger.info('[PADDLE_TRANSACTION_RECORDED]', { userId, transactionId: data.id });
                 break;
             }
 
             default:
                 logger.info(`[PADDLE_WEBHOOK_IGNORED] Unhandled event type: ${eventType}`);
         }
+
+        // Return 200 and processed status only after successful work
+        return res.status(200).json({ status: 'processed' });
+
     } catch (err) {
         logger.error('[PADDLE_WEBHOOK_ERROR] Processing failed', {
             eventType,
             eventId,
             error: err.message
         });
+        // We still return 200 to Paddle but with "error" status to help us debug 
+        // without triggering infinite retries from Paddle for bugs.
+        return res.status(200).json({ status: 'error', message: 'Internal processing error' });
     }
-
-    // Return 200 to Paddle immediately
-    res.status(200).json({ status: 'received' });
 });
 
 module.exports = router;
