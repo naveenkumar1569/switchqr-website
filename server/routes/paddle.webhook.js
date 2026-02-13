@@ -213,7 +213,7 @@ router.post('/', async (req, res) => {
                         subscription_id: data.subscription_id,
                         amount_minor: amountMinor,
                         currency: data.currency_code,
-                        status: 'completed',
+                        status: data.status || 'completed',
                         created_at: data.created_at
                     }, { onConflict: 'id' });
 
