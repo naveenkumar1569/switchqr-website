@@ -10,6 +10,8 @@ import CaseStudy from './pages/CaseStudy';
 import IndustryUseCase from './pages/IndustryUseCase';
 import ComingSoon from './pages/ComingSoon';
 import Terms from './pages/Terms';
+import PrivacyPolicy from './pages/PrivacyPolicy';
+import RefundPolicy from './pages/RefundPolicy';
 import Layout from './Layout'; // Import the global Layout
 
 function App() {
@@ -26,7 +28,8 @@ function App() {
                     <Route path="/case-studies/:slug" element={<CaseStudy />} />
                     <Route path="/industries/:slug" element={<IndustryUseCase />} />
                     <Route path="/terms" element={<Terms />} />
-                    <Route path="/coming-soon/:page" element={<ComingSoon />} />
+                    <Route path="/privacy" element={<PrivacyPolicy />} />
+                    <Route path="/refund" element={<RefundPolicy />} />
                     <Route path="*" element={<Navigate to="/" replace />} />
                 </Routes>
             </Layout>

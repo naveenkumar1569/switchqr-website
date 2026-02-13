@@ -64,9 +64,12 @@ const Footer = () => {
 
                 <div className="pt-8 border-t border-gray-100 flex flex-col md:flex-row justify-between items-center gap-4">
                     <p className="text-sm text-gray-400">© {new Date().getFullYear()} SwitchQR Inc. All rights reserved.</p>
-                    <div className="flex gap-6">
-                        <Link to="/coming-soon/privacy-policy" className="text-sm text-gray-400 hover:text-gray-600">Privacy Policy</Link>
-                        <Link to="/terms" className="text-sm text-gray-400 hover:text-gray-600">Terms of Service</Link>
+                    <div className="flex gap-2 items-center text-sm text-gray-400">
+                        <Link to="/privacy" className="hover:text-gray-600 transition-colors">Privacy Policy</Link>
+                        <span className="text-gray-300">|</span>
+                        <Link to="/terms" className="hover:text-gray-600 transition-colors">Terms of Service</Link>
+                        <span className="text-gray-300">|</span>
+                        <Link to="/refund" className="hover:text-gray-600 transition-colors">Refund Policy</Link>
                     </div>
                 </div>
             </div>
