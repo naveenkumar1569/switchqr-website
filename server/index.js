@@ -53,12 +53,16 @@ const schedulesRoutes = require('./routes/schedules.supabase');
 app.use(helmet());
 app.use(cors());
 
-// Capture RAW body for signature verification (needed for Paddle)
-app.use(express.json({
-    verify: (req, res, buf) => {
-        req.rawBody = buf.toString();
-    }
-}));
+// Import Paddle webhook route
+const paddleWebhookRoutes = require('./routes/paddle.webhook');
+
+// Webhook route MUST be registered before global express.json to preserve raw body
+app.use('/api/paddle/webhook', express.raw({ type: '*/*' }), paddleWebhookRoutes);
+
+// General Middleware
+app.use(helmet());
+app.use(cors());
+app.use(express.json());
 
 // Debug Middleware: Log all requests
 app.use((req, res, next) => {
@@ -68,9 +72,6 @@ app.use((req, res, next) => {
     next();
 });
 
-// Import Paddle webhook route
-const paddleWebhookRoutes = require('./routes/paddle.webhook');
-
 app.use('/api/auth', authRoutes);
 app.use('/api/qrs', qrRoutes);
 app.use('/api/stats', analyticsRoutes);
@@ -79,7 +80,6 @@ app.use('/api/plan', planRoutes);
 app.use('/api/campaigns', campaignsRoutes); // TODO: Migrate
 app.use('/api/qrs', variantsRoutes); // Variants are under /api/qrs/:id/variants
 app.use('/api/qrs', schedulesRoutes); // Schedules are under /api/qrs/:id/schedules
-app.use('/api/paddle', paddleWebhookRoutes);
 
 // Redirect Service (Must be last to avoid capturing api routes)
 app.use('/', redirectRoutes);
