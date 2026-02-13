@@ -8,98 +8,206 @@ const PrivacyPolicy = () => {
     });
 
     return (
-        <div className="bg-background-light text-text-main font-display antialiased min-h-screen">
-            <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 lg:py-20">
-                <div className="max-w-3xl mx-auto">
-                    {/* Page Heading */}
-                    <div className="mb-12">
-                        <h1 className="text-4xl sm:text-5xl font-black text-text-main leading-tight mb-4 tracking-tight">Privacy Policy</h1>
-                        <div className="flex items-center gap-2 text-text-muted">
-                            <span className="material-symbols-outlined text-base">calendar_today</span>
-                            <span className="text-sm font-medium">Last updated: {today}</span>
-                        </div>
+        <div className="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 font-display transition-colors duration-300 min-h-screen">
+            <main className="max-w-4xl mx-auto px-6 py-16 md:py-24">
+                {/* Document Header */}
+                <header className="mb-12 border-b border-slate-200 dark:border-slate-800 pb-8">
+                    <h1 className="text-4xl md:text-5xl font-extrabold text-slate-900 dark:text-white mb-4 tracking-tight">
+                        Privacy Policy
+                    </h1>
+                    <div className="flex items-center gap-2 text-slate-500 dark:text-slate-400 font-medium">
+                        <span className="material-symbols-outlined text-sm">event</span>
+                        <span>Last updated: February 13, 2026</span>
                     </div>
+                </header>
 
-                    {/* Content Area */}
-                    <article className="prose prose-slate max-w-none">
-                        <div className="space-y-8 text-text-muted leading-8">
-                            <p className="text-lg">This Privacy Policy explains how SwitchQR (“SwitchQR”, “we”, “us”) collects, uses, and shares information when you use our websites, products, and services (the “Services”).</p>
+                {/* Main Content Section */}
+                <article className="prose-custom max-w-none prose prose-slate dark:prose-invert">
+                    {/* Introduction */}
+                    <section className="mb-12">
+                        <p className="text-lg text-slate-600 dark:text-slate-300 leading-relaxed">
+                            This Privacy Policy explains how SwitchQR (“SwitchQR”, “we”, “us”) collects, uses, and shares information when you use our websites, products, and services (the “Services”).
+                        </p>
+                    </section>
 
-                            <section>
-                                <h2 className="text-2xl font-bold text-text-main mb-4">Information we collect</h2>
+                    <div className="h-px bg-slate-200 dark:bg-slate-800 w-24 mb-12"></div>
 
-                                <h3 className="text-xl font-bold text-text-main mb-2">Account information</h3>
-                                <p>When you create an account, we collect information such as your name, email address, and authentication details.</p>
+                    {/* Information we collect */}
+                    <section className="mb-12">
+                        <h2 className="text-2xl font-bold text-primary mb-6 flex items-center gap-2">
+                            <span className="material-symbols-outlined">database</span>
+                            Information we collect
+                        </h2>
 
-                                <h3 className="text-xl font-bold text-text-main mb-2 mt-6">Usage information</h3>
-                                <p>We collect information about how you use the Services, such as pages visited, features used, and actions taken. This may include device and browser information, IP address, and timestamps.</p>
+                        <div className="space-y-8">
+                            <div>
+                                <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-3">Account information</h3>
+                                <p className="text-slate-600 dark:text-slate-300">
+                                    When you create an account, we collect information such as your name, email address, and authentication details.
+                                </p>
+                            </div>
 
-                                <h3 className="text-xl font-bold text-text-main mb-2 mt-6">QR and link data</h3>
-                                <p>When you create QR codes and destination URLs, we store the QR configuration and related metadata needed to provide the Services.</p>
+                            <div>
+                                <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-3">Usage information</h3>
+                                <p className="text-slate-600 dark:text-slate-300">
+                                    We collect information about how you use the Services, such as pages visited, features used, and actions taken. This may include device information, browser type, IP address, and timestamps.
+                                </p>
+                            </div>
 
-                                <h3 className="text-xl font-bold text-text-main mb-2 mt-6">Cookies</h3>
-                                <p>We use cookies and similar technologies to operate the Services and improve performance. You can control cookies through your browser settings.</p>
-                            </section>
+                            <div>
+                                <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-3">QR and link data</h3>
+                                <p className="text-slate-600 dark:text-slate-300">
+                                    When you create QR codes and destination URLs, we store the QR configuration and related metadata needed to provide the Services.
+                                </p>
+                            </div>
 
-                            <section>
-                                <h2 className="text-2xl font-bold text-text-main mb-4">How we use information</h2>
-                                <p>We use information to:</p>
-                                <ul className="list-disc pl-5 space-y-1">
-                                    <li>provide and operate the Services</li>
-                                    <li>create and manage accounts</li>
-                                    <li>process requests and support inquiries</li>
-                                    <li>improve product performance and user experience</li>
-                                    <li>maintain security and prevent fraud</li>
-                                    <li>communicate important product and account updates</li>
-                                </ul>
-                            </section>
-
-                            <section>
-                                <h2 className="text-2xl font-bold text-text-main mb-4">Payments</h2>
-                                <p>Payments are processed by our payment partners. We do not store full card details on our servers.</p>
-                            </section>
-
-                            <section>
-                                <h2 className="text-2xl font-bold text-text-main mb-4">How we share information</h2>
-                                <p>We may share information with:</p>
-                                <ul className="list-disc pl-5 space-y-1">
-                                    <li>service providers who help us run the Services (e.g., hosting, analytics, email delivery, payments)</li>
-                                    <li>legal authorities when required by law or to protect rights and safety</li>
-                                </ul>
-                                <p className="mt-4 font-bold text-text-main italic">We do not sell your personal information.</p>
-                            </section>
-
-                            <section>
-                                <h2 className="text-2xl font-bold text-text-main mb-4">Data retention</h2>
-                                <p>We retain information for as long as needed to provide the Services and meet legal, accounting, and security requirements.</p>
-                            </section>
-
-                            <section>
-                                <h2 className="text-2xl font-bold text-text-main mb-4">Security</h2>
-                                <p>We use reasonable administrative, technical, and organizational measures to protect information. No method of transmission or storage is 100% secure.</p>
-                            </section>
-
-                            <section>
-                                <h2 className="text-2xl font-bold text-text-main mb-4">International transfers</h2>
-                                <p>Your information may be processed in countries other than your own depending on where our service providers operate.</p>
-                            </section>
-
-                            <section>
-                                <h2 className="text-2xl font-bold text-text-main mb-4">Your choices</h2>
-                                <p>You can:</p>
-                                <ul className="list-disc pl-5 space-y-1">
-                                    <li>update account information in your account settings</li>
-                                    <li>request deletion of your account by contacting support@switch-qr.com</li>
-                                </ul>
-                            </section>
-
-                            <section>
-                                <h2 className="text-2xl font-bold text-text-main mb-4">Contact</h2>
-                                <p>If you have questions about this Privacy Policy, contact <a href="mailto:support@switch-qr.com" className="text-primary hover:underline font-bold">support@switch-qr.com</a>.</p>
-                            </section>
+                            <div>
+                                <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-3">Cookies</h3>
+                                <p className="text-slate-600 dark:text-slate-300">
+                                    We use cookies and similar technologies to operate and improve the Services. You can control cookies through your browser settings.
+                                </p>
+                            </div>
                         </div>
-                    </article>
-                </div>
+                    </section>
+
+                    <div className="h-px bg-slate-200 dark:bg-slate-800 w-24 mb-12"></div>
+
+                    {/* How we use information */}
+                    <section className="mb-12">
+                        <h2 className="text-2xl font-bold text-primary mb-6 flex items-center gap-2">
+                            <span className="material-symbols-outlined">settings_suggest</span>
+                            How we use information
+                        </h2>
+                        <ul className="grid grid-cols-1 md:grid-cols-2 gap-4 text-slate-600 dark:text-slate-300">
+                            {[
+                                { icon: 'lan', text: 'provide, operate, and maintain the Services' },
+                                { icon: 'person_manage', text: 'create and manage user accounts' },
+                                { icon: 'support_agent', text: 'respond to support requests' },
+                                { icon: 'trending_up', text: 'improve performance and reliability' },
+                                { icon: 'security', text: 'detect and prevent fraud or abuse' },
+                                { icon: 'campaign', text: 'communicate important service info' },
+                            ].map((item, idx) => (
+                                <li key={idx} className="flex items-start gap-3 bg-white dark:bg-background-dark p-4 rounded-xl border border-primary/10 shadow-sm shadow-primary/5">
+                                    <span className="material-symbols-outlined text-primary">{item.icon}</span>
+                                    <span className="text-sm font-medium">{item.text}</span>
+                                </li>
+                            ))}
+                        </ul>
+                    </section>
+
+                    <div className="h-px bg-slate-200 dark:bg-slate-800 w-24 mb-12"></div>
+
+                    {/* Payments */}
+                    <section className="mb-12">
+                        <h2 className="text-2xl font-bold text-primary mb-6 flex items-center gap-2">
+                            <span className="material-symbols-outlined">payments</span>
+                            Payments
+                        </h2>
+                        <div className="space-y-4 text-slate-600 dark:text-slate-300">
+                            <p>
+                                Payments are processed by third-party payment providers, including <strong>Paddle.com</strong>. Paddle acts as the Merchant of Record and may collect and process personal and payment information in accordance with their Privacy Policy.
+                            </p>
+                            <p className="bg-primary/5 dark:bg-primary/10 border border-primary/20 rounded-lg p-4 italic text-sm">
+                                SwitchQR does not store full credit card numbers or payment details.
+                            </p>
+                        </div>
+                    </section>
+
+                    <div className="h-px bg-slate-200 dark:bg-slate-800 w-24 mb-12"></div>
+
+                    {/* How we share information */}
+                    <section className="mb-12">
+                        <h2 className="text-2xl font-bold text-primary mb-6 flex items-center gap-2">
+                            <span className="material-symbols-outlined">share</span>
+                            How we share information
+                        </h2>
+                        <div className="space-y-4 text-slate-600 dark:text-slate-300 leading-relaxed">
+                            <p>We may share information with:</p>
+                            <ul className="list-disc pl-5 space-y-2">
+                                <li>service providers that support hosting, infrastructure, analytics, email delivery, and payment processing</li>
+                                <li>legal authorities when required by law</li>
+                                <li>parties necessary to protect the security and integrity of the Services</li>
+                            </ul>
+                            <p className="mt-6 font-bold text-primary italic">We do not sell personal information.</p>
+                        </div>
+                    </section>
+
+                    <div className="h-px bg-slate-200 dark:bg-slate-800 w-24 mb-12"></div>
+
+                    {/* Data retention */}
+                    <section className="mb-12">
+                        <h2 className="text-2xl font-bold text-primary mb-6 flex items-center gap-2">
+                            <span className="material-symbols-outlined">timer</span>
+                            Data retention
+                        </h2>
+                        <p className="text-slate-600 dark:text-slate-300">
+                            We retain personal information for as long as necessary to provide the Services, comply with legal obligations, resolve disputes, and enforce agreements.
+                        </p>
+                    </section>
+
+                    <div className="h-px bg-slate-200 dark:bg-slate-800 w-24 mb-12"></div>
+
+                    {/* Security */}
+                    <section className="mb-12">
+                        <h2 className="text-2xl font-bold text-primary mb-6 flex items-center gap-2">
+                            <span className="material-symbols-outlined">verified_user</span>
+                            Security
+                        </h2>
+                        <p className="text-slate-600 dark:text-slate-300">
+                            We implement reasonable administrative, technical, and organizational safeguards to protect personal information. However, no system is completely secure.
+                        </p>
+                    </section>
+
+                    <div className="h-px bg-slate-200 dark:bg-slate-800 w-24 mb-12"></div>
+
+                    {/* International transfers */}
+                    <section className="mb-12">
+                        <h2 className="text-2xl font-bold text-primary mb-6 flex items-center gap-2">
+                            <span className="material-symbols-outlined">public</span>
+                            International transfers
+                        </h2>
+                        <p className="text-slate-600 dark:text-slate-300">
+                            Your information may be processed in countries other than your own, including where our service providers operate.
+                        </p>
+                    </section>
+
+                    <div className="h-px bg-slate-200 dark:bg-slate-800 w-24 mb-12"></div>
+
+                    {/* Your rights and choices */}
+                    <section className="mb-12">
+                        <h2 className="text-2xl font-bold text-primary mb-6 flex items-center gap-2">
+                            <span className="material-symbols-outlined">checklist_rtl</span>
+                            Your rights and choices
+                        </h2>
+                        <ul className="list-disc pl-5 space-y-2 text-slate-600 dark:text-slate-300">
+                            <li>update your account information at any time</li>
+                            <li>request deletion of your account by contacting support@switch-qr.com</li>
+                            <li>control cookies through browser settings</li>
+                        </ul>
+                    </section>
+
+                    <div className="h-px bg-slate-200 dark:bg-slate-800 w-24 mb-12"></div>
+
+                    {/* Contact Section */}
+                    <section className="mb-16">
+                        <h2 className="text-2xl font-bold text-primary mb-6 flex items-center gap-2">
+                            <span className="material-symbols-outlined">contact_page</span>
+                            Contact
+                        </h2>
+                        <div className="bg-primary/5 dark:bg-primary/10 border border-primary/20 rounded-xl p-8">
+                            <p className="text-slate-700 dark:text-slate-300 mb-4 font-medium">
+                                If you have questions about this Privacy Policy, contact:
+                            </p>
+                            <a
+                                href="mailto:support@switch-qr.com"
+                                className="inline-flex items-center gap-3 text-2xl font-bold text-primary hover:underline group"
+                            >
+                                <span className="material-symbols-outlined group-hover:scale-110 transition-transform">mail</span>
+                                support@switch-qr.com
+                            </a>
+                        </div>
+                    </section>
+                </article>
             </main>
         </div>
     );
