@@ -9,6 +9,8 @@ const config = {
     supabaseServiceRoleKey: process.env.SUPABASE_SERVICE_ROLE_KEY,
     jwtSecret: process.env.JWT_SECRET,
     paddleApiKey: process.env.PADDLE_API_KEY,
+    paddleWebhookSecret: process.env.PADDLE_WEBHOOK_SECRET,
+    paddleEnv: process.env.PADDLE_ENV || 'sandbox',
 };
 
 module.exports = config;
