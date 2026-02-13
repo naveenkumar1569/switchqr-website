@@ -43,9 +43,17 @@ const { getAdminClient } = require('../utils/supabase');
 
 // Map Paddle price IDs to our plan names
 // Replace these with your actual Paddle price IDs from the dashboard
+// Map Paddle product/price IDs to our plan names
+const PRODUCT_PLAN_MAP = {
+    'pro_01kh970benywx13cg51pj46w3j': 'starter',
+    'pro_01kh970zxeg023hv5sdsyzq2eb': 'pro'
+};
+
 const PRICE_PLAN_MAP = {
-    'pri_01jh...': 'starter',
-    'pri_02jh...': 'pro'
+    'pri_01khbh3scr6cq2frtjb97vxmyg': 'starter',
+    'pri_01khbh5212q78zrty8wddme54a': 'starter',
+    'pri_01khbgknm5vx91dmn5qt98p6wq': 'pro',
+    'pri_01khbgdrrk40e9v4w5jpq96jn8': 'pro'
 };
 
 // Note: In index.js, this router is registered at /api/paddle/webhook
@@ -131,12 +139,26 @@ router.post('/', async (req, res) => {
                     email: user.email
                 });
 
-                const priceId = data.items[0]?.price?.id;
-                const plan = PRICE_PLAN_MAP[priceId] || 'free';
+                const item = data.items?.[0];
+                const productId = item?.price?.product_id || item?.product?.id;
+                const priceId = item?.price?.id;
+
+                const plan =
+                    PRODUCT_PLAN_MAP[productId] ||
+                    PRICE_PLAN_MAP[priceId] ||
+                    'free';
+
                 const status = data.status;
                 // Use next_billed_at or current_billing_period.ends_at
                 // Paddle docs: current_billing_period.ends_at is standard for expiry logic
-                const currentPeriodEnd = data.current_billing_period?.ends_at;
+                const currentPeriodEnd = data.current_billing_period?.ends_at || data.next_billed_at;
+
+                // [TAG] PLAN_RESOLVED
+                logger.info('[PADDLE_PLAN_RESOLVED]', {
+                    productId,
+                    priceId,
+                    resolvedPlan: plan
+                });
 
                 const { error } = await admin
                     .from('profiles')
