@@ -81,7 +81,7 @@ const PrivacyPolicy = () => {
                         <ul className="grid grid-cols-1 md:grid-cols-2 gap-4 text-slate-600 dark:text-slate-300">
                             {[
                                 { icon: 'lan', text: 'provide, operate, and maintain the Services' },
-                                { icon: 'person_manage', text: 'create and manage user accounts' },
+                                { icon: 'manage_accounts', text: 'create and manage user accounts' },
                                 { icon: 'support_agent', text: 'respond to support requests' },
                                 { icon: 'trending_up', text: 'improve performance and reliability' },
                                 { icon: 'security', text: 'detect and prevent fraud or abuse' },
