@@ -8,48 +8,11 @@
 const express = require('express');
 const { getAuthenticatedClient } = require('../utils/supabase');
 const logger = require('../utils/logger');
+const { PLAN_CONFIG } = require('../utils/planManager');
 
 console.log('✅ [DEBUG] Loading routes/plan.supabase.js');
 
 const router = express.Router();
-
-// Plan Limits & Features Configuration
-const PLAN_CONFIG = {
-    limits: {
-        free: 5,
-        starter: 100,
-        pro: 1000
-    },
-    features: {
-        free: {
-            advanced_analytics: false,
-            campaigns: false,
-            branding: false,
-            ab_testing: false,
-            scheduling: false,
-            csv_export: false,
-            svg_pdf_downloads: false
-        },
-        starter: {
-            advanced_analytics: true,
-            campaigns: false,
-            branding: false,
-            ab_testing: false,
-            scheduling: true,
-            csv_export: false,
-            svg_pdf_downloads: true
-        },
-        pro: {
-            advanced_analytics: true,
-            campaigns: true,
-            branding: true,
-            ab_testing: true,
-            scheduling: true,
-            csv_export: true,
-            svg_pdf_downloads: true
-        }
-    }
-};
 
 /**
  * Middleware to create authenticated Supabase client
