@@ -1306,13 +1306,13 @@ const QRDetails = () => {
                         {planInfo?.features?.scheduling && (
                             <label
                                 className="relative inline-flex items-center cursor-pointer"
-                                title={abTestingEnabled ? "Disable A/B testing to use scheduling" : "Enable Scheduled Redirects"}
+                                title={abTestingEnabled && planInfo?.features?.ab_testing ? "Disable A/B testing to use scheduling" : "Enable Scheduled Redirects"}
                             >
                                 <input
                                     type="checkbox"
                                     checked={schedulingEnabled}
                                     onChange={handleToggleScheduling}
-                                    disabled={abTestingEnabled}
+                                    disabled={abTestingEnabled && planInfo?.features?.ab_testing}
                                     className="sr-only peer"
                                 />
                                 <div className="w-11 h-6 bg-slate-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary/20 dark:peer-focus:ring-primary/40 rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-slate-600 peer-checked:bg-primary peer-disabled:opacity-50 peer-disabled:cursor-not-allowed"></div>
@@ -1323,7 +1323,7 @@ const QRDetails = () => {
                     {
                         planInfo?.features?.scheduling ? (
                             <>
-                                {abTestingEnabled && (
+                                {abTestingEnabled && planInfo?.features?.ab_testing && (
                                     <div className="mb-4 p-3 rounded-lg bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800">
                                         <div className="flex items-start gap-2">
                                             <span className="material-symbols-outlined text-amber-600 dark:text-amber-400 text-lg">warning</span>
@@ -1381,13 +1381,13 @@ const QRDetails = () => {
                         {planInfo?.features?.ab_testing && (
                             <label
                                 className="relative inline-flex items-center cursor-pointer"
-                                title={schedulingEnabled ? "Disable scheduling to use A/B testing" : "Enable A/B Destination Testing"}
+                                title={schedulingEnabled && planInfo?.features?.scheduling ? "Disable scheduling to use A/B testing" : "Enable A/B Destination Testing"}
                             >
                                 <input
                                     type="checkbox"
                                     checked={abTestingEnabled}
                                     onChange={handleToggleABTesting}
-                                    disabled={schedulingEnabled}
+                                    disabled={schedulingEnabled && planInfo?.features?.scheduling}
                                     className="sr-only peer"
                                 />
                                 <div className="w-11 h-6 bg-slate-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary/20 dark:peer-focus:ring-primary/40 rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-slate-600 peer-checked:bg-primary peer-disabled:opacity-50 peer-disabled:cursor-not-allowed"></div>
