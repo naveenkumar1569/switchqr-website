@@ -2,7 +2,6 @@ const express = require('express');
 const { db } = require('../database');
 const rateLimit = require('express-rate-limit');
 const UAParser = require('ua-parser-js');
-const { PLAN_CONFIG } = require('../utils/planManager');
 
 const router = express.Router();
 
@@ -165,34 +164,6 @@ router.get('/:shortCode', redirectLimiter, async (req, res) => {
     const qr = stmt.get(shortCode);
 
     if (qr) {
-        // --- SCAN LIMIT ENFORCEMENT ---
-        // 1. Get owner's plan
-        const ownerStmt = db.prepare('SELECT plan FROM users WHERE id = ?');
-        const owner = ownerStmt.get(qr.user_id);
-        const planType = (owner?.plan || 'free').toLowerCase();
-
-        // 2. Get scan limit for this plan
-        const scanLimit = PLAN_CONFIG.scanLimits[planType];
-
-        // 3. If plan has a limit, check current scan count
-        if (scanLimit !== null) {
-            const countStmt = db.prepare(`
-                SELECT COUNT(*) as count 
-                FROM scans s
-                JOIN qrs q ON s.qr_id = q.id
-                WHERE q.user_id = ?
-            `);
-            const { count } = countStmt.get(qr.user_id);
-
-            if (count >= scanLimit) {
-                console.warn(`Scan limit reached for user ${qr.user_id} (${count}/${scanLimit})`);
-                const protocol = req.headers['x-forwarded-proto'] || req.protocol;
-                const host = req.get('host');
-                return res.redirect(`${protocol}://${host}/scan-limit-reached`);
-            }
-        }
-        // --- END SCAN LIMIT ENFORCEMENT ---
-
         let destinationUrl = qr.destination_url;
         let variantId = null;
         let scheduleRuleId = null;

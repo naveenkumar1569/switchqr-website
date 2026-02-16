@@ -11,6 +11,7 @@ const requestIp = require('request-ip');
 const ua = require('useragent');
 const geoip = require('geoip-lite');
 const logger = require('../utils/logger');
+const { resolveUserPlan, PLAN_CONFIG } = require('../utils/planManager');
 
 const router = express.Router();
 
@@ -59,6 +60,41 @@ router.get('/r/:shortCode', async (req, res) => {
         if (qr.status !== 'active') {
             return res.status(410).send('This QR Code is inactive');
         }
+
+        // --- SCAN LIMIT ENFORCEMENT ---
+        try {
+            // 1. Resolve owner's plan
+            const plan = await resolveUserPlan(qr.owner_id);
+            const scanLimit = PLAN_CONFIG.scanLimits[plan.effectivePlan];
+
+            // 2. If plan has a limit, check total usage
+            if (scanLimit !== null) {
+                // Get all QR IDs for this user
+                const { data: userQrs } = await supabaseAdmin
+                    .from('qrs')
+                    .select('id')
+                    .eq('owner_id', qr.owner_id);
+
+                if (userQrs && userQrs.length > 0) {
+                    const qrIds = userQrs.map(q => q.id);
+                    // Count total scans across all user's QRs
+                    const { count, error: countError } = await supabaseAdmin
+                        .from('scans')
+                        .select('*', { count: 'exact', head: true })
+                        .in('qr_id', qrIds);
+
+                    if (!countError && count >= scanLimit) {
+                        logger.warn(`Scan limit reached for user ${qr.owner_id} (${count}/${scanLimit})`);
+                        const protocol = req.headers['x-forwarded-proto'] || req.protocol;
+                        const host = req.get('host');
+                        return res.redirect(`${protocol}://${host}/scan-limit-reached`);
+                    }
+                }
+            }
+        } catch (planError) {
+            logger.error('Scan limit enforcement failed (falling back to allow)', planError);
+        }
+        // --- END SCAN LIMIT ENFORCEMENT ---
 
         // Initialize Routing Variables
         let destination_url = qr.destination_url;
