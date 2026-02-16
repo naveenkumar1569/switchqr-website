@@ -106,12 +106,9 @@ router.get('/r/:shortCode', async (req, res) => {
         let schedule_rule_id = null;
         const now = new Date();
 
-        console.log(`🚀 [REDIRECT] Routing started for code: ${shortCode} (ID: ${qr.id})`);
-        console.log(`📍 [REDIRECT] Fallback URL: ${qr.destination_url}`);
 
         // 2. Evaluate Schedules (Priority 1) - Only if plan supports it
         if (qr.scheduling_enabled && ownerPlan?.features?.scheduling) {
-            console.log(`📅 [REDIRECT] Scheduling enabled. Checking rules...`);
             // Fetch active schedules
             const { data: schedules } = await supabaseAdmin
                 .from('schedules')
@@ -120,20 +117,17 @@ router.get('/r/:shortCode', async (req, res) => {
                 .eq('active', true);
 
             if (schedules && schedules.length > 0) {
-                console.log(`📅 [REDIRECT] Found ${schedules.length} active schedule rules.`);
                 // Filter matching schedules
                 const matchingSchedule = schedules.find(schedule => {
                     // Check Time Window (UTC)
                     const startTime = new Date(schedule.start_time);
                     if (startTime > now) {
-                        console.log(`   - Rule ${schedule.id} skipped: Not started yet (Starts: ${schedule.start_time})`);
                         return false;
                     }
 
                     if (schedule.end_time) {
                         const endTime = new Date(schedule.end_time);
                         if (endTime < now) {
-                            console.log(`   - Rule ${schedule.id} skipped: Already ended (Ended: ${schedule.end_time})`);
                             return false;
                         }
                     }
@@ -151,7 +145,6 @@ router.get('/r/:shortCode', async (req, res) => {
                             const currentDayIndex = map[dayName];
 
                             if (!schedule.days.includes(currentDayIndex)) {
-                                console.log(`   - Rule ${schedule.id} skipped: Day mismatch (Current: ${dayName}/${currentDayIndex}, Allowed: ${schedule.days})`);
                                 return false;
                             }
                         } catch (err) {
@@ -160,7 +153,6 @@ router.get('/r/:shortCode', async (req, res) => {
                         }
                     }
 
-                    console.log(`   ✅ Rule ${schedule.id} matched!`);
                     return true;
                 });
 
@@ -168,16 +160,13 @@ router.get('/r/:shortCode', async (req, res) => {
                     destination_url = matchingSchedule.destination_url;
                     routing_mode = 'scheduled';
                     schedule_rule_id = matchingSchedule.id;
-                    console.log(`🎯 [REDIRECT] Schedule match found: ${destination_url}`);
                 }
             } else {
-                console.log(`📅 [REDIRECT] No active schedule rules found for this QR.`);
             }
         }
 
         // 3. Evaluate A/B Variants (Priority 2, only if not scheduled) - Only if plan supports it
         if (routing_mode === 'basic' && qr.ab_testing_enabled && ownerPlan?.features?.ab_testing) {
-            console.log(`🧪 [REDIRECT] A/B Testing enabled. Checking variants for QR ${qr.id}...`);
             const { data: variants, error: vErr } = await supabaseAdmin
                 .from('variants')
                 .select('*')
@@ -190,12 +179,10 @@ router.get('/r/:shortCode', async (req, res) => {
 
             if (variants && variants.length > 0) {
                 const realTotal = variants.reduce((sum, v) => sum + (v.weight || 0), 0);
-                console.log(`🧪 [REDIRECT] Found ${variants.length} active variants. Total Weight: ${realTotal}%`);
 
                 if (realTotal > 0) {
                     let cursor = 0;
                     const pickedRandom = Math.random() * 100;
-                    console.log(`🧪 [REDIRECT] Random number: ${pickedRandom.toFixed(2)}`);
 
                     for (const v of variants) {
                         cursor += v.weight;
@@ -203,22 +190,18 @@ router.get('/r/:shortCode', async (req, res) => {
                             destination_url = v.destination_url;
                             variant_id = v.id;
                             routing_mode = 'ab';
-                            console.log(`🎯 [REDIRECT] A/B Variant matched: ${v.name} (${destination_url})`);
                             break;
                         }
                     }
                     if (routing_mode === 'basic') {
-                        console.log(`🧪 [REDIRECT] No variant matched. Attributing to Control (Original URL).`);
                         routing_mode = 'ab';
                         variant_id = null; // Explicitly null for Control
                     }
                 }
             } else {
-                console.log(`🧪 [REDIRECT] No active variants found.`);
             }
         }
 
-        console.log(`🏁 [REDIRECT] Final Decision: Mode=${routing_mode}, URL=${destination_url}`);
 
         // 4. Log Scan (Async)
         // Never block response on logging
@@ -243,7 +226,6 @@ router.get('/r/:shortCode', async (req, res) => {
         })
             .then(({ error }) => {
                 if (error) console.error(`[USAGE] Failed to increment scan count for user ${qr.owner_id}`, error);
-                else console.log(`[USAGE] Incremented scan count for user ${qr.owner_id}`);
             });
 
         // 7. Redirect with Hardened Fallback

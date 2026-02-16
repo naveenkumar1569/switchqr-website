@@ -189,7 +189,7 @@ const Dashboard = () => {
             ]);
         });
 
-        const csvContent = "data:text/csv;charset=utf-8,"
+        const csvContent = "data:text/csv;charset=utf-8," +
             [headers.join(','), ...rows].join("\n");
 
         const encodedUri = encodeURI(csvContent);
