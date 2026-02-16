@@ -2,6 +2,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { fetchGlobalStats } from '../utils/analyticsService';
+import { Link } from 'react-router-dom';
 
 const getFlagEmoji = (countryCode) => {
     if (!countryCode || countryCode === 'Unknown') return '🌐';
@@ -11,6 +12,26 @@ const getFlagEmoji = (countryCode) => {
         .map(char => 127397 + char.charCodeAt());
     return String.fromCodePoint(...codePoints);
 };
+
+// Locked Feature Overlay Component
+const LockedFeature = ({ title, description }) => (
+    <div className="absolute inset-0 bg-white/95 dark:bg-surface-dark/95 backdrop-blur-sm rounded-2xl flex flex-col items-center justify-center z-10 border border-slate-200 dark:border-slate-700">
+        <div className="text-center px-6 max-w-md">
+            <div className="inline-flex items-center justify-center w-16 h-16 bg-primary/10 rounded-full mb-4">
+                <span className="material-symbols-outlined text-primary text-3xl">lock</span>
+            </div>
+            <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-2">{title}</h3>
+            <p className="text-sm text-slate-500 dark:text-slate-400 mb-4">{description}</p>
+            <Link
+                to="/billing"
+                className="inline-flex items-center gap-2 px-6 py-2.5 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors text-sm font-medium shadow-sm"
+            >
+                <span>Upgrade Pro</span>
+                <span className="material-symbols-outlined text-lg">arrow_forward</span>
+            </Link>
+        </div>
+    </div>
+);
 
 const GlobalAnalytics = () => {
     const { token, planInfo } = useAuth();
@@ -86,6 +107,51 @@ const GlobalAnalytics = () => {
         link.click();
         document.body.removeChild(link);
     };
+
+    // Check if user has access to Analytics tab
+    const effectivePlan = planInfo?.effectivePlan || planInfo?.plan || 'free';
+    const hasAnalyticsAccess = effectivePlan !== 'free';
+    const isProUser = effectivePlan === 'pro';
+    const isStarterUser = effectivePlan === 'starter';
+
+    // Block Free users from accessing Analytics entirely
+    if (!hasAnalyticsAccess) {
+        return (
+            <div className="max-w-4xl mx-auto">
+                <div className="bg-white dark:bg-surface-dark rounded-2xl shadow-soft overflow-hidden border border-slate-100/50 dark:border-slate-800">
+                    <div className="h-40 w-full bg-gradient-to-br from-primary to-indigo-600 relative">
+                        <div className="absolute inset-0 bg-white/10 backdrop-blur-[1px]"></div>
+                    </div>
+                    <div className="p-8 md:p-12 flex flex-col items-center text-center gap-6">
+                        <div className="inline-flex items-center justify-center w-20 h-20 bg-primary/10 rounded-full">
+                            <span className="material-symbols-outlined text-primary text-4xl">lock</span>
+                        </div>
+                        <div>
+                            <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-3">Analytics Locked</h2>
+                            <p className="text-slate-500 dark:text-slate-400 text-base leading-relaxed max-w-md">
+                                Upgrade to Starter or Pro to unlock detailed analytics, track your QR performance, and understand your audience.
+                            </p>
+                        </div>
+                        <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
+                            <Link
+                                to="/billing"
+                                className="inline-flex items-center justify-center gap-2 px-8 py-3 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors font-medium shadow-md group"
+                            >
+                                <span>Upgrade Now</span>
+                                <span className="material-symbols-outlined text-lg group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                            </Link>
+                            <Link
+                                to="/"
+                                className="inline-flex items-center justify-center gap-2 px-8 py-3 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-white rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors font-medium"
+                            >
+                                <span>Back to Dashboard</span>
+                            </Link>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        );
+    }
 
     // Loading Skeleton
     if (loading) return (
@@ -514,7 +580,7 @@ const GlobalAnalytics = () => {
             </div>
 
             {/* Peak Scanning Times Heatmap */}
-            <div className="bg-white dark:bg-surface-dark rounded-2xl shadow-soft p-6 md:p-8 border border-slate-100/50 dark:border-slate-800">
+            <div className="bg-white dark:bg-surface-dark rounded-2xl shadow-soft p-6 md:p-8 border border-slate-100/50 dark:border-slate-800 relative">
                 <div className="mb-6">
                     <h2 className="text-lg font-bold text-slate-900 dark:text-white">Peak Scanning Times</h2>
                     <p className="text-sm text-slate-500 dark:text-slate-400">Heatmap of activity by hour and day ({dateRange.label})</p>
@@ -584,13 +650,20 @@ const GlobalAnalytics = () => {
                         <p className="text-slate-400 dark:text-slate-500 text-sm font-medium">No scan activity yet</p>
                     </div>
                 )}
+                {/* Lock overlay for Starter users */}
+                {isStarterUser && (
+                    <LockedFeature
+                        title="Unlock Peak Scanning Times"
+                        description="Gain deeper insights with city-level data, OS stats, and browser analytics."
+                    />
+                )}
             </div>
 
             {/* Bottom Row */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {/* Device Distribution */}
                 {/* Device Distribution */}
-                <div className="bg-white dark:bg-surface-dark rounded-2xl shadow-soft p-6 md:p-8 border border-slate-100/50 dark:border-slate-800 flex flex-col justify-between">
+                <div className="bg-white dark:bg-surface-dark rounded-2xl shadow-soft p-6 md:p-8 border border-slate-100/50 dark:border-slate-800 flex flex-col justify-between relative">
                     <div className="flex justify-between items-center mb-6">
                         <h2 className="text-lg font-bold text-slate-900 dark:text-white">Device Distribution ({dateRange.label})</h2>
                         <button className="text-primary hover:bg-primary/5 dark:hover:bg-primary/20 p-1 rounded-lg transition-colors">
@@ -630,10 +703,17 @@ const GlobalAnalytics = () => {
                             </div>
                         </div>
                     </div>
+                    {/* Lock overlay for Starter users */}
+                    {isStarterUser && (
+                        <LockedFeature
+                            title="Unlock Device Distribution"
+                            description="Gain deeper insights with city-level data, OS stats, and browser analytics."
+                        />
+                    )}
                 </div>
 
                 {/* Top Locations */}
-                <div className="bg-white dark:bg-surface-dark rounded-2xl shadow-soft p-6 md:p-8 border border-slate-100/50 dark:border-slate-800">
+                <div className="bg-white dark:bg-surface-dark rounded-2xl shadow-soft p-6 md:p-8 border border-slate-100/50 dark:border-slate-800 relative">
                     <div className="flex justify-between items-center mb-6">
                         <h2 className="text-lg font-bold text-slate-900 dark:text-white">Top Locations ({dateRange.label})</h2>
                         <button className="text-sm text-primary font-medium hover:underline">View All</button>
@@ -692,6 +772,13 @@ const GlobalAnalytics = () => {
                                 ))}
                             </div>
                         </div>
+                    )}
+                    {/* Lock overlay for Starter users */}
+                    {isStarterUser && (
+                        <LockedFeature
+                            title="Unlock Top Locations"
+                            description="Gain deeper insights with city-level data, OS stats, and browser analytics."
+                        />
                     )}
                 </div>
             </div>
