@@ -15,18 +15,18 @@ const getFlagEmoji = (countryCode) => {
 
 // Locked Feature Overlay Component
 const LockedFeature = ({ title, description }) => (
-    <div className="absolute inset-0 bg-white/95 dark:bg-surface-dark/95 backdrop-blur-sm rounded-2xl flex flex-col items-center justify-center z-10 border border-slate-200 dark:border-slate-700">
-        <div className="text-center px-6 max-w-md">
+    <div className="absolute inset-0 bg-white/40 dark:bg-surface-dark/40 backdrop-blur-[2px] rounded-2xl flex flex-col items-center justify-center z-10 border border-slate-200/50 dark:border-slate-700/50">
+        <div className="text-center px-6 max-w-md bg-white/90 dark:bg-surface-dark/90 p-8 rounded-2xl shadow-xl border border-slate-100 dark:border-slate-800">
             <div className="inline-flex items-center justify-center w-16 h-16 bg-primary/10 rounded-full mb-4">
                 <span className="material-symbols-outlined text-primary text-3xl">lock</span>
             </div>
             <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-2">{title}</h3>
-            <p className="text-sm text-slate-500 dark:text-slate-400 mb-4">{description}</p>
+            <p className="text-sm text-slate-500 dark:text-slate-400 mb-6">{description}</p>
             <Link
                 to="/billing"
-                className="inline-flex items-center gap-2 px-6 py-2.5 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors text-sm font-medium shadow-sm"
+                className="inline-flex items-center gap-2 px-8 py-3 bg-primary text-white rounded-xl hover:bg-primary/90 transition-all hover:scale-105 active:scale-95 text-sm font-bold shadow-lg shadow-primary/25"
             >
-                <span>Upgrade Pro</span>
+                <span>Upgrade to Pro</span>
                 <span className="material-symbols-outlined text-lg">arrow_forward</span>
             </Link>
         </div>
@@ -623,237 +623,166 @@ const GlobalAnalytics = () => {
                 </div>
             </div>
 
-            {/* Peak Scanning Times Heatmap */}
-            <div className="bg-white dark:bg-surface-dark rounded-2xl shadow-soft p-6 md:p-8 border border-slate-100/50 dark:border-slate-800 relative">
-                <div className="mb-6">
-                    <h2 className="text-lg font-bold text-slate-900 dark:text-white">Peak Scanning Times</h2>
-                    <p className="text-sm text-slate-500 dark:text-slate-400">Heatmap of activity by hour and day ({dateRange.label})</p>
+            {/* Advanced Insights Section (Locked for Starter) */}
+            <div className="relative space-y-6">
+                {/* Peak Scanning Times Heatmap */}
+                <div className="bg-white dark:bg-surface-dark rounded-2xl shadow-soft p-6 md:p-8 border border-slate-100/50 dark:border-slate-800">
+                    <div className="mb-6">
+                        <h2 className="text-lg font-bold text-slate-900 dark:text-white">Peak Scanning Times</h2>
+                        <p className="text-sm text-slate-500 dark:text-slate-400">Heatmap of activity by hour and day ({dateRange.label})</p>
+                    </div>
+
+                    {Object.keys(data.hourlyHeatmap || {}).length > 0 ? (
+                        <div className="overflow-x-auto pb-2 px-1">
+                            <div className="min-w-[700px]">
+                                {/* Header Hours */}
+                                <div className="grid gap-1 mb-2" style={{ gridTemplateColumns: '50px repeat(24, 1fr)' }}>
+                                    <div></div>
+                                    {hours.map(h => (
+                                        h % 3 === 0 ? (
+                                            <div key={h} className="text-[10px] text-slate-400 dark:text-slate-500 text-center col-span-3">
+                                                {formatHour(h).replace(' ', '')}
+                                            </div>
+                                        ) : null
+                                    ))}
+                                </div>
+
+                                {/* Days Rows */}
+                                <div className="space-y-1.5">
+                                    {daysOrder.map(day => (
+                                        <div key={day} className="grid gap-1 items-center" style={{ gridTemplateColumns: '50px repeat(24, 1fr)' }}>
+                                            <div className="text-xs font-medium text-slate-500 dark:text-slate-400">{day}</div>
+                                            {hours.map(hour => {
+                                                const count = data.hourlyHeatmap[day]?.[hour] || 0;
+                                                return (
+                                                    <div
+                                                        key={hour}
+                                                        className={`h-8 rounded ${getHeatmapOpacity(count)} transition-all hover:ring-2 hover:ring-primary hover:ring-offset-1 hover:z-10 dark:hover:ring-offset-surface-dark cursor-pointer relative group`}
+                                                        title={`${day} ${formatHour(hour)}: ${count} scans`}
+                                                    >
+                                                        {/* Tooltip */}
+                                                        <div className={`absolute ${day === 'Mon' ? 'top-full mt-2' : 'bottom-full mb-2'} 
+                                                            ${hour > 20 ? 'right-0 -translate-x-0' : hour < 4 ? 'left-0 translate-x-0' : 'left-1/2 -translate-x-1/2'} 
+                                                            px-2.5 py-1.5 bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-xs rounded-lg opacity-0 group-hover:opacity-100 pointer-events-none whitespace-nowrap z-50 transition-opacity shadow-lg`}>
+                                                            <span className="font-bold">{count} scans</span>
+                                                            <br />
+                                                            <span className="text-slate-400 dark:text-slate-500 text-[10px]">{day} {formatHour(hour)}</span>
+                                                            <div className={`w-2 h-2 bg-slate-900 dark:bg-white rotate-45 absolute 
+                                                                ${day === 'Mon' ? '-top-1' : '-bottom-1'} 
+                                                                ${hour > 20 ? 'right-4 translate-x-1/2' : hour < 4 ? 'left-4 -translate-x-1/2' : 'left-1/2 -translate-x-1/2'}`}></div>
+                                                        </div>
+                                                    </div>
+                                                );
+                                            })}
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+                    ) : (
+                        <div className="text-center py-10 flex flex-col items-center gap-3">
+                            <span className="material-symbols-outlined text-slate-300 dark:text-slate-600 text-4xl">grid_on</span>
+                            <p className="text-slate-400 dark:text-slate-500 text-sm font-medium">No scan activity yet</p>
+                        </div>
+                    )}
                 </div>
 
-                {data.hourlyHeatmap && Object.keys(data.hourlyHeatmap).length > 0 ? (
-                    <div className="overflow-x-auto pb-2 px-1">
-                        <div className="min-w-[700px]">
-                            {/* Header Hours */}
-                            <div className="grid gap-1 mb-2" style={{ gridTemplateColumns: '50px repeat(24, 1fr)' }}>
-                                <div></div>
-                                {hours.map(h => (
-                                    h % 3 === 0 ? (
-                                        <div key={h} className="text-[10px] text-slate-400 dark:text-slate-500 text-center col-span-3">
-                                            {formatHour(h).replace(' ', '')}
-                                        </div>
-                                    ) : null
-                                ))}
-                            </div>
+                {/* Bottom Row */}
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    {/* Device Distribution */}
+                    <div className="bg-white dark:bg-surface-dark rounded-2xl shadow-soft p-6 md:p-8 border border-slate-100/50 dark:border-slate-800 flex flex-col justify-between">
+                        <div className="flex justify-between items-center mb-6">
+                            <h2 className="text-lg font-bold text-slate-900 dark:text-white">Device Distribution</h2>
+                            <button className="text-primary hover:bg-primary/5 dark:hover:bg-primary/20 p-1 rounded-lg transition-colors">
+                                <span className="material-symbols-outlined">more_vert</span>
+                            </button>
+                        </div>
 
-                            {/* Days Rows */}
-                            <div className="space-y-1.5">
-                                {daysOrder.map(day => (
-                                    <div key={day} className="grid gap-1 items-center" style={{ gridTemplateColumns: '50px repeat(24, 1fr)' }}>
-                                        <div className="text-xs font-medium text-slate-500 dark:text-slate-400">{day}</div>
-                                        {hours.map(hour => {
-                                            const count = data.hourlyHeatmap[day]?.[hour] || 0;
-                                            return (
-                                                <div
-                                                    key={hour}
-                                                    className={`h-8 rounded ${getHeatmapOpacity(count)} transition-all hover:ring-2 hover:ring-primary hover:ring-offset-1 hover:z-10 dark:hover:ring-offset-surface-dark cursor-pointer relative group`}
-                                                    title={`${day} ${formatHour(hour)}: ${count} scans`}
-                                                >
-                                                    {/* Tooltip */}
-                                                    <div className={`absolute ${day === 'Mon' ? 'top-full mt-2' : 'bottom-full mb-2'} 
-                                                        ${hour > 20 ? 'right-0 -translate-x-0' : hour < 4 ? 'left-0 translate-x-0' : 'left-1/2 -translate-x-1/2'} 
-                                                        px-2.5 py-1.5 bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-xs rounded-lg opacity-0 group-hover:opacity-100 pointer-events-none whitespace-nowrap z-50 transition-opacity shadow-lg`}>
-                                                        <span className="font-bold">{count} scans</span>
-                                                        <br />
-                                                        <span className="text-slate-400 dark:text-slate-500 text-[10px]">{day} {formatHour(hour)}</span>
-                                                        <div className={`w-2 h-2 bg-slate-900 dark:bg-white rotate-45 absolute 
-                                                            ${day === 'Mon' ? '-top-1' : '-bottom-1'} 
-                                                            ${hour > 20 ? 'right-4 translate-x-1/2' : hour < 4 ? 'left-4 -translate-x-1/2' : 'left-1/2 -translate-x-1/2'}`}></div>
-                                                    </div>
-                                                </div>
-                                            );
-                                        })}
+                        <div className="space-y-4">
+                            {['Mobile', 'Desktop', 'Tablet'].map((device) => (
+                                <div key={device}>
+                                    <div className="flex justify-between text-sm mb-1">
+                                        <span className="text-slate-600 dark:text-slate-400 font-medium">{device}</span>
+                                        <span className="text-slate-900 dark:text-white font-bold">{data.deviceStats[device] || 0}%</span>
                                     </div>
-                                ))}
-                            </div>
-                        </div>
-                        {/* Legend */}
-                        <div className="flex justify-end items-center gap-2 mt-4 text-xs text-slate-400 dark:text-slate-500">
-                            <span>Low</span>
-                            <div className="flex gap-1">
-                                <div className="w-3 h-3 rounded bg-primary/10"></div>
-                                <div className="w-3 h-3 rounded bg-primary/40"></div>
-                                <div className="w-3 h-3 rounded bg-primary/70"></div>
-                                <div className="w-3 h-3 rounded bg-primary"></div>
-                            </div>
-                            <span>High</span>
+                                    <div className="h-2 w-full bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
+                                        <div
+                                            className="h-full bg-primary rounded-full transition-all duration-1000"
+                                            style={{ width: `${data.deviceStats[device] || 0}%` }}
+                                        />
+                                    </div>
+                                </div>
+                            ))}
                         </div>
                     </div>
-                ) : (
-                    <div className="text-center py-10 flex flex-col items-center gap-3">
-                        <span className="material-symbols-outlined text-slate-300 dark:text-slate-600 text-4xl">grid_on</span>
-                        <p className="text-slate-400 dark:text-slate-500 text-sm font-medium">No scan activity yet</p>
+
+                    {/* Top Locations */}
+                    <div className="bg-white dark:bg-surface-dark rounded-2xl shadow-soft p-6 md:p-8 border border-slate-100/50 dark:border-slate-800">
+                        <div className="flex justify-between items-center mb-6">
+                            <h2 className="text-lg font-bold text-slate-900 dark:text-white">Top Locations</h2>
+                            <Link to="/analytics" className="text-sm text-primary font-medium hover:underline">View Map</Link>
+                        </div>
+
+                        <div className="space-y-4">
+                            {data.locationStats && data.locationStats.length > 0 ? (
+                                data.locationStats.slice(0, 5).map((loc, i) => (
+                                    <div key={i} className="flex items-center justify-between">
+                                        <div className="flex items-center gap-3">
+                                            <span className="text-xl">{getFlagEmoji(loc.country)}</span>
+                                            <span className="text-sm font-medium text-slate-700 dark:text-slate-300">{loc.city || loc.country}</span>
+                                        </div>
+                                        <div className="text-right">
+                                            <span className="text-sm font-bold text-slate-900 dark:text-white">{loc.count}</span>
+                                        </div>
+                                    </div>
+                                ))
+                            ) : (
+                                <div className="text-center py-6 flex flex-col items-center gap-2">
+                                    <span className="material-symbols-outlined text-slate-300 dark:text-slate-600 text-3xl">public</span>
+                                    <p className="text-slate-400 dark:text-slate-500 text-sm font-medium">No location data found</p>
+                                </div>
+                            )}
+                        </div>
                     </div>
-                )}
-                {/* Lock overlay for Starter users */}
+                </div>
+
+                {/* Unified Lock Overlay for Advanced Insights */}
                 {isStarterUser && (
                     <LockedFeature
-                        title="Unlock Peak Scanning Times"
-                        description="Gain deeper insights with city-level data, OS stats, and browser analytics."
+                        title="Unlock Advanced Insights"
+                        description="Upgrade to Pro to access detailed geographic data, device distributions, and peak scanning time heatmaps."
                     />
                 )}
             </div>
 
-            {/* Bottom Row */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                {/* Device Distribution */}
-                {/* Device Distribution */}
-                <div className="bg-white dark:bg-surface-dark rounded-2xl shadow-soft p-6 md:p-8 border border-slate-100/50 dark:border-slate-800 flex flex-col justify-between relative">
-                    <div className="flex justify-between items-center mb-6">
-                        <h2 className="text-lg font-bold text-slate-900 dark:text-white">Device Distribution ({dateRange.label})</h2>
-                        <button className="text-primary hover:bg-primary/5 dark:hover:bg-primary/20 p-1 rounded-lg transition-colors">
-                            <span className="material-symbols-outlined text-xl">more_horiz</span>
-                        </button>
+            {/* Premium Upsell Card */}
+            {!isProUser && (
+                <div className="bg-white dark:bg-surface-dark rounded-2xl shadow-soft overflow-hidden border border-slate-100/50 dark:border-slate-800">
+                    <div className="h-32 w-full bg-gradient-to-br from-primary to-indigo-600 flex items-center justify-center relative overflow-hidden">
+                        <div className="absolute inset-0 bg-white/10 backdrop-blur-[1px]"></div>
+                        <div className="absolute -top-12 -right-12 w-32 h-32 bg-white/10 rounded-full blur-2xl"></div>
+                        <div className="absolute -bottom-12 -left-12 w-32 h-32 bg-white/10 rounded-full blur-2xl"></div>
+                        <span className="material-symbols-outlined text-white text-6xl opacity-20">insights</span>
                     </div>
-                    <div className="space-y-6">
-                        {[
-                            { name: 'Mobile (iOS)', icon: 'phone_iphone', value: data.deviceStats?.iOS || 0 },
-                            { name: 'Mobile (Android)', icon: 'android', value: data.deviceStats?.Android || 0 },
-                            { name: 'Desktop (Web)', icon: 'desktop_windows', value: data.deviceStats?.Desktop || 0 },
-                        ].map((device, i) => (
-                            <div key={i}>
-                                <div className="flex justify-between text-sm mb-2">
-                                    <span className="font-medium text-slate-700 dark:text-slate-300 flex items-center gap-2">
-                                        <span className="material-symbols-outlined text-slate-400 dark:text-slate-500 text-base">{device.icon}</span>
-                                        {device.name}
-                                    </span>
-                                    <span className="font-bold text-slate-900 dark:text-white">{device.value}%</span>
-                                </div>
-                                <div className="h-3 w-full bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
-                                    <div className={`h-full ${i === 1 ? 'bg-primary/70' : i === 2 ? 'bg-primary/40' : 'bg-primary'} rounded-full`}
-                                        style={{ width: `${device.value}%` }}></div>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                    <div className="mt-8 pt-6 border-t border-slate-100 dark:border-slate-800">
-                        <div className="flex gap-4">
-                            <div className="flex-1">
-                                <div className="text-xs text-slate-400 uppercase font-semibold mb-1">Dominant OS</div>
-                                <div className="text-lg font-bold text-slate-800 dark:text-white">{data.dominantOS || 'N/A'}</div>
-                            </div>
-                            <div className="flex-1">
-                                <div className="text-xs text-slate-400 uppercase font-semibold mb-1">Avg Screen</div>
-                                <div className="text-lg font-bold text-slate-800 dark:text-white">Unknown</div>
-                            </div>
+                    <div className="p-8 flex flex-col items-center text-center">
+                        <div className="mb-4">
+                            <span className="px-3 py-1 bg-primary/10 text-primary text-[10px] font-bold uppercase tracking-widest rounded-full">Pro Feature</span>
                         </div>
+                        <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-3">Power-up your Marketing</h3>
+                        <p className="text-slate-500 dark:text-slate-400 max-w-lg mb-8">
+                            Join over 5,000+ businesses using our Pro analytics suite to drive 12x higher conversion rates with location-based targeting.
+                        </p>
+                        <Link
+                            to="/billing"
+                            className="inline-flex items-center gap-2 px-10 py-4 bg-primary text-white rounded-xl hover:bg-primary-hover shadow-glow transition-all hover:scale-105 active:scale-95 font-bold"
+                        >
+                            <span>Explore Pro Benefits</span>
+                            <span className="material-symbols-outlined">rocket_launch</span>
+                        </Link>
                     </div>
-                    {/* Lock overlay for Starter users */}
-                    {isStarterUser && (
-                        <LockedFeature
-                            title="Unlock Device Distribution"
-                            description="Gain deeper insights with city-level data, OS stats, and browser analytics."
-                        />
-                    )}
                 </div>
-
-                {/* Top Locations */}
-                <div className="bg-white dark:bg-surface-dark rounded-2xl shadow-soft p-6 md:p-8 border border-slate-100/50 dark:border-slate-800 relative">
-                    <div className="flex justify-between items-center mb-6">
-                        <h2 className="text-lg font-bold text-slate-900 dark:text-white">Top Locations ({dateRange.label})</h2>
-                        <button className="text-sm text-primary font-medium hover:underline">View All</button>
-                    </div>
-                    <div className="space-y-4">
-                        {data.locationStats && data.locationStats.length > 0 ? (
-                            (() => {
-                                const top = data.locationStats.slice(0, 4);
-                                return top.map((loc, i) => (
-                                    <div key={i} className="flex items-center justify-between group hover:bg-slate-50 dark:hover:bg-slate-800/50 p-2 rounded-lg transition-colors -mx-2">
-                                        <div className="flex items-center gap-4">
-                                            <div className="w-10 h-10 rounded-full overflow-hidden shadow-sm border border-slate-100 dark:border-slate-700 relative flex items-center justify-center bg-slate-50 dark:bg-slate-800 text-xl">
-                                                {getFlagEmoji(loc.country)}
-                                            </div>
-                                            <div>
-                                                <div className="font-bold text-slate-900 dark:text-white text-sm">
-                                                    {loc.city !== 'Unknown' ? loc.city : loc.countryName}
-                                                </div>
-                                                <div className="text-xs text-slate-500 dark:text-slate-400">
-                                                    {loc.countryName}
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="text-right">
-                                            <div className="font-bold text-slate-900 dark:text-white text-sm">{loc.count.toLocaleString()}</div>
-                                            <div className={`text-xs ${loc.trend >= 0 ? 'text-emerald-600' : 'text-rose-600'} font-medium flex items-center justify-end gap-0.5`}>
-                                                <span className="material-symbols-outlined text-[10px]">{loc.trend >= 0 ? 'arrow_upward' : 'arrow_downward'}</span> {Math.abs(loc.trend)}%
-                                            </div>
-                                        </div>
-                                    </div>
-                                ));
-                            })()
-                        ) : (
-                            <div className="text-center py-10 flex flex-col items-center gap-3">
-                                <span className="material-symbols-outlined text-slate-300 dark:text-slate-600 text-4xl">location_on</span>
-                                <p className="text-slate-400 dark:text-slate-500 text-sm font-medium">No scan locations detected yet</p>
-                            </div>
-                        )}
-                    </div>
-
-                    {data.regionStats && data.regionStats.length > 0 && (
-                        <div className="mt-6">
-                            <div className="h-1.5 w-full bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden flex">
-                                {data.regionStats.slice(0, 4).map((reg, idx) => (
-                                    <div
-                                        key={idx}
-                                        className={`h-full ${idx === 0 ? 'bg-primary' : idx === 1 ? 'bg-primary/70' : idx === 2 ? 'bg-primary/40' : 'bg-primary/20'}`}
-                                        style={{ width: `${reg.percentage}%` }}
-                                        title={`${reg.name}: ${reg.count} scans (${reg.percentage}%)`}
-                                    ></div>
-                                ))}
-                            </div>
-                            <div className="flex justify-between text-[10px] text-slate-400 mt-2 font-medium uppercase tracking-wide">
-                                {data.regionStats.slice(0, 4).map((reg, idx) => (
-                                    <span key={idx}>{reg.name}</span>
-                                ))}
-                            </div>
-                        </div>
-                    )}
-                    {/* Lock overlay for Starter users */}
-                    {isStarterUser && (
-                        <LockedFeature
-                            title="Unlock Top Locations"
-                            description="Gain deeper insights with city-level data, OS stats, and browser analytics."
-                        />
-                    )}
-                </div>
-            </div>
-
-            {/* Upsell Card */}
-            {
-                !planInfo?.features?.advanced_analytics && (
-                    <div className="bg-white dark:bg-surface-dark rounded-2xl shadow-soft overflow-hidden border border-slate-100/50 dark:border-slate-800">
-                        <div className="h-32 w-full bg-gradient-to-br from-primary to-indigo-600 relative">
-                            <div className="absolute inset-0 bg-white/10 backdrop-blur-[1px]"></div>
-                        </div>
-                        <div className="p-6 md:p-8 flex flex-col gap-4">
-                            <div className="flex items-center gap-2 mb-1">
-                                <span className="material-symbols-outlined text-primary text-[24px]">lock</span>
-                                <p className="text-slate-900 dark:text-white text-lg font-bold leading-tight">Unlock attribution</p>
-                            </div>
-                            <p className="text-slate-500 dark:text-slate-400 text-sm leading-relaxed">
-                                Gain deeper insights with city-level data, OS stats, and browser analytics.
-                            </p>
-                            <button
-                                onClick={() => window.location.href = '/billing'}
-                                className="w-full cursor-pointer items-center justify-center rounded-lg h-10 px-4 bg-primary text-white text-sm font-bold shadow-md hover:bg-primary/90 transition-all flex gap-2 group"
-                            >
-                                <span>Upgrade Pro</span>
-                                <span className="material-symbols-outlined text-[18px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
-                            </button>
-                        </div>
-                    </div>
-                )
-            }
-        </div >
+            )}
+        </div>
     );
 };
 

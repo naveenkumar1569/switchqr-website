@@ -204,7 +204,8 @@ const Campaigns = () => {
 
                 {/* Centered Lock Overlay */}
                 <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                    <div className="bg-white/95 dark:bg-surface-dark/95 backdrop-blur-sm rounded-2xl shadow-2xl p-8 md:p-12 max-w-lg border border-slate-200 dark:border-slate-700 pointer-events-auto">
+                    <div className="absolute inset-0 bg-white/40 dark:bg-surface-dark/40 backdrop-blur-[2px]"></div>
+                    <div className="bg-white/95 dark:bg-surface-dark/95 p-8 md:p-12 max-w-lg rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-700 pointer-events-auto relative z-10">
                         <div className="text-center">
                             <div className="inline-flex items-center justify-center w-20 h-20 bg-primary/10 rounded-full mb-4">
                                 <span className="material-symbols-outlined text-primary text-4xl">lock</span>
