@@ -349,12 +349,11 @@ const GlobalAnalytics = () => {
                     </div>
                     {/* Export */}
                     <button
-                        onClick={handleExport}
+                        onClick={isFeatureEnabled(effectivePlan, FEATURES.EXPORT_DATA) ? handleExport : undefined}
                         className={`flex items-center gap-2 px-4 py-2.5 rounded-lg transition-colors text-sm font-medium group ${isFeatureEnabled(effectivePlan, FEATURES.EXPORT_DATA)
                             ? 'bg-primary/5 hover:bg-primary/10 text-primary dark:bg-primary/10 dark:hover:bg-primary/20'
-                            : 'text-gray-400'
+                            : 'text-gray-400 cursor-default'
                             }`}
-                        disabled={!isFeatureEnabled(effectivePlan, FEATURES.EXPORT_DATA)}
                     >
                         {isFeatureEnabled(effectivePlan, FEATURES.EXPORT_DATA) ? (
                             <>

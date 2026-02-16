@@ -335,12 +335,11 @@ const Dashboard = () => {
                     </div>
 
                     <button
-                        onClick={handleExport}
+                        onClick={canExport ? handleExport : undefined}
                         className={`flex items-center gap-2 px-4 py-2 border border-gray-200 dark:border-gray-700 rounded-lg transition-colors text-sm font-medium ${canExport
                             ? 'hover:bg-gray-50 dark:hover:bg-[#1a1625] text-text-subtle'
-                            : 'text-gray-400'
+                            : 'text-gray-400 cursor-default'
                             }`}
-                        disabled={!canExport}
                         title={!canExport ? getLockDetails(FEATURES.EXPORT_DATA).description : 'Export QR codes to CSV'}
                     >
                         {canExport ? (
