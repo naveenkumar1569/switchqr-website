@@ -5,6 +5,8 @@ import { useToast } from '../context/ToastContext';
 import { normalizeUrl, validateUrl } from '../utils/urlHelpers';
 import VariantList from '../components/VariantList';
 import LockedFeature from '../components/LockedFeature';
+import LockedOverlay from '../components/LockedOverlay';
+import LockedBadge from '../components/LockedBadge';
 import ScheduleList from '../components/ScheduleList';
 import ConfirmationModal from '../components/ConfirmationModal';
 import { apiGet, apiPost, apiPut, apiDelete } from '../utils/api';
@@ -13,24 +15,7 @@ import { fetchQRStats } from '../utils/analyticsService';
 import { calculateChartScale } from '../utils/chartHelpers';
 import { isFeatureEnabled, FEATURES, getLockDetails } from '../utils/planPermissions';
 
-const LockedOverlay = ({ title, description }) => (
-    <div className="absolute inset-0 bg-white/40 dark:bg-[#1e1726]/40 backdrop-blur-[2px] rounded-2xl flex flex-col items-center justify-center z-20 border border-slate-200/50 dark:border-slate-700/50">
-        <div className="text-center px-6 max-w-md bg-white/95 dark:bg-[#1e1726]/95 p-8 rounded-2xl shadow-xl border border-slate-100 dark:border-slate-800">
-            <div className="inline-flex items-center justify-center w-16 h-16 bg-primary/10 rounded-full mb-4">
-                <span className="material-symbols-outlined text-primary text-3xl">lock</span>
-            </div>
-            <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-2">{title}</h3>
-            <p className="text-sm text-slate-500 dark:text-slate-400 mb-6">{description}</p>
-            <Link
-                to="/billing"
-                className="inline-flex items-center gap-2 px-8 py-3 bg-primary text-white rounded-xl hover:bg-primary-hover transition-all hover:scale-105 active:scale-95 text-sm font-bold shadow-lg shadow-primary/25"
-            >
-                <span>Upgrade to Pro</span>
-                <span className="material-symbols-outlined text-lg">arrow_forward</span>
-            </Link>
-        </div>
-    </div>
-);
+// Replaced by reusable LockedOverlay component
 
 const QRDetails = () => {
     const { id } = useParams();
@@ -1099,7 +1084,12 @@ const QRDetails = () => {
                                                 }`}
                                         >
                                             {format}
-                                            {format !== 'png' && !planInfo?.features?.svg_pdf_downloads && <span className="material-symbols-outlined text-[10px]">lock</span>}
+                                            {format !== 'png' && !planInfo?.features?.svg_pdf_downloads && (
+                                                <div className="flex items-center gap-1 bg-amber-100 dark:bg-amber-900/30 border border-amber-200 dark:border-amber-800 rounded px-1 py-0.5 ml-1">
+                                                    <span className="material-symbols-outlined text-[10px] text-amber-600 dark:text-amber-400 font-bold">lock</span>
+                                                    <span className="text-[8px] font-black text-amber-700 dark:text-amber-400 tracking-wider">STARTER</span>
+                                                </div>
+                                            )}
                                         </button>
                                     ))}
                                 </div>

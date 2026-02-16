@@ -7,6 +7,7 @@ import ConfirmationModal from '../components/ConfirmationModal';
 import { apiGet, apiPost, apiPut, apiDelete, getShortCodeUrl } from '../utils/api';
 import { fetchDashboardStats } from '../utils/analyticsService';
 import { isFeatureEnabled, FEATURES, getLockDetails } from '../utils/planPermissions';
+import LockedBadge from '../components/LockedBadge';
 
 const Dashboard = () => {
     const { token, planInfo } = useAuth();
@@ -337,15 +338,21 @@ const Dashboard = () => {
                         onClick={handleExport}
                         className={`flex items-center gap-2 px-4 py-2 border border-gray-200 dark:border-gray-700 rounded-lg transition-colors text-sm font-medium ${canExport
                             ? 'hover:bg-gray-50 dark:hover:bg-[#1a1625] text-text-subtle'
-                            : 'opacity-50 cursor-not-allowed text-gray-400'
+                            : 'text-gray-400'
                             }`}
                         disabled={!canExport}
                         title={!canExport ? getLockDetails(FEATURES.EXPORT_DATA).description : 'Export QR codes to CSV'}
                     >
-                        <span className="material-symbols-outlined text-[20px]">download</span>
-                        Export CSV
-                        {!canExport && (
-                            <span className="material-symbols-outlined text-amber-500 text-[16px]">lock</span>
+                        {canExport ? (
+                            <>
+                                <span className="material-symbols-outlined text-[20px]">download</span>
+                                Export CSV
+                            </>
+                        ) : (
+                            <LockedBadge plan="pro">
+                                <span className="material-symbols-outlined text-[20px]">download</span>
+                                Export CSV
+                            </LockedBadge>
                         )}
                     </button>
                 </div>

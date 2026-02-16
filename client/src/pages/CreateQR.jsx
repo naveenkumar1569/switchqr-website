@@ -7,6 +7,7 @@ import { normalizeUrl, validateUrl } from '../utils/urlHelpers';
 import { apiGet, apiPost } from '../utils/api';
 import { isFeatureEnabled, FEATURES, getLockDetails } from '../utils/planPermissions';
 import VariantList from '../components/VariantList';
+import LockedBadge from '../components/LockedBadge';
 
 const CreateQR = () => {
     const navigate = useNavigate();
@@ -482,7 +483,13 @@ const CreateQR = () => {
                                     {/* Scan Tracking Toggle */}
                                     <div className="flex items-center justify-between">
                                         <div className="flex flex-col">
-                                            <span className="text-sm font-medium text-text-dark dark:text-white">Scan Tracking</span>
+                                            {isFeatureEnabled(planInfo?.effectivePlan, FEATURES.CREATE_SCAN_TRACKING) ? (
+                                                <span className="text-sm font-medium text-text-dark dark:text-white">Scan Tracking</span>
+                                            ) : (
+                                                <LockedBadge plan="starter">
+                                                    <span className="text-sm font-medium text-text-dark dark:text-white">Scan Tracking</span>
+                                                </LockedBadge>
+                                            )}
                                             <span className="text-xs text-text-subtle">Capture device, location, and time data.</span>
                                         </div>
                                         <div className="relative flex items-center">
@@ -501,7 +508,6 @@ const CreateQR = () => {
                                             >
                                                 <span className={`pointer-events-none inline-block size-4 rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${scanTrackingEnabled ? 'translate-x-6' : 'translate-x-0'}`}></span>
                                             </label>
-                                            {!isFeatureEnabled(planInfo?.effectivePlan, FEATURES.CREATE_SCAN_TRACKING) && <span className="ml-2 material-symbols-outlined text-xs text-amber-500">lock</span>}
                                         </div>
                                     </div>
                                     {/* A/B Testing Toggle (Pro Feature) */}
@@ -520,9 +526,13 @@ const CreateQR = () => {
                                     >
                                         <div className="flex flex-col">
                                             <div className="flex items-center gap-2">
-                                                <span className="text-sm font-medium text-text-dark dark:text-white">A/B Testing</span>
-                                                {!isFeatureEnabled(planInfo?.effectivePlan, FEATURES.CREATE_AB_TESTING) && <span className="bg-amber-100 text-amber-800 text-[10px] font-bold px-1.5 py-0.5 rounded border border-amber-200 uppercase">Pro</span>}
-                                                {!isFeatureEnabled(planInfo?.effectivePlan, FEATURES.CREATE_AB_TESTING) && <span className="material-symbols-outlined text-xs text-gray-400">lock</span>}
+                                                {isFeatureEnabled(planInfo?.effectivePlan, FEATURES.CREATE_AB_TESTING) ? (
+                                                    <span className="text-sm font-medium text-text-dark dark:text-white">A/B Testing</span>
+                                                ) : (
+                                                    <LockedBadge plan="pro">
+                                                        <span className="text-sm font-medium text-text-dark dark:text-white">A/B Testing</span>
+                                                    </LockedBadge>
+                                                )}
                                             </div>
                                             <span className="text-xs text-text-subtle">Split traffic between two destination URLs.</span>
                                         </div>
@@ -635,11 +645,12 @@ const CreateQR = () => {
                                 {/* Logo Upload */}
                                 <div>
                                     <div className="flex items-center justify-between mb-2">
-                                        <label className="block text-xs font-semibold uppercase tracking-wide text-text-subtle">Center Logo</label>
-                                        {!isBrandingUnlocked && (
-                                            <span className="flex items-center gap-1 text-[10px] font-bold text-amber-600 bg-amber-50 dark:bg-amber-900/30 px-2 py-0.5 rounded-full border border-amber-100 dark:border-amber-800">
-                                                <span className="material-symbols-outlined text-[10px]">lock</span> PRO
-                                            </span>
+                                        {isBrandingUnlocked ? (
+                                            <label className="block text-xs font-semibold uppercase tracking-wide text-text-subtle">Center Logo</label>
+                                        ) : (
+                                            <LockedBadge plan="pro">
+                                                <label className="block text-xs font-semibold uppercase tracking-wide text-text-subtle">Center Logo</label>
+                                            </LockedBadge>
                                         )}
                                     </div>
 

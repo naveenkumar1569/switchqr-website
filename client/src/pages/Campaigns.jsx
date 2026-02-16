@@ -4,6 +4,7 @@ import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
 import CampaignCard from '../components/CampaignCard';
 import LockedFeature from '../components/LockedFeature';
+import LockedOverlay from '../components/LockedOverlay';
 import { apiGet, apiPost, apiPut, apiDelete } from '../utils/api';
 import { isFeatureEnabled, FEATURES } from '../utils/planPermissions';
 
@@ -30,7 +31,7 @@ const Campaigns = () => {
         } else {
             setLoading(false);
         }
-    }, [planInfo]);
+    }, [planInfo, token]);
 
     const fetchCampaigns = async () => {
         try {
@@ -204,35 +205,10 @@ const Campaigns = () => {
                 </div>
 
                 {/* Centered Lock Overlay */}
-                <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                    <div className="absolute inset-0 bg-white/40 dark:bg-surface-dark/40 backdrop-blur-[2px]"></div>
-                    <div className="bg-white/95 dark:bg-surface-dark/95 p-8 md:p-12 max-w-lg rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-700 pointer-events-auto relative z-10">
-                        <div className="text-center">
-                            <div className="inline-flex items-center justify-center w-20 h-20 bg-primary/10 rounded-full mb-4">
-                                <span className="material-symbols-outlined text-primary text-4xl">lock</span>
-                            </div>
-                            <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-3">Campaigns Locked</h2>
-                            <p className="text-slate-500 dark:text-slate-400 text-base leading-relaxed mb-6">
-                                Upgrade to Pro to unlock campaign folders. Group QR codes into campaigns for better organization and analytics.
-                            </p>
-                            <div className="flex flex-col sm:flex-row gap-3">
-                                <Link
-                                    to="/billing"
-                                    className="inline-flex items-center justify-center gap-2 px-8 py-3 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors font-medium shadow-md group"
-                                >
-                                    <span>Upgrade Now</span>
-                                    <span className="material-symbols-outlined text-lg group-hover:translate-x-1 transition-transform">arrow_forward</span>
-                                </Link>
-                                <Link
-                                    to="/"
-                                    className="inline-flex items-center justify-center gap-2 px-8 py-3 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-white rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors font-medium"
-                                >
-                                    <span>Back to Dashboard</span>
-                                </Link>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <LockedOverlay
+                    title="Campaigns Locked"
+                    description="Upgrade to Pro to unlock campaign folders. Group QR codes into campaigns for better organization and analytics."
+                />
             </div>
         );
     }
