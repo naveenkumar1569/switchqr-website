@@ -59,6 +59,34 @@ export const AuthProvider = ({ children }) => {
     // Derived loading state for backward compatibility
     const loading = bootState === BOOT_STATE.INITIALIZING;
 
+    // Capture user's browser timezone and send to backend
+    const captureTimezone = async (currentToken) => {
+        try {
+            const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+            if (!timezone) return;
+
+            // Check if we've already captured timezone for this session
+            const capturedKey = 'timezone_captured';
+            if (sessionStorage.getItem(capturedKey)) return;
+
+            const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5001'}/api/profile/timezone`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${currentToken}`
+                },
+                body: JSON.stringify({ timezone })
+            });
+
+            if (response.ok) {
+                sessionStorage.setItem(capturedKey, 'true');
+                console.log('[TIMEZONE_CAPTURED]', timezone);
+            }
+        } catch (error) {
+            console.warn('Failed to capture timezone (non-critical):', error);
+        }
+    };
+
     // Fetch plan and profile data with timeout
     const fetchUserData = async (currentToken) => {
         // Use a longer timeout for the initial boot to handle server cold starts (Render/Fly.io)
@@ -103,6 +131,11 @@ export const AuthProvider = ({ children }) => {
                 console.warn('Profile fetch failed (non-critical)', profileErr);
             }
 
+            // Capture timezone after successful authentication (non-blocking)
+            captureTimezone(currentToken).catch(err =>
+                console.warn('Timezone capture failed (non-critical)', err)
+            );
+
             return true;
         } catch (error) {
             if (error.name === 'AbortError') {
@@ -119,6 +152,7 @@ export const AuthProvider = ({ children }) => {
             clearTimeout(timeoutId);
         }
     };
+
 
     // Main auth initialization
     useEffect(() => {

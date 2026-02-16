@@ -48,6 +48,9 @@ const campaignsRoutes = require('./routes/campaigns.supabase');
 const variantsRoutes = require('./routes/variants.supabase');
 // Schedules
 const schedulesRoutes = require('./routes/schedules.supabase');
+// Profile routes
+const profileRoutes = require('./routes/profile.supabase');
+
 
 // Middleware
 app.use(helmet());
@@ -79,9 +82,11 @@ app.use('/api/qrs', qrRoutes);
 app.use('/api/stats', analyticsRoutes);
 app.use('/api/users', usersRoutes);
 app.use('/api/plan', planRoutes);
+app.use('/api/profile', profileRoutes);
 app.use('/api/campaigns', campaignsRoutes); // TODO: Migrate
 app.use('/api/qrs', variantsRoutes); // Variants are under /api/qrs/:id/variants
 app.use('/api/qrs', schedulesRoutes); // Schedules are under /api/qrs/:id/schedules
+
 
 // Redirect Service (Must be last to avoid capturing api routes)
 app.use('/', redirectRoutes);
