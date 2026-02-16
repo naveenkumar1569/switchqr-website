@@ -6,28 +6,12 @@
  */
 
 const express = require('express');
-const { getAuthenticatedClient } = require('../utils/supabase');
+const supabaseAuth = require('../middleware/supabaseAuth');
 const logger = require('../utils/logger');
 const { requireFeature } = require('../middleware/planEnforcement');
 const { isSameUrl } = require('../utils/urlFormatter');
 
 const router = express.Router();
-
-/**
- * Middleware: Attach authenticated Supabase client to request
- */
-const supabaseAuth = (req, res, next) => {
-    const authHeader = req.headers['authorization'];
-    const token = authHeader && authHeader.split(' ')[1];
-
-    if (!token) {
-        return res.status(401).json({ error: 'Access denied, token missing' });
-    }
-
-    // Create client scoped to this user
-    req.supabase = getAuthenticatedClient(token);
-    next();
-};
 
 // ============================================
 // CRUD Routes
@@ -36,13 +20,8 @@ const supabaseAuth = (req, res, next) => {
 // LIST all QRs for the user
 router.get('/', supabaseAuth, async (req, res) => {
     try {
-        console.log('🔎 [DEBUG] GET /api/qrs Hit');
-        const { data: { user }, error: userError } = await req.supabase.auth.getUser();
-
-        if (userError || !user) {
-            console.log('❌ [DEBUG] User auth failed:', userError);
-            return res.status(401).json({ error: 'Invalid authentication', details: userError });
-        }
+        const user = req.user;
+        console.log(`🔎 [DEBUG] GET /api/qrs Hit for user: ${user.id}`);
 
         console.log(`✅ [DEBUG] User ID: ${user.id}`);
 
@@ -108,6 +87,8 @@ router.get('/', supabaseAuth, async (req, res) => {
 router.get('/:id', supabaseAuth, async (req, res) => {
     try {
         const { id } = req.params;
+        const user = req.user;
+
         const { data: qr, error } = await req.supabase
             .from('qrs')
             .select('*')
@@ -145,14 +126,11 @@ router.post('/', supabaseAuth, async (req, res) => {
     try {
         // Validation (basic)
         const { name, destination_url, routing_mode = 'basic', scheduling_enabled, ab_testing_enabled, campaign_id } = req.body;
+        const user = req.user;
 
         if (!destination_url) {
             return res.status(400).json({ error: 'Destination URL is required' });
         }
-
-        // Get User explicitly
-        const { data: { user }, error: authError } = await req.supabase.auth.getUser();
-        if (authError || !user) return res.status(401).json({ error: 'Unauthorized' });
 
         // PLAN ENFORCEMENT
         const plan = await resolveUserPlan(user.id);
@@ -220,10 +198,7 @@ router.put('/:id', supabaseAuth, async (req, res) => {
     try {
         const { id } = req.params;
         const updates = req.body;
-
-        // Get User
-        const { data: { user }, error: authError } = await req.supabase.auth.getUser();
-        if (authError || !user) return res.status(401).json({ error: 'Unauthorized' });
+        const user = req.user;
 
         // PLAN ENFORCEMENT
         const plan = await resolveUserPlan(user.id);

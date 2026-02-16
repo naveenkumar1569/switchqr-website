@@ -5,27 +5,18 @@
  */
 
 const express = require('express');
-const { getAuthenticatedClient } = require('../utils/supabase');
+const supabaseAuth = require('../middleware/supabaseAuth');
 const logger = require('../utils/logger');
 const { requireFeature } = require('../middleware/planEnforcement');
 
 const router = express.Router();
 
-const supabaseAuth = (req, res, next) => {
-    const authHeader = req.headers['authorization'];
-    const token = authHeader && authHeader.split(' ')[1];
-    if (!token) return res.status(401).json({ error: 'Access denied' });
-    req.supabase = getAuthenticatedClient(token);
-    next();
-};
-
 // GET /api/qrs/:id/schedules
 router.get('/:id/schedules', supabaseAuth, async (req, res) => {
     const { id } = req.params;
-    try {
-        const { data: { user }, error: authError } = await req.supabase.auth.getUser();
-        if (authError || !user) return res.status(401).json({ error: 'Unauthorized' });
+    const user = req.user;
 
+    try {
         // Verify ownership of QR
         const { data: qr, error: qrError } = await req.supabase
             .from('qrs')
@@ -83,11 +74,9 @@ router.get('/:id/schedules', supabaseAuth, async (req, res) => {
 router.post('/:id/schedules', supabaseAuth, requireFeature('scheduling'), async (req, res) => {
     const { id } = req.params;
     const { start_time, end_time, destination_url, days, timezone } = req.body;
+    const user = req.user;
 
     try {
-        const { data: { user }, error: authError } = await req.supabase.auth.getUser();
-        if (authError || !user) return res.status(401).json({ error: 'Unauthorized' });
-
         // Verify QR ownership
         const { data: qr, error: qrError } = await req.supabase
             .from('qrs')
@@ -125,11 +114,9 @@ router.post('/:id/schedules', supabaseAuth, requireFeature('scheduling'), async 
 router.put('/:id/schedules/:scheduleId', supabaseAuth, requireFeature('scheduling'), async (req, res) => {
     const { id, scheduleId } = req.params;
     const { start_time, end_time, destination_url, days, timezone } = req.body;
+    const user = req.user;
 
     try {
-        const { data: { user }, error: authError } = await req.supabase.auth.getUser();
-        if (authError || !user) return res.status(401).json({ error: 'Unauthorized' });
-
         // Verify QR ownership
         const { data: qr, error: qrError } = await req.supabase
             .from('qrs')
@@ -168,12 +155,10 @@ router.put('/:id/schedules/:scheduleId', supabaseAuth, requireFeature('schedulin
 // DELETE /api/qrs/:id/schedules/:scheduleId
 router.delete('/:id/schedules/:scheduleId', supabaseAuth, requireFeature('scheduling'), async (req, res) => {
     const { id, scheduleId } = req.params;
+    const user = req.user;
     console.log(`🗑️ [DELETE] Attempting to delete schedule ${scheduleId} for QR ${id}`);
 
     try {
-        const { data: { user }, error: authError } = await req.supabase.auth.getUser();
-        if (authError || !user) return res.status(401).json({ error: 'Unauthorized' });
-
         // Verify QR ownership first
         const { data: qr, error: qrError } = await req.supabase
             .from('qrs')

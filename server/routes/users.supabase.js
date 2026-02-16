@@ -5,29 +5,15 @@
  */
 
 const express = require('express');
-const { getAuthenticatedClient } = require('../utils/supabase');
+const supabaseAuth = require('../middleware/supabaseAuth');
 const logger = require('../utils/logger');
 
 const router = express.Router();
 
-/**
- * Middleware: Attach authenticated Supabase client to request
- */
-const supabaseAuth = (req, res, next) => {
-    const authHeader = req.headers['authorization'];
-    const token = authHeader && authHeader.split(' ')[1];
-
-    if (!token) return res.status(401).json({ error: 'Access denied, token missing' });
-
-    req.supabase = getAuthenticatedClient(token);
-    next();
-};
-
 // GET /api/users/profile
 router.get('/profile', supabaseAuth, async (req, res) => {
     try {
-        const { data: { user }, error: authError } = await req.supabase.auth.getUser();
-        if (authError || !user) return res.status(401).json({ error: 'Unauthorized' });
+        const user = req.user;
 
         // Get Profile
         const { data: profile, error } = await req.supabase
@@ -75,8 +61,7 @@ router.get('/profile', supabaseAuth, async (req, res) => {
 // PUT /api/users/profile
 router.put('/profile', supabaseAuth, async (req, res) => {
     try {
-        const { data: { user }, error: authError } = await req.supabase.auth.getUser();
-        if (authError || !user) return res.status(401).json({ error: 'Unauthorized' });
+        const user = req.user;
 
         const updates = req.body;
         // Whitelist allowed fields

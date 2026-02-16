@@ -5,19 +5,13 @@
  */
 
 const express = require('express');
-const { getAuthenticatedClient } = require('../utils/supabase');
+const supabaseAuth = require('../middleware/supabaseAuth');
 const logger = require('../utils/logger');
 const { getContinent } = require('../utils/geoMapping');
+const { normalizeTimezone } = require('../utils/timeHelpers');
+const { requireFeature } = require('../middleware/planEnforcement');
 
 const router = express.Router();
-
-const supabaseAuth = (req, res, next) => {
-    const authHeader = req.headers['authorization'];
-    const token = authHeader && authHeader.split(' ')[1];
-    if (!token) return res.status(401).json({ error: 'Access denied' });
-    req.supabase = getAuthenticatedClient(token);
-    next();
-};
 
 /**
  * Resolve timezone for analytics aggregation
@@ -96,22 +90,11 @@ async function resolveAnalyticsTimezone(supabase, userId, campaignId = null) {
     return 'UTC';
 }
 
-const normalizeTimezone = (tz) => {
-    if (!tz) return null;
-    if (tz.includes('Kolcata')) return 'Asia/Kolkata';
-    try {
-        Intl.DateTimeFormat(undefined, { timeZone: tz });
-        return tz;
-    } catch (e) {
-        return null;
-    }
-};
 
 // GET /api/stats (Overview)
 router.get('/', supabaseAuth, async (req, res) => {
     try {
-        const { data: { user }, error: authError } = await req.supabase.auth.getUser();
-        if (authError || !user) return res.status(401).json({ error: 'Unauthorized' });
+        const user = req.user;
 
         // Resolve workspace timezone for aggregation
         const workspaceTz = await resolveAnalyticsTimezone(req.supabase, user.id);
@@ -545,8 +528,7 @@ router.get('/:qr_id', supabaseAuth, async (req, res) => {
     const { days } = req.query; // Handle date filtering if needed
 
     try {
-        const { data: { user }, error: authError } = await req.supabase.auth.getUser();
-        if (authError || !user) return res.status(401).json({ error: 'Unauthorized' });
+        const user = req.user;
 
         // Verify ownership
         const { data: qr, error: qrError } = await req.supabase
@@ -683,8 +665,7 @@ router.get('/analytics/:qr_id', supabaseAuth, async (req, res) => {
     const { days } = req.query;
 
     try {
-        const { data: { user }, error: authError } = await req.supabase.auth.getUser();
-        if (authError || !user) return res.status(401).json({ error: 'Unauthorized' });
+        const user = req.user;
 
         // Verify ownership and get QR details
         const { data: qr, error: qrError } = await req.supabase

@@ -5,27 +5,17 @@
  */
 
 const express = require('express');
-const { getAuthenticatedClient } = require('../utils/supabase');
+const supabaseAuth = require('../middleware/supabaseAuth');
 const logger = require('../utils/logger');
 const { requireFeature } = require('../middleware/planEnforcement');
 
 const router = express.Router();
 
-const supabaseAuth = (req, res, next) => {
-    const authHeader = req.headers['authorization'];
-    const token = authHeader && authHeader.split(' ')[1];
-    if (!token) return res.status(401).json({ error: 'Access denied' });
-    req.supabase = getAuthenticatedClient(token);
-    next();
-};
-
 // GET /api/qrs/:id/variants
 router.get('/:id/variants', supabaseAuth, async (req, res) => {
     const { id } = req.params;
+    const user = req.user;
     try {
-        const { data: { user }, error: authError } = await req.supabase.auth.getUser();
-        if (authError || !user) return res.status(401).json({ error: 'Unauthorized' });
-
         // Verify ownership
         const { data: qr, error: qrError } = await req.supabase
             .from('qrs')
@@ -84,11 +74,9 @@ router.get('/:id/variants', supabaseAuth, async (req, res) => {
 router.post('/:id/variants', supabaseAuth, requireFeature('ab_testing'), async (req, res) => {
     const { id } = req.params;
     const { name, destination_url, weight } = req.body;
+    const user = req.user;
 
     try {
-        const { data: { user }, error: authError } = await req.supabase.auth.getUser();
-        if (authError || !user) return res.status(401).json({ error: 'Unauthorized' });
-
         // Verify ownership
         const { data: qr, error: qrError } = await req.supabase
             .from('qrs')
@@ -124,11 +112,9 @@ router.post('/:id/variants', supabaseAuth, requireFeature('ab_testing'), async (
 router.put('/:id/variants/:variantId', supabaseAuth, requireFeature('ab_testing'), async (req, res) => {
     const { id, variantId } = req.params;
     const { name, destination_url, weight, is_enabled } = req.body;
+    const user = req.user;
 
     try {
-        const { data: { user }, error: authError } = await req.supabase.auth.getUser();
-        if (authError || !user) return res.status(401).json({ error: 'Unauthorized' });
-
         // Verify ownership
         const { data: qr, error: qrError } = await req.supabase
             .from('qrs')
@@ -169,15 +155,13 @@ router.put('/:id/variants/:variantId', supabaseAuth, requireFeature('ab_testing'
 router.put('/:id/variants', supabaseAuth, requireFeature('ab_testing'), async (req, res) => {
     const { id } = req.params;
     const { variants, ab_control_weight } = req.body; // Expect array of variants and optional control weight
+    const user = req.user;
 
     if (!Array.isArray(variants)) {
         return res.status(400).json({ error: 'Variants must be an array' });
     }
 
     try {
-        const { data: { user }, error: authError } = await req.supabase.auth.getUser();
-        if (authError || !user) return res.status(401).json({ error: 'Unauthorized' });
-
         // Verify ownership
         const { data: qr, error: qrError } = await req.supabase
             .from('qrs')
@@ -228,11 +212,9 @@ router.put('/:id/variants', supabaseAuth, requireFeature('ab_testing'), async (r
 // DELETE /api/qrs/:id/variants/:variantId
 router.delete('/:id/variants/:variantId', supabaseAuth, requireFeature('ab_testing'), async (req, res) => {
     const { id, variantId } = req.params;
+    const user = req.user;
 
     try {
-        const { data: { user }, error: authError } = await req.supabase.auth.getUser();
-        if (authError || !user) return res.status(401).json({ error: 'Unauthorized' });
-
         // Verify ownership
         const { data: qr, error: qrError } = await req.supabase
             .from('qrs')

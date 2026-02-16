@@ -5,18 +5,10 @@
  */
 
 const express = require('express');
-const { getAuthenticatedClient } = require('../utils/supabase');
+const supabaseAuth = require('../middleware/supabaseAuth');
 const logger = require('../utils/logger');
 
 const router = express.Router();
-
-const supabaseAuth = (req, res, next) => {
-    const authHeader = req.headers['authorization'];
-    const token = authHeader && authHeader.split(' ')[1];
-    if (!token) return res.status(401).json({ error: 'Access denied' });
-    req.supabase = getAuthenticatedClient(token);
-    next();
-};
 
 /**
  * POST /api/profile/timezone
@@ -25,8 +17,7 @@ const supabaseAuth = (req, res, next) => {
  */
 router.post('/timezone', supabaseAuth, async (req, res) => {
     try {
-        const { data: { user }, error: authError } = await req.supabase.auth.getUser();
-        if (authError || !user) return res.status(401).json({ error: 'Unauthorized' });
+        const user = req.user;
 
         const { timezone } = req.body;
 

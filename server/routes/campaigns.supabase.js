@@ -5,40 +5,17 @@
  */
 
 const express = require('express');
-const { getAuthenticatedClient } = require('../utils/supabase');
+const supabaseAuth = require('../middleware/supabaseAuth');
 const logger = require('../utils/logger');
 const { requireFeature } = require('../middleware/planEnforcement');
+const { normalizeTimezone } = require('../utils/timeHelpers');
 
 const router = express.Router();
-
-const supabaseAuth = (req, res, next) => {
-    const authHeader = req.headers['authorization'];
-    const token = authHeader && authHeader.split(' ')[1];
-    if (!token) return res.status(401).json({ error: 'Access denied' });
-    req.supabase = getAuthenticatedClient(token);
-    next();
-};
-
-const normalizeTimezone = (tz) => {
-    if (!tz) return null;
-    // Common typo from client (Asia/Kolcata -> Asia/Kolkata)
-    if (tz.includes('Kolcata')) return 'Asia/Kolkata';
-    try {
-        Intl.DateTimeFormat(undefined, { timeZone: tz });
-        return tz;
-    } catch (e) {
-        logger.warn(`Invalid timezone provided: ${tz}, falling back to system time`);
-        return null;
-    }
-};
 
 // GET /api/campaigns - List user's campaigns
 router.get('/', supabaseAuth, requireFeature('campaigns'), async (req, res) => {
     try {
-        const { data: { user }, error: authError } = await req.supabase.auth.getUser();
-        if (authError || !user) {
-            return res.status(401).json({ error: 'Unauthorized' });
-        }
+        const user = req.user;
 
         const { data: campaigns, error } = await req.supabase
             .from('campaigns')
@@ -136,10 +113,8 @@ router.get('/', supabaseAuth, requireFeature('campaigns'), async (req, res) => {
 // GET /api/campaigns/:id - Get detailed campaign info
 router.get('/:id', supabaseAuth, requireFeature('campaigns'), async (req, res) => {
     const { id } = req.params;
+    const user = req.user;
     try {
-        const { data: { user }, error: authError } = await req.supabase.auth.getUser();
-        if (authError || !user) return res.status(401).json({ error: 'Unauthorized' });
-
         // 1. Fetch Campaign
         const { data: campaign, error: campaignError } = await req.supabase
             .from('campaigns')
@@ -348,12 +323,11 @@ router.get('/:id', supabaseAuth, requireFeature('campaigns'), async (req, res) =
 // POST /api/campaigns - Create a new campaign
 router.post('/', supabaseAuth, requireFeature('campaigns'), async (req, res) => {
     const { name, description } = req.body;
+    const user = req.user;
 
     if (!name) return res.status(400).json({ error: 'Campaign name is required' });
 
     try {
-        const { data: { user }, error: authError } = await req.supabase.auth.getUser();
-        if (authError || !user) return res.status(401).json({ error: 'Unauthorized' });
 
         const { data: campaign, error } = await req.supabase
             .from('campaigns')
@@ -379,12 +353,11 @@ router.post('/', supabaseAuth, requireFeature('campaigns'), async (req, res) => 
 router.put('/:id', supabaseAuth, requireFeature('campaigns'), async (req, res) => {
     const { id } = req.params;
     const { name } = req.body;
+    const user = req.user;
 
     if (!name) return res.status(400).json({ error: 'Campaign name is required' });
 
     try {
-        const { data: { user }, error: authError } = await req.supabase.auth.getUser();
-        if (authError || !user) return res.status(401).json({ error: 'Unauthorized' });
 
         const { data, error } = await req.supabase
             .from('campaigns')
@@ -405,10 +378,9 @@ router.put('/:id', supabaseAuth, requireFeature('campaigns'), async (req, res) =
 // DELETE /api/campaigns/:id - Soft delete campaign
 router.delete('/:id', supabaseAuth, requireFeature('campaigns'), async (req, res) => {
     const { id } = req.params;
+    const user = req.user;
 
     try {
-        const { data: { user }, error: authError } = await req.supabase.auth.getUser();
-        if (authError || !user) return res.status(401).json({ error: 'Unauthorized' });
 
         // 1. Unassign QRs (Set campaign_id to NULL)
         await req.supabase

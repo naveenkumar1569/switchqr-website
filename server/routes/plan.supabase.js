@@ -6,7 +6,7 @@
  */
 
 const express = require('express');
-const { getAuthenticatedClient } = require('../utils/supabase');
+const supabaseAuth = require('../middleware/supabaseAuth');
 const logger = require('../utils/logger');
 const { PLAN_CONFIG } = require('../utils/planManager');
 
@@ -14,34 +14,13 @@ console.log('✅ [DEBUG] Loading routes/plan.supabase.js');
 
 const router = express.Router();
 
-/**
- * Middleware to create authenticated Supabase client
- */
-const supabaseAuth = (req, res, next) => {
-    const authHeader = req.headers['authorization'];
-    const token = authHeader && authHeader.split(' ')[1];
-
-    if (!token) {
-        return res.status(401).json({ error: 'Access denied, token missing' });
-    }
-
-    req.supabase = getAuthenticatedClient(token);
-    next();
-};
-
 const { resolveUserPlan } = require('../utils/planManager');
 
-// ============================================
 // GET PLAN DETAILS
 // ============================================
 router.get('/', supabaseAuth, async (req, res) => {
     try {
-        // 1. Get User ID
-        const { data: { user }, error: userError } = await req.supabase.auth.getUser();
-
-        if (userError || !user) {
-            return res.status(401).json({ error: 'Invalid authentication' });
-        }
+        const user = req.user;
 
         // 2. Resolve Plan using Admin Client (Bypasses RLS)
         const planInfo = await resolveUserPlan(user.id);
@@ -87,11 +66,11 @@ router.get('/', supabaseAuth, async (req, res) => {
     }
 });
 
-// ============================================
 // UPDATE PLAN (PUT)
 // ============================================
 router.put('/', supabaseAuth, async (req, res) => {
     const { plan } = req.body;
+    const user = req.user;
 
     // Validate plan
     if (!['free', 'starter', 'pro'].includes(plan)) {
@@ -99,11 +78,6 @@ router.put('/', supabaseAuth, async (req, res) => {
     }
 
     try {
-        const { data: { user }, error: authError } = await req.supabase.auth.getUser();
-
-        if (authError || !user) {
-            return res.status(401).json({ error: 'Unauthorized' });
-        }
 
         // Update Profile
         const { error: updateError } = await req.supabase
@@ -124,13 +98,11 @@ router.put('/', supabaseAuth, async (req, res) => {
     }
 });
 
-// ============================================
 // ENFORCE LIMITS (POST)
 // ============================================
 router.post('/enforce-limits', supabaseAuth, async (req, res) => {
     try {
-        const { data: { user }, error: authError } = await req.supabase.auth.getUser();
-        if (authError || !user) return res.status(401).json({ error: 'Unauthorized' });
+        const user = req.user;
 
         // This is a simple stub to prevent 404s and handle basic limit checking if needed.
         // The real enforcement happens in the creation/update routes.
