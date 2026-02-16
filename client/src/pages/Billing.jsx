@@ -214,11 +214,14 @@ const Billing = () => {
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                             <div>
                                 <h4 className="text-xs uppercase tracking-wider font-bold text-[#6e5393] dark:text-[#a08cb3] mb-3">Usage Limits</h4>
-                                <div className="space-y-4">
+                                <div className="space-y-6">
+                                    {/* Dynamic QRs */}
                                     <div>
                                         <div className="flex justify-between mb-1">
                                             <span className="text-sm font-medium text-[#140f1a] dark:text-white">Dynamic QRs</span>
-                                            <span className="text-sm font-medium text-[#140f1a] dark:text-white">{qrCount} / {QR_LIMIT}</span>
+                                            <span className="text-sm font-medium text-[#140f1a] dark:text-white">
+                                                {qrCount} / {QR_LIMIT}
+                                            </span>
                                         </div>
                                         <div className="h-2 w-full bg-[#ece8f2] dark:bg-[#2f2b3a] rounded-full overflow-hidden">
                                             <div
@@ -228,6 +231,56 @@ const Billing = () => {
                                         </div>
                                         {qrCount >= QR_LIMIT && (
                                             <p className="text-xs text-red-600 dark:text-red-400 mt-1">Limit reached! Upgrade to create more QRs.</p>
+                                        )}
+                                    </div>
+
+                                    {/* Total Scans */}
+                                    <div>
+                                        <div className="flex justify-between mb-1">
+                                            <span className="text-sm font-medium text-[#140f1a] dark:text-white">Total Scans</span>
+                                            <span className="text-sm font-medium text-[#140f1a] dark:text-white">
+                                                {planInfo?.scan_count || 0} / {planInfo?.scan_limit || 'Unlimited'}
+                                            </span>
+                                        </div>
+                                        {planInfo?.scan_limit ? (
+                                            <div className="h-2 w-full bg-[#ece8f2] dark:bg-[#2f2b3a] rounded-full overflow-hidden">
+                                                <div
+                                                    className={`h-full rounded-full transition-all ${planInfo.scan_count >= planInfo.scan_limit ? 'bg-red-500' : 'bg-primary'}`}
+                                                    style={{ width: `${Math.min((planInfo.scan_count / planInfo.scan_limit) * 100, 100)}%` }}
+                                                ></div>
+                                            </div>
+                                        ) : (
+                                            <div className="h-2 w-full bg-primary/20 rounded-full overflow-hidden">
+                                                <div className="h-full bg-primary rounded-full" style={{ width: '100%' }}></div>
+                                            </div>
+                                        )}
+                                        {planInfo?.scan_limit && planInfo.scan_count >= planInfo.scan_limit && (
+                                            <p className="text-xs text-red-600 dark:text-red-400 mt-1">Scan limit reached! Please upgrade.</p>
+                                        )}
+                                    </div>
+
+                                    {/* Link Updates */}
+                                    <div>
+                                        <div className="flex justify-between mb-1">
+                                            <span className="text-sm font-medium text-[#140f1a] dark:text-white">Link Updates</span>
+                                            <span className="text-sm font-medium text-[#140f1a] dark:text-white">
+                                                {planInfo?.link_update_count || 0} / {planInfo?.link_update_limit || 'Unlimited'}
+                                            </span>
+                                        </div>
+                                        {planInfo?.link_update_limit ? (
+                                            <div className="h-2 w-full bg-[#ece8f2] dark:bg-[#2f2b3a] rounded-full overflow-hidden">
+                                                <div
+                                                    className={`h-full rounded-full transition-all ${planInfo.link_update_count >= planInfo.link_update_limit ? 'bg-red-500' : 'bg-primary'}`}
+                                                    style={{ width: `${Math.min((planInfo.link_update_count / planInfo.link_update_limit) * 100, 100)}%` }}
+                                                ></div>
+                                            </div>
+                                        ) : (
+                                            <div className="h-2 w-full bg-primary/20 rounded-full overflow-hidden">
+                                                <div className="h-full bg-primary rounded-full" style={{ width: '100%' }}></div>
+                                            </div>
+                                        )}
+                                        {planInfo?.link_update_limit && planInfo.link_update_count >= planInfo.link_update_limit && (
+                                            <p className="text-xs text-red-600 dark:text-red-400 mt-1">Upgrade needed for more link changes.</p>
                                         )}
                                     </div>
                                 </div>

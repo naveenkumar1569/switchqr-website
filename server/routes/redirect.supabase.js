@@ -232,7 +232,14 @@ router.get('/r/:shortCode', async (req, res) => {
             });
         });
 
-        // 5. Redirect with Hardened Fallback
+        // 6. Increment Total Scans in Usage Stats (Async)
+        supabaseAdmin.rpc('increment_total_scans', { user_id_param: qr.owner_id })
+            .then(({ error }) => {
+                if (error) console.error(`[USAGE] Failed to increment scan count for user ${qr.owner_id}`, error);
+                else console.log(`[USAGE] Incremented scan count for user ${qr.owner_id}`);
+            });
+
+        // 7. Redirect with Hardened Fallback
         // Force text/html to prevent "download" behavior in some browsers/proxies
         res.setHeader('Content-Type', 'text/html');
         res.status(302);

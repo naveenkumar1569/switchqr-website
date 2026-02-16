@@ -16,7 +16,7 @@ const PLAN_CONFIG = {
         pro: 1000
     },
     scanLimits: {
-        free: 500,
+        free: 1000,
         starter: 100000,
         pro: null  // Unlimited
     },

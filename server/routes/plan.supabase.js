@@ -95,9 +95,24 @@ router.get('/', supabaseAuth, async (req, res) => {
             logger.error('Error counting QRs', { error: countError.message });
         }
 
+        // 4. Get usage stats (scans and link updates)
+        const { data: usageStats, error: statsError } = await req.supabase
+            .from('user_usage_stats')
+            .select('total_scans, link_updates_count')
+            .eq('user_id', user.id)
+            .maybeSingle();
+
+        if (statsError) {
+            logger.error('Error fetching usage stats', { error: statsError.message });
+        }
+
         const response = {
             ...planInfo,
-            qr_count: count || 0
+            qr_count: count || 0,
+            scan_count: usageStats?.total_scans || 0,
+            link_update_count: usageStats?.link_updates_count || 0,
+            scan_limit: PLAN_CONFIG.scanLimits[planInfo.effectivePlan],
+            link_update_limit: PLAN_CONFIG.linkUpdateLimits[planInfo.effectivePlan]
         };
 
         console.log('[PLAN_RESOLVE_FINAL]', user.id, response);

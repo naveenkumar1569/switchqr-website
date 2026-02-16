@@ -8,6 +8,8 @@
 const express = require('express');
 const { getAuthenticatedClient } = require('../utils/supabase');
 const logger = require('../utils/logger');
+const { requireFeature } = require('../middleware/planEnforcement');
+const { isSameUrl } = require('../utils/urlFormatter');
 
 const router = express.Router();
 
@@ -261,6 +263,39 @@ router.put('/:id', supabaseAuth, async (req, res) => {
         delete updates.id;
         delete updates.owner_id;
         delete updates.created_at;
+
+        // --- LINK UPDATE TRACKING ---
+        if (updates.destination_url) {
+            // 1. Fetch current QR to get old URL
+            const { data: currentQR } = await req.supabase
+                .from('qrs')
+                .select('destination_url')
+                .eq('id', id)
+                .single();
+
+            // 2. Strict comparison using urlFormatter
+            if (currentQR && !isSameUrl(currentQR.destination_url, updates.destination_url)) {
+                console.log(`[USAGE] Link update detected for user ${user.id}: ${currentQR.destination_url} -> ${updates.destination_url}`);
+
+                // 3. Log event and increment counter transactionally (RPC is best, but using parallel for now)
+                // Note: user_usage_stats increment should be transactional if possible
+                const { error: eventError } = await req.supabase
+                    .from('usage_events')
+                    .insert({
+                        user_id: user.id,
+                        event_type: 'link_update',
+                        qr_id: id,
+                        old_url: currentQR.destination_url,
+                        new_url: updates.destination_url
+                    });
+
+                if (!eventError) {
+                    // Update the projection table
+                    await req.supabase.rpc('increment_link_updates', { user_id_param: user.id });
+                }
+            }
+        }
+        // --- END LINK UPDATE TRACKING ---
 
         const { data, error } = await req.supabase
             .from('qrs')
