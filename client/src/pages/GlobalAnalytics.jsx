@@ -757,33 +757,6 @@ const GlobalAnalytics = () => {
                 )}
             </div>
 
-            {/* Premium Upsell Card */}
-            {!isProUser && (
-                <div className="bg-white dark:bg-surface-dark rounded-2xl shadow-soft overflow-hidden border border-slate-100/50 dark:border-slate-800">
-                    <div className="h-32 w-full bg-gradient-to-br from-primary to-indigo-600 flex items-center justify-center relative overflow-hidden">
-                        <div className="absolute inset-0 bg-white/10 backdrop-blur-[1px]"></div>
-                        <div className="absolute -top-12 -right-12 w-32 h-32 bg-white/10 rounded-full blur-2xl"></div>
-                        <div className="absolute -bottom-12 -left-12 w-32 h-32 bg-white/10 rounded-full blur-2xl"></div>
-                        <span className="material-symbols-outlined text-white text-6xl opacity-20">insights</span>
-                    </div>
-                    <div className="p-8 flex flex-col items-center text-center">
-                        <div className="mb-4">
-                            <span className="px-3 py-1 bg-primary/10 text-primary text-[10px] font-bold uppercase tracking-widest rounded-full">Pro Feature</span>
-                        </div>
-                        <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-3">Power-up your Marketing</h3>
-                        <p className="text-slate-500 dark:text-slate-400 max-w-lg mb-8">
-                            Join over 5,000+ businesses using our Pro analytics suite to drive 12x higher conversion rates with location-based targeting.
-                        </p>
-                        <Link
-                            to="/billing"
-                            className="inline-flex items-center gap-2 px-10 py-4 bg-primary text-white rounded-xl hover:bg-primary-hover shadow-glow transition-all hover:scale-105 active:scale-95 font-bold"
-                        >
-                            <span>Explore Pro Benefits</span>
-                            <span className="material-symbols-outlined">rocket_launch</span>
-                        </Link>
-                    </div>
-                </div>
-            )}
         </div>
     );
 };
