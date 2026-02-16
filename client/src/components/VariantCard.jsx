@@ -46,21 +46,21 @@ const VariantCard = ({ variant, onUpdate, onDelete, totalWeight, totalScans, isL
             {/* Status Badges Container */}
             <div className="absolute -top-3 left-4 flex items-center gap-2">
                 {isEnabled && isLeader && (
-                    <div className="px-2 py-1 bg-indigo-600 text-white text-[10px] font-black uppercase tracking-widest rounded shadow-lg shadow-indigo-200 dark:shadow-none flex items-center gap-1">
+                    <div className="px-2 py-1 bg-indigo-600 text-white text-[10px] font-bold uppercase tracking-widest rounded shadow-lg shadow-indigo-200 dark:shadow-none flex items-center gap-1">
                         <span className="material-symbols-outlined text-[12px]">workspace_premium</span>
                         Leader
                     </div>
                 )}
 
                 {!isEnabled && (
-                    <div className="px-2 py-1 bg-slate-500 text-white text-[10px] font-black uppercase tracking-widest rounded flex items-center gap-1">
+                    <div className="px-2 py-1 bg-slate-500 text-white text-[10px] font-bold uppercase tracking-widest rounded flex items-center gap-1">
                         <span className="material-symbols-outlined text-[12px]">block</span>
                         Disabled
                     </div>
                 )}
 
                 {isControl && (
-                    <div className="px-2 py-1 bg-primary text-white text-[10px] font-black uppercase tracking-widest rounded shadow-lg shadow-primary/20 flex items-center gap-1">
+                    <div className="px-2 py-1 bg-primary text-white text-[10px] font-bold uppercase tracking-widest rounded shadow-lg shadow-primary/20 flex items-center gap-1">
                         <span className="material-symbols-outlined text-[12px]">star</span>
                         Baseline
                     </div>

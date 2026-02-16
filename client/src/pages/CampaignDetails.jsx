@@ -201,7 +201,7 @@ const CampaignDetails = () => {
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8">
                 <div>
                     <div className="flex items-center gap-3 mb-2">
-                        <h2 className="text-4xl font-black tracking-tight text-slate-900 dark:text-white">{campaign.name}</h2>
+                        <h2 className="text-4xl font-bold tracking-tight text-slate-900 dark:text-white">{campaign.name}</h2>
                         <span className="bg-green-50 text-green-600 dark:bg-green-900/30 dark:text-green-400 text-xs font-bold px-2.5 py-1 rounded-full border border-green-100 dark:border-green-800">Active</span>
                     </div>
                     <p className="text-slate-500 dark:text-slate-400">

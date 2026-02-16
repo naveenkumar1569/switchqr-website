@@ -91,7 +91,7 @@ const Settings = () => {
         <div className="mx-auto max-w-5xl flex flex-col gap-8">
             {/* Page Heading */}
             <div className="flex flex-col gap-2">
-                <h1 className="text-3xl font-black tracking-tight text-slate-900 dark:text-white md:text-4xl">Account Settings</h1>
+                <h1 className="text-3xl font-bold tracking-tight text-slate-900 dark:text-white md:text-4xl">Account Settings</h1>
                 <p className="text-base text-slate-500 dark:text-slate-400 max-w-2xl">
                     Manage your personal details, workspace preferences, and security settings.
                 </p>

@@ -1085,10 +1085,7 @@ const QRDetails = () => {
                                         >
                                             {format}
                                             {format !== 'png' && !planInfo?.features?.svg_pdf_downloads && (
-                                                <div className="flex items-center gap-1 bg-amber-100 dark:bg-amber-900/30 border border-amber-200 dark:border-amber-800 rounded px-1 py-0.5 ml-1">
-                                                    <span className="material-symbols-outlined text-[10px] text-amber-600 dark:text-amber-400 font-bold">lock</span>
-                                                    <span className="text-[8px] font-black text-amber-700 dark:text-amber-400 tracking-wider">STARTER</span>
-                                                </div>
+                                                <LockedBadge plan="starter" className="ml-1" />
                                             )}
                                         </button>
                                     ))}

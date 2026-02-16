@@ -50,7 +50,7 @@ const Billing = () => {
             <div className="mx-auto max-w-6xl flex flex-col gap-10">
                 {/* Page Heading */}
                 <div className="text-center space-y-3">
-                    <h1 className="text-[#140f1a] dark:text-white text-3xl md:text-5xl font-black leading-tight tracking-tight">Plans & Pricing</h1>
+                    <h1 className="text-[#140f1a] dark:text-white text-3xl md:text-5xl font-bold leading-tight tracking-tight">Plans & Pricing</h1>
                     <p className="text-[#6e5393] dark:text-[#a08cb3] text-lg font-normal max-w-2xl mx-auto">Upgrade your QR capabilities with our flexible plans. Choose the perfect plan for your needs.</p>
                 </div>
 
@@ -91,7 +91,7 @@ const Billing = () => {
                             <h3 className="text-lg font-bold text-[#140f1a] dark:text-white mb-2">Free</h3>
                             <p className="text-[#6e5393] dark:text-[#a08cb3] text-sm mb-4">Forever free for individuals.</p>
                             <div className="flex items-baseline gap-1">
-                                <span className="text-4xl font-black text-[#140f1a] dark:text-white tracking-tight">$0</span>
+                                <span className="text-4xl font-bold text-[#140f1a] dark:text-white tracking-tight">$0</span>
                                 <span className="text-base font-medium text-[#6e5393] dark:text-[#a08cb3]">/mo</span>
                             </div>
                         </div>
@@ -127,7 +127,7 @@ const Billing = () => {
                             <h3 className="text-lg font-bold text-[#140f1a] dark:text-white mb-2">Starter</h3>
                             <p className="text-[#6e5393] dark:text-[#a08cb3] text-sm mb-4">Great for hobbyists & side projects.</p>
                             <div className="flex items-baseline gap-1">
-                                <span className="text-4xl font-black text-[#140f1a] dark:text-white tracking-tight">${currentPlanData.starter.price}</span>
+                                <span className="text-4xl font-bold text-[#140f1a] dark:text-white tracking-tight">${currentPlanData.starter.price}</span>
                                 <span className="text-base font-medium text-[#6e5393] dark:text-[#a08cb3]">/mo</span>
                             </div>
                             {billingPeriod === 'yearly' && (
@@ -177,7 +177,7 @@ const Billing = () => {
                             <h3 className="text-lg font-bold text-[#140f1a] dark:text-white mb-2">Pro</h3>
                             <p className="text-[#6e5393] dark:text-[#a08cb3] text-sm mb-4">For power users and businesses.</p>
                             <div className="flex items-baseline gap-1">
-                                <span className="text-4xl font-black text-[#140f1a] dark:text-white tracking-tight">${currentPlanData.pro.price}</span>
+                                <span className="text-4xl font-bold text-[#140f1a] dark:text-white tracking-tight">${currentPlanData.pro.price}</span>
                                 <span className="text-base font-medium text-[#6e5393] dark:text-[#a08cb3]">/mo</span>
                             </div>
                             {billingPeriod === 'yearly' && (
