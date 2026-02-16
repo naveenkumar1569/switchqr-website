@@ -9,7 +9,9 @@ import ScheduleList from '../components/ScheduleList';
 import ConfirmationModal from '../components/ConfirmationModal';
 import { apiGet, apiPost, apiPut, apiDelete } from '../utils/api';
 import { getQRImageUrl, getRedirectUrl } from '../utils/qrHelpers';
+import { getQRImageUrl, getRedirectUrl } from '../utils/qrHelpers';
 import { fetchQRStats } from '../utils/analyticsService';
+import { calculateChartScale } from '../utils/chartHelpers';
 
 const LockedOverlay = ({ title, description }) => (
     <div className="absolute inset-0 bg-white/40 dark:bg-[#1e1726]/40 backdrop-blur-[2px] rounded-2xl flex flex-col items-center justify-center z-20 border border-slate-200/50 dark:border-slate-700/50">
@@ -675,11 +677,13 @@ const QRDetails = () => {
     };
 
     // Chart Calculations
-    const chartMaxCount = (stats?.scansOverTime && stats.scansOverTime.length > 0)
-        ? Math.max(...stats.scansOverTime.map(d => d.count), 10)
-        : 10;
+    const maxDataValue = (stats?.scansOverTime && stats.scansOverTime.length > 0)
+        ? Math.max(...stats.scansOverTime.map(d => d.count), 0)
+        : 0;
 
-    const yAxisLabels = [4, 3, 2, 1, 0].map(i => Math.round(chartMaxCount * (i / 4)));
+    const chartScale = calculateChartScale(maxDataValue);
+    const chartMaxCount = chartScale.max;
+    const yAxisLabels = chartScale.ticks;
 
     return (
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { fetchQRAnalytics } from '../utils/analyticsService';
+import { calculateChartScale } from '../utils/chartHelpers';
 
 const LockedOverlay = ({ title, description }) => (
     <div className="absolute inset-0 bg-white/40 dark:bg-[#1e1726]/40 backdrop-blur-[2px] rounded-2xl flex flex-col items-center justify-center z-20 border border-slate-200/50 dark:border-slate-700/50">
@@ -73,14 +74,99 @@ const Analytics = () => {
 
             {/* Stats Grid */}
             <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                <div className="bg-surface-light dark:bg-surface-dark p-6 rounded-xl border border-border-light dark:border-border-dark shadow-sm">
-                    <div className="flex items-start justify-between mb-4">
-                        <div className="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg text-blue-600 dark:text-blue-400">
-                            <span className="material-symbols-outlined">bar_chart</span>
+                <div className="bg-surface-light dark:bg-surface-dark p-6 rounded-xl border border-border-light dark:border-border-dark shadow-sm sm:col-span-2">
+                    <div className="flex items-start justify-between mb-6">
+                        <div className="flex items-center gap-3">
+                            <div className="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg text-blue-600 dark:text-blue-400">
+                                <span className="material-symbols-outlined">bar_chart</span>
+                            </div>
+                            <div>
+                                <p className="text-sm font-medium text-slate-500 dark:text-slate-400">Total Scans</p>
+                                <h3 className="text-3xl font-bold text-slate-900 dark:text-white leading-none">{analytics.totalScans || scans.length}</h3>
+                            </div>
                         </div>
                     </div>
-                    <p className="text-sm font-medium text-slate-500 dark:text-slate-400">Total Scans</p>
-                    <h3 className="text-3xl font-bold text-slate-900 dark:text-white mt-1">{analytics.totalScans || scans.length}</h3>
+
+                    {/* Chart Widget */}
+                    {(() => {
+                        // Group scans by date for the chart
+                        // Simple aggregation for the last 30 days or based on available data
+                        const today = new Date();
+                        const dailyCounts = {};
+
+                        // Default to last 7 days if no scans, or range based on data
+                        for (let i = 6; i >= 0; i--) {
+                            const d = new Date();
+                            d.setDate(today.getDate() - i);
+                            const key = d.toISOString().split('T')[0];
+                            dailyCounts[key] = 0;
+                        }
+
+                        scans.forEach(scan => {
+                            const key = new Date(scan.scanned_at).toISOString().split('T')[0];
+                            if (dailyCounts[key] !== undefined) {
+                                dailyCounts[key]++;
+                            } else {
+                                // If scan is outside default 7 days, we might want to expand range or just ignore for this simple view
+                                // For this specific widget upgrade, let's stick to the visible range or basic data
+                            }
+                        });
+
+                        // If we have stats.scansOverTime from backend, use that. Otherwise use manual aggregation.
+                        // The previous QRDetails implementation relied on `stats.scansOverTime`.
+                        // Let's check if `analytics` object has it or if we need to derive it.
+                        // Assuming `scans` is the list of recent scans.
+
+                        // To match QRDetails visuals exactly, we need an array of { date, count }.
+                        // Let's use the aggregated `dailyCounts` for a simple 7-day view or similar.
+                        const chartData = Object.entries(dailyCounts).map(([date, count]) => ({ date, count }));
+
+                        // Calculate Scale
+                        const maxVal = Math.max(...chartData.map(d => d.count), 0);
+                        const scale = calculateChartScale(maxVal);
+                        const chartMax = scale.max;
+
+                        return (
+                            <div className="flex gap-4 h-48 w-full pt-4 border-t border-slate-100 dark:border-slate-800 mt-4">
+                                {/* Y-Axis */}
+                                <div className="w-8 flex flex-col justify-between text-xs text-slate-400 dark:text-slate-500 font-medium py-1 text-right h-full">
+                                    {scale.ticks.map((t, i) => (
+                                        <span key={i}>{t.toLocaleString()}</span>
+                                    ))}
+                                </div>
+
+                                {/* Chart */}
+                                <div className="flex-1 flex items-end justify-between gap-2 relative grid-bg rounded-lg border border-slate-50 dark:border-slate-800 px-1">
+                                    {chartData.map((day, i) => (
+                                        <div key={i} className="flex flex-col items-center gap-1 w-full group relative z-10 h-full justify-end">
+                                            <div
+                                                className="w-full bg-blue-500/20 hover:bg-blue-500/50 rounded-t-sm transition-all relative group-hover:shadow-lg min-h-[4px]"
+                                                style={{ height: `${(day.count / chartMax) * 100}%` }}
+                                            >
+                                                {/* Tooltip */}
+                                                <div className="opacity-0 group-hover:opacity-100 absolute -top-16 left-1/2 -translate-x-1/2 bg-white dark:bg-[#1e1726] border border-slate-200 dark:border-slate-700 rounded-lg shadow-xl px-3 py-2 pointer-events-none transition-opacity backdrop-blur-sm whitespace-nowrap z-50">
+                                                    <div className="text-lg font-bold text-slate-900 dark:text-white text-center leading-none mb-1">
+                                                        {day.count}
+                                                    </div>
+                                                    <div className="text-[10px] text-slate-500 dark:text-slate-400 text-center">
+                                                        {new Date(day.date).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <span className="text-[10px] text-slate-400 truncate w-full text-center">
+                                                {new Date(day.date).toLocaleDateString(undefined, { weekday: 'narrow' })}
+                                            </span>
+                                        </div>
+                                    ))}
+                                    {chartData.every(d => d.count === 0) && (
+                                        <div className="absolute inset-0 flex items-center justify-center text-xs text-slate-400">
+                                            No scans in last 7 days
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+                        );
+                    })()}
                 </div>
 
                 <div className="bg-surface-light dark:bg-surface-dark p-6 rounded-xl border border-border-light dark:border-border-dark shadow-sm">
