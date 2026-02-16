@@ -1194,7 +1194,7 @@ const QRDetails = () => {
                 <div className="bg-white dark:bg-[#1e1726] rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm p-6">
                     <div className="flex items-center justify-between mb-6">
                         <div>
-                            <h3 className="font-bold text-slate-900 dark:text-white text-lg">Scan Performance</h3>
+                            <h3 className="font-bold text-slate-900 dark:text-white text-lg">Scan Performance [v2FIX]</h3>
                             <p className="text-sm text-slate-500">Total scans over the last {dateRange} days</p>
                         </div>
                         <div className="relative">
