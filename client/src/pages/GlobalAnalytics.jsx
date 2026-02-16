@@ -695,9 +695,6 @@ const GlobalAnalytics = () => {
                     <div className="bg-white dark:bg-surface-dark rounded-2xl shadow-soft p-6 md:p-8 border border-slate-100/50 dark:border-slate-800 flex flex-col justify-between">
                         <div className="flex justify-between items-center mb-6">
                             <h2 className="text-lg font-bold text-slate-900 dark:text-white">Device Distribution</h2>
-                            <button className="text-primary hover:bg-primary/5 dark:hover:bg-primary/20 p-1 rounded-lg transition-colors">
-                                <span className="material-symbols-outlined">more_vert</span>
-                            </button>
                         </div>
 
                         <div className="space-y-4">
@@ -722,7 +719,6 @@ const GlobalAnalytics = () => {
                     <div className="bg-white dark:bg-surface-dark rounded-2xl shadow-soft p-6 md:p-8 border border-slate-100/50 dark:border-slate-800">
                         <div className="flex justify-between items-center mb-6">
                             <h2 className="text-lg font-bold text-slate-900 dark:text-white">Top Locations</h2>
-                            <Link to="/analytics" className="text-sm text-primary font-medium hover:underline">View Map</Link>
                         </div>
 
                         <div className="space-y-4">
