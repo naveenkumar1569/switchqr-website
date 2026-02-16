@@ -674,6 +674,13 @@ const QRDetails = () => {
         }
     };
 
+    // Chart Calculations
+    const chartMaxCount = (stats?.scansOverTime && stats.scansOverTime.length > 0)
+        ? Math.max(...stats.scansOverTime.map(d => d.count), 10)
+        : 10;
+
+    const yAxisLabels = [4, 3, 2, 1, 0].map(i => Math.round(chartMaxCount * (i / 4)));
+
     return (
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
             {/* Breadcrumbs */}
@@ -1203,32 +1210,42 @@ const QRDetails = () => {
                         </div>
                     </div>
                     {/* Bar Chart */}
-                    <div className="h-64 w-full flex items-end justify-between gap-2 border-b border-slate-200 dark:border-slate-800 relative pt-10">
-                        {stats.scansOverTime.map((day, i) => (
-                            <div key={i} className="flex flex-col items-center gap-2 w-full group relative z-10 h-full justify-end">
-                                <div
-                                    className="w-full bg-primary/20 hover:bg-primary/50 rounded-t-sm transition-all relative group-hover:shadow-lg"
-                                    style={{ height: `${(day.count / maxCount) * 100}%` }}
-                                >
-                                    <div className="opacity-0 group-hover:opacity-100 absolute -top-20 left-1/2 -translate-x-1/2 bg-white dark:bg-[#1e1726] border border-slate-200 dark:border-slate-700 rounded-xl shadow-xl px-4 py-3 pointer-events-none transition-opacity backdrop-blur-sm whitespace-nowrap">
-                                        <div className="flex items-center gap-2 mb-1">
-                                            <div className="w-2 h-2 rounded-full bg-primary"></div>
-                                            <div className="text-xs font-semibold text-slate-500 dark:text-slate-400">
-                                                {new Date(day.date).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}
+                    <div className="flex gap-4 h-64 w-full pt-6 border-b border-slate-200 dark:border-slate-800">
+                        {/* Y-Axis Labels */}
+                        <div className="w-8 flex flex-col justify-between text-xs text-slate-400 dark:text-slate-500 font-medium py-2 text-right">
+                            {yAxisLabels.map((label, i) => (
+                                <span key={i}>{label.toLocaleString()}</span>
+                            ))}
+                        </div>
+
+                        {/* Chart Area */}
+                        <div className="flex-1 flex items-end justify-between gap-2 relative grid-bg rounded-lg border border-slate-50 dark:border-slate-800">
+                            {stats.scansOverTime.map((day, i) => (
+                                <div key={i} className="flex flex-col items-center gap-2 w-full group relative z-10 h-full justify-end">
+                                    <div
+                                        className="w-full bg-primary/20 hover:bg-primary/50 rounded-t-sm transition-all relative group-hover:shadow-lg"
+                                        style={{ height: `${(day.count / chartMaxCount) * 100}%` }}
+                                    >
+                                        <div className="opacity-0 group-hover:opacity-100 absolute -top-20 left-1/2 -translate-x-1/2 bg-white dark:bg-[#1e1726] border border-slate-200 dark:border-slate-700 rounded-xl shadow-xl px-4 py-3 pointer-events-none transition-opacity backdrop-blur-sm whitespace-nowrap z-50">
+                                            <div className="flex items-center gap-2 mb-1">
+                                                <div className="w-2 h-2 rounded-full bg-primary"></div>
+                                                <div className="text-xs font-semibold text-slate-500 dark:text-slate-400">
+                                                    {new Date(day.date).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}
+                                                </div>
+                                            </div>
+                                            <div className="text-2xl font-bold text-slate-900 dark:text-white">
+                                                {day.count}
+                                            </div>
+                                            <div className="text-xs text-slate-500 dark:text-slate-400">
+                                                {day.count === 1 ? 'scan' : 'scans'}
                                             </div>
                                         </div>
-                                        <div className="text-2xl font-bold text-slate-900 dark:text-white">
-                                            {day.count}
-                                        </div>
-                                        <div className="text-xs text-slate-500 dark:text-slate-400">
-                                            {day.count === 1 ? 'scan' : 'scans'}
-                                        </div>
                                     </div>
+                                    <span className="text-[10px] text-slate-400 truncate w-full text-center">{new Date(day.date).toLocaleDateString(undefined, { weekday: 'short' })}</span>
                                 </div>
-                                <span className="text-[10px] text-slate-400 truncate w-full text-center">{new Date(day.date).toLocaleDateString(undefined, { weekday: 'short' })}</span>
-                            </div>
-                        ))}
-                        {stats.scansOverTime.length === 0 && <div className="w-full text-center text-slate-400 absolute top-1/2">No scan data for this period</div>}
+                            ))}
+                            {stats.scansOverTime.length === 0 && <div className="w-full text-center text-slate-400 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">No scan data for this period</div>}
+                        </div>
                     </div>
                 </div>
 
