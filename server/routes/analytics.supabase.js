@@ -19,6 +19,83 @@ const supabaseAuth = (req, res, next) => {
     next();
 };
 
+/**
+ * Resolve timezone for analytics aggregation
+ * Priority: campaign.timezone → workspace.timezone → 'UTC'
+ * 
+ * @param {Object} supabase - Supabase client
+ * @param {string} userId - User ID
+ * @param {string|null} campaignId - Optional campaign ID
+ * @returns {Promise<string>} IANA timezone string
+ */
+async function resolveAnalyticsTimezone(supabase, userId, campaignId = null) {
+    // Priority 1: campaign timezone override
+    if (campaignId) {
+        const { data: campaign } = await supabase
+            .from('campaigns')
+            .select('timezone, workspace_id')
+            .eq('id', campaignId)
+            .single();
+
+        if (campaign?.timezone) {
+            logger.info('[ANALYTICS_TZ_USED]', {
+                source: 'campaign',
+                tz: campaign.timezone,
+                campaignId
+            });
+            return campaign.timezone;
+        }
+
+        if (campaign?.workspace_id) {
+            const { data: workspace } = await supabase
+                .from('workspaces')
+                .select('timezone')
+                .eq('id', campaign.workspace_id)
+                .single();
+
+            if (workspace?.timezone) {
+                logger.info('[ANALYTICS_TZ_USED]', {
+                    source: 'workspace',
+                    tz: workspace.timezone,
+                    workspaceId: campaign.workspace_id
+                });
+                return workspace.timezone;
+            }
+        }
+    }
+
+    // Priority 2: workspace timezone via profile
+    const { data: profile } = await supabase
+        .from('profiles')
+        .select('workspace_id')
+        .eq('id', userId)
+        .single();
+
+    if (profile?.workspace_id) {
+        const { data: workspace } = await supabase
+            .from('workspaces')
+            .select('timezone')
+            .eq('id', profile.workspace_id)
+            .single();
+
+        if (workspace?.timezone) {
+            logger.info('[ANALYTICS_TZ_USED]', {
+                source: 'workspace',
+                tz: workspace.timezone,
+                workspaceId: profile.workspace_id
+            });
+            return workspace.timezone;
+        }
+    }
+
+    logger.info('[ANALYTICS_TZ_USED]', {
+        source: 'fallback',
+        tz: 'UTC'
+    });
+
+    return 'UTC';
+}
+
 const normalizeTimezone = (tz) => {
     if (!tz) return null;
     if (tz.includes('Kolcata')) return 'Asia/Kolkata';
@@ -36,8 +113,11 @@ router.get('/', supabaseAuth, async (req, res) => {
         const { data: { user }, error: authError } = await req.supabase.auth.getUser();
         if (authError || !user) return res.status(401).json({ error: 'Unauthorized' });
 
+        // Resolve workspace timezone for aggregation
+        const workspaceTz = await resolveAnalyticsTimezone(req.supabase, user.id);
+
         // Parse date range parameters
-        const { days, start, end, tz } = req.query;
+        const { days, start, end } = req.query;
         let startDate, endDate;
 
         if (start && end) {
@@ -55,6 +135,7 @@ router.get('/', supabaseAuth, async (req, res) => {
         // Normalize to start of day for startDate and end of day for endDate
         startDate.setHours(0, 0, 0, 0);
         endDate.setHours(23, 59, 59, 999);
+
 
         // Get total scans for user's QRs
         const { data: qrs, error: qrError } = await req.supabase
@@ -222,37 +303,24 @@ router.get('/', supabaseAuth, async (req, res) => {
                 // Scans Over Time - Intelligent aggregation based on date range
                 const daysDiff = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24));
 
-                const normalizedTz = normalizeTimezone(tz);
-
                 const timeline = {};
                 if (daysDiff <= 31) {
                     // Daily aggregation for up to 31 days
-                    if (normalizedTz) {
-                        try {
-                            const dailyFormatter = new Intl.DateTimeFormat('en-CA', { timeZone: normalizedTz });
-                            for (let i = 0; i < daysDiff; i++) {
-                                const d = new Date(startDate);
-                                d.setDate(d.getDate() + i);
-                                const key = dailyFormatter.format(d);
-                                timeline[key] = 0;
-                            }
-                            scans.forEach(s => {
-                                const key = dailyFormatter.format(new Date(s.scanned_at));
-                                if (timeline[key] !== undefined) timeline[key]++;
-                            });
-                        } catch (e) {
-                            for (let i = 0; i < daysDiff; i++) {
-                                const d = new Date(startDate);
-                                d.setDate(d.getDate() + i);
-                                const key = d.toISOString().split('T')[0];
-                                timeline[key] = 0;
-                            }
-                            scans.forEach(s => {
-                                const key = s.scanned_at.split('T')[0];
-                                if (timeline[key] !== undefined) timeline[key]++;
-                            });
+                    try {
+                        const dailyFormatter = new Intl.DateTimeFormat('en-CA', { timeZone: workspaceTz });
+                        for (let i = 0; i < daysDiff; i++) {
+                            const d = new Date(startDate);
+                            d.setDate(d.getDate() + i);
+                            const key = dailyFormatter.format(d);
+                            timeline[key] = 0;
                         }
-                    } else {
+                        scans.forEach(s => {
+                            const key = dailyFormatter.format(new Date(s.scanned_at));
+                            if (timeline[key] !== undefined) timeline[key]++;
+                        });
+                    } catch (e) {
+                        logger.error('[ANALYTICS_TZ_ERROR]', { tz: workspaceTz, error: e.message });
+                        // Fallback to UTC
                         for (let i = 0; i < daysDiff; i++) {
                             const d = new Date(startDate);
                             d.setDate(d.getDate() + i);
@@ -269,6 +337,7 @@ router.get('/', supabaseAuth, async (req, res) => {
                         date,
                         count: timeline[date]
                     }));
+
 
                 } else if (daysDiff <= 90) {
                     // Weekly aggregation for 32-90 days
@@ -381,12 +450,11 @@ router.get('/', supabaseAuth, async (req, res) => {
             }
 
             if (scans && scans.length > 0) {
-                const normalizedTz = normalizeTimezone(tz);
                 let hourFormat = null;
-                if (normalizedTz) {
-                    try {
-                        hourFormat = new Intl.DateTimeFormat('en-US', { hour: 'numeric', hour12: false, timeZone: normalizedTz });
-                    } catch (e) { }
+                try {
+                    hourFormat = new Intl.DateTimeFormat('en-US', { hour: 'numeric', hour12: false, timeZone: workspaceTz });
+                } catch (e) {
+                    logger.error('[ANALYTICS_TZ_ERROR]', { tz: workspaceTz, error: e.message });
                 }
 
                 scans.forEach(s => {
@@ -412,6 +480,7 @@ router.get('/', supabaseAuth, async (req, res) => {
                 count: hourlyMap[h]
             }));
 
+
             // Hourly Heatmap (Day × Hour) - v2 feature
             const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
             const heatmapData = {};
@@ -422,17 +491,16 @@ router.get('/', supabaseAuth, async (req, res) => {
             });
 
             if (scans && scans.length > 0) {
-                const normalizedTz = normalizeTimezone(tz);
                 let heatFormatter = null;
-                if (normalizedTz) {
-                    try {
-                        heatFormatter = new Intl.DateTimeFormat('en-US', {
-                            hour: 'numeric',
-                            hour12: false,
-                            weekday: 'short',
-                            timeZone: normalizedTz
-                        });
-                    } catch (e) { }
+                try {
+                    heatFormatter = new Intl.DateTimeFormat('en-US', {
+                        hour: 'numeric',
+                        hour12: false,
+                        weekday: 'short',
+                        timeZone: workspaceTz
+                    });
+                } catch (e) {
+                    logger.error('[ANALYTICS_TZ_ERROR]', { tz: workspaceTz, error: e.message });
                 }
 
                 scans.forEach(s => {
@@ -460,6 +528,7 @@ router.get('/', supabaseAuth, async (req, res) => {
             }
 
             stats.hourlyHeatmap = heatmapData;
+
         }
 
         res.json(stats);
