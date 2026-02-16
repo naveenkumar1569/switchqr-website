@@ -2,6 +2,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { fetchGlobalStats } from '../utils/analyticsService';
+import { calculateChartScale } from '../utils/chartHelpers';
 import { Link } from 'react-router-dom';
 
 const getFlagEmoji = (countryCode) => {
@@ -240,7 +241,15 @@ const GlobalAnalytics = () => {
     );
 
     // Chart calculations
-    const maxScans = Math.max(...data.scansOverTime.map(d => d.count), 10);
+    // Use helper for scale
+    const maxDataValue = (data?.scansOverTime && data.scansOverTime.length > 0)
+        ? Math.max(...data.scansOverTime.map(d => d.count), 0)
+        : 0;
+
+    const scale = calculateChartScale(maxDataValue);
+    const maxScans = scale.max; // This ensures connection points and y-axis match
+    const yAxisLabels = scale.ticks;
+
     const chartHeight = 300;
     const points = data.scansOverTime.map((d, i) => {
         const x = (i / (data.scansOverTime.length - 1 || 1)) * graphWidth;
@@ -261,8 +270,7 @@ const GlobalAnalytics = () => {
     // Unique Visitor %
     const visitorPercent = data.totalScans > 0 ? Math.round((data.uniqueVisitors / data.totalScans) * 100) : 0;
 
-    // Y-axis labels for chart
-    const yAxisLabels = [0, 1, 2, 3, 4].map(i => Math.round(maxScans * (1 - i / 4)));
+    // Y-axis labels for chart (Calculated above via scale.ticks)
 
     // Format hour helper
     const formatHour = (hour) => {
