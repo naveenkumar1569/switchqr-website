@@ -2,15 +2,46 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { apiGet } from '../utils/api';
 
+// Paddle Price IDs (Production)
+const PADDLE_PRICES = {
+    starter: {
+        monthly: 'pri_01khbh3scr6cq2frtjb97vxmyg',
+        yearly: 'pri_01khbh5212q78zrty8wddme54a'
+    },
+    pro: {
+        monthly: 'pri_01khbgknm5vx91dmn5qt98p6wq',
+        yearly: 'pri_01khbgdrrk40e9v4w5jpq96jn8'
+    }
+};
+
 const Billing = () => {
-    const { user, token, planInfo } = useAuth();
+    const { user, token, planInfo, refreshPlan } = useAuth();
     const [billingPeriod, setBillingPeriod] = useState('monthly');
     const [userEmail, setUserEmail] = useState('');
+    const [paddleReady, setPaddleReady] = useState(false);
 
     // Use plan info from context
     const currentPlan = planInfo?.effectivePlan || 'free';
     const QR_LIMIT = planInfo?.qr_limit || 5;
     const qrCount = planInfo?.qr_count || 0;
+
+    // Initialize Paddle (exactly once)
+    useEffect(() => {
+        if (!window.Paddle) {
+            console.warn('[PADDLE] Paddle.js not loaded');
+            return;
+        }
+
+        try {
+            window.Paddle.Initialize({
+                token: 'live_adc095391bc2dfab94bbba690a8'
+            });
+            setPaddleReady(true);
+            console.log('[PADDLE] Initialized successfully');
+        } catch (err) {
+            console.error('[PADDLE] Initialization error:', err);
+        }
+    }, []);
 
     useEffect(() => {
         const fetchUserProfile = async () => {
@@ -29,6 +60,48 @@ const Billing = () => {
             fetchUserProfile();
         }
     }, [token]);
+
+    // Paddle Checkout handler
+    const handleUpgrade = (priceId) => {
+        if (!window.Paddle || !paddleReady) {
+            console.error('[PADDLE] Not ready');
+            return;
+        }
+
+        const email = userEmail || user?.email;
+        const userId = user?.id;
+
+        if (!email || !userId) {
+            console.error('[PADDLE] Missing user data for checkout');
+            return;
+        }
+
+        window.Paddle.Checkout.open({
+            items: [{ priceId, quantity: 1 }],
+            customer: { email },
+            customData: { user_id: userId },
+            settings: {
+                successUrl: window.location.origin + '/billing?success=true',
+                allowLogout: false,
+                displayMode: 'overlay',
+                theme: 'light'
+            }
+        });
+    };
+
+    // Listen for checkout success via URL param and refresh plan
+    useEffect(() => {
+        const params = new URLSearchParams(window.location.search);
+        if (params.get('success') === 'true') {
+            // Remove the query param
+            window.history.replaceState({}, '', '/billing');
+            // Wait a moment for webhook to process, then refresh plan
+            const timer = setTimeout(() => {
+                refreshPlan();
+            }, 3000);
+            return () => clearTimeout(timer);
+        }
+    }, [refreshPlan]);
 
     const plans = {
         monthly: {
@@ -135,6 +208,7 @@ const Billing = () => {
                             )}
                         </div>
                         <button
+                            onClick={() => handleUpgrade(PADDLE_PRICES.starter[billingPeriod])}
                             className={`w-full rounded-xl border-2 mb-8 py-3 text-sm font-bold transition-colors ${currentPlan === 'starter' ? 'bg-[#ece8f2] border-[#ece8f2] dark:bg-[#2f2b3a] dark:border-[#2f2b3a] text-[#6e5393] dark:text-[#a08cb3] cursor-not-allowed opacity-70' : 'border-primary bg-transparent text-primary hover:bg-primary/5 dark:hover:bg-primary/10'}`}
                             disabled={currentPlan === 'starter'}
                         >
@@ -185,6 +259,7 @@ const Billing = () => {
                             )}
                         </div>
                         <button
+                            onClick={() => handleUpgrade(PADDLE_PRICES.pro[billingPeriod])}
                             className={`w-full rounded-xl py-3 text-sm font-bold mb-8 transition-all shadow-md hover:shadow-lg ${currentPlan === 'pro' ? 'bg-[#ece8f2] dark:bg-[#2f2b3a] text-[#6e5393] dark:text-[#a08cb3] cursor-not-allowed opacity-70 shadow-none hover:shadow-none' : 'bg-primary hover:bg-primary-dark text-white'}`}
                             disabled={currentPlan === 'pro'}
                         >
@@ -311,7 +386,17 @@ const Billing = () => {
                                 <div>
                                     <h4 className="text-xs uppercase tracking-wider font-bold text-[#6e5393] dark:text-[#a08cb3] mb-1">Next Billing Date</h4>
                                     <p className="text-sm font-medium text-[#140f1a] dark:text-white">
-                                        {currentPlan === 'free' ? 'N/A (Free Tier)' : 'Active (Auto-renew)'}
+                                        {currentPlan === 'free'
+                                            ? 'N/A (Free Tier)'
+                                            : planInfo?.current_period_end
+                                                ? new Date(planInfo.current_period_end).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
+                                                : 'Active (Auto-renew)'}
+                                    </p>
+                                </div>
+                                <div>
+                                    <h4 className="text-xs uppercase tracking-wider font-bold text-[#6e5393] dark:text-[#a08cb3] mb-1">Subscription Status</h4>
+                                    <p className="text-sm font-medium text-[#140f1a] dark:text-white capitalize">
+                                        {currentPlan === 'free' ? 'Free Tier' : (planInfo?.subscription_status || 'Active')}
                                     </p>
                                 </div>
                                 <div>
@@ -328,12 +413,19 @@ const Billing = () => {
                             <h3 className="text-lg font-bold text-[#140f1a] dark:text-white">Payment Method</h3>
                         </div>
                         <div className="flex-1 flex flex-col justify-center items-center text-center p-6 border-2 border-dashed border-[#dad1e5] dark:border-[#2f2b3a] rounded-xl bg-[#faf8fb] dark:bg-[#1f1a26]">
-                            <span className="material-symbols-outlined text-[#6e5393] dark:text-[#a08cb3] text-4xl mb-2">credit_card</span>
-                            <p className="text-sm text-[#6e5393] dark:text-[#a08cb3] mb-4">No payment method added</p>
-                            <button className="text-sm font-bold text-primary hover:text-primary-dark flex items-center gap-1">
-                                <span className="material-symbols-outlined text-lg">add</span>
-                                Add Card
-                            </button>
+                            {currentPlan !== 'free' ? (
+                                <>
+                                    <span className="material-symbols-outlined text-primary text-4xl mb-2">credit_score</span>
+                                    <p className="text-sm text-[#140f1a] dark:text-white font-medium mb-1">Managed by Paddle</p>
+                                    <p className="text-xs text-[#6e5393] dark:text-[#a08cb3]">Your payment method is securely managed through Paddle.</p>
+                                </>
+                            ) : (
+                                <>
+                                    <span className="material-symbols-outlined text-[#6e5393] dark:text-[#a08cb3] text-4xl mb-2">credit_card</span>
+                                    <p className="text-sm text-[#6e5393] dark:text-[#a08cb3] mb-4">No payment method added</p>
+                                    <p className="text-xs text-[#6e5393] dark:text-[#a08cb3]">Upgrade to a paid plan to add a payment method.</p>
+                                </>
+                            )}
                         </div>
                     </div>
                 </div>
