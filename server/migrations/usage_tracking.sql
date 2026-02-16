@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS usage_events (
   id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id uuid NOT NULL REFERENCES profiles(id),
   event_type text NOT NULL, -- 'link_update'
-  qr_id uuid REFERENCES qrs(id),
+  qr_id bigint REFERENCES qrs(id),
   old_url text,
   new_url text,
   created_at timestamptz NOT NULL DEFAULT now()
@@ -28,7 +28,7 @@ CREATE INDEX IF NOT EXISTS idx_usage_events_user_type_time
 
 -- 4. RPC: Atomic Scan Increment
 -- Handles upsert into user_usage_stats
-CREATE OR REPLACE FUNCTION increment_total_scans(user_id_param uuid, qr_id_param uuid, inc_param int DEFAULT 1)
+CREATE OR REPLACE FUNCTION increment_total_scans(user_id_param uuid, qr_id_param bigint, inc_param int DEFAULT 1)
 RETURNS void AS $$
 BEGIN
   INSERT INTO user_usage_stats (user_id, total_scans, last_updated)
@@ -42,7 +42,7 @@ $$ LANGUAGE plpgsql SECURITY DEFINER;
 
 -- 5. RPC: Atomic Link Update tracking
 -- Combined operation: Increments projection count AND inserts audit row
-CREATE OR REPLACE FUNCTION increment_link_updates(user_id_param uuid, qr_id_param uuid, old_url_param text, new_url_param text)
+CREATE OR REPLACE FUNCTION increment_link_updates(user_id_param uuid, qr_id_param bigint, old_url_param text, new_url_param text)
 RETURNS void AS $$
 BEGIN
   -- 1. Increment stats
