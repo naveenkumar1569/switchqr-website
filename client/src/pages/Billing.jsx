@@ -22,6 +22,15 @@ const Billing = () => {
 
     // Use plan info from context
     const currentPlan = planInfo?.effectivePlan || 'free';
+    const isTrial = planInfo?.is_trial === true;
+
+    useEffect(() => {
+        console.log('[BILLING_DEBUG] Plan Info:', {
+            currentPlan,
+            isTrial,
+            fullPlanInfo: planInfo
+        });
+    }, [planInfo, currentPlan, isTrial]);
     const QR_LIMIT = planInfo?.qr_limit || 5;
     const qrCount = planInfo?.qr_count || 0;
 
@@ -260,10 +269,10 @@ const Billing = () => {
                         </div>
                         <button
                             onClick={() => handleUpgrade(PADDLE_PRICES.pro[billingPeriod])}
-                            className={`w-full rounded-xl py-3 text-sm font-bold mb-8 transition-all shadow-md hover:shadow-lg ${currentPlan === 'pro' ? 'bg-[#ece8f2] dark:bg-[#2f2b3a] text-[#6e5393] dark:text-[#a08cb3] cursor-not-allowed opacity-70 shadow-none hover:shadow-none' : 'bg-primary hover:bg-primary-dark text-white'}`}
-                            disabled={currentPlan === 'pro'}
+                            className={`w-full rounded-xl py-3 text-sm font-bold mb-8 transition-all shadow-md hover:shadow-lg ${(currentPlan === 'pro' && !isTrial) ? 'bg-[#ece8f2] dark:bg-[#2f2b3a] text-[#6e5393] dark:text-[#a08cb3] cursor-not-allowed opacity-70 shadow-none hover:shadow-none' : 'bg-primary hover:bg-primary-dark text-white'}`}
+                            disabled={currentPlan === 'pro' && !isTrial}
                         >
-                            {currentPlan === 'pro' ? 'Current Plan' : 'Upgrade to Pro'}
+                            {(currentPlan === 'pro' && !isTrial) ? 'Current Plan' : (isTrial ? 'Keep Pro Plan' : 'Upgrade to Pro')}
                         </button>
                         <ul className="flex flex-col gap-4">
                             <li className="flex items-start gap-3 text-sm text-[#140f1a] dark:text-white font-medium">
