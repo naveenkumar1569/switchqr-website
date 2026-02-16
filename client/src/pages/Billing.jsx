@@ -32,12 +32,12 @@ const Billing = () => {
 
     const plans = {
         monthly: {
-            free: { price: 0, qrs: 5 },
+            free: { price: 0, qrs: 3 },
             starter: { price: 9, qrs: 100 },
             pro: { price: 29, qrs: 1000 }
         },
         yearly: {
-            free: { price: 0, qrs: 5 },
+            free: { price: 0, qrs: 3 },
             starter: { price: 90, qrs: 100 },
             pro: { price: 290, qrs: 1000 }
         }
@@ -104,15 +104,19 @@ const Billing = () => {
                         <ul className="flex flex-col gap-4">
                             <li className="flex items-start gap-3 text-sm text-[#140f1a] dark:text-white">
                                 <span className="material-symbols-outlined text-primary text-[20px] shrink-0">check_circle</span>
-                                Up to 5 Dynamic QRs
+                                3 Dynamic QRs
                             </li>
                             <li className="flex items-start gap-3 text-sm text-[#140f1a] dark:text-white">
                                 <span className="material-symbols-outlined text-primary text-[20px] shrink-0">check_circle</span>
-                                Basic Analytics
+                                1,000 Scans / Month
                             </li>
                             <li className="flex items-start gap-3 text-sm text-[#140f1a] dark:text-white">
                                 <span className="material-symbols-outlined text-primary text-[20px] shrink-0">check_circle</span>
-                                PNG Downloads
+                                10 Link Updates
+                            </li>
+                            <li className="flex items-start gap-3 text-sm text-[#140f1a] dark:text-white">
+                                <span className="material-symbols-outlined text-primary text-[20px] shrink-0">check_circle</span>
+                                7-Day Analytics History
                             </li>
                         </ul>
                     </div>
@@ -136,11 +140,19 @@ const Billing = () => {
                         <ul className="flex flex-col gap-4">
                             <li className="flex items-start gap-3 text-sm text-[#140f1a] dark:text-white">
                                 <span className="material-symbols-outlined text-primary text-[20px] shrink-0">check_circle</span>
-                                Up to 100 Dynamic QRs
+                                100 Dynamic QRs
                             </li>
                             <li className="flex items-start gap-3 text-sm text-[#140f1a] dark:text-white">
                                 <span className="material-symbols-outlined text-primary text-[20px] shrink-0">check_circle</span>
-                                Advanced Analytics
+                                100,000 Scans / Month
+                            </li>
+                            <li className="flex items-start gap-3 text-sm text-[#140f1a] dark:text-white">
+                                <span className="material-symbols-outlined text-primary text-[20px] shrink-0">check_circle</span>
+                                500 Link Updates
+                            </li>
+                            <li className="flex items-start gap-3 text-sm text-[#140f1a] dark:text-white">
+                                <span className="material-symbols-outlined text-primary text-[20px] shrink-0">check_circle</span>
+                                90-Day Analytics History
                             </li>
                             <li className="flex items-start gap-3 text-sm text-[#140f1a] dark:text-white">
                                 <span className="material-symbols-outlined text-primary text-[20px] shrink-0">check_circle</span>
@@ -175,7 +187,15 @@ const Billing = () => {
                         <ul className="flex flex-col gap-4">
                             <li className="flex items-start gap-3 text-sm text-[#140f1a] dark:text-white font-medium">
                                 <span className="material-symbols-outlined text-primary text-[20px] shrink-0">check_circle</span>
-                                Up to 1,000 Dynamic QRs
+                                1,000 Dynamic QRs
+                            </li>
+                            <li className="flex items-start gap-3 text-sm text-[#140f1a] dark:text-white font-medium">
+                                <span className="material-symbols-outlined text-primary text-[20px] shrink-0">check_circle</span>
+                                Unlimited Scans & Updates
+                            </li>
+                            <li className="flex items-start gap-3 text-sm text-[#140f1a] dark:text-white font-medium">
+                                <span className="material-symbols-outlined text-primary text-[20px] shrink-0">check_circle</span>
+                                Unlimited Analytics History
                             </li>
                             <li className="flex items-start gap-3 text-sm text-[#140f1a] dark:text-white font-medium">
                                 <span className="material-symbols-outlined text-primary text-[20px] shrink-0">check_circle</span>
@@ -188,10 +208,6 @@ const Billing = () => {
                             <li className="flex items-start gap-3 text-sm text-[#140f1a] dark:text-white font-medium">
                                 <span className="material-symbols-outlined text-primary text-[20px] shrink-0">check_circle</span>
                                 Campaign Management
-                            </li>
-                            <li className="flex items-start gap-3 text-sm text-[#140f1a] dark:text-white font-medium">
-                                <span className="material-symbols-outlined text-primary text-[20px] shrink-0">check_circle</span>
-                                Priority Support
                             </li>
                         </ul>
                     </div>
