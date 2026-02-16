@@ -145,97 +145,88 @@ const Campaigns = () => {
     // Free plan - show locked state with blurred preview
     if (!planInfo?.features?.campaigns) {
         return (
-            <div className="fixed inset-0 z-[100] bg-background-light overflow-hidden">
-                {/* Custom CSS for this view */}
-                <style dangerouslySetInnerHTML={{
-                    __html: `
-                    .grid-bg {
-                        background-size: 40px 40px;
-                        background-image:
-                            linear-gradient(to right, rgba(0,0,0,0.03) 1px, transparent 1px),
-                            linear-gradient(to bottom, rgba(0,0,0,0.03) 1px, transparent 1px);
-                    }
-                    .locked-overlay {
-                        backdrop-filter: blur(8px);
-                        background-color: rgba(255, 255, 255, 0.4);
-                    }
-                `}} />
-
+            <div className="mx-auto max-w-6xl relative">
                 {/* Blurred Content Preview */}
-                <div className="max-w-7xl mx-auto p-6 md:p-10 space-y-8 select-none pointer-events-none filter blur-[4px] opacity-70">
-                    <header className="flex flex-col md:flex-row md:items-end justify-between gap-4">
-                        <div>
-                            <h2 className="text-3xl md:text-4xl font-black tracking-tight text-slate-900 leading-none">
+                <div className="blur-sm pointer-events-none select-none">
+                    {/* Page Header */}
+                    <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
+                        <div className="flex flex-col gap-2">
+                            <h2 className="text-4xl font-black tracking-tight text-slate-900 dark:text-white leading-none">
                                 Campaign Folders
                             </h2>
-                            <p className="text-slate-500 mt-2 text-lg">
+                            <p className="text-slate-500 dark:text-slate-400 text-lg">
                                 Organize and track your dynamic QR initiatives across regions and teams.
                             </p>
                         </div>
                         <div className="h-12 w-44 bg-primary rounded-xl"></div>
-                    </header>
-
-                    {/* Search Placeholder */}
-                    <div className="mb-8">
-                        <div className="h-12 w-full max-w-md bg-white rounded-xl border border-slate-200"></div>
                     </div>
 
+                    {/* Search */}
+                    <div className="mb-8">
+                        <div className="h-12 w-full max-w-md bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700"></div>
+                    </div>
+
+                    {/* Section Title */}
+                    <div className="flex items-center gap-2 mb-6">
+                        <div className="h-6 w-40 bg-slate-200 dark:bg-slate-700 rounded"></div>
+                        <div className="h-5 w-16 bg-slate-200 dark:bg-slate-700 rounded-full"></div>
+                    </div>
+
+                    {/* Campaign Cards Grid */}
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         {[1, 2, 3].map(i => (
-                            <div key={i} className="bg-white rounded-[20px] p-6 shadow-soft border border-slate-100/50">
-                                <div className="flex justify-between items-start mb-6">
-                                    <div className="p-3 bg-primary/10 rounded-xl">
-                                        <span className="material-symbols-outlined text-primary text-2xl">folder</span>
+                            <div key={i} className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-xl shadow-sm">
+                                <div className="flex flex-col gap-4">
+                                    <div className="size-12 rounded-xl bg-primary/10"></div>
+                                    <div>
+                                        <div className="h-6 w-40 bg-slate-200 dark:bg-slate-700 rounded mb-2"></div>
+                                        <div className="h-4 w-32 bg-slate-200 dark:bg-slate-700 rounded"></div>
                                     </div>
-                                    <div className="h-6 w-16 bg-slate-100 rounded-full"></div>
                                 </div>
-                                <div className="h-6 w-40 bg-slate-200 rounded mb-2"></div>
-                                <div className="h-4 w-32 bg-slate-100 rounded mb-6"></div>
-                                <div className="grid grid-cols-2 gap-4 border-y border-slate-50 py-4 mt-6">
-                                    <div className="h-10 bg-slate-50 rounded"></div>
-                                    <div className="h-10 bg-slate-50 rounded"></div>
+                                <div className="grid grid-cols-2 gap-4 border-y border-slate-50 dark:border-slate-800 py-4 mt-6">
+                                    <div>
+                                        <div className="h-3 w-16 bg-slate-200 dark:bg-slate-700 rounded mb-2"></div>
+                                        <div className="h-6 w-10 bg-slate-200 dark:bg-slate-700 rounded"></div>
+                                    </div>
+                                    <div>
+                                        <div className="h-3 w-20 bg-slate-200 dark:bg-slate-700 rounded mb-2"></div>
+                                        <div className="h-6 w-12 bg-slate-200 dark:bg-slate-700 rounded"></div>
+                                    </div>
+                                </div>
+                                <div className="flex gap-2 mt-4">
+                                    <div className="h-9 flex-1 bg-slate-200 dark:bg-slate-700 rounded-lg"></div>
+                                    <div className="h-9 w-9 bg-slate-200 dark:bg-slate-700 rounded-lg"></div>
                                 </div>
                             </div>
                         ))}
                     </div>
-
-                    <div className="bg-white rounded-2xl shadow-soft p-8 border border-slate-100/50 mt-8">
-                        <div className="h-[200px] w-full grid-bg rounded-lg border border-slate-50 relative flex items-center justify-center">
-                            <div className="text-slate-300 font-bold text-xl uppercase tracking-widest">Global Analytics Preview</div>
-                        </div>
-                    </div>
                 </div>
 
-                {/* Overlaid Locked Interface */}
-                <div className="fixed inset-0 z-50 flex items-center justify-center p-6 locked-overlay">
-                    <div className="bg-white max-w-md w-full rounded-[24px] shadow-[0_20px_50px_rgba(0,0,0,0.1)] border border-white p-8 md:p-10 text-center relative overflow-hidden">
-                        <div className="absolute -top-24 -left-24 w-48 h-48 bg-primary/10 blur-[60px] rounded-full"></div>
-                        <div className="absolute -bottom-24 -right-24 w-48 h-48 bg-primary/10 blur-[60px] rounded-full"></div>
-                        <div className="relative z-10">
-                            <div className="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-primary/5 mb-8 relative">
-                                <div className="absolute inset-0 bg-primary/20 blur-xl rounded-full"></div>
-                                <span className="material-symbols-outlined text-primary text-4xl font-light relative">lock</span>
+                {/* Centered Lock Overlay */}
+                <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                    <div className="bg-white/95 dark:bg-surface-dark/95 backdrop-blur-sm rounded-2xl shadow-2xl p-8 md:p-12 max-w-lg border border-slate-200 dark:border-slate-700 pointer-events-auto">
+                        <div className="text-center">
+                            <div className="inline-flex items-center justify-center w-20 h-20 bg-primary/10 rounded-full mb-4">
+                                <span className="material-symbols-outlined text-primary text-4xl">lock</span>
                             </div>
-                            <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4 tracking-tight">
-                                Unlock Global Insights
-                            </h2>
-                            <p className="text-slate-600 leading-relaxed mb-10 text-base">
-                                Campaign folders, location deep-dives, and advanced analytics are only available on <span className="font-semibold text-slate-900">Starter</span> and <span className="font-semibold text-slate-900">Pro</span> plans.
+                            <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-3">Campaigns Locked</h2>
+                            <p className="text-slate-500 dark:text-slate-400 text-base leading-relaxed mb-6">
+                                Upgrade to Pro to unlock campaign folders. Group QR codes into campaigns for better organization and analytics.
                             </p>
-                            <div className="space-y-4">
+                            <div className="flex flex-col sm:flex-row gap-3">
                                 <Link
                                     to="/billing"
-                                    className="block w-full bg-primary hover:bg-primary-600 text-white font-semibold py-4 px-6 rounded-xl transition-all shadow-glow active:scale-[0.98]"
+                                    className="inline-flex items-center justify-center gap-2 px-8 py-3 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors font-medium shadow-md group"
                                 >
-                                    Upgrade to Starter
+                                    <span>Upgrade Now</span>
+                                    <span className="material-symbols-outlined text-lg group-hover:translate-x-1 transition-transform">arrow_forward</span>
                                 </Link>
-                                <Link to="/billing" className="block text-slate-500 hover:text-primary font-medium text-sm transition-colors py-2">
-                                    Compare Plans
+                                <Link
+                                    to="/"
+                                    className="inline-flex items-center justify-center gap-2 px-8 py-3 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-white rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors font-medium"
+                                >
+                                    <span>Back to Dashboard</span>
                                 </Link>
-                            </div>
-                            <div className="mt-8 flex items-center justify-center gap-2 opacity-50">
-                                <span className="material-symbols-outlined text-sm">verified_user</span>
-                                <span className="text-[10px] uppercase tracking-widest font-bold">Secure Professional Billing</span>
                             </div>
                         </div>
                     </div>
