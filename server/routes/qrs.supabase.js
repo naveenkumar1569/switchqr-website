@@ -239,6 +239,24 @@ router.put('/:id', supabaseAuth, async (req, res) => {
             updates.campaign_id = null;
         }
 
+        // FEATURE MUTUAL EXCLUSIVITY & PLAN CLEANUP
+        // Ensure only one routing feature is active at a time to satisfy DB constraints
+        if (updates.scheduling_enabled === true) {
+            updates.ab_testing_enabled = false;
+        } else if (updates.ab_testing_enabled === true) {
+            updates.scheduling_enabled = false;
+        }
+
+        // If a feature is being enabled/disabled, also check if the OTHER feature 
+        // is currently active in DB. If the incoming update doesn't explicitly disable it,
+        // we might still hit a constraint if the DB has the other one as true.
+        // However, the best way to handle "ghost" state is to always ensure we force 
+        // the one the user DOESN'T have access to (or isn't activating) to false.
+
+        // Force cleanup based on current plan access
+        if (!plan.features.scheduling) updates.scheduling_enabled = false;
+        if (!plan.features.ab_testing) updates.ab_testing_enabled = false;
+
         // Prevent updating immutable fields
         delete updates.id;
         delete updates.owner_id;
