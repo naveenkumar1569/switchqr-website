@@ -85,32 +85,32 @@ const CampaignDetails = () => {
             <div className="max-w-7xl mx-auto px-6 py-8">
                 {/* Breadcrumb Skeleton */}
                 <div className="flex items-center gap-2 mb-6">
-                    <div className="h-4 w-20 bg-slate-200 dark:bg-slate-700 rounded animate-pulse"></div>
-                    <div className="h-4 w-4 bg-slate-200 dark:bg-slate-700 rounded animate-pulse"></div>
-                    <div className="h-4 w-32 bg-slate-200 dark:bg-slate-700 rounded animate-pulse"></div>
+                    <div className="h-4 w-20 bg-slate-200  rounded animate-pulse"></div>
+                    <div className="h-4 w-4 bg-slate-200  rounded animate-pulse"></div>
+                    <div className="h-4 w-32 bg-slate-200  rounded animate-pulse"></div>
                 </div>
 
                 {/* Header Skeleton */}
                 <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8">
                     <div>
                         <div className="flex items-center gap-3 mb-2">
-                            <div className="h-10 w-64 bg-slate-200 dark:bg-slate-700 rounded animate-pulse"></div>
-                            <div className="h-6 w-16 bg-slate-200 dark:bg-slate-700 rounded-full animate-pulse"></div>
+                            <div className="h-10 w-64 bg-slate-200  rounded animate-pulse"></div>
+                            <div className="h-6 w-16 bg-slate-200  rounded-full animate-pulse"></div>
                         </div>
-                        <div className="h-5 w-96 bg-slate-200 dark:bg-slate-700 rounded animate-pulse"></div>
+                        <div className="h-5 w-96 bg-slate-200  rounded animate-pulse"></div>
                     </div>
                     <div className="flex items-center gap-3">
-                        <div className="h-10 w-36 bg-slate-200 dark:bg-slate-700 rounded-lg animate-pulse"></div>
-                        <div className="h-10 w-28 bg-slate-200 dark:bg-slate-700 rounded-lg animate-pulse"></div>
+                        <div className="h-10 w-36 bg-slate-200  rounded-lg animate-pulse"></div>
+                        <div className="h-10 w-28 bg-slate-200  rounded-lg animate-pulse"></div>
                     </div>
                 </div>
 
                 {/* Stats Cards Skeleton */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
                     {[1, 2, 3, 4].map(i => (
-                        <div key={i} className="bg-white dark:bg-[#1e1726] border border-slate-100 dark:border-slate-800 p-6 rounded-xl shadow-sm animate-pulse">
-                            <div className="h-4 w-24 bg-slate-200 dark:bg-slate-700 rounded mb-3"></div>
-                            <div className="h-9 w-20 bg-slate-200 dark:bg-slate-700 rounded"></div>
+                        <div key={i} className="bg-white [#1e1726] border border-slate-100  p-6 rounded-xl shadow-sm animate-pulse">
+                            <div className="h-4 w-24 bg-slate-200  rounded mb-3"></div>
+                            <div className="h-9 w-20 bg-slate-200  rounded"></div>
                         </div>
                     ))}
                 </div>
@@ -118,33 +118,33 @@ const CampaignDetails = () => {
                 {/* Analytics Grid Skeleton */}
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
                     {/* Top QRs Skeleton */}
-                    <div className="lg:col-span-2 bg-white dark:bg-[#1e1726] border border-slate-100 dark:border-slate-800 p-6 rounded-xl shadow-sm animate-pulse">
-                        <div className="h-6 w-48 bg-slate-200 dark:bg-slate-700 rounded mb-2"></div>
-                        <div className="h-4 w-64 bg-slate-200 dark:bg-slate-700 rounded mb-6"></div>
+                    <div className="lg:col-span-2 bg-white [#1e1726] border border-slate-100  p-6 rounded-xl shadow-sm animate-pulse">
+                        <div className="h-6 w-48 bg-slate-200  rounded mb-2"></div>
+                        <div className="h-4 w-64 bg-slate-200  rounded mb-6"></div>
                         <div className="space-y-4">
                             {[1, 2, 3, 4, 5].map(i => (
                                 <div key={i} className="grid grid-cols-[120px_1fr_60px] items-center gap-4">
-                                    <div className="h-4 w-24 bg-slate-200 dark:bg-slate-700 rounded"></div>
-                                    <div className="h-6 bg-slate-200 dark:bg-slate-700 rounded-full"></div>
-                                    <div className="h-4 w-12 bg-slate-200 dark:bg-slate-700 rounded ml-auto"></div>
+                                    <div className="h-4 w-24 bg-slate-200  rounded"></div>
+                                    <div className="h-6 bg-slate-200  rounded-full"></div>
+                                    <div className="h-4 w-12 bg-slate-200  rounded ml-auto"></div>
                                 </div>
                             ))}
                         </div>
                     </div>
 
                     {/* Device Chart Skeleton */}
-                    <div className="bg-white dark:bg-[#1e1726] border border-slate-100 dark:border-slate-800 p-6 rounded-xl shadow-sm animate-pulse">
-                        <div className="h-6 w-32 bg-slate-200 dark:bg-slate-700 rounded mb-2"></div>
-                        <div className="h-4 w-40 bg-slate-200 dark:bg-slate-700 rounded mb-8"></div>
-                        <div className="size-48 mx-auto bg-slate-200 dark:bg-slate-700 rounded-full mb-8"></div>
+                    <div className="bg-white [#1e1726] border border-slate-100  p-6 rounded-xl shadow-sm animate-pulse">
+                        <div className="h-6 w-32 bg-slate-200  rounded mb-2"></div>
+                        <div className="h-4 w-40 bg-slate-200  rounded mb-8"></div>
+                        <div className="size-48 mx-auto bg-slate-200  rounded-full mb-8"></div>
                         <div className="space-y-3">
                             {[1, 2, 3].map(i => (
                                 <div key={i} className="flex items-center justify-between">
                                     <div className="flex items-center gap-2">
-                                        <div className="size-3 bg-slate-200 dark:bg-slate-700 rounded-full"></div>
-                                        <div className="h-4 w-16 bg-slate-200 dark:bg-slate-700 rounded"></div>
+                                        <div className="size-3 bg-slate-200  rounded-full"></div>
+                                        <div className="h-4 w-16 bg-slate-200  rounded"></div>
                                     </div>
-                                    <div className="h-4 w-10 bg-slate-200 dark:bg-slate-700 rounded"></div>
+                                    <div className="h-4 w-10 bg-slate-200  rounded"></div>
                                 </div>
                             ))}
                         </div>
@@ -153,23 +153,23 @@ const CampaignDetails = () => {
 
                 {/* Bottom Section Skeleton */}
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                    <div className="bg-white dark:bg-[#1e1726] border border-slate-100 dark:border-slate-800 rounded-xl overflow-hidden shadow-sm animate-pulse">
+                    <div className="bg-white [#1e1726] border border-slate-100  rounded-xl overflow-hidden shadow-sm animate-pulse">
                         <div className="p-6">
-                            <div className="h-6 w-40 bg-slate-200 dark:bg-slate-700 rounded mb-2"></div>
-                            <div className="h-4 w-56 bg-slate-200 dark:bg-slate-700 rounded"></div>
+                            <div className="h-6 w-40 bg-slate-200  rounded mb-2"></div>
+                            <div className="h-4 w-56 bg-slate-200  rounded"></div>
                         </div>
-                        <div className="h-64 bg-slate-200 dark:bg-slate-700"></div>
+                        <div className="h-64 bg-slate-200 "></div>
                     </div>
-                    <div className="lg:col-span-2 bg-white dark:bg-[#1e1726] border border-slate-100 dark:border-slate-800 rounded-xl overflow-hidden shadow-sm animate-pulse">
-                        <div className="p-6 border-b border-slate-100 dark:border-slate-800">
-                            <div className="h-6 w-48 bg-slate-200 dark:bg-slate-700 rounded"></div>
+                    <div className="lg:col-span-2 bg-white [#1e1726] border border-slate-100  rounded-xl overflow-hidden shadow-sm animate-pulse">
+                        <div className="p-6 border-b border-slate-100 ">
+                            <div className="h-6 w-48 bg-slate-200  rounded"></div>
                         </div>
                         <div className="p-6 space-y-4">
                             {[1, 2, 3].map(i => (
                                 <div key={i} className="flex items-center gap-4">
-                                    <div className="size-8 bg-slate-200 dark:bg-slate-700 rounded"></div>
-                                    <div className="flex-1 h-4 bg-slate-200 dark:bg-slate-700 rounded"></div>
-                                    <div className="h-4 w-16 bg-slate-200 dark:bg-slate-700 rounded"></div>
+                                    <div className="size-8 bg-slate-200  rounded"></div>
+                                    <div className="flex-1 h-4 bg-slate-200  rounded"></div>
+                                    <div className="h-4 w-16 bg-slate-200  rounded"></div>
                                 </div>
                             ))}
                         </div>
@@ -191,36 +191,36 @@ const CampaignDetails = () => {
     return (
         <div className="max-w-7xl mx-auto px-6 py-8">
             {/* Breadcrumb */}
-            <nav className="flex items-center gap-2 text-sm mb-6 text-slate-500 dark:text-slate-400">
+            <nav className="flex items-center gap-2 text-sm mb-6 text-slate-500 ">
                 <Link to="/campaigns" className="hover:text-primary transition-colors">Campaigns</Link>
                 <span className="material-symbols-outlined text-xs">chevron_right</span>
-                <span className="text-slate-900 dark:text-white font-medium">{campaign.name}</span>
+                <span className="text-slate-900  font-medium">{campaign.name}</span>
             </nav>
 
             {/* Header */}
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8">
                 <div>
                     <div className="flex items-center gap-3 mb-2">
-                        <h2 className="text-4xl font-bold tracking-tight text-slate-900 dark:text-white">{campaign.name}</h2>
-                        <span className="bg-green-50 text-green-600 dark:bg-green-900/30 dark:text-green-400 text-xs font-bold px-2.5 py-1 rounded-full border border-green-100 dark:border-green-800">Active</span>
+                        <h2 className="text-4xl font-bold tracking-tight text-slate-900 ">{campaign.name}</h2>
+                        <span className="bg-green-50 text-green-600   text-xs font-bold px-2.5 py-1 rounded-full border border-green-100 ">Active</span>
                     </div>
-                    <p className="text-slate-500 dark:text-slate-400">
+                    <p className="text-slate-500 ">
                         Detailed performance overview for this campaign folder. Created on {new Date(campaign.created_at).toLocaleDateString()}.
                     </p>
                 </div>
                 <div className="flex items-center gap-3">
                     <div className="relative group">
-                        <button className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 px-4 py-2 rounded-lg text-sm font-bold text-slate-700 dark:text-slate-200 flex items-center gap-2 hover:bg-slate-50 dark:hover:bg-slate-700 shadow-sm transition-colors">
+                        <button className="bg-white  border border-slate-200  px-4 py-2 rounded-lg text-sm font-bold text-slate-700  flex items-center gap-2 hover:bg-slate-50 :bg-slate-700 shadow-sm transition-colors">
                             <span className="material-symbols-outlined text-sm">calendar_today</span>
                             {timeRanges.find(r => r.value === days)?.label || 'Last 30 Days'}
                             <span className="material-symbols-outlined text-sm">expand_more</span>
                         </button>
-                        <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50 overflow-hidden">
+                        <div className="absolute right-0 mt-2 w-48 bg-white  border border-slate-200  rounded-xl shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50 overflow-hidden">
                             {timeRanges.map((range) => (
                                 <button
                                     key={range.value}
                                     onClick={() => setDays(range.value)}
-                                    className={`w-full px-4 py-2.5 text-sm text-left hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors flex items-center justify-between ${days === range.value ? 'text-primary font-bold' : 'text-slate-600 dark:text-slate-300'}`}
+                                    className={`w-full px-4 py-2.5 text-sm text-left hover:bg-slate-50 :bg-slate-700 transition-colors flex items-center justify-between ${days === range.value ? 'text-primary font-bold' : 'text-slate-600 '}`}
                                 >
                                     {range.label}
                                     {days === range.value && <span className="material-symbols-outlined text-xs">check</span>}
@@ -241,55 +241,55 @@ const CampaignDetails = () => {
             {/* Key Metrics Cards */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
                 {/* Total Scans */}
-                <div className="bg-white dark:bg-[#1e1726] border border-slate-100 dark:border-slate-800 p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow">
+                <div className="bg-white [#1e1726] border border-slate-100  p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow">
                     <div className="flex justify-between items-start mb-4">
                         <div className="p-2 bg-primary/10 rounded-lg">
                             <span className="material-symbols-outlined text-primary text-xl">qr_code_scanner</span>
                         </div>
                     </div>
-                    <p className="text-sm font-medium text-slate-500 dark:text-slate-400 mb-1">Total Scans</p>
+                    <p className="text-sm font-medium text-slate-500  mb-1">Total Scans</p>
                     <div className="flex items-baseline gap-2">
-                        <span className="text-3xl font-bold tracking-tight text-slate-900 dark:text-white">{campaign.total_scans?.toLocaleString()}</span>
+                        <span className="text-3xl font-bold tracking-tight text-slate-900 ">{campaign.total_scans?.toLocaleString()}</span>
                     </div>
                 </div>
 
                 {/* Unique Visitors */}
-                <div className="bg-white dark:bg-[#1e1726] border border-slate-100 dark:border-slate-800 p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow">
+                <div className="bg-white [#1e1726] border border-slate-100  p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow">
                     <div className="flex justify-between items-start mb-4">
-                        <div className="p-2 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
-                            <span className="material-symbols-outlined text-blue-600 dark:text-blue-400 text-xl">group</span>
+                        <div className="p-2 bg-blue-50  rounded-lg">
+                            <span className="material-symbols-outlined text-blue-600  text-xl">group</span>
                         </div>
                     </div>
-                    <p className="text-sm font-medium text-slate-500 dark:text-slate-400 mb-1">Unique Visitors</p>
+                    <p className="text-sm font-medium text-slate-500  mb-1">Unique Visitors</p>
                     <div className="flex items-baseline gap-2">
-                        <span className="text-3xl font-bold tracking-tight text-slate-900 dark:text-white">{campaign.unique_visitors || 0}</span>
+                        <span className="text-3xl font-bold tracking-tight text-slate-900 ">{campaign.unique_visitors || 0}</span>
                     </div>
                 </div>
 
                 {/* Peak Activity */}
-                <div className="bg-white dark:bg-[#1e1726] border border-slate-100 dark:border-slate-800 p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow">
+                <div className="bg-white [#1e1726] border border-slate-100  p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow">
                     <div className="flex justify-between items-start mb-4">
-                        <div className="p-2 bg-amber-50 dark:bg-amber-900/20 rounded-lg">
-                            <span className="material-symbols-outlined text-amber-600 dark:text-amber-400 text-xl">schedule</span>
+                        <div className="p-2 bg-amber-50  rounded-lg">
+                            <span className="material-symbols-outlined text-amber-600  text-xl">schedule</span>
                         </div>
                     </div>
-                    <p className="text-sm font-medium text-slate-500 dark:text-slate-400 mb-1">Peak Activity</p>
+                    <p className="text-sm font-medium text-slate-500  mb-1">Peak Activity</p>
                     <div className="flex items-baseline gap-2">
-                        <span className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">{campaign.peak_activity?.hour || 'N/A'}</span>
+                        <span className="text-2xl font-bold tracking-tight text-slate-900 ">{campaign.peak_activity?.hour || 'N/A'}</span>
                         <span className="text-slate-400 text-sm font-medium">{campaign.peak_activity?.day || 'N/A'}</span>
                     </div>
                 </div>
 
                 {/* Total Assets */}
-                <div className="bg-white dark:bg-[#1e1726] border border-slate-100 dark:border-slate-800 p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow">
+                <div className="bg-white [#1e1726] border border-slate-100  p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow">
                     <div className="flex justify-between items-start mb-4">
-                        <div className="p-2 bg-emerald-50 dark:bg-emerald-900/20 rounded-lg">
-                            <span className="material-symbols-outlined text-emerald-600 dark:text-emerald-400 text-xl">inventory_2</span>
+                        <div className="p-2 bg-emerald-50  rounded-lg">
+                            <span className="material-symbols-outlined text-emerald-600  text-xl">inventory_2</span>
                         </div>
                     </div>
-                    <p className="text-sm font-medium text-slate-500 dark:text-slate-400 mb-1">Total QR Assets</p>
+                    <p className="text-sm font-medium text-slate-500  mb-1">Total QR Assets</p>
                     <div className="flex items-baseline gap-2">
-                        <span className="text-3xl font-bold tracking-tight text-slate-900 dark:text-white">{campaign.qr_count}</span>
+                        <span className="text-3xl font-bold tracking-tight text-slate-900 ">{campaign.qr_count}</span>
                         <span className="text-slate-400 text-sm font-medium">In folder</span>
                     </div>
                 </div>
@@ -297,14 +297,14 @@ const CampaignDetails = () => {
 
             {/* Upsell Banner - Only show if not Pro */}
             {planInfo?.effectivePlan !== 'pro' && (
-                <div className="bg-gradient-to-r from-violet-50 to-white dark:from-slate-800 dark:to-slate-900 border border-violet-100 dark:border-slate-700 rounded-xl p-5 mb-8 flex flex-col md:flex-row items-center justify-between gap-4 shadow-sm">
+                <div className="bg-gradient-to-r from-violet-50 to-white   border border-violet-100  rounded-xl p-5 mb-8 flex flex-col md:flex-row items-center justify-between gap-4 shadow-sm">
                     <div className="flex items-center gap-4">
                         <div className="size-10 bg-primary rounded-lg flex items-center justify-center text-white shadow-lg shadow-primary/30">
                             <span className="material-symbols-outlined">auto_awesome</span>
                         </div>
                         <div>
-                            <h4 className="font-bold text-slate-900 dark:text-white">Unlock Advanced Attribution</h4>
-                            <p className="text-sm text-slate-500 dark:text-slate-400">Get deep-dive metrics including UTM tracking, user flow analysis, and retargeting pixels.</p>
+                            <h4 className="font-bold text-slate-900 ">Unlock Advanced Attribution</h4>
+                            <p className="text-sm text-slate-500 ">Get deep-dive metrics including UTM tracking, user flow analysis, and retargeting pixels.</p>
                         </div>
                     </div>
                     <button
@@ -319,11 +319,11 @@ const CampaignDetails = () => {
             {/* Analytics Grid */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
                 {/* Top Performing QRs */}
-                <div className="lg:col-span-2 bg-white dark:bg-[#1e1726] border border-slate-100 dark:border-slate-800 p-6 rounded-xl shadow-sm">
+                <div className="lg:col-span-2 bg-white [#1e1726] border border-slate-100  p-6 rounded-xl shadow-sm">
                     <div className="flex justify-between items-start mb-6">
                         <div>
-                            <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-1">Top Performing QRs</h3>
-                            <p className="text-sm text-slate-500 dark:text-slate-400">Total Scans by Asset ({timeRanges.find(r => r.value === days)?.label || `Last ${days} Days`})</p>
+                            <h3 className="text-xl font-bold text-slate-900  mb-1">Top Performing QRs</h3>
+                            <p className="text-sm text-slate-500 ">Total Scans by Asset ({timeRanges.find(r => r.value === days)?.label || `Last ${days} Days`})</p>
                         </div>
 
                     </div>
@@ -331,14 +331,14 @@ const CampaignDetails = () => {
                     <div className="space-y-6">
                         {campaign.qrs && campaign.qrs.slice(0, 5).map((qr) => (
                             <div key={qr.id} className="grid grid-cols-[120px_1fr_60px] items-center gap-4">
-                                <span className="text-sm font-medium truncate text-slate-700 dark:text-slate-300" title={qr.name}>{qr.name}</span>
-                                <div className="h-6 bg-slate-50 dark:bg-slate-800 rounded-full overflow-hidden">
+                                <span className="text-sm font-medium truncate text-slate-700 " title={qr.name}>{qr.name}</span>
+                                <div className="h-6 bg-slate-50  rounded-full overflow-hidden">
                                     <div
                                         className="h-full bg-primary rounded-full transition-all duration-1000 ease-out"
                                         style={{ width: `${maxScanCount > 0 ? (qr.scan_count / maxScanCount) * 100 : 0}%` }}
                                     ></div>
                                 </div>
-                                <span className="text-sm font-bold text-right text-slate-900 dark:text-white">{qr.scan_count?.toLocaleString()}</span>
+                                <span className="text-sm font-bold text-right text-slate-900 ">{qr.scan_count?.toLocaleString()}</span>
                             </div>
                         ))}
                         {(!campaign.qrs || campaign.qrs.length === 0) && (
@@ -347,10 +347,10 @@ const CampaignDetails = () => {
                     </div>
                 </div>
 
-                <div className="bg-white dark:bg-[#1e1726] border border-slate-100 dark:border-slate-800 p-6 rounded-xl shadow-sm flex flex-col justify-between">
+                <div className="bg-white [#1e1726] border border-slate-100  p-6 rounded-xl shadow-sm flex flex-col justify-between">
                     <div>
-                        <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-1">Device Distribution</h3>
-                        <p className="text-sm text-slate-500 dark:text-slate-400 mb-8">Traffic source by real OS data ({timeRanges.find(r => r.value === days)?.label || `Last ${days} Days`})</p>
+                        <h3 className="text-xl font-bold text-slate-900  mb-1">Device Distribution</h3>
+                        <p className="text-sm text-slate-500  mb-8">Traffic source by real OS data ({timeRanges.find(r => r.value === days)?.label || `Last ${days} Days`})</p>
 
                         <div className="space-y-6">
                             {[
@@ -360,13 +360,13 @@ const CampaignDetails = () => {
                             ].map((device, i) => (
                                 <div key={i}>
                                     <div className="flex justify-between text-sm mb-2">
-                                        <span className="font-medium text-slate-700 dark:text-slate-300 flex items-center gap-2">
-                                            <span className="material-symbols-outlined text-slate-400 dark:text-slate-500 text-base">{device.icon}</span>
+                                        <span className="font-medium text-slate-700  flex items-center gap-2">
+                                            <span className="material-symbols-outlined text-slate-400  text-base">{device.icon}</span>
                                             {device.name}
                                         </span>
-                                        <span className="font-bold text-slate-900 dark:text-white">{device.value}%</span>
+                                        <span className="font-bold text-slate-900 ">{device.value}%</span>
                                     </div>
-                                    <div className="h-2 w-full bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
+                                    <div className="h-2 w-full bg-slate-100  rounded-full overflow-hidden">
                                         <div className={`h-full ${i === 1 ? 'bg-primary/70' : i === 2 ? 'bg-primary/40' : 'bg-primary'} rounded-full`}
                                             style={{ width: `${device.value}%` }}></div>
                                     </div>
@@ -375,15 +375,15 @@ const CampaignDetails = () => {
                         </div>
                     </div>
 
-                    <div className="mt-8 pt-6 border-t border-slate-100 dark:border-slate-800">
+                    <div className="mt-8 pt-6 border-t border-slate-100 ">
                         <div className="flex gap-4">
                             <div className="flex-1">
                                 <div className="text-xs text-slate-400 uppercase font-semibold mb-1">Dominant OS</div>
-                                <div className="text-lg font-bold text-slate-800 dark:text-white">{campaign.dominantOS || 'N/A'}</div>
+                                <div className="text-lg font-bold text-slate-800 ">{campaign.dominantOS || 'N/A'}</div>
                             </div>
                             <div className="flex-1">
                                 <div className="text-xs text-slate-400 uppercase font-semibold mb-1">Avg Screen</div>
-                                <div className="text-lg font-bold text-slate-800 dark:text-white">Unknown</div>
+                                <div className="text-lg font-bold text-slate-800 ">Unknown</div>
                             </div>
                         </div>
                     </div>
@@ -393,12 +393,12 @@ const CampaignDetails = () => {
             {/* Geo and List Section */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 {/* Geo Distribution */}
-                <div className="bg-white dark:bg-[#1e1726] border border-slate-100 dark:border-slate-800 rounded-xl overflow-hidden shadow-sm flex flex-col">
+                <div className="bg-white [#1e1726] border border-slate-100  rounded-xl overflow-hidden shadow-sm flex flex-col">
                     <div className="p-6 pb-2">
-                        <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-1">Geo-Distribution</h3>
-                        <p className="text-sm text-slate-500 dark:text-slate-400">Top scanning locations worldwide ({timeRanges.find(r => r.value === days)?.label || `Last ${days} Days`})</p>
+                        <h3 className="text-xl font-bold text-slate-900  mb-1">Geo-Distribution</h3>
+                        <p className="text-sm text-slate-500 ">Top scanning locations worldwide ({timeRanges.find(r => r.value === days)?.label || `Last ${days} Days`})</p>
                     </div>
-                    <div className="h-64 bg-slate-50 dark:bg-slate-900/50 relative overflow-hidden group">
+                    <div className="h-64 bg-slate-50  relative overflow-hidden group">
                         {/* World Map Image */}
                         <img
                             alt="World Map"
@@ -428,7 +428,7 @@ const CampaignDetails = () => {
                         {/* Fallback if no scans */}
                         {topThreeCountries.length === 0 && (
                             <div className="absolute inset-0 flex items-center justify-center">
-                                <span className="material-symbols-outlined text-4xl text-slate-300 dark:text-slate-700">public</span>
+                                <span className="material-symbols-outlined text-4xl text-slate-300 ">public</span>
                             </div>
                         )}
                     </div>
@@ -436,11 +436,11 @@ const CampaignDetails = () => {
                         {campaign.geo_stats && campaign.geo_stats.length > 0 ? (
                             campaign.geo_stats.map((geo, i) => (
                                 <div key={i}>
-                                    <div className="flex items-center justify-between text-sm text-slate-700 dark:text-slate-300">
+                                    <div className="flex items-center justify-between text-sm text-slate-700 ">
                                         <span>{geo.country}</span>
-                                        <span className="font-bold text-slate-900 dark:text-white">{geo.count}</span>
+                                        <span className="font-bold text-slate-900 ">{geo.count}</span>
                                     </div>
-                                    <div className="w-full h-1.5 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden mt-1">
+                                    <div className="w-full h-1.5 bg-slate-100  rounded-full overflow-hidden mt-1">
                                         <div className="h-full bg-primary" style={{ width: `${(geo.count / (campaign.total_scans || 1)) * 100}%` }}></div>
                                     </div>
                                 </div>
@@ -452,14 +452,14 @@ const CampaignDetails = () => {
                 </div>
 
                 {/* QR Performance List Table */}
-                <div className="lg:col-span-2 bg-white dark:bg-[#1e1726] border border-slate-100 dark:border-slate-800 rounded-xl overflow-hidden flex flex-col shadow-sm">
-                    <div className="p-6 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between bg-white dark:bg-[#1e1726]">
-                        <h3 className="text-xl font-bold text-slate-900 dark:text-white">QR Performance List</h3>
+                <div className="lg:col-span-2 bg-white [#1e1726] border border-slate-100  rounded-xl overflow-hidden flex flex-col shadow-sm">
+                    <div className="p-6 border-b border-slate-100  flex items-center justify-between bg-white [#1e1726]">
+                        <h3 className="text-xl font-bold text-slate-900 ">QR Performance List</h3>
                     </div>
                     <div className="overflow-x-auto">
-                        <table className="w-full text-left bg-white dark:bg-[#1e1726]">
+                        <table className="w-full text-left bg-white [#1e1726]">
                             <thead>
-                                <tr className="text-xs uppercase tracking-wider text-slate-500 dark:text-slate-400 bg-slate-50 dark:bg-slate-800/50">
+                                <tr className="text-xs uppercase tracking-wider text-slate-500  bg-slate-50 ">
                                     <th className="px-6 py-4 font-bold">QR Asset Name</th>
                                     <th className="px-6 py-4 font-bold">Scans</th>
                                     <th className="px-6 py-4 font-bold">Unique Visitors</th>
@@ -467,25 +467,25 @@ const CampaignDetails = () => {
                                     <th className="px-6 py-4 font-bold">Trends (7d)</th>
                                 </tr>
                             </thead>
-                            <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
+                            <tbody className="divide-y divide-slate-100 ">
                                 {campaign.qrs && campaign.qrs.map((qr) => (
-                                    <tr key={qr.id} className="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors group">
+                                    <tr key={qr.id} className="hover:bg-slate-50 :bg-slate-800/50 transition-colors group">
                                         <td className="px-6 py-4">
                                             <Link to={`/qrs/${qr.id}`} className="flex items-center gap-3">
-                                                <div className="size-8 bg-violet-50 dark:bg-violet-900/20 text-primary rounded flex items-center justify-center flex-shrink-0">
+                                                <div className="size-8 bg-violet-50  text-primary rounded flex items-center justify-center flex-shrink-0">
                                                     <span className="material-symbols-outlined text-sm">qr_code</span>
                                                 </div>
                                                 <div className="min-w-0">
-                                                    <p className="font-bold text-sm text-slate-900 dark:text-white truncate group-hover:text-primary transition-colors">{qr.name}</p>
+                                                    <p className="font-bold text-sm text-slate-900  truncate group-hover:text-primary transition-colors">{qr.name}</p>
                                                     <p className="text-[10px] text-slate-400 font-medium truncate">/{qr.short_code}</p>
                                                 </div>
                                             </Link>
                                         </td>
-                                        <td className="px-6 py-4 text-sm font-bold text-slate-900 dark:text-white">{qr.scan_count}</td>
-                                        <td className="px-6 py-4 text-sm text-slate-700 dark:text-slate-300">
+                                        <td className="px-6 py-4 text-sm font-bold text-slate-900 ">{qr.scan_count}</td>
+                                        <td className="px-6 py-4 text-sm text-slate-700 ">
                                             {qr.unique_visitors || 0}
                                         </td>
-                                        <td className="px-6 py-4 text-sm font-bold text-slate-900 dark:text-white">
+                                        <td className="px-6 py-4 text-sm font-bold text-slate-900 ">
                                             {qr.peak_hour}
                                         </td>
                                         <td className="px-6 py-4">
@@ -496,7 +496,7 @@ const CampaignDetails = () => {
                                                     return (
                                                         <div
                                                             key={idx}
-                                                            className={`w-1.5 rounded-t-sm ${idx >= 4 ? 'bg-primary' : 'bg-violet-200 dark:bg-slate-700'}`}
+                                                            className={`w-1.5 rounded-t-sm ${idx >= 4 ? 'bg-primary' : 'bg-violet-200 '}`}
                                                             style={{ height: `${height}%` }}
                                                             title={`${val} scans`}
                                                         ></div>

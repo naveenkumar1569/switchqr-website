@@ -20,13 +20,13 @@ const VariantList = ({ variants, controlWeight, controlScanCount, mainUrl, onUpd
         <div className="space-y-4">
             {/* Weight Warning */}
             {!isWeightValid && (
-                <div className="flex items-start gap-3 p-4 rounded-lg bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800">
-                    <span className="material-symbols-outlined text-amber-600 dark:text-amber-400 text-xl">warning</span>
+                <div className="flex items-start gap-3 p-4 rounded-lg bg-amber-50  border border-amber-200 ">
+                    <span className="material-symbols-outlined text-amber-600  text-xl">warning</span>
                     <div className="flex-1">
-                        <p className="text-sm font-semibold text-amber-900 dark:text-amber-100">
+                        <p className="text-sm font-semibold text-amber-900 ">
                             Total weight exceeds 100%
                         </p>
-                        <p className="text-xs text-amber-700 dark:text-amber-300 mt-1">
+                        <p className="text-xs text-amber-700  mt-1">
                             Current total: {totalWeight}% (Control: {controlWeight}%, Variants: {totalWeight - controlWeight}%)
                         </p>
                     </div>
@@ -60,7 +60,7 @@ const VariantList = ({ variants, controlWeight, controlScanCount, mainUrl, onUpd
                             />
 
                             {/* Divider if there are variants */}
-                            {variants.length > 0 && <div className="border-t border-slate-100 dark:border-slate-800 my-2" />}
+                            {variants.length > 0 && <div className="border-t border-slate-100  my-2" />}
 
                             {/* Variant Cards */}
                             {variants.map((variant) => (
@@ -82,18 +82,18 @@ const VariantList = ({ variants, controlWeight, controlScanCount, mainUrl, onUpd
             {/* Add Variant Button */}
             <button
                 onClick={onAdd}
-                className="w-full flex items-center justify-center gap-2 px-4 py-3 border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-xl text-slate-600 dark:text-slate-400 hover:border-primary hover:text-primary hover:bg-primary/5 transition-all"
+                className="w-full flex items-center justify-center gap-2 px-4 py-3 border-2 border-dashed border-slate-200  rounded-xl text-slate-600  hover:border-primary hover:text-primary hover:bg-primary/5 transition-all"
             >
                 <span className="material-symbols-outlined">add</span>
                 <span className="font-medium">Add Variant</span>
             </button>
 
             {/* Traffic Distribution Visualizer */}
-            <div className="mt-6 p-4 bg-slate-50 dark:bg-slate-800/50 rounded-xl">
-                <h4 className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wide mb-3">
+            <div className="mt-6 p-4 bg-slate-50  rounded-xl">
+                <h4 className="text-xs font-bold text-slate-500  uppercase tracking-wide mb-3">
                     Traffic Distribution
                 </h4>
-                <div className="flex h-3 rounded-full overflow-hidden bg-slate-200 dark:bg-slate-700">
+                <div className="flex h-3 rounded-full overflow-hidden bg-slate-200 ">
                     {/* Control Legend in Bar */}
                     {controlWeight > 0 && (
                         <div
@@ -131,7 +131,7 @@ const VariantList = ({ variants, controlWeight, controlScanCount, mainUrl, onUpd
                     {/* Control Legend Item */}
                     <div className="flex items-center gap-2">
                         <div className="w-3 h-3 rounded-full bg-slate-500" />
-                        <span className="text-xs text-slate-600 dark:text-slate-400 font-bold">
+                        <span className="text-xs text-slate-600  font-bold">
                             Control ({controlWeight}%)
                         </span>
                     </div>
@@ -151,7 +151,7 @@ const VariantList = ({ variants, controlWeight, controlScanCount, mainUrl, onUpd
                         return (
                             <div key={variant.id} className={`flex items-center gap-2 ${!isEnabled ? 'opacity-50' : ''}`}>
                                 <div className={`w-3 h-3 rounded-full ${isEnabled ? color.bg : 'bg-slate-300'}`} />
-                                <span className="text-xs text-slate-600 dark:text-slate-400 font-medium">
+                                <span className="text-xs text-slate-600  font-medium">
                                     {variant.name || variant.label || `Variant ${variant.id}`} ({isEnabled ? variant.weight : 0}%)
                                     {!isEnabled && <span className="ml-1 text-[10px] font-bold text-slate-400 uppercase">Disabled</span>}
                                 </span>

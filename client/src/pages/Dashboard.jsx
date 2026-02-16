@@ -190,7 +190,7 @@ const Dashboard = () => {
         });
 
         const csvContent = "data:text/csv;charset=utf-8,"
-            + [headers.join(','), ...rows].join("\n");
+            [headers.join(','), ...rows].join("\n");
 
         const encodedUri = encodeURI(csvContent);
         const link = document.createElement("a");
@@ -217,64 +217,64 @@ const Dashboard = () => {
             {/* Stats Grid */}
             <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 {/* Total QRs */}
-                <div className="bg-surface-light dark:bg-surface-dark p-6 rounded-xl border border-border-light dark:border-border-dark shadow-sm hover:shadow-md transition-shadow">
+                <div className="bg-surface-light  p-6 rounded-xl border border-border-light  shadow-sm hover:shadow-md transition-shadow">
                     <div className="flex items-start mb-4">
                         <div className="p-2 bg-primary/10 rounded-lg text-primary">
                             <span className="material-symbols-outlined">qr_code_2</span>
                         </div>
                     </div>
-                    <p className="text-sm font-medium text-slate-500 dark:text-slate-400">Total QRs</p>
+                    <p className="text-sm font-medium text-slate-500 ">Total QRs</p>
                     {loading ? (
-                        <div className="h-9 w-16 bg-slate-200 dark:bg-slate-700 rounded animate-pulse mt-1"></div>
+                        <div className="h-9 w-16 bg-slate-200  rounded animate-pulse mt-1"></div>
                     ) : (
-                        <h3 className="text-3xl font-bold text-slate-900 dark:text-white mt-1">{qrs.length}</h3>
+                        <h3 className="text-3xl font-bold text-slate-900  mt-1">{qrs.length}</h3>
                     )}
                 </div>
 
                 {/* Total Scans */}
-                <div className="bg-surface-light dark:bg-surface-dark p-6 rounded-xl border border-border-light dark:border-border-dark shadow-sm hover:shadow-md transition-shadow">
+                <div className="bg-surface-light  p-6 rounded-xl border border-border-light  shadow-sm hover:shadow-md transition-shadow">
                     <div className="flex items-start mb-4">
-                        <div className="p-2 bg-green-100 dark:bg-green-900/30 rounded-lg text-green-600 dark:text-green-400">
+                        <div className="p-2 bg-green-100  rounded-lg text-green-600 ">
                             <span className="material-symbols-outlined">bar_chart</span>
                         </div>
                     </div>
-                    <p className="text-sm font-medium text-slate-500 dark:text-slate-400">Total Scans</p>
+                    <p className="text-sm font-medium text-slate-500 ">Total Scans</p>
                     <div className="flex items-baseline gap-2 mt-1">
                         {loading ? (
-                            <div className="h-9 w-20 bg-slate-200 dark:bg-slate-700 rounded animate-pulse"></div>
+                            <div className="h-9 w-20 bg-slate-200  rounded animate-pulse"></div>
                         ) : (
-                            <h3 className="text-3xl font-bold text-slate-900 dark:text-white">{stats?.totalScans || 0}</h3>
+                            <h3 className="text-3xl font-bold text-slate-900 ">{stats?.totalScans || 0}</h3>
                         )}
                     </div>
                 </div>
 
                 {/* Active QRs */}
-                <div className="bg-surface-light dark:bg-surface-dark p-6 rounded-xl border border-border-light dark:border-border-dark shadow-sm hover:shadow-md transition-shadow">
+                <div className="bg-surface-light  p-6 rounded-xl border border-border-light  shadow-sm hover:shadow-md transition-shadow">
                     <div className="flex items-start mb-4">
-                        <div className="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg text-blue-600 dark:text-blue-400">
+                        <div className="p-2 bg-blue-100  rounded-lg text-blue-600 ">
                             <span className="material-symbols-outlined">check_circle</span>
                         </div>
                     </div>
-                    <p className="text-sm font-medium text-slate-500 dark:text-slate-400">Active QRs</p>
+                    <p className="text-sm font-medium text-slate-500 ">Active QRs</p>
                     {loading ? (
-                        <div className="h-9 w-12 bg-slate-200 dark:bg-slate-700 rounded animate-pulse mt-1"></div>
+                        <div className="h-9 w-12 bg-slate-200  rounded animate-pulse mt-1"></div>
                     ) : (
-                        <h3 className="text-3xl font-bold text-slate-900 dark:text-white mt-1">{activeQrs}</h3>
+                        <h3 className="text-3xl font-bold text-slate-900  mt-1">{activeQrs}</h3>
                     )}
                 </div>
 
                 {/* Top Campaign */}
-                <div className="bg-surface-light dark:bg-surface-dark p-6 rounded-xl border border-border-light dark:border-border-dark shadow-sm hover:shadow-md transition-shadow">
+                <div className="bg-surface-light  p-6 rounded-xl border border-border-light  shadow-sm hover:shadow-md transition-shadow">
                     <div className="flex items-start mb-4">
-                        <div className="p-2 bg-orange-100 dark:bg-orange-900/30 rounded-lg text-orange-600 dark:text-orange-400">
+                        <div className="p-2 bg-orange-100  rounded-lg text-orange-600 ">
                             <span className="material-symbols-outlined">star</span>
                         </div>
                     </div>
-                    <p className="text-sm font-medium text-slate-500 dark:text-slate-400">Top Campaign</p>
+                    <p className="text-sm font-medium text-slate-500 ">Top Campaign</p>
                     {loading ? (
-                        <div className="h-7 w-32 bg-slate-200 dark:bg-slate-700 rounded animate-pulse mt-2"></div>
+                        <div className="h-7 w-32 bg-slate-200  rounded animate-pulse mt-2"></div>
                     ) : (
-                        <h3 className="text-xl font-bold text-slate-900 dark:text-white mt-2 truncate" title={stats?.topQr?.name || 'N/A'}>
+                        <h3 className="text-xl font-bold text-slate-900  mt-2 truncate" title={stats?.topQr?.name || 'N/A'}>
                             {stats?.topQr?.name || 'N/A'}
                         </h3>
                     )}
@@ -282,7 +282,7 @@ const Dashboard = () => {
             </section>
 
             {/* Filters & Search */}
-            <div className="flex flex-col sm:flex-row gap-4 justify-between items-center bg-white dark:bg-surface-dark p-4 rounded-xl border border-border-light dark:border-border-dark shadow-sm">
+            <div className="flex flex-col sm:flex-row gap-4 justify-between items-center bg-white  p-4 rounded-xl border border-border-light  shadow-sm">
                 <div className="relative w-full sm:w-96">
                     <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
                         <span className="material-symbols-outlined">search</span>
@@ -290,7 +290,7 @@ const Dashboard = () => {
                     <input
                         type="text"
                         placeholder="Search QRs..."
-                        className="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-[#1a1625] text-text-dark dark:text-white focus:outline-none focus:ring-2 focus:ring-primary/50 transition-shadow"
+                        className="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-200  bg-gray-50 [#1a1625] text-text-dark  focus:outline-none focus:ring-2 focus:ring-primary/50 transition-shadow"
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
                     />
@@ -298,7 +298,7 @@ const Dashboard = () => {
                 <div className="flex gap-3 w-full sm:w-auto">
                     <div className="relative">
                         <button
-                            className={`flex items-center gap-2 px-4 py-2 border rounded-lg hover:bg-gray-50 dark:hover:bg-[#1a1625] transition-colors text-text-subtle text-sm font-medium ${filterStatus !== 'all' ? 'border-primary text-primary bg-primary/5' : 'border-gray-200 dark:border-gray-700'}`}
+                            className={`flex items-center gap-2 px-4 py-2 border rounded-lg hover:bg-gray-50 :bg-[#1a1625] transition-colors text-text-subtle text-sm font-medium ${filterStatus !== 'all' ? 'border-primary text-primary bg-primary/5' : 'border-gray-200 '}`}
                             onClick={() => setFilterOpen(!filterOpen)}
                         >
                             <span className="material-symbols-outlined text-[20px]">filter_list</span>
@@ -309,22 +309,22 @@ const Dashboard = () => {
                         </button>
 
                         {filterOpen && (
-                            <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-surface-dark border border-gray-200 dark:border-gray-700 rounded-lg shadow-xl z-20 overflow-hidden animate-in fade-in zoom-in-95 duration-100">
+                            <div className="absolute right-0 mt-2 w-48 bg-white  border border-gray-200  rounded-lg shadow-xl z-20 overflow-hidden animate-in fade-in zoom-in-95 duration-100">
                                 <div className="p-1">
                                     <button
-                                        className={`w-full text-left px-3 py-2 rounded-md text-sm mb-1 ${filterStatus === 'all' ? 'bg-primary/10 text-primary font-medium' : 'text-text-subtle hover:bg-gray-50 dark:hover:bg-white/5'}`}
+                                        className={`w-full text-left px-3 py-2 rounded-md text-sm mb-1 ${filterStatus === 'all' ? 'bg-primary/10 text-primary font-medium' : 'text-text-subtle hover:bg-gray-50 :bg-white/5'}`}
                                         onClick={() => { setFilterStatus('all'); setFilterOpen(false); }}
                                     >
                                         All Status
                                     </button>
                                     <button
-                                        className={`w-full text-left px-3 py-2 rounded-md text-sm mb-1 ${filterStatus === 'active' ? 'bg-primary/10 text-primary font-medium' : 'text-text-subtle hover:bg-gray-50 dark:hover:bg-white/5'}`}
+                                        className={`w-full text-left px-3 py-2 rounded-md text-sm mb-1 ${filterStatus === 'active' ? 'bg-primary/10 text-primary font-medium' : 'text-text-subtle hover:bg-gray-50 :bg-white/5'}`}
                                         onClick={() => { setFilterStatus('active'); setFilterOpen(false); }}
                                     >
                                         Active
                                     </button>
                                     <button
-                                        className={`w-full text-left px-3 py-2 rounded-md text-sm ${filterStatus === 'paused' ? 'bg-primary/10 text-primary font-medium' : 'text-text-subtle hover:bg-gray-50 dark:hover:bg-white/5'}`}
+                                        className={`w-full text-left px-3 py-2 rounded-md text-sm ${filterStatus === 'paused' ? 'bg-primary/10 text-primary font-medium' : 'text-text-subtle hover:bg-gray-50 :bg-white/5'}`}
                                         onClick={() => { setFilterStatus('paused'); setFilterOpen(false); }}
                                     >
                                         Paused
@@ -336,8 +336,8 @@ const Dashboard = () => {
 
                     <button
                         onClick={canExport ? handleExport : undefined}
-                        className={`flex items-center gap-2 px-4 py-2 border border-gray-200 dark:border-gray-700 rounded-lg transition-colors text-sm font-medium ${canExport
-                            ? 'hover:bg-gray-50 dark:hover:bg-[#1a1625] text-text-subtle'
+                        className={`flex items-center gap-2 px-4 py-2 border border-gray-200  rounded-lg transition-colors text-sm font-medium ${canExport
+                            ? 'hover:bg-gray-50 :bg-[#1a1625] text-text-subtle'
                             : 'text-gray-400 cursor-default'
                             }`}
                         title={!canExport ? getLockDetails(FEATURES.EXPORT_DATA).description : 'Export QR codes to CSV'}
@@ -358,36 +358,36 @@ const Dashboard = () => {
             </div>
 
             {/* Table Container */}
-            <div className="bg-surface-light dark:bg-surface-dark border border-border-light dark:border-border-dark rounded-xl shadow-sm overflow-hidden flex flex-col">
+            <div className="bg-surface-light  border border-border-light  rounded-xl shadow-sm overflow-hidden flex flex-col">
                 <div className="overflow-x-auto">
-                    <table className="min-w-full divide-y divide-border-light dark:divide-border-dark">
-                        <thead className="bg-slate-50 dark:bg-slate-800/50">
+                    <table className="min-w-full divide-y divide-border-light ">
+                        <thead className="bg-slate-50 ">
                             <tr>
-                                <th className="px-6 py-3 text-left text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider w-1/4">QR Name</th>
-                                <th className="px-6 py-3 text-left text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider w-1/4">Destination URL</th>
-                                <th className="px-6 py-3 text-left text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Status</th>
-                                <th className="px-6 py-3 text-left text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Scans</th>
-                                <th className="px-6 py-3 text-left text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Last Scanned</th>
-                                <th className="px-6 py-3 text-right text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Actions</th>
+                                <th className="px-6 py-3 text-left text-xs font-semibold text-slate-500  uppercase tracking-wider w-1/4">QR Name</th>
+                                <th className="px-6 py-3 text-left text-xs font-semibold text-slate-500  uppercase tracking-wider w-1/4">Destination URL</th>
+                                <th className="px-6 py-3 text-left text-xs font-semibold text-slate-500  uppercase tracking-wider">Status</th>
+                                <th className="px-6 py-3 text-left text-xs font-semibold text-slate-500  uppercase tracking-wider">Scans</th>
+                                <th className="px-6 py-3 text-left text-xs font-semibold text-slate-500  uppercase tracking-wider">Last Scanned</th>
+                                <th className="px-6 py-3 text-right text-xs font-semibold text-slate-500  uppercase tracking-wider">Actions</th>
                             </tr>
                         </thead>
-                        <tbody className="bg-surface-light dark:bg-surface-dark divide-y divide-border-light dark:divide-border-dark">
+                        <tbody className="bg-surface-light  divide-y divide-border-light ">
                             {paginatedQrs.map(qr => (
-                                <tr key={qr.id} className="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors group">
+                                <tr key={qr.id} className="hover:bg-slate-50 :bg-slate-800/50 transition-colors group">
                                     <td className="px-6 py-4 whitespace-nowrap">
                                         <Link to={`/qrs/${qr.id}`} className="flex items-center group-hover:text-primary transition-colors">
-                                            <div className="flex-shrink-0 h-10 w-10 bg-slate-100 dark:bg-slate-800 rounded-md flex items-center justify-center border border-slate-200 dark:border-slate-700">
+                                            <div className="flex-shrink-0 h-10 w-10 bg-slate-100  rounded-md flex items-center justify-center border border-slate-200 ">
                                                 <span className="material-symbols-outlined text-slate-400 text-[20px] group-hover:text-primary">qr_code</span>
                                             </div>
                                             <div className="ml-4">
-                                                <div className="text-sm font-medium text-slate-900 dark:text-white group-hover:text-primary">{qr.name}</div>
-                                                <div className="text-xs text-slate-500 dark:text-slate-400">Created: {new Date(qr.created_at).toLocaleDateString()}</div>
+                                                <div className="text-sm font-medium text-slate-900  group-hover:text-primary">{qr.name}</div>
+                                                <div className="text-xs text-slate-500 ">Created: {new Date(qr.created_at).toLocaleDateString()}</div>
                                             </div>
                                         </Link>
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap">
                                         <div className="flex items-center gap-2 group/url">
-                                            <div className="text-sm text-slate-600 dark:text-slate-300 truncate max-w-[200px]">{qr.destination_url}</div>
+                                            <div className="text-sm text-slate-600  truncate max-w-[200px]">{qr.destination_url}</div>
                                             <button
                                                 className="text-slate-400 hover:text-primary opacity-0 group-hover/url:opacity-100 transition-opacity"
                                                 onClick={() => navigator.clipboard.writeText(qr.destination_url)}
@@ -402,18 +402,18 @@ const Dashboard = () => {
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap">
                                         <span className={`px-2 py-1 text-xs font-bold rounded-full border ${qr.status === 'active'
-                                            ? 'bg-green-100 text-green-800 dark:bg-green-900/40 dark:text-green-300 border border-green-200 dark:border-green-800'
+                                            ? 'bg-green-100 text-green-800   border border-green-200 '
                                             : qr.status === 'paused'
-                                                ? 'bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300 border border-amber-200 dark:border-amber-800'
-                                                : 'bg-gray-100 text-gray-800 dark:bg-gray-900/40 dark:text-gray-300 border border-gray-200 dark:border-gray-800'
+                                                ? 'bg-amber-100 text-amber-800   border border-amber-200 '
+                                                : 'bg-gray-100 text-gray-800   border border-gray-200 '
                                             }`}>
                                             {qr.status === 'active' ? 'Active' : qr.status === 'paused' ? 'Paused' : 'Draft'}
                                         </span>
                                     </td>
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-600 dark:text-slate-300 tabular-nums">
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-600  tabular-nums">
                                         {qr.scan_count || 0}
                                     </td>
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-500 dark:text-slate-400">
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-500 ">
                                         {qr.last_scanned ? new Date(qr.last_scanned).toLocaleString() : 'Never'}
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
@@ -427,7 +427,7 @@ const Dashboard = () => {
                                                     });
                                                     setOpenMenuId(openMenuId === qr.id ? null : qr.id);
                                                 }}
-                                                className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors p-1 rounded-md hover:bg-slate-100 dark:hover:bg-slate-700"
+                                                className="text-slate-400 hover:text-slate-600 :text-slate-200 transition-colors p-1 rounded-md hover:bg-slate-100 :bg-slate-700"
                                             >
                                                 <span className="material-symbols-outlined text-[20px]">more_vert</span>
                                             </button>
@@ -435,7 +435,7 @@ const Dashboard = () => {
                                             {openMenuId === qr.id && createPortal(
                                                 <div
                                                     ref={menuRef}
-                                                    className="fixed bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg shadow-lg z-[9999] py-1 overflow-hidden animate-in fade-in zoom-in-95 duration-100"
+                                                    className="fixed bg-white  border border-slate-200  rounded-lg shadow-lg z-[9999] py-1 overflow-hidden animate-in fade-in zoom-in-95 duration-100"
                                                     style={{
                                                         top: `${menuPosition.top - window.scrollY}px`,
                                                         left: `${menuPosition.left}px`,
@@ -444,7 +444,7 @@ const Dashboard = () => {
                                                 >
                                                     <button
                                                         onClick={() => handleToggleStatus(qr.id, qr.status)}
-                                                        className="w-full text-left px-4 py-2 text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-700 flex items-center gap-2"
+                                                        className="w-full text-left px-4 py-2 text-sm text-slate-700  hover:bg-slate-50 :bg-slate-700 flex items-center gap-2"
                                                     >
                                                         <span className="material-symbols-outlined text-[18px]">
                                                             {qr.status === 'active' ? 'pause' : 'play_arrow'}
@@ -453,7 +453,7 @@ const Dashboard = () => {
                                                     </button>
                                                     <Link
                                                         to={`/qrs/${qr.id}?edit=true`}
-                                                        className="w-full text-left px-4 py-2 text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-700 flex items-center gap-2"
+                                                        className="w-full text-left px-4 py-2 text-sm text-slate-700  hover:bg-slate-50 :bg-slate-700 flex items-center gap-2"
                                                         onClick={() => setOpenMenuId(null)}
                                                     >
                                                         <span className="material-symbols-outlined text-[18px]">edit</span>
@@ -461,7 +461,7 @@ const Dashboard = () => {
                                                     </Link>
                                                     <button
                                                         onClick={() => handleDeleteClick(qr.id)}
-                                                        className="w-full text-left px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-gray-50 dark:hover:bg-white/5 flex items-center gap-2"
+                                                        className="w-full text-left px-4 py-2 text-sm text-red-600  hover:bg-gray-50 :bg-white/5 flex items-center gap-2"
                                                     >
                                                         <span className="material-symbols-outlined text-[18px]">delete</span>
                                                         Delete
@@ -479,28 +479,28 @@ const Dashboard = () => {
                                         <tr key={`skeleton-${i}`} className="animate-pulse">
                                             <td className="px-6 py-4">
                                                 <div className="flex items-center">
-                                                    <div className="h-10 w-10 bg-slate-200 dark:bg-slate-700 rounded-md"></div>
+                                                    <div className="h-10 w-10 bg-slate-200  rounded-md"></div>
                                                     <div className="ml-4">
-                                                        <div className="h-4 w-32 bg-slate-200 dark:bg-slate-700 rounded mb-2"></div>
-                                                        <div className="h-3 w-24 bg-slate-200 dark:bg-slate-700 rounded"></div>
+                                                        <div className="h-4 w-32 bg-slate-200  rounded mb-2"></div>
+                                                        <div className="h-3 w-24 bg-slate-200  rounded"></div>
                                                     </div>
                                                 </div>
                                             </td>
                                             <td className="px-6 py-4">
-                                                <div className="h-4 w-40 bg-slate-200 dark:bg-slate-700 rounded mb-2"></div>
-                                                <div className="h-3 w-32 bg-slate-200 dark:bg-slate-700 rounded"></div>
+                                                <div className="h-4 w-40 bg-slate-200  rounded mb-2"></div>
+                                                <div className="h-3 w-32 bg-slate-200  rounded"></div>
                                             </td>
                                             <td className="px-6 py-4">
-                                                <div className="h-6 w-16 bg-slate-200 dark:bg-slate-700 rounded-full"></div>
+                                                <div className="h-6 w-16 bg-slate-200  rounded-full"></div>
                                             </td>
                                             <td className="px-6 py-4">
-                                                <div className="h-4 w-8 bg-slate-200 dark:bg-slate-700 rounded"></div>
+                                                <div className="h-4 w-8 bg-slate-200  rounded"></div>
                                             </td>
                                             <td className="px-6 py-4">
-                                                <div className="h-4 w-28 bg-slate-200 dark:bg-slate-700 rounded"></div>
+                                                <div className="h-4 w-28 bg-slate-200  rounded"></div>
                                             </td>
                                             <td className="px-6 py-4 text-right">
-                                                <div className="h-6 w-6 bg-slate-200 dark:bg-slate-700 rounded ml-auto"></div>
+                                                <div className="h-6 w-6 bg-slate-200  rounded ml-auto"></div>
                                             </td>
                                         </tr>
                                     ))}
@@ -518,22 +518,22 @@ const Dashboard = () => {
                 </div>
 
                 {/* Pagination */}
-                <div className="px-6 py-4 border-t border-border-light dark:border-border-dark flex items-center justify-between">
-                    <p className="text-sm text-slate-500 dark:text-slate-400">
-                        Showing <span className="font-medium text-slate-900 dark:text-white">{startIndex + 1}</span> to <span className="font-medium text-slate-900 dark:text-white">{Math.min(endIndex, filteredQrs.length)}</span> of <span className="font-medium text-slate-900 dark:text-white">{filteredQrs.length}</span> results
+                <div className="px-6 py-4 border-t border-border-light  flex items-center justify-between">
+                    <p className="text-sm text-slate-500 ">
+                        Showing <span className="font-medium text-slate-900 ">{startIndex + 1}</span> to <span className="font-medium text-slate-900 ">{Math.min(endIndex, filteredQrs.length)}</span> of <span className="font-medium text-slate-900 ">{filteredQrs.length}</span> results
                     </p>
                     <div className="flex gap-2">
                         <button
                             onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
                             disabled={currentPage === 1}
-                            className="px-3 py-1 border border-border-light dark:border-border-dark rounded-md text-sm text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="px-3 py-1 border border-border-light  rounded-md text-sm text-slate-500  hover:bg-slate-50 :bg-slate-800 disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                             Previous
                         </button>
                         <button
                             onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
                             disabled={currentPage === totalPages || filteredQrs.length === 0}
-                            className="px-3 py-1 border border-border-light dark:border-border-dark rounded-md text-sm text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="px-3 py-1 border border-border-light  rounded-md text-sm text-slate-500  hover:bg-slate-50 :bg-slate-800 disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                             Next
                         </button>

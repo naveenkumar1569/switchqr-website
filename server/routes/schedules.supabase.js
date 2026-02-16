@@ -156,7 +156,6 @@ router.put('/:id/schedules/:scheduleId', supabaseAuth, requireFeature('schedulin
 router.delete('/:id/schedules/:scheduleId', supabaseAuth, requireFeature('scheduling'), async (req, res) => {
     const { id, scheduleId } = req.params;
     const user = req.user;
-    console.log(`🗑️ [DELETE] Attempting to delete schedule ${scheduleId} for QR ${id}`);
 
     try {
         // Verify QR ownership first
@@ -178,7 +177,6 @@ router.delete('/:id/schedules/:scheduleId', supabaseAuth, requireFeature('schedu
             .eq('id', Number(scheduleId))
             .eq('qr_id', Number(id));
 
-        console.log(`🗑️ [DELETE] Supabase Response: Status=${status}, DeletedCount=${count}`);
 
         if (error) {
             console.error(`🗑️ [DELETE] Supabase Error:`, error);

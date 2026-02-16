@@ -23,7 +23,7 @@ const ScanLimitReached = React.lazy(() => import('./pages/ScanLimitReached'));
 
 // Loading fallback component
 const PageLoader = () => (
-  <div className="flex flex-col items-center justify-center min-h-screen bg-background-light dark:bg-background-dark">
+  <div className="flex flex-col items-center justify-center min-h-screen bg-background-light ">
     <div className="flex flex-col items-center gap-4">
       <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-primary"></div>
       <p className="text-sm text-text-subtle">Loading...</p>
@@ -37,7 +37,7 @@ const PrivateRoute = () => {
   // Show loading screen during initialization
   if (loading || bootState === BOOT_STATE?.INITIALIZING) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen bg-background-light dark:bg-background-dark">
+      <div className="flex flex-col items-center justify-center min-h-screen bg-background-light ">
         <div className="flex flex-col items-center gap-4">
           <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-primary"></div>
           <p className="text-sm text-text-subtle">Loading your workspace...</p>

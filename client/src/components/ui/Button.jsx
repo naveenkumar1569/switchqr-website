@@ -33,9 +33,9 @@ const Button = ({
     const variantStyles = {
         primary: 'bg-primary text-white hover:bg-primary-hover focus:ring-primary shadow-sm hover:shadow-md active:scale-95',
         secondary: 'bg-primary/20 text-primary hover:bg-primary/30 focus:ring-primary active:scale-95',
-        outline: 'border-2 border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 focus:ring-slate-400 active:scale-95',
-        ghost: 'text-slate-500 dark:text-slate-400 hover:text-primary hover:bg-slate-50 dark:hover:bg-slate-800 focus:ring-slate-400',
-        danger: 'bg-red-600 text-white hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-600 focus:ring-red-500 shadow-sm hover:shadow-md active:scale-95',
+        outline: 'border-2 border-slate-200  text-slate-700  hover:bg-slate-50 :bg-slate-800 focus:ring-slate-400 active:scale-95',
+        ghost: 'text-slate-500  hover:text-primary hover:bg-slate-50 :bg-slate-800 focus:ring-slate-400',
+        danger: 'bg-red-600 text-white hover:bg-red-700  :bg-red-600 focus:ring-red-500 shadow-sm hover:shadow-md active:scale-95',
         success: 'bg-green-600 text-white hover:bg-green-700 focus:ring-green-500 shadow-sm hover:shadow-md active:scale-95',
     };
 

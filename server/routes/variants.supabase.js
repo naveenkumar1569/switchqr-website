@@ -234,7 +234,6 @@ router.delete('/:id/variants/:variantId', supabaseAuth, requireFeature('ab_testi
             .eq('id', Number(variantId))
             .eq('qr_id', Number(id));
 
-        console.log(`🗑️ [DELETE] Variant Supabase Response: Status=${status}, DeletedCount=${count}`);
 
         if (error) {
             console.error(`🗑️ [DELETE] Variant Supabase Error:`, error);

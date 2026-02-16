@@ -38,7 +38,6 @@ router.post('/register', async (req, res) => {
     }
 
     try {
-        console.log(`[Auth] Attempting register for ${email}`);
 
         // 1. Sign Up User
         const { data, error } = await supabase.auth.signUp({
@@ -86,7 +85,6 @@ router.post('/register', async (req, res) => {
                 });
                 // Don't fail registration, just log the error
             } else {
-                console.log('[TRIAL_APPLIED]', data.user.id, trialExpiresAt.toISOString());
             }
         } catch (trialError) {
             console.error('[TRIAL_APPLY_FAILED]', data.user.id, trialError.message);

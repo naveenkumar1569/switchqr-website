@@ -10,9 +10,9 @@ const Layout = () => {
     const isActive = (path) => location.pathname === path;
 
     return (
-        <div className="flex bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 font-display h-screen overflow-hidden">
+        <div className="flex bg-background-light  text-slate-900  font-display h-screen overflow-hidden">
             {/* Sidebar */}
-            <aside className="w-64 bg-surface-light dark:bg-surface-dark border-r border-border-light dark:border-border-dark flex-shrink-0 flex flex-col h-full transition-colors duration-200">
+            <aside className="w-64 bg-surface-light  border-r border-border-light  flex-shrink-0 flex flex-col h-full transition-colors duration-200">
                 <div className="p-6">
                     <Link to="/" className="inline-block">
                         <img src="/logo.svg" alt="SwitchQR" className="h-10" />
@@ -20,47 +20,47 @@ const Layout = () => {
                 </div>
 
                 <nav className="flex-1 px-4 py-4 flex flex-col gap-1 overflow-y-auto">
-                    <Link to="/" className={`flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium transition-colors ${isActive('/') ? 'bg-primary/10 text-primary dark:bg-primary/20 dark:text-primary-300' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'}`}>
+                    <Link to="/" className={`flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium transition-colors ${isActive('/') ? 'bg-primary/10 text-primary  ' : 'text-slate-600  hover:bg-slate-100 :bg-slate-800'}`}>
                         <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>dashboard</span>
                         <span>Dashboard</span>
                     </Link>
-                    <Link to="/campaigns" className={`flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium transition-colors ${isActive('/campaigns') ? 'bg-primary/10 text-primary dark:bg-primary/20 dark:text-primary-300' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'}`}>
+                    <Link to="/campaigns" className={`flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium transition-colors ${isActive('/campaigns') ? 'bg-primary/10 text-primary  ' : 'text-slate-600  hover:bg-slate-100 :bg-slate-800'}`}>
                         <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>folder</span>
                         <span>Campaigns</span>
                         {!isFeatureEnabled(planInfo?.effectivePlan, FEATURES.CAMPAIGNS_ACCESS) && (
                             <span className="ml-auto material-symbols-outlined text-xs text-amber-500">lock</span>
                         )}
                     </Link>
-                    <Link to="/qrs/create" className={`flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium transition-colors ${isActive('/qrs/create') ? 'bg-primary/10 text-primary dark:bg-primary/20 dark:text-primary-300' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'}`}>
+                    <Link to="/qrs/create" className={`flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium transition-colors ${isActive('/qrs/create') ? 'bg-primary/10 text-primary  ' : 'text-slate-600  hover:bg-slate-100 :bg-slate-800'}`}>
                         <span className="material-symbols-outlined">qr_code_2</span>
                         <span>Create QR</span>
                     </Link>
-                    <Link to="/analytics" className={`flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium transition-colors ${isActive('/analytics') ? 'bg-primary/10 text-primary dark:bg-primary/20 dark:text-primary-300' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'}`}>
+                    <Link to="/analytics" className={`flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium transition-colors ${isActive('/analytics') ? 'bg-primary/10 text-primary  ' : 'text-slate-600  hover:bg-slate-100 :bg-slate-800'}`}>
                         <span className="material-symbols-outlined">bar_chart</span>
                         <span>Analytics</span>
                         {!isFeatureEnabled(planInfo?.effectivePlan, FEATURES.ANALYTICS_PAGE) && (
                             <span className="ml-auto material-symbols-outlined text-xs text-amber-500">lock</span>
                         )}
                     </Link>
-                    <Link to="/settings" className={`flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium transition-colors ${isActive('/settings') ? 'bg-primary/10 text-primary dark:bg-primary/20 dark:text-primary-300' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'}`}>
+                    <Link to="/settings" className={`flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium transition-colors ${isActive('/settings') ? 'bg-primary/10 text-primary  ' : 'text-slate-600  hover:bg-slate-100 :bg-slate-800'}`}>
                         <span className="material-symbols-outlined">settings</span>
                         <span>Settings</span>
                     </Link>
                 </nav>
 
-                <div className="p-4 mt-auto border-t border-border-light dark:border-border-dark flex flex-col gap-4">
+                <div className="p-4 mt-auto border-t border-border-light  flex flex-col gap-4">
                     {/* Trial Banner for Pro Users */}
                     {planInfo?.is_trial && (
-                        <div className="rounded-xl bg-gradient-to-br from-indigo-50 to-purple-50 dark:from-indigo-900/20 dark:to-purple-900/20 p-4 border border-indigo-100 dark:border-indigo-800/50 mb-4">
-                            <div className="flex items-center gap-2 mb-2 text-indigo-900 dark:text-indigo-100">
-                                <span className="material-symbols-outlined text-indigo-600 dark:text-indigo-400 text-sm">timelapse</span>
+                        <div className="rounded-xl bg-gradient-to-br from-indigo-50 to-purple-50   p-4 border border-indigo-100  mb-4">
+                            <div className="flex items-center gap-2 mb-2 text-indigo-900 ">
+                                <span className="material-symbols-outlined text-indigo-600  text-sm">timelapse</span>
                                 <span className="text-xs font-bold uppercase tracking-wider">Pro Trial</span>
                             </div>
                             <div className="flex items-end justify-between mb-2">
-                                <span className="text-3xl font-bold text-indigo-700 dark:text-indigo-300 leading-none">{planInfo.days_remaining}</span>
-                                <span className="text-xs text-indigo-600 dark:text-indigo-400 font-medium mb-1">days left</span>
+                                <span className="text-3xl font-bold text-indigo-700  leading-none">{planInfo.days_remaining}</span>
+                                <span className="text-xs text-indigo-600  font-medium mb-1">days left</span>
                             </div>
-                            <p className="text-xs text-indigo-600/80 dark:text-indigo-300/80 mb-3 leading-snug">
+                            <p className="text-xs text-indigo-600/80  mb-3 leading-snug">
                                 Enjoying Pro? Upgrade now to keep these features.
                             </p>
                             <button
@@ -74,12 +74,12 @@ const Layout = () => {
 
                     {/* Upgrade Banner for Free Users */}
                     {(planInfo?.effectivePlan === 'free' || !planInfo?.effectivePlan) && (
-                        <div className="rounded-xl bg-gray-50 dark:bg-gray-800 p-4 border border-gray-100 dark:border-gray-700">
-                            <div className="flex items-center gap-2 mb-2 text-slate-900 dark:text-white">
+                        <div className="rounded-xl bg-gray-50  p-4 border border-gray-100 ">
+                            <div className="flex items-center gap-2 mb-2 text-slate-900 ">
                                 <span className="material-symbols-outlined text-primary text-sm">bolt</span>
                                 <span className="text-xs font-bold uppercase tracking-wider">Free Plan</span>
                             </div>
-                            <p className="text-xs text-slate-500 dark:text-slate-400 mb-3 leading-relaxed">
+                            <p className="text-xs text-slate-500  mb-3 leading-relaxed">
                                 You're using the limited free plan. Upgrade to unlock team features.
                             </p>
                             <button
@@ -96,19 +96,19 @@ const Layout = () => {
                             {(user?.first_name?.[0] || user?.email?.[0] || 'U').toUpperCase()}
                         </div>
                         <div className="flex flex-col overflow-hidden">
-                            <span className="text-sm font-semibold text-slate-900 dark:text-white truncate">
+                            <span className="text-sm font-semibold text-slate-900  truncate">
                                 {user?.first_name ? `${user.first_name} ${user.last_name || ''}`.trim() : (user?.email || 'User')}
                             </span>
-                            <button onClick={logout} className="text-xs text-left text-slate-500 dark:text-slate-400 hover:text-primary">Logout</button>
+                            <button onClick={logout} className="text-xs text-left text-slate-500  hover:text-primary">Logout</button>
                         </div>
                     </div>
                 </div>
             </aside>
 
             {/* Main Content Wrapper */}
-            <div className="flex-1 flex flex-col min-w-0 bg-background-light dark:bg-background-dark">
+            <div className="flex-1 flex flex-col min-w-0 bg-background-light ">
                 {/* Top Navigation Bar */}
-                <header className="h-16 bg-surface-light dark:bg-surface-dark border-b border-border-light dark:border-border-dark flex items-center justify-between px-6 lg:px-8 z-10">
+                <header className="h-16 bg-surface-light  border-b border-border-light  flex items-center justify-between px-6 lg:px-8 z-10">
                     <div className="flex-1 max-w-lg">
                         <div className="relative group">
                             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -116,7 +116,7 @@ const Layout = () => {
                             </div>
                             <input
                                 type="text"
-                                className="block w-full pl-10 pr-3 py-2 border-none rounded-lg leading-5 bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-primary focus:bg-white dark:focus:bg-slate-900 transition duration-150 ease-in-out sm:text-sm"
+                                className="block w-full pl-10 pr-3 py-2 border-none rounded-lg leading-5 bg-slate-100  text-slate-900  placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-primary focus:bg-white :bg-slate-900 transition duration-150 ease-in-out sm:text-sm"
                                 placeholder="Search..."
                                 onKeyDown={(e) => {
                                     if (e.key === 'Enter') {

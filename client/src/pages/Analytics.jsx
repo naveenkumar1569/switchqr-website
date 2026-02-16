@@ -47,7 +47,7 @@ const Analytics = () => {
                         <span>/</span>
                         <span>Analytics</span>
                     </div>
-                    <h1 className="text-2xl font-bold text-slate-900 dark:text-white">Analytics for: {qr.name}</h1>
+                    <h1 className="text-2xl font-bold text-slate-900 ">Analytics for: {qr.name}</h1>
                     <a href={qr.destination_url} target="_blank" rel="noopener noreferrer" className="text-sm text-primary hover:underline truncate max-w-md block">{qr.destination_url}</a>
                 </div>
                 <button className="btn-secondary self-start" onClick={() => window.print()}>
@@ -58,15 +58,15 @@ const Analytics = () => {
 
             {/* Stats Grid */}
             <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                <div className="bg-surface-light dark:bg-surface-dark p-6 rounded-xl border border-border-light dark:border-border-dark shadow-sm sm:col-span-2">
+                <div className="bg-surface-light  p-6 rounded-xl border border-border-light  shadow-sm sm:col-span-2">
                     <div className="flex items-start justify-between mb-6">
                         <div className="flex items-center gap-3">
-                            <div className="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg text-blue-600 dark:text-blue-400">
+                            <div className="p-2 bg-blue-100  rounded-lg text-blue-600 ">
                                 <span className="material-symbols-outlined">bar_chart</span>
                             </div>
                             <div>
-                                <p className="text-sm font-medium text-slate-500 dark:text-slate-400">Total Scans</p>
-                                <h3 className="text-3xl font-bold text-slate-900 dark:text-white leading-none">{analytics.totalScans || scans.length}</h3>
+                                <p className="text-sm font-medium text-slate-500 ">Total Scans</p>
+                                <h3 className="text-3xl font-bold text-slate-900  leading-none">{analytics.totalScans || scans.length}</h3>
                             </div>
                         </div>
                     </div>
@@ -111,16 +111,16 @@ const Analytics = () => {
                         const chartMax = scale.max;
 
                         return (
-                            <div className="flex gap-4 h-48 w-full pt-4 border-t border-slate-100 dark:border-slate-800 mt-4">
+                            <div className="flex gap-4 h-48 w-full pt-4 border-t border-slate-100  mt-4">
                                 {/* Y-Axis */}
-                                <div className="w-8 flex flex-col justify-between text-xs text-slate-400 dark:text-slate-500 font-medium py-1 text-right h-full">
+                                <div className="w-8 flex flex-col justify-between text-xs text-slate-400  font-medium py-1 text-right h-full">
                                     {scale.ticks.map((t, i) => (
                                         <span key={i}>{t.toLocaleString()}</span>
                                     ))}
                                 </div>
 
                                 {/* Chart */}
-                                <div className="flex-1 flex items-end justify-between gap-2 relative grid-bg rounded-lg border border-slate-50 dark:border-slate-800 px-1">
+                                <div className="flex-1 flex items-end justify-between gap-2 relative grid-bg rounded-lg border border-slate-50  px-1">
                                     {chartData.map((day, i) => (
                                         <div key={i} className="flex flex-col items-center gap-1 w-full group relative z-10 h-full justify-end">
                                             <div
@@ -128,11 +128,11 @@ const Analytics = () => {
                                                 style={{ height: `${(day.count / chartMax) * 100}%` }}
                                             >
                                                 {/* Tooltip */}
-                                                <div className="opacity-0 group-hover:opacity-100 absolute -top-16 left-1/2 -translate-x-1/2 bg-white dark:bg-[#1e1726] border border-slate-200 dark:border-slate-700 rounded-lg shadow-xl px-3 py-2 pointer-events-none transition-opacity backdrop-blur-sm whitespace-nowrap z-50">
-                                                    <div className="text-lg font-bold text-slate-900 dark:text-white text-center leading-none mb-1">
+                                                <div className="opacity-0 group-hover:opacity-100 absolute -top-16 left-1/2 -translate-x-1/2 bg-white [#1e1726] border border-slate-200  rounded-lg shadow-xl px-3 py-2 pointer-events-none transition-opacity backdrop-blur-sm whitespace-nowrap z-50">
+                                                    <div className="text-lg font-bold text-slate-900  text-center leading-none mb-1">
                                                         {day.count}
                                                     </div>
-                                                    <div className="text-[10px] text-slate-500 dark:text-slate-400 text-center">
+                                                    <div className="text-[10px] text-slate-500  text-center">
                                                         {new Date(day.date).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}
                                                     </div>
                                                 </div>
@@ -153,19 +153,19 @@ const Analytics = () => {
                     })()}
                 </div>
 
-                <div className="bg-surface-light dark:bg-surface-dark p-6 rounded-xl border border-border-light dark:border-border-dark shadow-sm">
+                <div className="bg-surface-light  p-6 rounded-xl border border-border-light  shadow-sm">
                     <div className="flex items-start justify-between mb-4">
-                        <div className="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg text-blue-600 dark:text-blue-400">
+                        <div className="p-2 bg-blue-100  rounded-lg text-blue-600 ">
                             <span className="material-symbols-outlined">group</span>
                         </div>
                     </div>
-                    <p className="text-sm font-medium text-slate-500 dark:text-slate-400">Unique Visitors</p>
-                    <h3 className="text-3xl font-bold text-slate-900 dark:text-white mt-1">{analytics.uniqueVisitors || 0}</h3>
+                    <p className="text-sm font-medium text-slate-500 ">Unique Visitors</p>
+                    <h3 className="text-3xl font-bold text-slate-900  mt-1">{analytics.uniqueVisitors || 0}</h3>
                 </div>
             </section>
 
             {/* Recent Scans List */}
-            <div className="bg-surface-light dark:bg-surface-dark border border-border-light dark:border-border-dark rounded-xl shadow-sm overflow-hidden relative">
+            <div className="bg-surface-light  border border-border-light  rounded-xl shadow-sm overflow-hidden relative">
                 {/* Advanced Analytics Lock Overlay */}
                 {(planInfo?.effectivePlan === 'starter' || planInfo?.effectivePlan === 'free' || !planInfo?.effectivePlan) && (
                     <LockedOverlay
@@ -173,34 +173,34 @@ const Analytics = () => {
                         description="Upgrade to Pro to access full scan history and detailed audience insights."
                     />
                 )}
-                <div className="px-6 py-4 border-b border-border-light dark:border-border-dark">
-                    <h3 className="text-lg font-semibold text-text-dark dark:text-white">Recent Scans</h3>
+                <div className="px-6 py-4 border-b border-border-light ">
+                    <h3 className="text-lg font-semibold text-text-dark ">Recent Scans</h3>
                 </div>
                 <div className="overflow-x-auto">
-                    <table className="min-w-full divide-y divide-border-light dark:divide-border-dark">
-                        <thead className="bg-slate-50 dark:bg-slate-800/50">
+                    <table className="min-w-full divide-y divide-border-light ">
+                        <thead className="bg-slate-50 ">
                             <tr>
-                                <th className="px-6 py-3 text-left text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Time</th>
-                                <th className="px-6 py-3 text-left text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Location</th>
-                                <th className="px-6 py-3 text-left text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">IP Address</th>
-                                <th className="px-6 py-3 text-left text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Device Info</th>
+                                <th className="px-6 py-3 text-left text-xs font-semibold text-slate-500  uppercase tracking-wider">Time</th>
+                                <th className="px-6 py-3 text-left text-xs font-semibold text-slate-500  uppercase tracking-wider">Location</th>
+                                <th className="px-6 py-3 text-left text-xs font-semibold text-slate-500  uppercase tracking-wider">IP Address</th>
+                                <th className="px-6 py-3 text-left text-xs font-semibold text-slate-500  uppercase tracking-wider">Device Info</th>
                             </tr>
                         </thead>
-                        <tbody className="bg-surface-light dark:bg-surface-dark divide-y divide-border-light dark:divide-border-dark">
+                        <tbody className="bg-surface-light  divide-y divide-border-light ">
                             {scans.map((scan, index) => (
-                                <tr key={index} className="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-600 dark:text-slate-300">
+                                <tr key={index} className="hover:bg-slate-50 :bg-slate-800/50 transition-colors">
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-600 ">
                                         {new Date(scan.scanned_at).toLocaleString()}
                                     </td>
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-600 dark:text-slate-300">
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-600 ">
                                         {scan.city && scan.country
                                             ? `${scan.city}, ${scan.country}`
                                             : scan.country || 'Unknown'}
                                     </td>
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-600 dark:text-slate-300">
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-600 ">
                                         {scan.ip_address}
                                     </td>
-                                    <td className="px-6 py-4 text-sm text-slate-600 dark:text-slate-300 max-w-md truncate" title={scan.user_agent}>
+                                    <td className="px-6 py-4 text-sm text-slate-600  max-w-md truncate" title={scan.user_agent}>
                                         {scan.user_agent}
                                     </td>
                                 </tr>

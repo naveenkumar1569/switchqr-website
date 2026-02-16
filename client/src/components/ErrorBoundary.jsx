@@ -41,34 +41,34 @@ class ErrorBoundary extends React.Component {
     render() {
         if (this.state.hasError) {
             return (
-                <div className="min-h-screen bg-background-light dark:bg-background-dark flex items-center justify-center p-4">
+                <div className="min-h-screen bg-background-light  flex items-center justify-center p-4">
                     <div className="max-w-md w-full">
-                        <div className="bg-white dark:bg-surface-dark rounded-2xl shadow-xl p-8 text-center">
+                        <div className="bg-white  rounded-2xl shadow-xl p-8 text-center">
                             {/* Error Icon */}
                             <div className="flex justify-center mb-6">
-                                <div className="bg-red-50 dark:bg-red-500/10 rounded-full p-4">
-                                    <span className="material-symbols-outlined text-red-600 dark:text-red-400 text-5xl">
+                                <div className="bg-red-50  rounded-full p-4">
+                                    <span className="material-symbols-outlined text-red-600  text-5xl">
                                         error
                                     </span>
                                 </div>
                             </div>
 
                             {/* Error Message */}
-                            <h1 className="text-2xl font-bold text-text-dark dark:text-white mb-3">
+                            <h1 className="text-2xl font-bold text-text-dark  mb-3">
                                 Something went wrong
                             </h1>
-                            <p className="text-gray-600 dark:text-gray-400 mb-6">
+                            <p className="text-gray-600  mb-6">
                                 We're sorry, but something unexpected happened. The error has been logged and we'll look into it.
                             </p>
 
                             {/* Error Details (Development Only) */}
                             {process.env.NODE_ENV !== 'production' && this.state.error && (
                                 <div className="mb-6 text-left">
-                                    <details className="bg-red-50 dark:bg-red-500/10 rounded-lg p-4 text-sm">
-                                        <summary className="cursor-pointer font-semibold text-red-600 dark:text-red-400 mb-2">
+                                    <details className="bg-red-50  rounded-lg p-4 text-sm">
+                                        <summary className="cursor-pointer font-semibold text-red-600  mb-2">
                                             Error Details (Development Only)
                                         </summary>
-                                        <div className="text-red-800 dark:text-red-300 font-mono text-xs overflow-auto">
+                                        <div className="text-red-800  font-mono text-xs overflow-auto">
                                             <p className="mb-2 font-bold">{this.state.error.toString()}</p>
                                             <pre className="whitespace-pre-wrap">
                                                 {this.state.errorInfo?.componentStack}

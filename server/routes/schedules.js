@@ -130,7 +130,6 @@ router.post('/:id/schedules', authenticateToken, requireStarterOrHigher, validat
         }
 
         // Add logging to debug
-        console.log('[Schedules POST] Received data:', {
             destination_url,
             start_time,
             end_time,
@@ -177,7 +176,6 @@ router.post('/:id/schedules', authenticateToken, requireStarterOrHigher, validat
 
                     updateStmt.run(start_time, conflictingSchedule.id);
 
-                    console.log(`[Schedules] Auto-set end_time for schedule ${conflictingSchedule.id} to ${start_time}`);
                 } else {
                     // Real overlap conflict - both schedules have defined end times that conflict
                     return res.status(400).json({
@@ -218,7 +216,6 @@ router.post('/:id/schedules', authenticateToken, requireStarterOrHigher, validat
             created_at: new Date().toISOString()
         };
 
-        console.log('[Schedules POST] Created schedule:', responseData);
 
         res.status(201).json(responseData);
     } catch (error) {
@@ -319,7 +316,6 @@ router.put('/:id/schedules/:scheduleId', authenticateToken, requireStarterOrHigh
 
                     updateConflictStmt.run(newRule.start_time, conflictingSchedule.id);
 
-                    console.log(`[Schedules] Auto-set end_time for schedule ${conflictingSchedule.id} to ${newRule.start_time}`);
                 } else {
                     // Real overlap conflict - both schedules have defined end times that conflict
                     return res.status(400).json({

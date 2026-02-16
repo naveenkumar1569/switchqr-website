@@ -287,24 +287,24 @@ const CreateQR = () => {
         <form onSubmit={handleSubmit} className="mx-auto max-w-6xl">
             {/* Page Heading */}
             <div className="mb-8">
-                <h1 className="text-3xl font-bold text-text-dark dark:text-white tracking-tight">Create Dynamic QR</h1>
-                <p className="mt-2 text-text-subtle dark:text-gray-400">Configure your new dynamic QR code details and customize its appearance.</p>
+                <h1 className="text-3xl font-bold text-text-dark  tracking-tight">Create Dynamic QR</h1>
+                <p className="mt-2 text-text-subtle ">Configure your new dynamic QR code details and customize its appearance.</p>
             </div>
 
             <div className="grid grid-cols-1 gap-8 lg:grid-cols-12">
                 {/* Left Column: Configuration Form */}
                 <div className="lg:col-span-7 flex flex-col gap-6">
                     {/* Basic Details Card */}
-                    <div className="rounded-xl border border-border-light dark:border-border-dark bg-surface-light dark:bg-surface-dark shadow-sm">
-                        <div className="border-b border-border-light dark:border-border-dark px-6 py-4">
-                            <h2 className="text-lg font-semibold text-text-dark dark:text-white">Basic Details</h2>
+                    <div className="rounded-xl border border-border-light  bg-surface-light  shadow-sm">
+                        <div className="border-b border-border-light  px-6 py-4">
+                            <h2 className="text-lg font-semibold text-text-dark ">Basic Details</h2>
                         </div>
                         <div className="p-6 space-y-6">
                             {/* QR Name */}
                             <div>
-                                <label className="block text-sm font-medium text-text-dark dark:text-gray-200 mb-1" htmlFor="name">Internal Name</label>
+                                <label className="block text-sm font-medium text-text-dark  mb-1" htmlFor="name">Internal Name</label>
                                 <input
-                                    className="w-full rounded-lg border border-gray-200 dark:border-gray-600 bg-white dark:bg-[#2d2438] px-4 py-2.5 text-text-dark dark:text-white placeholder-gray-400 focus:border-primary focus:ring-primary sm:text-sm transition-shadow"
+                                    className="w-full rounded-lg border border-gray-200  bg-white [#2d2438] px-4 py-2.5 text-text-dark  placeholder-gray-400 focus:border-primary focus:ring-primary sm:text-sm transition-shadow"
                                     id="name"
                                     placeholder="e.g. Summer Sale Poster A"
                                     type="text"
@@ -315,13 +315,13 @@ const CreateQR = () => {
                             </div>
                             {/* Destination URL */}
                             <div>
-                                <label className="block text-sm font-medium text-text-dark dark:text-gray-200 mb-1" htmlFor="destination_url">Destination URL</label>
+                                <label className="block text-sm font-medium text-text-dark  mb-1" htmlFor="destination_url">Destination URL</label>
                                 <div className="relative">
                                     <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
                                         <span className="material-symbols-outlined text-[20px]">link</span>
                                     </span>
                                     <input
-                                        className={`w-full rounded-lg border ${urlError ? 'border-error bg-error/5 text-error focus:border-error focus:ring-error' : 'border-gray-200 dark:border-gray-600 bg-white dark:bg-[#2d2438] text-text-dark dark:text-white focus:border-primary focus:ring-primary'} pl-10 pr-4 py-2.5 placeholder-gray-400 sm:text-sm transition-all`}
+                                        className={`w-full rounded-lg border ${urlError ? 'border-error bg-error/5 text-error focus:border-error focus:ring-error' : 'border-gray-200  bg-white [#2d2438] text-text-dark  focus:border-primary focus:ring-primary'} pl-10 pr-4 py-2.5 placeholder-gray-400 sm:text-sm transition-all`}
                                         id="destination_url"
                                         placeholder="example.com"
                                         type="text"
@@ -341,7 +341,7 @@ const CreateQR = () => {
                             {isFeatureEnabled(planInfo?.effectivePlan, FEATURES.CAMPAIGNS_ACCESS) && (
                                 <div>
                                     <div className="flex items-center justify-between mb-1">
-                                        <label className="block text-sm font-medium text-text-dark dark:text-gray-200" htmlFor="campaign_id">Campaign</label>
+                                        <label className="block text-sm font-medium text-text-dark " htmlFor="campaign_id">Campaign</label>
                                         <button
                                             type="button"
                                             onClick={() => setIsCreatingCampaign(!isCreatingCampaign)}
@@ -364,7 +364,7 @@ const CreateQR = () => {
                                     {isCreatingCampaign ? (
                                         <div className="animate-fadeIn">
                                             <input
-                                                className="w-full rounded-lg border border-primary bg-primary/5 px-4 py-2.5 text-text-dark dark:text-white placeholder-gray-400 focus:border-primary focus:ring-primary sm:text-sm transition-shadow"
+                                                className="w-full rounded-lg border border-primary bg-primary/5 px-4 py-2.5 text-text-dark  placeholder-gray-400 focus:border-primary focus:ring-primary sm:text-sm transition-shadow"
                                                 placeholder="Enter new campaign name..."
                                                 type="text"
                                                 value={newCampaignName}
@@ -376,7 +376,7 @@ const CreateQR = () => {
                                             <button
                                                 type="button"
                                                 onClick={() => setIsCampaignDropdownOpen(!isCampaignDropdownOpen)}
-                                                className="w-full relative rounded-lg border border-gray-200 dark:border-gray-600 bg-white dark:bg-[#2d2438] px-4 py-2.5 pr-10 text-left text-text-dark dark:text-white focus:border-primary focus:ring-2 focus:ring-primary/20 sm:text-sm transition-all shadow-sm hover:bg-gray-50 dark:hover:bg-[#352b42]"
+                                                className="w-full relative rounded-lg border border-gray-200  bg-white [#2d2438] px-4 py-2.5 pr-10 text-left text-text-dark  focus:border-primary focus:ring-2 focus:ring-primary/20 sm:text-sm transition-all shadow-sm hover:bg-gray-50 :bg-[#352b42]"
                                             >
                                                 <span className={`block truncate ${!formData.campaign_id ? 'text-gray-400' : ''}`}>
                                                     {formData.campaign_id && Array.isArray(campaigns)
@@ -391,15 +391,15 @@ const CreateQR = () => {
                                             {isCampaignDropdownOpen && (
                                                 <>
                                                     <div className="fixed inset-0 z-10" onClick={() => setIsCampaignDropdownOpen(false)}></div>
-                                                    <div className="absolute z-20 mt-1 max-h-60 w-full overflow-auto rounded-lg bg-white dark:bg-[#2d2438] py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm border border-gray-100 dark:border-gray-700">
+                                                    <div className="absolute z-20 mt-1 max-h-60 w-full overflow-auto rounded-lg bg-white [#2d2438] py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm border border-gray-100 ">
                                                         {Array.isArray(campaigns) && campaigns.length > 0 ? (
                                                             campaigns.map((camp) => (
                                                                 <button
                                                                     key={camp.id}
                                                                     type="button"
-                                                                    className={`relative w-full cursor-pointer select-none py-2.5 pl-4 pr-9 text-left hover:bg-gray-50 dark:hover:bg-[#352b42] transition-colors ${formData.campaign_id === camp.id
+                                                                    className={`relative w-full cursor-pointer select-none py-2.5 pl-4 pr-9 text-left hover:bg-gray-50 :bg-[#352b42] transition-colors ${formData.campaign_id === camp.id
                                                                         ? 'bg-primary/5 text-primary font-medium'
-                                                                        : 'text-text-dark dark:text-white'
+                                                                        : 'text-text-dark '
                                                                         }`}
                                                                     onClick={() => {
                                                                         setFormData({ ...formData, campaign_id: camp.id });
@@ -428,22 +428,22 @@ const CreateQR = () => {
                     </div>
 
                     {/* Advanced Options Card */}
-                    <div className="rounded-xl border border-border-light dark:border-border-dark bg-surface-light dark:bg-surface-dark shadow-sm overflow-hidden">
+                    <div className="rounded-xl border border-border-light  bg-surface-light  shadow-sm overflow-hidden">
                         {/* UTM Accordion Header */}
                         <button
                             type="button"
-                            className="flex w-full items-center justify-between px-6 py-4 text-left hover:bg-gray-50 dark:hover:bg-[#352b42] transition-colors group"
+                            className="flex w-full items-center justify-between px-6 py-4 text-left hover:bg-gray-50 :bg-[#352b42] transition-colors group"
                             onClick={() => setUtmOpen(!utmOpen)}
                         >
                             <div className="flex items-center gap-2">
                                 <span className="material-symbols-outlined text-primary group-hover:scale-110 transition-transform">tune</span>
-                                <span className="text-sm font-semibold text-text-dark dark:text-white">UTM Builder & Tracking</span>
+                                <span className="text-sm font-semibold text-text-dark ">UTM Builder & Tracking</span>
                             </div>
                             <span className={`material-symbols-outlined text-gray-400 transition-transform ${utmOpen ? 'rotate-180' : ''}`}>expand_more</span>
                         </button>
 
                         {utmOpen && (
-                            <div className="px-6 pb-6 pt-2 border-t border-border-light dark:border-border-dark">
+                            <div className="px-6 pb-6 pt-2 border-t border-border-light ">
                                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-3 mb-6">
                                     <div>
                                         <label className="block text-xs font-medium text-text-subtle mb-1">Source</label>
@@ -451,7 +451,7 @@ const CreateQR = () => {
                                             name="source"
                                             value={utmData.source}
                                             onChange={handleUtmChange}
-                                            className="w-full rounded-md border-gray-200 dark:border-gray-600 bg-[#f9fafb] dark:bg-[#2d2438] px-3 py-2 text-xs text-text-dark dark:text-white focus:border-primary focus:ring-primary"
+                                            className="w-full rounded-md border-gray-200  bg-[#f9fafb] [#2d2438] px-3 py-2 text-xs text-text-dark  focus:border-primary focus:ring-primary"
                                             placeholder="google"
                                             type="text"
                                         />
@@ -462,7 +462,7 @@ const CreateQR = () => {
                                             name="medium"
                                             value={utmData.medium}
                                             onChange={handleUtmChange}
-                                            className="w-full rounded-md border-gray-200 dark:border-gray-600 bg-[#f9fafb] dark:bg-[#2d2438] px-3 py-2 text-xs text-text-dark dark:text-white focus:border-primary focus:ring-primary"
+                                            className="w-full rounded-md border-gray-200  bg-[#f9fafb] [#2d2438] px-3 py-2 text-xs text-text-dark  focus:border-primary focus:ring-primary"
                                             placeholder="cpc"
                                             type="text"
                                         />
@@ -473,7 +473,7 @@ const CreateQR = () => {
                                             name="campaign"
                                             value={utmData.campaign}
                                             onChange={handleUtmChange}
-                                            className="w-full rounded-md border-gray-200 dark:border-gray-600 bg-[#f9fafb] dark:bg-[#2d2438] px-3 py-2 text-xs text-text-dark dark:text-white focus:border-primary focus:ring-primary"
+                                            className="w-full rounded-md border-gray-200  bg-[#f9fafb] [#2d2438] px-3 py-2 text-xs text-text-dark  focus:border-primary focus:ring-primary"
                                             placeholder="summer_sale"
                                             type="text"
                                         />
@@ -484,10 +484,10 @@ const CreateQR = () => {
                                     <div className="flex items-center justify-between">
                                         <div className="flex flex-col">
                                             {isFeatureEnabled(planInfo?.effectivePlan, FEATURES.CREATE_SCAN_TRACKING) ? (
-                                                <span className="text-sm font-medium text-text-dark dark:text-white">Scan Tracking</span>
+                                                <span className="text-sm font-medium text-text-dark ">Scan Tracking</span>
                                             ) : (
                                                 <LockedBadge plan="starter">
-                                                    <span className="text-sm font-medium text-text-dark dark:text-white">Scan Tracking</span>
+                                                    <span className="text-sm font-medium text-text-dark ">Scan Tracking</span>
                                                 </LockedBadge>
                                             )}
                                             <span className="text-xs text-text-subtle">Capture device, location, and time data.</span>
@@ -504,7 +504,7 @@ const CreateQR = () => {
                                             />
                                             <label
                                                 htmlFor="toggle-tracking"
-                                                className={`relative inline-flex h-6 w-12 cursor-pointer items-center rounded-full p-1 transition-colors duration-200 ease-in-out ${scanTrackingEnabled ? 'bg-primary' : 'bg-slate-200 dark:bg-slate-700'} ${!isFeatureEnabled(planInfo?.effectivePlan, FEATURES.CREATE_SCAN_TRACKING) ? 'opacity-50 cursor-not-allowed' : ''}`}
+                                                className={`relative inline-flex h-6 w-12 cursor-pointer items-center rounded-full p-1 transition-colors duration-200 ease-in-out ${scanTrackingEnabled ? 'bg-primary' : 'bg-slate-200 '} ${!isFeatureEnabled(planInfo?.effectivePlan, FEATURES.CREATE_SCAN_TRACKING) ? 'opacity-50 cursor-not-allowed' : ''}`}
                                             >
                                                 <span className={`pointer-events-none inline-block size-4 rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${scanTrackingEnabled ? 'translate-x-6' : 'translate-x-0'}`}></span>
                                             </label>
@@ -520,17 +520,17 @@ const CreateQR = () => {
                                             }
                                         }}
                                         className={`flex items-center justify-between transition-all cursor-pointer ${!isFeatureEnabled(planInfo?.effectivePlan, FEATURES.CREATE_AB_TESTING)
-                                            ? 'p-3 rounded-lg border border-dashed border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-[#352b42]/50 opacity-80 hover:border-primary/50 hover:bg-primary/5'
+                                            ? 'p-3 rounded-lg border border-dashed border-gray-300  bg-gray-50 [#352b42]/50 opacity-80 hover:border-primary/50 hover:bg-primary/5'
                                             : ''
                                             }`}
                                     >
                                         <div className="flex flex-col">
                                             <div className="flex items-center gap-2">
                                                 {isFeatureEnabled(planInfo?.effectivePlan, FEATURES.CREATE_AB_TESTING) ? (
-                                                    <span className="text-sm font-medium text-text-dark dark:text-white">A/B Testing</span>
+                                                    <span className="text-sm font-medium text-text-dark ">A/B Testing</span>
                                                 ) : (
                                                     <LockedBadge plan="pro">
-                                                        <span className="text-sm font-medium text-text-dark dark:text-white">A/B Testing</span>
+                                                        <span className="text-sm font-medium text-text-dark ">A/B Testing</span>
                                                     </LockedBadge>
                                                 )}
                                             </div>
@@ -547,8 +547,8 @@ const CreateQR = () => {
                                             />
                                             <div
                                                 className={`relative inline-flex h-6 w-12 items-center rounded-full p-1 transition-colors duration-200 ease-in-out ${!isFeatureEnabled(planInfo?.effectivePlan, FEATURES.CREATE_AB_TESTING)
-                                                    ? 'bg-slate-200 dark:bg-slate-700 cursor-not-allowed'
-                                                    : abTestingEnabled ? 'bg-primary cursor-pointer' : 'bg-slate-200 dark:bg-slate-700 cursor-pointer'
+                                                    ? 'bg-slate-200  cursor-not-allowed'
+                                                    : abTestingEnabled ? 'bg-primary cursor-pointer' : 'bg-slate-200  cursor-pointer'
                                                     }`}
                                             >
                                                 <span
@@ -560,8 +560,8 @@ const CreateQR = () => {
 
                                     {/* Inline Variant Configuration */}
                                     {abTestingEnabled && isFeatureEnabled(planInfo?.effectivePlan, FEATURES.CREATE_AB_TESTING) && (
-                                        <div className="mt-6 border-t border-dashed border-gray-200 dark:border-gray-700 pt-6 animate-fadeIn">
-                                            <h3 className="text-sm font-semibold text-text-dark dark:text-white mb-4">Experimental Variants</h3>
+                                        <div className="mt-6 border-t border-dashed border-gray-200  pt-6 animate-fadeIn">
+                                            <h3 className="text-sm font-semibold text-text-dark  mb-4">Experimental Variants</h3>
                                             <VariantList
                                                 variants={pendingVariants}
                                                 onAdd={handleAddVariant}
@@ -581,21 +581,21 @@ const CreateQR = () => {
                 <div className="lg:col-span-5 flex flex-col gap-6">
                     <div className="sticky top-6 flex flex-col gap-6">
                         {/* Preview Card */}
-                        <div className="rounded-xl border border-border-light dark:border-border-dark bg-surface-light dark:bg-surface-dark shadow-md overflow-hidden flex flex-col h-full">
+                        <div className="rounded-xl border border-border-light  bg-surface-light  shadow-md overflow-hidden flex flex-col h-full">
                             {/* Design Tab Header */}
-                            <div className="flex border-b border-border-light dark:border-border-dark">
+                            <div className="flex border-b border-border-light ">
                                 <div className="flex-1 py-3 text-sm font-medium text-primary border-b-2 border-primary bg-primary/5 text-center">
                                     Design
                                 </div>
                             </div>
                             {/* QR Display Area */}
-                            <div className="flex-1 flex items-center justify-center bg-[#faf8fb] dark:bg-[#251e2e] p-8 min-h-[300px]">
-                                <div className="bg-white p-4 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700">
+                            <div className="flex-1 flex items-center justify-center bg-[#faf8fb] [#251e2e] p-8 min-h-[300px]">
+                                <div className="bg-white p-4 rounded-xl shadow-lg border border-gray-100 ">
                                     {/* QR Code Placeholder with Real Data if available, else Mock Image */}
                                     <div className="relative w-48 h-48 bg-white" data-alt="QR Code Preview">
                                         <img
                                             alt="QR Code Preview"
-                                            className="w-full h-full object-contain mix-blend-multiply dark:mix-blend-normal opacity-90"
+                                            className="w-full h-full object-contain mix-blend-multiply  opacity-90"
                                             src={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(formData.destination_url || 'https://example.com')}&color=${formData.color.replace('#', '')}`}
                                         />
                                         {/* Logo Overlay */}
@@ -610,7 +610,7 @@ const CreateQR = () => {
                                 </div>
                             </div>
                             {/* Customization Controls */}
-                            <div className="p-6 border-t border-border-light dark:border-border-dark space-y-5 bg-white dark:bg-surface-dark">
+                            <div className="p-6 border-t border-border-light  space-y-5 bg-white ">
                                 {/* Color Picker */}
                                 <div>
                                     <label className="block text-xs font-semibold uppercase tracking-wide text-text-subtle mb-3">Brand Color</label>
@@ -623,7 +623,7 @@ const CreateQR = () => {
                                         />
                                         <div className="flex-1">
                                             <input
-                                                className="w-full rounded-md border-gray-200 dark:border-gray-600 bg-[#f9fafb] dark:bg-[#2d2438] px-3 py-2 text-sm text-text-dark dark:text-white focus:border-primary uppercase font-mono"
+                                                className="w-full rounded-md border-gray-200  bg-[#f9fafb] [#2d2438] px-3 py-2 text-sm text-text-dark  focus:border-primary uppercase font-mono"
                                                 type="text"
                                                 value={formData.color}
                                                 onChange={handleColorChange}
@@ -672,11 +672,11 @@ const CreateQR = () => {
                                         }}
                                         className={`relative group cursor-pointer border-2 border-dashed rounded-lg p-4 text-center transition-all ${logoPreview
                                             ? 'border-primary bg-primary/5'
-                                            : 'border-gray-200 dark:border-gray-600 hover:border-primary/50 hover:bg-primary/5'
+                                            : 'border-gray-200  hover:border-primary/50 hover:bg-primary/5'
                                             }`}
                                     >
                                         {!isBrandingUnlocked && (
-                                            <div className="absolute inset-0 bg-white/50 dark:bg-black/20 backdrop-blur-[1px] rounded-lg z-10 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                            <div className="absolute inset-0 bg-white/50  backdrop-blur-[1px] rounded-lg z-10 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                                                 <button type="button" className="bg-primary text-white text-xs font-bold py-1.5 px-3 rounded shadow-sm hover:bg-primary-hover">Unlock Feature</button>
                                             </div>
                                         )}

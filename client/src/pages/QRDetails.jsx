@@ -149,23 +149,23 @@ const QRDetails = () => {
             {/* Left Panel Skeleton */}
             <div className="w-full lg:w-[320px] flex flex-col gap-6 flex-shrink-0">
                 {/* QR Preview Card Skeleton */}
-                <div className="bg-white dark:bg-surface-dark rounded-xl border border-border-light dark:border-border-dark p-6 flex flex-col items-center">
-                    <div className="h-6 w-40 bg-slate-200 dark:bg-slate-700 rounded mb-4"></div>
-                    <div className="w-48 h-48 bg-slate-200 dark:bg-slate-700 rounded-lg mb-4"></div>
-                    <div className="h-4 w-56 bg-slate-200 dark:bg-slate-700 rounded mb-4"></div>
+                <div className="bg-white  rounded-xl border border-border-light  p-6 flex flex-col items-center">
+                    <div className="h-6 w-40 bg-slate-200  rounded mb-4"></div>
+                    <div className="w-48 h-48 bg-slate-200  rounded-lg mb-4"></div>
+                    <div className="h-4 w-56 bg-slate-200  rounded mb-4"></div>
                     <div className="flex gap-2 w-full">
-                        <div className="flex-1 h-10 bg-slate-200 dark:bg-slate-700 rounded-lg"></div>
-                        <div className="w-10 h-10 bg-slate-200 dark:bg-slate-700 rounded-lg"></div>
+                        <div className="flex-1 h-10 bg-slate-200  rounded-lg"></div>
+                        <div className="w-10 h-10 bg-slate-200  rounded-lg"></div>
                     </div>
                 </div>
 
                 {/* Settings Card Skeleton */}
-                <div className="bg-white dark:bg-surface-dark rounded-xl border border-border-light dark:border-border-dark p-6">
-                    <div className="h-5 w-32 bg-slate-200 dark:bg-slate-700 rounded mb-4"></div>
+                <div className="bg-white  rounded-xl border border-border-light  p-6">
+                    <div className="h-5 w-32 bg-slate-200  rounded mb-4"></div>
                     <div className="space-y-4">
-                        <div className="h-4 w-full bg-slate-200 dark:bg-slate-700 rounded"></div>
-                        <div className="h-4 w-3/4 bg-slate-200 dark:bg-slate-700 rounded"></div>
-                        <div className="h-10 w-full bg-slate-200 dark:bg-slate-700 rounded-lg"></div>
+                        <div className="h-4 w-full bg-slate-200  rounded"></div>
+                        <div className="h-4 w-3/4 bg-slate-200  rounded"></div>
+                        <div className="h-10 w-full bg-slate-200  rounded-lg"></div>
                     </div>
                 </div>
             </div>
@@ -175,54 +175,54 @@ const QRDetails = () => {
                 {/* Header Skeleton */}
                 <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
                     <div>
-                        <div className="h-8 w-64 bg-slate-200 dark:bg-slate-700 rounded mb-2"></div>
-                        <div className="h-4 w-48 bg-slate-200 dark:bg-slate-700 rounded"></div>
+                        <div className="h-8 w-64 bg-slate-200  rounded mb-2"></div>
+                        <div className="h-4 w-48 bg-slate-200  rounded"></div>
                     </div>
                     <div className="flex gap-2">
-                        <div className="h-10 w-32 bg-slate-200 dark:bg-slate-700 rounded-lg"></div>
-                        <div className="h-10 w-24 bg-slate-200 dark:bg-slate-700 rounded-lg"></div>
+                        <div className="h-10 w-32 bg-slate-200  rounded-lg"></div>
+                        <div className="h-10 w-24 bg-slate-200  rounded-lg"></div>
                     </div>
                 </div>
 
                 {/* Stats Row Skeleton */}
                 <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
                     {[1, 2, 3, 4].map(i => (
-                        <div key={i} className="bg-white dark:bg-surface-dark rounded-xl border border-border-light dark:border-border-dark p-5">
+                        <div key={i} className="bg-white  rounded-xl border border-border-light  p-5">
                             <div className="flex justify-between items-start mb-2">
-                                <div className="h-4 w-20 bg-slate-200 dark:bg-slate-700 rounded"></div>
-                                <div className="h-5 w-5 bg-slate-200 dark:bg-slate-700 rounded"></div>
+                                <div className="h-4 w-20 bg-slate-200  rounded"></div>
+                                <div className="h-5 w-5 bg-slate-200  rounded"></div>
                             </div>
-                            <div className="h-8 w-16 bg-slate-200 dark:bg-slate-700 rounded"></div>
+                            <div className="h-8 w-16 bg-slate-200  rounded"></div>
                         </div>
                     ))}
                 </div>
 
                 {/* Chart Section Skeleton */}
-                <div className="bg-white dark:bg-surface-dark rounded-xl border border-border-light dark:border-border-dark p-6">
+                <div className="bg-white  rounded-xl border border-border-light  p-6">
                     <div className="flex justify-between items-center mb-6">
                         <div>
-                            <div className="h-6 w-40 bg-slate-200 dark:bg-slate-700 rounded mb-2"></div>
-                            <div className="h-4 w-64 bg-slate-200 dark:bg-slate-700 rounded"></div>
+                            <div className="h-6 w-40 bg-slate-200  rounded mb-2"></div>
+                            <div className="h-4 w-64 bg-slate-200  rounded"></div>
                         </div>
                     </div>
-                    <div className="h-[200px] bg-slate-200 dark:bg-slate-700 rounded"></div>
+                    <div className="h-[200px] bg-slate-200  rounded"></div>
                 </div>
 
                 {/* Bottom Section Skeleton */}
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    <div className="bg-white dark:bg-surface-dark rounded-xl border border-border-light dark:border-border-dark p-6">
-                        <div className="h-5 w-36 bg-slate-200 dark:bg-slate-700 rounded mb-4"></div>
-                        <div className="h-32 w-32 mx-auto bg-slate-200 dark:bg-slate-700 rounded-full"></div>
+                    <div className="bg-white  rounded-xl border border-border-light  p-6">
+                        <div className="h-5 w-36 bg-slate-200  rounded mb-4"></div>
+                        <div className="h-32 w-32 mx-auto bg-slate-200  rounded-full"></div>
                     </div>
-                    <div className="bg-white dark:bg-surface-dark rounded-xl border border-border-light dark:border-border-dark p-6">
-                        <div className="h-5 w-40 bg-slate-200 dark:bg-slate-700 rounded mb-4"></div>
+                    <div className="bg-white  rounded-xl border border-border-light  p-6">
+                        <div className="h-5 w-40 bg-slate-200  rounded mb-4"></div>
                         <div className="space-y-3">
                             {[1, 2, 3, 4].map(i => (
                                 <div key={i} className="flex items-center gap-3">
-                                    <div className="h-8 w-8 bg-slate-200 dark:bg-slate-700 rounded"></div>
+                                    <div className="h-8 w-8 bg-slate-200  rounded"></div>
                                     <div className="flex-1">
-                                        <div className="h-4 w-full bg-slate-200 dark:bg-slate-700 rounded mb-1"></div>
-                                        <div className="h-3 w-24 bg-slate-200 dark:bg-slate-700 rounded"></div>
+                                        <div className="h-4 w-full bg-slate-200  rounded mb-1"></div>
+                                        <div className="h-3 w-24 bg-slate-200  rounded"></div>
                                     </div>
                                 </div>
                             ))}
@@ -679,7 +679,7 @@ const QRDetails = () => {
                     <li className="flex items-center"><span className="material-symbols-outlined text-[16px]">chevron_right</span></li>
                     <li><Link to="/" className="hover:text-primary transition-colors">My QRs</Link></li>
                     <li className="flex items-center"><span className="material-symbols-outlined text-[16px]">chevron_right</span></li>
-                    <li className="text-slate-900 dark:text-white font-medium">{qr.name}</li>
+                    <li className="text-slate-900  font-medium">{qr.name}</li>
                 </ol>
             </nav>
 
@@ -693,7 +693,7 @@ const QRDetails = () => {
                                     type="text"
                                     value={renameValue}
                                     onChange={(e) => setRenameValue(e.target.value)}
-                                    className="text-3xl font-bold text-slate-900 dark:text-white bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary px-3 py-1 w-full max-w-md shadow-sm"
+                                    className="text-3xl font-bold text-slate-900  bg-white  border border-slate-200  rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary px-3 py-1 w-full max-w-md shadow-sm"
                                     autoFocus
                                     onKeyDown={(e) => {
                                         if (e.key === 'Enter') handleRenameSave();
@@ -718,13 +718,13 @@ const QRDetails = () => {
                             </div>
                         ) : (
                             <>
-                                <h2 className="text-3xl font-bold text-slate-900 dark:text-white tracking-tight">{qr.name}</h2>
+                                <h2 className="text-3xl font-bold text-slate-900  tracking-tight">{qr.name}</h2>
                                 <button
                                     onClick={() => {
                                         setRenameValue(qr.name);
                                         setIsRenaming(true);
                                     }}
-                                    className="text-slate-400 hover:text-primary transition-colors p-1 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800"
+                                    className="text-slate-400 hover:text-primary transition-colors p-1 rounded-full hover:bg-slate-100 :bg-slate-800"
                                 >
                                     <span className="material-symbols-outlined text-[20px]">edit</span>
                                 </button>
@@ -732,7 +732,7 @@ const QRDetails = () => {
                         )}
                     </div>
                     <div className="flex items-center gap-3">
-                        <span className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium ${qr.status === 'active' ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-400' : 'bg-gray-100 text-gray-800'}`}>
+                        <span className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium ${qr.status === 'active' ? 'bg-emerald-100 text-emerald-800  ' : 'bg-gray-100 text-gray-800'}`}>
                             <span className={`size-1.5 rounded-full ${qr.status === 'active' ? 'bg-emerald-500' : 'bg-gray-500'}`}></span>
                             {qr.status === 'active' ? 'Active' : 'Inactive'}
                         </span>
@@ -752,7 +752,7 @@ const QRDetails = () => {
                         <div className="flex gap-2">
                             <button
                                 onClick={() => { setIsEditing(false); setEditUrl(qr.destination_url); }}
-                                className="inline-flex items-center justify-center px-4 py-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 rounded-lg text-sm font-semibold shadow-sm hover:bg-slate-50 dark:hover:bg-slate-700 transition-all"
+                                className="inline-flex items-center justify-center px-4 py-2.5 bg-white  border border-slate-200  text-slate-700  rounded-lg text-sm font-semibold shadow-sm hover:bg-slate-50 :bg-slate-700 transition-all"
                                 disabled={saving}
                             >
                                 Cancel
@@ -772,21 +772,21 @@ const QRDetails = () => {
             {/* Quick Stats Row - At Top */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 {/* Total Scans */}
-                <div className="bg-white dark:bg-[#1e1726] rounded-xl p-5 border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col justify-between h-28">
+                <div className="bg-white [#1e1726] rounded-xl p-5 border border-slate-200  shadow-sm flex flex-col justify-between h-28">
                     <div className="flex items-start justify-between">
                         <span className="text-slate-500 text-sm font-medium">Total Scans</span>
-                        <span className="p-1.5 rounded-md bg-purple-50 text-primary dark:bg-primary/10">
+                        <span className="p-1.5 rounded-md bg-purple-50 text-primary ">
                             <span className="material-symbols-outlined text-[20px]">qr_code_scanner</span>
                         </span>
                     </div>
                     <div>
-                        <span className="text-3xl font-bold text-slate-900 dark:text-white">{stats.totalScans}</span>
+                        <span className="text-3xl font-bold text-slate-900 ">{stats.totalScans}</span>
                         <span className="text-xs text-slate-400 ml-2">Last {dateRange} days</span>
                     </div>
                 </div>
 
                 {/* Unique IPs */}
-                <div className="bg-white dark:bg-[#1e1726] rounded-xl p-5 border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col justify-between h-28">
+                <div className="bg-white [#1e1726] rounded-xl p-5 border border-slate-200  shadow-sm flex flex-col justify-between h-28">
                     <div className="flex items-start justify-between">
                         <div className="flex items-center gap-1">
                             <span className="text-slate-500 text-sm font-medium">Unique Visitors</span>
@@ -798,25 +798,25 @@ const QRDetails = () => {
                                 </div>
                             </div>
                         </div>
-                        <span className="p-1.5 rounded-md bg-blue-50 text-blue-600 dark:bg-blue-900/20 dark:text-blue-400">
+                        <span className="p-1.5 rounded-md bg-blue-50 text-blue-600  ">
                             <span className="material-symbols-outlined text-[20px]">person_outline</span>
                         </span>
                     </div>
                     <div>
-                        <span className="text-3xl font-bold text-slate-900 dark:text-white">{stats.uniqueVisitors}</span>
+                        <span className="text-3xl font-bold text-slate-900 ">{stats.uniqueVisitors}</span>
                     </div>
                 </div>
 
                 {/* Top Location */}
-                <div className="bg-white dark:bg-[#1e1726] rounded-xl p-5 border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col justify-between h-28">
+                <div className="bg-white [#1e1726] rounded-xl p-5 border border-slate-200  shadow-sm flex flex-col justify-between h-28">
                     <div className="flex items-start justify-between">
                         <span className="text-slate-500 text-sm font-medium">Top Location</span>
-                        <span className="p-1.5 rounded-md bg-orange-50 text-orange-600 dark:bg-orange-900/20 dark:text-orange-400">
+                        <span className="p-1.5 rounded-md bg-orange-50 text-orange-600  ">
                             <span className="material-symbols-outlined text-[20px]">public</span>
                         </span>
                     </div>
                     <div>
-                        <span className="text-3xl font-bold text-slate-900 dark:text-white truncate block">
+                        <span className="text-3xl font-bold text-slate-900  truncate block">
                             {stats.topLocation || 'N/A'}
                         </span>
                     </div>
@@ -829,11 +829,11 @@ const QRDetails = () => {
                 {/* Left Column: Edit Details */}
                 <div className="lg:col-span-7 space-y-6">
                     {/* QR Details Card */}
-                    <div className="bg-white dark:bg-[#1e1726] rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm p-6">
+                    <div className="bg-white [#1e1726] rounded-xl border border-slate-200  shadow-sm p-6">
                         <div className="flex items-center justify-between mb-4">
                             <div className="flex items-center gap-2">
                                 <span className="material-symbols-outlined text-primary">info</span>
-                                <h3 className="font-bold text-slate-900 dark:text-white">QR Details</h3>
+                                <h3 className="font-bold text-slate-900 ">QR Details</h3>
                             </div>
                             {!isEditing && (
                                 <button
@@ -856,7 +856,7 @@ const QRDetails = () => {
                                             type="text"
                                             value={editUrl}
                                             onChange={(e) => setEditUrl(e.target.value)}
-                                            className="w-full rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-4 py-3 text-sm text-slate-900 dark:text-white focus:border-primary focus:ring-2 focus:ring-primary/20"
+                                            className="w-full rounded-lg border border-slate-200  bg-white  px-4 py-3 text-sm text-slate-900  focus:border-primary focus:ring-2 focus:ring-primary/20"
                                             placeholder="example.com"
                                         />
 
@@ -887,7 +887,7 @@ const QRDetails = () => {
                                                 {isCreatingCampaign ? (
                                                     <div className="animate-fadeIn">
                                                         <input
-                                                            className="w-full rounded-lg border border-primary bg-primary/5 px-4 py-3 text-sm text-slate-900 dark:text-white placeholder-slate-400 focus:border-primary focus:ring-primary transition-shadow"
+                                                            className="w-full rounded-lg border border-primary bg-primary/5 px-4 py-3 text-sm text-slate-900  placeholder-slate-400 focus:border-primary focus:ring-primary transition-shadow"
                                                             placeholder="Enter new campaign name..."
                                                             type="text"
                                                             value={newCampaignName}
@@ -899,7 +899,7 @@ const QRDetails = () => {
                                                         <button
                                                             type="button"
                                                             onClick={() => setIsCampaignDropdownOpen(!isCampaignDropdownOpen)}
-                                                            className="w-full relative rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-4 py-3 pr-10 text-left text-slate-900 dark:text-white focus:border-primary focus:ring-2 focus:ring-primary/20 text-sm transition-all shadow-sm hover:bg-slate-50 dark:hover:bg-slate-900"
+                                                            className="w-full relative rounded-lg border border-slate-200  bg-white  px-4 py-3 pr-10 text-left text-slate-900  focus:border-primary focus:ring-2 focus:ring-primary/20 text-sm transition-all shadow-sm hover:bg-slate-50 :bg-slate-900"
                                                         >
                                                             <span className={`block truncate ${!editCampaignId ? 'text-slate-400' : ''}`}>
                                                                 {editCampaignId && Array.isArray(campaigns)
@@ -914,15 +914,15 @@ const QRDetails = () => {
                                                         {isCampaignDropdownOpen && (
                                                             <>
                                                                 <div className="fixed inset-0 z-10" onClick={() => setIsCampaignDropdownOpen(false)}></div>
-                                                                <div className="absolute z-20 mt-1 max-h-60 w-full overflow-auto rounded-lg bg-white dark:bg-slate-800 py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm border border-slate-100 dark:border-slate-700">
+                                                                <div className="absolute z-20 mt-1 max-h-60 w-full overflow-auto rounded-lg bg-white  py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm border border-slate-100 ">
                                                                     {Array.isArray(campaigns) && campaigns.length > 0 ? (
                                                                         campaigns.map((camp) => (
                                                                             <button
                                                                                 key={camp.id}
                                                                                 type="button"
-                                                                                className={`relative w-full cursor-pointer select-none py-2.5 pl-4 pr-9 text-left hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors ${Number(editCampaignId) === camp.id
+                                                                                className={`relative w-full cursor-pointer select-none py-2.5 pl-4 pr-9 text-left hover:bg-slate-50 :bg-slate-700 transition-colors ${Number(editCampaignId) === camp.id
                                                                                     ? 'bg-primary/5 text-primary font-medium'
-                                                                                    : 'text-slate-900 dark:text-white'
+                                                                                    : 'text-slate-900 '
                                                                                     }`}
                                                                                 onClick={() => {
                                                                                     setEditCampaignId(camp.id);
@@ -953,7 +953,7 @@ const QRDetails = () => {
                                                     setEditUrl(qr.destination_url);
                                                     setEditCampaignId(qr.campaign_id || '');
                                                 }}
-                                                className="px-3 py-1.5 text-xs font-medium text-slate-600 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200"
+                                                className="px-3 py-1.5 text-xs font-medium text-slate-600  hover:text-slate-800 :text-slate-200"
                                             >
                                                 Cancel
                                             </button>
@@ -967,7 +967,7 @@ const QRDetails = () => {
                                         </div>
                                     </div>
                                 ) : (
-                                    <div className="flex items-center gap-2 p-3 bg-slate-50 dark:bg-slate-900/50 rounded-lg border border-slate-200 dark:border-slate-700">
+                                    <div className="flex items-center gap-2 p-3 bg-slate-50  rounded-lg border border-slate-200 ">
                                         <span className="material-symbols-outlined text-slate-400 text-[18px]">link</span>
                                         <a
                                             href={qr.destination_url}
@@ -985,9 +985,9 @@ const QRDetails = () => {
                             {!isEditing && (
                                 <div>
                                     <label className="block text-xs font-semibold uppercase tracking-wide text-gray-500 mb-2">Campaign</label>
-                                    <div className="flex items-center gap-2 p-3 bg-slate-50 dark:bg-slate-900/50 rounded-lg border border-slate-200 dark:border-slate-700">
+                                    <div className="flex items-center gap-2 p-3 bg-slate-50  rounded-lg border border-slate-200 ">
                                         <span className="material-symbols-outlined text-slate-400 text-[18px]">folder</span>
-                                        <span className="text-sm text-slate-700 dark:text-slate-300">
+                                        <span className="text-sm text-slate-700 ">
                                             {campaigns.find(c => String(c.id) === String(qr.campaign_id))?.name || qr.campaign_name || 'No Campaign'}
                                         </span>
                                     </div>
@@ -997,23 +997,23 @@ const QRDetails = () => {
                     </div>
 
                     {/* Stats Summary Widget */}
-                    <div className="bg-white dark:bg-[#1e1726] rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm p-6">
+                    <div className="bg-white [#1e1726] rounded-xl border border-slate-200  shadow-sm p-6">
                         <div className="flex items-center gap-2 mb-4">
                             <span className="material-symbols-outlined text-primary">analytics</span>
-                            <h3 className="font-bold text-slate-900 dark:text-white">Performance Summary</h3>
+                            <h3 className="font-bold text-slate-900 ">Performance Summary</h3>
                         </div>
                         <div className="space-y-4">
                             <div className="flex items-center justify-between">
-                                <span className="text-sm text-slate-600 dark:text-slate-400">Avg. Daily Scans</span>
-                                <span className="text-lg font-bold text-slate-900 dark:text-white">{Math.round((stats?.totalScans || 0) / 30)}</span>
+                                <span className="text-sm text-slate-600 ">Avg. Daily Scans</span>
+                                <span className="text-lg font-bold text-slate-900 ">{Math.round((stats?.totalScans || 0) / 30)}</span>
                             </div>
                             <div className="flex items-center justify-between">
-                                <span className="text-sm text-slate-600 dark:text-slate-400">Unique Visitors</span>
-                                <span className="text-lg font-bold text-slate-900 dark:text-white">{stats.uniqueVisitors || 0}</span>
+                                <span className="text-sm text-slate-600 ">Unique Visitors</span>
+                                <span className="text-lg font-bold text-slate-900 ">{stats.uniqueVisitors || 0}</span>
                             </div>
                             <div className="flex items-center justify-between">
-                                <span className="text-sm text-slate-600 dark:text-slate-400">Peak Day Scans</span>
-                                <span className="text-lg font-bold text-slate-900 dark:text-white">
+                                <span className="text-sm text-slate-600 ">Peak Day Scans</span>
+                                <span className="text-lg font-bold text-slate-900 ">
                                     {(stats?.scansOverTime && stats.scansOverTime.length > 0)
                                         ? Math.max(...stats.scansOverTime.map(d => d?.count || 0))
                                         : 0}
@@ -1021,7 +1021,7 @@ const QRDetails = () => {
                             </div>
                             <div className="flex items-center justify-between">
                                 <div className="flex items-center gap-1">
-                                    <span className="text-sm text-slate-600 dark:text-slate-400">Unique Ratio</span>
+                                    <span className="text-sm text-slate-600 ">Unique Ratio</span>
                                     <div className="tooltip-container">
                                         <span className="material-symbols-outlined text-slate-400 text-[12px]">help_outline</span>
                                         <div className="tooltip-content">
@@ -1030,7 +1030,7 @@ const QRDetails = () => {
                                         </div>
                                     </div>
                                 </div>
-                                <span className="text-lg font-bold text-emerald-600 dark:text-emerald-400">
+                                <span className="text-lg font-bold text-emerald-600 ">
                                     {(stats?.totalScans || 0) > 0 ? Math.round(((stats?.uniqueVisitors || 0) / stats.totalScans) * 100) : 0}%
                                 </span>
                             </div>
@@ -1042,9 +1042,9 @@ const QRDetails = () => {
                 <div className="lg:col-span-5">
                     <div className="sticky top-6 space-y-6 z-30">
                         {/* QR Preview & Download Card */}
-                        <div className="bg-white dark:bg-[#1e1726] rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+                        <div className="bg-white [#1e1726] rounded-xl border border-slate-200  shadow-sm">
                             {/* QR Preview Section */}
-                            <div className="p-6 flex flex-col items-center justify-center bg-slate-50 dark:bg-slate-900/50 border-b border-slate-100 dark:border-slate-800 rounded-t-xl">
+                            <div className="p-6 flex flex-col items-center justify-center bg-slate-50  border-b border-slate-100  rounded-t-xl">
                                 <div className="relative p-4 bg-white rounded-xl shadow-sm">
                                     <img
                                         alt="QR Code"
@@ -1063,7 +1063,7 @@ const QRDetails = () => {
                             </div>
 
                             {/* Download Section */}
-                            <div className="p-6 border-b border-slate-100 dark:border-slate-800">
+                            <div className="p-6 border-b border-slate-100 ">
                                 <h4 className="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-3">Download Options</h4>
 
                                 {/* Format Selection */}
@@ -1080,7 +1080,7 @@ const QRDetails = () => {
                                             }}
                                             className={`flex-1 text-xs font-medium px-3 py-2 rounded transition-all uppercase flex items-center justify-center gap-1 ${downloadFormat === format
                                                 ? 'bg-primary text-white shadow-md ring-2 ring-primary/20'
-                                                : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700'
+                                                : 'bg-slate-100  text-slate-600  hover:bg-slate-200 :bg-slate-700'
                                                 }`}
                                         >
                                             {format}
@@ -1097,7 +1097,7 @@ const QRDetails = () => {
                                         <button
                                             type="button"
                                             onClick={() => setIsSizeDropdownOpen(!isSizeDropdownOpen)}
-                                            className="relative w-full cursor-pointer rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 py-3 pl-4 pr-10 text-left text-sm font-medium text-slate-700 dark:text-slate-200 shadow-sm hover:border-primary/50 focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all"
+                                            className="relative w-full cursor-pointer rounded-lg bg-white  border border-slate-200  py-3 pl-4 pr-10 text-left text-sm font-medium text-slate-700  shadow-sm hover:border-primary/50 focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all"
                                         >
                                             <span className="block truncate">Size: {downloadSize} x {downloadSize} px</span>
                                             <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
@@ -1106,13 +1106,13 @@ const QRDetails = () => {
                                         </button>
 
                                         {isSizeDropdownOpen && (
-                                            <div className="absolute z-[100] mt-2 w-full overflow-hidden rounded-xl bg-white dark:bg-[#1e1726] py-1 text-base shadow-xl ring-1 ring-black/5 focus:outline-none sm:text-sm border border-slate-100 dark:border-slate-700 animate-in fade-in zoom-in-95 duration-100">
+                                            <div className="absolute z-[100] mt-2 w-full overflow-hidden rounded-xl bg-white [#1e1726] py-1 text-base shadow-xl ring-1 ring-black/5 focus:outline-none sm:text-sm border border-slate-100  animate-in fade-in zoom-in-95 duration-100">
                                                 {['256', '512', '1024', '2048'].map((size) => (
                                                     <div
                                                         key={size}
                                                         className={`relative cursor-pointer select-none py-3 pl-4 pr-9 transition-colors ${downloadSize === size
                                                             ? 'bg-primary/5 text-primary font-semibold'
-                                                            : 'text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800'
+                                                            : 'text-slate-700  hover:bg-slate-50 :bg-slate-800'
                                                             }`}
                                                         onClick={() => {
                                                             setDownloadSize(size);
@@ -1178,7 +1178,7 @@ const QRDetails = () => {
             {/* Analytics Section */}
             <div className="space-y-6">
                 {/* Chart Card */}
-                <div className="bg-white dark:bg-[#1e1726] rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm p-6 relative">
+                <div className="bg-white [#1e1726] rounded-xl border border-slate-200  shadow-sm p-6 relative">
                     {!isFeatureEnabled(planInfo?.effectivePlan, FEATURES.QR_ANALYTICS_CHART) && (
                         <LockedOverlay
                             title={getLockDetails(FEATURES.QR_ANALYTICS_CHART).title}
@@ -1187,53 +1187,53 @@ const QRDetails = () => {
                     )}
                     <div className="flex items-center justify-between mb-6">
                         <div>
-                            <h3 className="font-bold text-slate-900 dark:text-white text-lg">Scan Performance</h3>
+                            <h3 className="font-bold text-slate-900  text-lg">Scan Performance</h3>
                             <p className="text-sm text-slate-500">Total scans over the last {dateRange} days</p>
                         </div>
                         <div className="relative">
                             <button
-                                className="flex items-center gap-2 px-3 py-1 bg-slate-100 dark:bg-slate-800 rounded-lg text-xs font-medium text-slate-900 dark:text-white"
+                                className="flex items-center gap-2 px-3 py-1 bg-slate-100  rounded-lg text-xs font-medium text-slate-900 "
                                 onClick={() => setShowRangeMenu(!showRangeMenu)}
                             >
                                 <span>Last {dateRange} Days</span>
                                 <span className="material-symbols-outlined text-[16px]">expand_more</span>
                             </button>
                             {showRangeMenu && (
-                                <div className="absolute top-full mt-2 right-0 w-32 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg shadow-lg z-10 py-1">
-                                    <button onClick={() => { setDateRange(7); setShowRangeMenu(false); }} className="block w-full text-left px-4 py-2 text-xs hover:bg-slate-50 dark:hover:bg-slate-700">7 Days</button>
-                                    <button onClick={() => { setDateRange(30); setShowRangeMenu(false); }} className="block w-full text-left px-4 py-2 text-xs hover:bg-slate-50 dark:hover:bg-slate-700">30 Days</button>
+                                <div className="absolute top-full mt-2 right-0 w-32 bg-white  border border-slate-200  rounded-lg shadow-lg z-10 py-1">
+                                    <button onClick={() => { setDateRange(7); setShowRangeMenu(false); }} className="block w-full text-left px-4 py-2 text-xs hover:bg-slate-50 :bg-slate-700">7 Days</button>
+                                    <button onClick={() => { setDateRange(30); setShowRangeMenu(false); }} className="block w-full text-left px-4 py-2 text-xs hover:bg-slate-50 :bg-slate-700">30 Days</button>
                                 </div>
                             )}
                         </div>
                     </div>
                     {/* Bar Chart */}
-                    <div className="flex gap-4 h-64 w-full pt-6 border-b border-slate-200 dark:border-slate-800">
+                    <div className="flex gap-4 h-64 w-full pt-6 border-b border-slate-200 ">
                         {/* Y-Axis Labels */}
-                        <div className="w-8 flex flex-col justify-between text-xs text-slate-400 dark:text-slate-500 font-medium py-2 text-right">
+                        <div className="w-8 flex flex-col justify-between text-xs text-slate-400  font-medium py-2 text-right">
                             {yAxisLabels.map((label, i) => (
                                 <span key={i}>{label.toLocaleString()}</span>
                             ))}
                         </div>
 
                         {/* Chart Area */}
-                        <div className="flex-1 flex items-end justify-between gap-2 relative grid-bg rounded-lg border border-slate-50 dark:border-slate-800">
+                        <div className="flex-1 flex items-end justify-between gap-2 relative grid-bg rounded-lg border border-slate-50 ">
                             {stats.scansOverTime.map((day, i) => (
                                 <div key={i} className="flex flex-col items-center gap-2 w-full group relative z-10 h-full justify-end">
                                     <div
                                         className="w-full bg-primary/20 hover:bg-primary/50 rounded-t-sm transition-all relative group-hover:shadow-lg"
                                         style={{ height: `${(day.count / chartMaxCount) * 100}%` }}
                                     >
-                                        <div className="opacity-0 group-hover:opacity-100 absolute -top-20 left-1/2 -translate-x-1/2 bg-white dark:bg-[#1e1726] border border-slate-200 dark:border-slate-700 rounded-xl shadow-xl px-4 py-3 pointer-events-none transition-opacity backdrop-blur-sm whitespace-nowrap z-50">
+                                        <div className="opacity-0 group-hover:opacity-100 absolute -top-20 left-1/2 -translate-x-1/2 bg-white [#1e1726] border border-slate-200  rounded-xl shadow-xl px-4 py-3 pointer-events-none transition-opacity backdrop-blur-sm whitespace-nowrap z-50">
                                             <div className="flex items-center gap-2 mb-1">
                                                 <div className="w-2 h-2 rounded-full bg-primary"></div>
-                                                <div className="text-xs font-semibold text-slate-500 dark:text-slate-400">
+                                                <div className="text-xs font-semibold text-slate-500 ">
                                                     {new Date(day.date).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}
                                                 </div>
                                             </div>
-                                            <div className="text-2xl font-bold text-slate-900 dark:text-white">
+                                            <div className="text-2xl font-bold text-slate-900 ">
                                                 {day.count}
                                             </div>
-                                            <div className="text-xs text-slate-500 dark:text-slate-400">
+                                            <div className="text-xs text-slate-500 ">
                                                 {day.count === 1 ? 'scan' : 'scans'}
                                             </div>
                                         </div>
@@ -1256,9 +1256,9 @@ const QRDetails = () => {
                         />
                     )}
 
-                    <div className="bg-white dark:bg-[#1e1726] rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm p-6 flex flex-col justify-between">
+                    <div className="bg-white [#1e1726] rounded-xl border border-slate-200  shadow-sm p-6 flex flex-col justify-between">
                         <div>
-                            <h4 className="font-bold text-slate-900 dark:text-white mb-6">Device Distribution</h4>
+                            <h4 className="font-bold text-slate-900  mb-6">Device Distribution</h4>
                             <div className="space-y-6">
                                 {[
                                     { name: 'Mobile (iOS)', icon: 'phone_iphone', value: stats.deviceStats?.iOS || 0 },
@@ -1267,13 +1267,13 @@ const QRDetails = () => {
                                 ].map((device, i) => (
                                     <div key={i}>
                                         <div className="flex justify-between text-sm mb-2">
-                                            <span className="font-medium text-slate-700 dark:text-slate-300 flex items-center gap-2">
-                                                <span className="material-symbols-outlined text-slate-400 dark:text-slate-500 text-base">{device.icon}</span>
+                                            <span className="font-medium text-slate-700  flex items-center gap-2">
+                                                <span className="material-symbols-outlined text-slate-400  text-base">{device.icon}</span>
                                                 {device.name}
                                             </span>
-                                            <span className="font-bold text-slate-900 dark:text-white">{device.value}%</span>
+                                            <span className="font-bold text-slate-900 ">{device.value}%</span>
                                         </div>
-                                        <div className="h-2 w-full bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
+                                        <div className="h-2 w-full bg-slate-100  rounded-full overflow-hidden">
                                             <div className={`h-full ${i === 1 ? 'bg-primary/70' : i === 2 ? 'bg-primary/40' : 'bg-primary'} rounded-full`}
                                                 style={{ width: `${device.value}%` }}></div>
                                         </div>
@@ -1281,47 +1281,47 @@ const QRDetails = () => {
                                 ))}
                             </div>
                         </div>
-                        <div className="mt-8 pt-6 border-t border-slate-100 dark:border-slate-800">
+                        <div className="mt-8 pt-6 border-t border-slate-100 ">
                             <div className="flex gap-4">
                                 <div className="flex-1">
                                     <div className="text-xs text-slate-400 uppercase font-semibold mb-1">Dominant OS</div>
-                                    <div className="text-lg font-bold text-slate-800 dark:text-white">{stats.dominantOS || 'N/A'}</div>
+                                    <div className="text-lg font-bold text-slate-800 ">{stats.dominantOS || 'N/A'}</div>
                                 </div>
                                 <div className="flex-1">
                                     <div className="text-xs text-slate-400 uppercase font-semibold mb-1">Avg Screen</div>
-                                    <div className="text-lg font-bold text-slate-800 dark:text-white">Unknown</div>
+                                    <div className="text-lg font-bold text-slate-800 ">Unknown</div>
                                 </div>
                             </div>
                         </div>
                     </div>
 
                     {/* Recent Scans Table */}
-                    <div className="bg-white dark:bg-[#1e1726] rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col h-full max-h-[400px]">
-                        <div className="px-5 py-4 border-b border-slate-200 dark:border-slate-800 flex justify-between items-center">
-                            <h3 className="font-semibold text-slate-900 dark:text-white">Recent Scans</h3>
+                    <div className="bg-white [#1e1726] rounded-xl border border-slate-200  shadow-sm flex flex-col h-full max-h-[400px]">
+                        <div className="px-5 py-4 border-b border-slate-200  flex justify-between items-center">
+                            <h3 className="font-semibold text-slate-900 ">Recent Scans</h3>
                         </div>
                         <div className="flex-1 overflow-auto">
                             <table className="min-w-full text-left text-sm">
-                                <thead className="bg-slate-50 dark:bg-slate-800 sticky top-0 z-10">
+                                <thead className="bg-slate-50  sticky top-0 z-10">
                                     <tr>
                                         <th className="px-5 py-3 font-medium text-slate-500">Time</th>
                                         <th className="px-5 py-3 font-medium text-slate-500">Device</th>
                                         <th className="px-5 py-3 font-medium text-slate-500">Location</th>
                                     </tr>
                                 </thead>
-                                <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
+                                <tbody className="divide-y divide-slate-100 ">
                                     {stats.recentScans.map((scan, i) => (
-                                        <tr key={i} className="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
-                                            <td className="px-5 py-3 text-slate-600 dark:text-slate-400 whitespace-nowrap">
+                                        <tr key={i} className="hover:bg-slate-50 :bg-slate-800/50 transition-colors">
+                                            <td className="px-5 py-3 text-slate-600  whitespace-nowrap">
                                                 {new Date(scan.timestamp).toLocaleString()}
                                             </td>
                                             <td className="px-5 py-3">
-                                                <div className="flex items-center gap-2 text-slate-900 dark:text-white">
+                                                <div className="flex items-center gap-2 text-slate-900 ">
                                                     <span className="material-symbols-outlined text-[16px] text-slate-400">devices</span>
                                                     {scan.user_agent.includes('Mobile') ? 'Mobile' : 'Desktop'}
                                                 </div>
                                             </td>
-                                            <td className="px-5 py-3 text-slate-600 dark:text-slate-400 whitespace-nowrap">{scan.location || 'Unknown'}</td>
+                                            <td className="px-5 py-3 text-slate-600  whitespace-nowrap">{scan.location || 'Unknown'}</td>
                                         </tr>
                                     ))}
                                     {stats.recentScans.length === 0 && (
@@ -1338,11 +1338,11 @@ const QRDetails = () => {
             <div className="mt-6 grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
 
                 {/* Scheduled Redirects Section */}
-                <div className="bg-white dark:bg-[#1e1726] rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm p-6">
+                <div className="bg-white [#1e1726] rounded-xl border border-slate-200  shadow-sm p-6">
                     <div className="flex items-center justify-between mb-4">
                         <div className="flex items-center gap-2">
                             <span className="material-symbols-outlined text-primary">schedule</span>
-                            <h3 className="font-bold text-slate-900 dark:text-white">Scheduled Redirects</h3>
+                            <h3 className="font-bold text-slate-900 ">Scheduled Redirects</h3>
                         </div>
                         {planInfo?.features?.scheduling && (
                             <label
@@ -1356,7 +1356,7 @@ const QRDetails = () => {
                                     disabled={abTestingEnabled && planInfo?.features?.ab_testing}
                                     className="sr-only peer"
                                 />
-                                <div className="w-11 h-6 bg-slate-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary/20 dark:peer-focus:ring-primary/40 rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-slate-600 peer-checked:bg-primary peer-disabled:opacity-50 peer-disabled:cursor-not-allowed"></div>
+                                <div className="w-11 h-6 bg-slate-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary/20 :ring-primary/40 rounded-full peer  peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all  peer-checked:bg-primary peer-disabled:opacity-50 peer-disabled:cursor-not-allowed"></div>
                             </label>
                         )}
                     </div>
@@ -1365,14 +1365,14 @@ const QRDetails = () => {
                         isFeatureEnabled(planInfo?.effectivePlan, FEATURES.QR_SCHEDULES) ? (
                             <>
                                 {abTestingEnabled && planInfo?.features?.ab_testing && (
-                                    <div className="mb-4 p-3 rounded-lg bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800">
+                                    <div className="mb-4 p-3 rounded-lg bg-amber-50  border border-amber-200 ">
                                         <div className="flex items-start gap-2">
-                                            <span className="material-symbols-outlined text-amber-600 dark:text-amber-400 text-lg">warning</span>
+                                            <span className="material-symbols-outlined text-amber-600  text-lg">warning</span>
                                             <div className="flex-1">
-                                                <p className="text-sm font-medium text-amber-900 dark:text-amber-100">
+                                                <p className="text-sm font-medium text-amber-900 ">
                                                     Disable A/B testing to use scheduled redirects
                                                 </p>
-                                                <p className="text-xs text-amber-700 dark:text-amber-300 mt-1">
+                                                <p className="text-xs text-amber-700  mt-1">
                                                     Scheduling and A/B testing cannot be active at the same time
                                                 </p>
                                             </div>
@@ -1381,14 +1381,14 @@ const QRDetails = () => {
                                 )}
 
                                 {schedulingEnabled && (
-                                    <div className="mb-4 p-3 rounded-lg bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800">
+                                    <div className="mb-4 p-3 rounded-lg bg-blue-50  border border-blue-200 ">
                                         <div className="flex items-start gap-2">
-                                            <span className="material-symbols-outlined text-blue-600 dark:text-blue-400 text-lg">info</span>
+                                            <span className="material-symbols-outlined text-blue-600  text-lg">info</span>
                                             <div className="flex-1">
-                                                <p className="text-sm font-medium text-blue-900 dark:text-blue-100">
+                                                <p className="text-sm font-medium text-blue-900 ">
                                                     This QR changes destination based on time
                                                 </p>
-                                                <p className="text-xs text-blue-700 dark:text-blue-300 mt-1">
+                                                <p className="text-xs text-blue-700  mt-1">
                                                     Redirects are selected in real-time based on current date/time
                                                 </p>
                                             </div>
@@ -1413,11 +1413,11 @@ const QRDetails = () => {
                 </div>
 
                 {/* A/B Testing Section */}
-                <div className="bg-white dark:bg-[#1e1726] rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm p-6">
+                <div className="bg-white [#1e1726] rounded-xl border border-slate-200  shadow-sm p-6">
                     <div className="flex items-center justify-between mb-4">
                         <div className="flex items-center gap-2">
                             <span className="material-symbols-outlined text-primary">science</span>
-                            <h3 className="font-bold text-slate-900 dark:text-white">A/B Destination Testing</h3>
+                            <h3 className="font-bold text-slate-900 ">A/B Destination Testing</h3>
                         </div>
                         {planInfo?.features?.ab_testing && (
                             <label
@@ -1431,7 +1431,7 @@ const QRDetails = () => {
                                     disabled={schedulingEnabled && planInfo?.features?.scheduling}
                                     className="sr-only peer"
                                 />
-                                <div className="w-11 h-6 bg-slate-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary/20 dark:peer-focus:ring-primary/40 rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-slate-600 peer-checked:bg-primary peer-disabled:opacity-50 peer-disabled:cursor-not-allowed"></div>
+                                <div className="w-11 h-6 bg-slate-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary/20 :ring-primary/40 rounded-full peer  peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all  peer-checked:bg-primary peer-disabled:opacity-50 peer-disabled:cursor-not-allowed"></div>
                             </label>
                         )}
                     </div>
@@ -1440,14 +1440,14 @@ const QRDetails = () => {
                         isFeatureEnabled(planInfo?.effectivePlan, FEATURES.QR_AB_TESTING) ? (
                             <>
                                 {abTestingEnabled && (
-                                    <div className="mb-4 p-3 rounded-lg bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800">
+                                    <div className="mb-4 p-3 rounded-lg bg-blue-50  border border-blue-200 ">
                                         <div className="flex items-start gap-2">
-                                            <span className="material-symbols-outlined text-blue-600 dark:text-blue-400 text-lg">info</span>
+                                            <span className="material-symbols-outlined text-blue-600  text-lg">info</span>
                                             <div className="flex-1">
-                                                <p className="text-sm font-medium text-blue-900 dark:text-blue-100">
+                                                <p className="text-sm font-medium text-blue-900 ">
                                                     This QR routes traffic to multiple destinations
                                                 </p>
-                                                <p className="text-xs text-blue-700 dark:text-blue-300 mt-1">
+                                                <p className="text-xs text-blue-700  mt-1">
                                                     Each scan is randomly assigned to a variant based on configured weights
                                                 </p>
                                             </div>

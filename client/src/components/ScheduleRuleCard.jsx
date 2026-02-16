@@ -105,36 +105,36 @@ const ScheduleRuleCard = ({ schedule, isActive, onUpdate, onDelete }) => {
         <div className={`group relative rounded-2xl p-5 transition-all ${isCurrentlyActive
             ? 'bg-primary/5 border-2 border-primary shadow-sm'
             : isPast
-                ? 'bg-slate-50 dark:bg-slate-900/30 border border-slate-100 dark:border-slate-800'
-                : 'bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-primary/30'
+                ? 'bg-slate-50  border border-slate-100 '
+                : 'bg-white  border border-slate-200  hover:border-primary/30'
             }`}>
             {isEditing ? (
                 /* Editing Mode */
                 <div className="space-y-4">
                     {/* Label */}
                     <div>
-                        <label className="block text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400 mb-2">
+                        <label className="block text-xs font-semibold uppercase tracking-wide text-slate-500  mb-2">
                             Schedule Name
                         </label>
                         <input
                             type="text"
                             value={editedSchedule.label}
                             onChange={(e) => setEditedSchedule({ ...editedSchedule, label: e.target.value })}
-                            className="w-full px-4 py-2.5 text-sm font-medium border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                            className="w-full px-4 py-2.5 text-sm font-medium border border-slate-300  rounded-lg bg-white  text-slate-900  focus:ring-2 focus:ring-primary/20 focus:border-primary"
                             placeholder="e.g., Lunch Special"
                         />
                     </div>
 
                     {/* URL */}
                     <div>
-                        <label className="block text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400 mb-2">
+                        <label className="block text-xs font-semibold uppercase tracking-wide text-slate-500  mb-2">
                             Destination URL
                         </label>
                         <input
                             type="text"
                             value={editedSchedule.destination_url}
                             onChange={(e) => setEditedSchedule({ ...editedSchedule, destination_url: e.target.value })}
-                            className="w-full px-4 py-2.5 text-sm border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white font-mono focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                            className="w-full px-4 py-2.5 text-sm border border-slate-300  rounded-lg bg-white  text-slate-900  font-mono focus:ring-2 focus:ring-primary/20 focus:border-primary"
                             placeholder="example.com"
                         />
                     </div>
@@ -142,7 +142,7 @@ const ScheduleRuleCard = ({ schedule, isActive, onUpdate, onDelete }) => {
                     {/* Times */}
                     <div className="grid grid-cols-2 gap-4">
                         <div>
-                            <label className="block text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400 mb-2">
+                            <label className="block text-xs font-semibold uppercase tracking-wide text-slate-500  mb-2">
                                 Start Time
                             </label>
                             <input
@@ -152,11 +152,11 @@ const ScheduleRuleCard = ({ schedule, isActive, onUpdate, onDelete }) => {
                                     ...editedSchedule,
                                     start_time: convertToUTC(e.target.value)
                                 })}
-                                className="w-full px-3 py-2 text-sm border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                                className="w-full px-3 py-2 text-sm border border-slate-300  rounded-lg bg-white  text-slate-900  focus:ring-2 focus:ring-primary/20 focus:border-primary"
                             />
                         </div>
                         <div>
-                            <label className="block text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400 mb-2">
+                            <label className="block text-xs font-semibold uppercase tracking-wide text-slate-500  mb-2">
                                 End Time
                             </label>
                             <input
@@ -166,7 +166,7 @@ const ScheduleRuleCard = ({ schedule, isActive, onUpdate, onDelete }) => {
                                     ...editedSchedule,
                                     end_time: e.target.value ? convertToUTC(e.target.value) : null
                                 })}
-                                className="w-full px-3 py-2 text-sm border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                                className="w-full px-3 py-2 text-sm border border-slate-300  rounded-lg bg-white  text-slate-900  focus:ring-2 focus:ring-primary/20 focus:border-primary"
                             />
                         </div>
                     </div>
@@ -175,7 +175,7 @@ const ScheduleRuleCard = ({ schedule, isActive, onUpdate, onDelete }) => {
                     <div className="flex gap-3 pt-2">
                         <button
                             onClick={() => setIsEditing(false)}
-                            className="flex-1 px-4 py-2.5 rounded-lg border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-300 font-semibold hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
+                            className="flex-1 px-4 py-2.5 rounded-lg border border-slate-300  text-slate-700  font-semibold hover:bg-slate-50 :bg-slate-800 transition-colors"
                         >
                             Cancel
                         </button>
@@ -196,7 +196,7 @@ const ScheduleRuleCard = ({ schedule, isActive, onUpdate, onDelete }) => {
                         {schedule.label && (
                             <div className="flex items-center gap-2">
                                 <span className="material-symbols-outlined text-slate-400 text-[18px]">label</span>
-                                <span className="text-sm font-semibold text-slate-900 dark:text-white truncate">{schedule.label}</span>
+                                <span className="text-sm font-semibold text-slate-900  truncate">{schedule.label}</span>
                             </div>
                         )}
 
@@ -216,7 +216,7 @@ const ScheduleRuleCard = ({ schedule, isActive, onUpdate, onDelete }) => {
                         {/* Time Info */}
                         <div className="flex items-start gap-2">
                             <span className="material-symbols-outlined text-slate-400 text-[18px] mt-0.5">schedule</span>
-                            <div className="text-sm text-slate-600 dark:text-slate-300">
+                            <div className="text-sm text-slate-600 ">
                                 {schedule.recurrence_type && schedule.recurrence_type !== 'once' ? (
                                     // Recurring schedule display
                                     <div className="space-y-1">
@@ -224,7 +224,7 @@ const ScheduleRuleCard = ({ schedule, isActive, onUpdate, onDelete }) => {
                                             {formatTime(schedule.start_time)}
                                             {schedule.end_time && ` - ${formatTime(schedule.end_time)}`}
                                         </div>
-                                        <div className="text-xs text-slate-500 dark:text-slate-400">
+                                        <div className="text-xs text-slate-500 ">
                                             {schedule.recurrence_days ? (
                                                 <>
                                                     Repeats on {JSON.parse(schedule.recurrence_days).map(day =>
@@ -249,7 +249,7 @@ const ScheduleRuleCard = ({ schedule, isActive, onUpdate, onDelete }) => {
                                                 year: 'numeric'
                                             })}
                                         </div>
-                                        <div className="text-xs text-slate-500 dark:text-slate-400">
+                                        <div className="text-xs text-slate-500 ">
                                             {formatTime(schedule.start_time)}
                                             {schedule.end_time && ` - ${formatTime(schedule.end_time)}`}
                                         </div>
@@ -278,7 +278,7 @@ const ScheduleRuleCard = ({ schedule, isActive, onUpdate, onDelete }) => {
 
                             <div className="flex items-center gap-1.5 ml-auto">
                                 <span className="material-symbols-outlined text-[16px] text-slate-400">ads_click</span>
-                                <span className="text-sm font-bold text-slate-700 dark:text-slate-300">
+                                <span className="text-sm font-bold text-slate-700 ">
                                     {schedule.scan_count || 0}
                                 </span>
                                 <span className="text-[11px] font-medium text-slate-400 uppercase tracking-wide">scans</span>
@@ -297,7 +297,7 @@ const ScheduleRuleCard = ({ schedule, isActive, onUpdate, onDelete }) => {
                         </button>
                         <button
                             onClick={() => onDelete(schedule.id)}
-                            className="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/10 rounded-lg transition-colors"
+                            className="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 :bg-red-900/10 rounded-lg transition-colors"
                             title="Delete"
                         >
                             <span className="material-symbols-outlined text-[20px]">delete</span>
