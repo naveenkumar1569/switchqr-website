@@ -117,78 +117,136 @@ const GlobalAnalytics = () => {
     // Block Free users from accessing Analytics entirely - show blurred preview
     if (!hasAnalyticsAccess) {
         return (
-            <div className="max-w-7xl w-full mx-auto space-y-8 relative">
+            <div className="fixed inset-0 z-[100] bg-background-light overflow-hidden">
+                {/* Custom CSS for this view */}
+                <style dangerouslySetInnerHTML={{
+                    __html: `
+                    .grid-bg {
+                        background-size: 40px 40px;
+                        background-image:
+                            linear-gradient(to right, rgba(0,0,0,0.03) 1px, transparent 1px),
+                            linear-gradient(to bottom, rgba(0,0,0,0.03) 1px, transparent 1px);
+                    }
+                    .locked-overlay {
+                        backdrop-filter: blur(8px);
+                        background-color: rgba(255, 255, 255, 0.4);
+                    }
+                `}} />
+
                 {/* Blurred Content Preview */}
-                <div className="blur-sm pointer-events-none select-none">
-                    {/* Header Section */}
+                <div className="max-w-7xl mx-auto p-6 md:p-10 space-y-8 select-none pointer-events-none filter blur-[4px] opacity-70">
                     <header className="flex flex-col md:flex-row md:items-end justify-between gap-4">
                         <div>
-                            <h1 className="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white tracking-tight">Analytics</h1>
-                            <p className="text-slate-500 dark:text-slate-400 mt-1 text-sm md:text-base">Track your QR performance and audience engagement across all campaigns.</p>
+                            <h1 className="text-3xl md:text-4xl font-bold text-slate-900 tracking-tight">Analytics</h1>
+                            <p className="text-slate-500 mt-1 text-sm md:text-base">Track your QR performance and audience engagement across all campaigns.</p>
                         </div>
                         <div className="flex items-center gap-3">
-                            <div className="h-10 w-36 bg-slate-200 dark:bg-slate-700 rounded-lg"></div>
-                            <div className="h-10 w-24 bg-slate-200 dark:bg-slate-700 rounded-lg"></div>
+                            <div className="relative group">
+                                <button className="flex items-center gap-2 bg-white border border-slate-200 px-4 py-2.5 rounded-lg shadow-sm text-sm font-medium text-slate-600">
+                                    <span className="material-symbols-outlined text-lg text-slate-400">calendar_today</span>
+                                    Last 30 Days
+                                    <span className="material-symbols-outlined text-lg text-slate-400">expand_more</span>
+                                </button>
+                            </div>
+                            <button className="flex items-center gap-2 bg-primary/5 text-primary px-4 py-2.5 rounded-lg text-sm font-medium">
+                                <span className="material-symbols-outlined text-lg">download</span>
+                                Export
+                            </button>
                         </div>
                     </header>
 
-                    {/* KPI Section */}
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                        {[1, 2, 3, 4].map(i => (
-                            <div key={i} className="bg-white dark:bg-surface-dark rounded-xl p-6 shadow-soft border border-slate-100/50 dark:border-slate-800">
-                                <div className="h-10 w-10 bg-primary/10 rounded-lg mb-4"></div>
-                                <div className="h-4 w-24 bg-slate-200 dark:bg-slate-700 rounded mb-2"></div>
-                                <div className="h-8 w-20 bg-slate-200 dark:bg-slate-700 rounded"></div>
+                        <div className="bg-white rounded-xl p-6 shadow-soft border border-slate-100/50">
+                            <div className="flex justify-between items-start mb-4">
+                                <div className="p-2 bg-primary/10 rounded-lg">
+                                    <span className="material-symbols-outlined text-primary text-xl">qr_code_scanner</span>
+                                </div>
+                                <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-emerald-50 text-emerald-600 text-xs font-semibold">
+                                    <span className="material-symbols-outlined text-sm">trending_up</span> 12.5%
+                                </span>
                             </div>
-                        ))}
-                    </div>
-
-                    {/* Chart */}
-                    <div className="bg-white dark:bg-surface-dark rounded-2xl shadow-soft p-8 border border-slate-100/50 dark:border-slate-800">
-                        <div className="h-6 w-40 bg-slate-200 dark:bg-slate-700 rounded mb-8"></div>
-                        <div className="w-full h-[300px] bg-slate-100 dark:bg-slate-800 rounded"></div>
-                    </div>
-
-                    {/* Bottom Row */}
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                        {[1, 2].map(i => (
-                            <div key={i} className="bg-white dark:bg-surface-dark rounded-2xl shadow-soft p-8 border border-slate-100/50 dark:border-slate-800">
-                                <div className="h-6 w-40 bg-slate-200 dark:bg-slate-700 rounded mb-6"></div>
-                                <div className="space-y-4">
-                                    {[1, 2, 3].map(j => (
-                                        <div key={j} className="h-12 bg-slate-100 dark:bg-slate-800 rounded"></div>
-                                    ))}
+                            <div className="mb-1 text-slate-500 text-sm font-medium">Total Scans</div>
+                            <div className="text-3xl font-bold text-slate-900 mb-4">45,231</div>
+                        </div>
+                        <div className="bg-white rounded-xl p-6 shadow-soft border border-slate-100/50">
+                            <div className="flex justify-between items-start mb-4">
+                                <div className="p-2 bg-blue-50 rounded-lg">
+                                    <span className="material-symbols-outlined text-blue-600 text-xl">person</span>
+                                </div>
+                                <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-emerald-50 text-emerald-600 text-xs font-semibold">
+                                    <span className="material-symbols-outlined text-sm">trending_up</span> 5.2%
+                                </span>
+                            </div>
+                            <div className="mb-1 text-slate-500 text-sm font-medium">Unique Visitors</div>
+                            <div className="text-3xl font-bold text-slate-900 mb-4">32,010</div>
+                        </div>
+                        <div className="bg-white rounded-xl p-6 shadow-soft border border-slate-100/50">
+                            <div className="flex justify-between items-start mb-4">
+                                <div className="p-2 bg-amber-50 rounded-lg">
+                                    <span className="material-symbols-outlined text-amber-600 text-xl">ads_click</span>
+                                </div>
+                                <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-rose-50 text-rose-600 text-xs font-semibold">
+                                    <span className="material-symbols-outlined text-sm">trending_down</span> 1.4%
+                                </span>
+                            </div>
+                            <div className="mb-1 text-slate-500 text-sm font-medium">Avg. Conversion</div>
+                            <div className="text-3xl font-bold text-slate-900 mb-4">4.2%</div>
+                        </div>
+                        <div className="bg-white rounded-xl p-6 shadow-soft border border-slate-100/50">
+                            <div className="flex justify-between items-start mb-4">
+                                <div className="p-2 bg-primary/10 rounded-lg">
+                                    <span className="material-symbols-outlined text-primary text-xl">star</span>
                                 </div>
                             </div>
-                        ))}
+                            <div className="mb-1 text-slate-500 text-sm font-medium">Top Performer</div>
+                            <div className="text-xl font-bold text-slate-900 truncate">Summer Promo</div>
+                        </div>
+                    </div>
+
+                    <div className="bg-white rounded-2xl shadow-soft p-8 border border-slate-100/50">
+                        <div className="h-[250px] w-full grid-bg rounded-lg border border-slate-50 relative">
+                            <svg className="w-full h-full" preserveAspectRatio="none" viewBox="0 0 800 250">
+                                <path d="M0,200 C100,180 200,50 400,120 S600,20 800,40" fill="none" stroke="#6D28D9" strokeWidth="3"></path>
+                            </svg>
+                        </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <div className="bg-white rounded-2xl shadow-soft p-8 border border-slate-100/50 h-64"></div>
+                        <div className="bg-white rounded-2xl shadow-soft p-8 border border-slate-100/50 h-64"></div>
                     </div>
                 </div>
 
-                {/* Centered Lock Overlay */}
-                <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                    <div className="bg-white/95 dark:bg-surface-dark/95 backdrop-blur-sm rounded-2xl shadow-2xl p-8 md:p-12 max-w-lg border border-slate-200 dark:border-slate-700 pointer-events-auto">
-                        <div className="text-center">
-                            <div className="inline-flex items-center justify-center w-20 h-20 bg-primary/10 rounded-full mb-4">
-                                <span className="material-symbols-outlined text-primary text-4xl">lock</span>
+                {/* Overlaid Locked Interface */}
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-6 locked-overlay">
+                    <div className="bg-white max-w-md w-full rounded-[24px] shadow-[0_20px_50px_rgba(0,0,0,0.1)] border border-white p-8 md:p-10 text-center relative overflow-hidden">
+                        <div className="absolute -top-24 -left-24 w-48 h-48 bg-primary/10 blur-[60px] rounded-full"></div>
+                        <div className="absolute -bottom-24 -right-24 w-48 h-48 bg-primary/10 blur-[60px] rounded-full"></div>
+                        <div className="relative z-10">
+                            <div className="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-primary/5 mb-8 relative">
+                                <div className="absolute inset-0 bg-primary/20 blur-xl rounded-full"></div>
+                                <span className="material-symbols-outlined text-primary text-4xl font-light relative">lock</span>
                             </div>
-                            <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-3">Analytics Locked</h2>
-                            <p className="text-slate-500 dark:text-slate-400 text-base leading-relaxed mb-6">
-                                Upgrade to Starter or Pro to unlock detailed analytics, track your QR performance, and understand your audience.
+                            <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4 tracking-tight">
+                                Unlock Global Insights
+                            </h2>
+                            <p className="text-slate-600 leading-relaxed mb-10 text-base">
+                                Campaign folders, location deep-dives, and advanced analytics are only available on <span className="font-semibold text-slate-900">Starter</span> and <span className="font-semibold text-slate-900">Pro</span> plans.
                             </p>
-                            <div className="flex flex-col sm:flex-row gap-3">
+                            <div className="space-y-4">
                                 <Link
                                     to="/billing"
-                                    className="inline-flex items-center justify-center gap-2 px-8 py-3 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors font-medium shadow-md group"
+                                    className="block w-full bg-primary hover:bg-primary-600 text-white font-semibold py-4 px-6 rounded-xl transition-all shadow-glow active:scale-[0.98]"
                                 >
-                                    <span>Upgrade Now</span>
-                                    <span className="material-symbols-outlined text-lg group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                                    Upgrade to Starter
                                 </Link>
-                                <Link
-                                    to="/"
-                                    className="inline-flex items-center justify-center gap-2 px-8 py-3 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-white rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors font-medium"
-                                >
-                                    <span>Back to Dashboard</span>
+                                <Link to="/billing" className="block text-slate-500 hover:text-primary font-medium text-sm transition-colors py-2">
+                                    Compare Plans
                                 </Link>
+                            </div>
+                            <div className="mt-8 flex items-center justify-center gap-2 opacity-50">
+                                <span className="material-symbols-outlined text-sm">verified_user</span>
+                                <span className="text-[10px] uppercase tracking-widest font-bold">Secure Professional Billing</span>
                             </div>
                         </div>
                     </div>
