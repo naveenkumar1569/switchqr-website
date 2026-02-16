@@ -121,6 +121,50 @@ router.post('/:id/schedules', supabaseAuth, requireFeature('scheduling'), async 
     }
 });
 
+// PUT /api/qrs/:id/schedules/:scheduleId
+router.put('/:id/schedules/:scheduleId', supabaseAuth, requireFeature('scheduling'), async (req, res) => {
+    const { id, scheduleId } = req.params;
+    const { start_time, end_time, destination_url, days, timezone } = req.body;
+
+    try {
+        const { data: { user }, error: authError } = await req.supabase.auth.getUser();
+        if (authError || !user) return res.status(401).json({ error: 'Unauthorized' });
+
+        // Verify QR ownership
+        const { data: qr, error: qrError } = await req.supabase
+            .from('qrs')
+            .select('id')
+            .eq('id', id)
+            .eq('owner_id', user.id)
+            .single();
+
+        if (qrError || !qr) return res.status(404).json({ error: 'QR not found' });
+
+        // Build updates object
+        const updates = {};
+        if (destination_url !== undefined) updates.destination_url = destination_url;
+        if (start_time !== undefined) updates.start_time = start_time;
+        if (end_time !== undefined) updates.end_time = end_time || null;
+        if (days !== undefined) updates.days = days || [];
+        if (timezone !== undefined) updates.timezone = timezone || 'UTC';
+
+        const { data: schedule, error } = await req.supabase
+            .from('schedules')
+            .update(updates)
+            .eq('id', scheduleId)
+            .eq('qr_id', id)
+            .select()
+            .single();
+
+        if (error) throw error;
+
+        res.json(schedule);
+    } catch (e) {
+        logger.error('Error updating schedule', e);
+        res.status(500).json({ error: 'Server error' });
+    }
+});
+
 // DELETE /api/qrs/:id/schedules/:scheduleId
 router.delete('/:id/schedules/:scheduleId', supabaseAuth, requireFeature('scheduling'), async (req, res) => {
     const { id, scheduleId } = req.params;
