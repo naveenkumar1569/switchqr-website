@@ -15,7 +15,7 @@ const getFlagEmoji = (countryCode) => {
 
 // Locked Feature Overlay Component
 const LockedFeature = ({ title, description }) => (
-    <div className="absolute inset-0 bg-white/40 dark:bg-surface-dark/40 backdrop-blur-[2px] rounded-2xl flex flex-col items-center justify-center z-10 border border-slate-200/50 dark:border-slate-700/50">
+    <div className="absolute inset-0 bg-white/40 dark:bg-surface-dark/40 backdrop-blur-[2px] rounded-2xl flex flex-col items-center justify-center z-20 border border-slate-200/50 dark:border-slate-700/50">
         <div className="text-center px-6 max-w-md bg-white/90 dark:bg-surface-dark/90 p-8 rounded-2xl shadow-xl border border-slate-100 dark:border-slate-800">
             <div className="inline-flex items-center justify-center w-16 h-16 bg-primary/10 rounded-full mb-4">
                 <span className="material-symbols-outlined text-primary text-3xl">lock</span>
