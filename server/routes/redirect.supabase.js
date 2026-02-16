@@ -61,11 +61,12 @@ router.get('/r/:shortCode', async (req, res) => {
             return res.status(410).send('This QR Code is inactive');
         }
 
-        // --- SCAN LIMIT ENFORCEMENT ---
+        // --- PLAN RESOLUTION & SCAN LIMIT ENFORCEMENT ---
+        let ownerPlan = null;
         try {
-            // 1. Resolve owner's plan
-            const plan = await resolveUserPlan(qr.owner_id);
-            const scanLimit = PLAN_CONFIG.scanLimits[plan.effectivePlan];
+            // 1. Resolve owner's plan (used for both limits and feature access)
+            ownerPlan = await resolveUserPlan(qr.owner_id);
+            const scanLimit = PLAN_CONFIG.scanLimits[ownerPlan.effectivePlan];
 
             // 2. If plan has a limit, check total usage
             if (scanLimit !== null) {
@@ -92,9 +93,11 @@ router.get('/r/:shortCode', async (req, res) => {
                 }
             }
         } catch (planError) {
-            logger.error('Scan limit enforcement failed (falling back to allow)', planError);
+            logger.error('Plan resolution failed (falling back to free plan defaults)', planError);
+            // Fallback to free plan if resolution fails
+            ownerPlan = { effectivePlan: 'free', features: PLAN_CONFIG.features.free };
         }
-        // --- END SCAN LIMIT ENFORCEMENT ---
+        // --- END PLAN RESOLUTION & SCAN LIMIT ENFORCEMENT ---
 
         // Initialize Routing Variables
         let destination_url = qr.destination_url;
@@ -106,8 +109,8 @@ router.get('/r/:shortCode', async (req, res) => {
         console.log(`🚀 [REDIRECT] Routing started for code: ${shortCode} (ID: ${qr.id})`);
         console.log(`📍 [REDIRECT] Fallback URL: ${qr.destination_url}`);
 
-        // 2. Evaluate Schedules (Priority 1)
-        if (qr.scheduling_enabled) {
+        // 2. Evaluate Schedules (Priority 1) - Only if plan supports it
+        if (qr.scheduling_enabled && ownerPlan?.features?.scheduling) {
             console.log(`📅 [REDIRECT] Scheduling enabled. Checking rules...`);
             // Fetch active schedules
             const { data: schedules } = await supabaseAdmin
@@ -172,8 +175,8 @@ router.get('/r/:shortCode', async (req, res) => {
             }
         }
 
-        // 3. Evaluate A/B Variants (Priority 2, only if not scheduled)
-        if (routing_mode === 'basic' && qr.ab_testing_enabled) {
+        // 3. Evaluate A/B Variants (Priority 2, only if not scheduled) - Only if plan supports it
+        if (routing_mode === 'basic' && qr.ab_testing_enabled && ownerPlan?.features?.ab_testing) {
             console.log(`🧪 [REDIRECT] A/B Testing enabled. Checking variants for QR ${qr.id}...`);
             const { data: variants, error: vErr } = await supabaseAdmin
                 .from('variants')
