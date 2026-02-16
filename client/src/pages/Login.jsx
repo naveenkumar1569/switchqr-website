@@ -8,6 +8,7 @@ const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
+    const [loading, setLoading] = useState(false);
     const { login, signInWithGoogle } = useAuth();
     const navigate = useNavigate();
 
@@ -22,7 +23,10 @@ const Login = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        if (loading) return;
+
         setError('');
+        setLoading(true);
         try {
             const response = await apiPost('/api/auth/login', { email, password });
 
@@ -34,8 +38,8 @@ const Login = () => {
             } else {
                 setError(data.error || 'Login failed');
             }
-        } catch (err) {
-            setError('Failed to connect to server');
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -138,8 +142,12 @@ const Login = () => {
                                     </div>
                                 </div>
 
-                                <button type="submit" className="w-full flex items-center justify-center rounded-lg bg-primary hover:bg-primary-hover text-white h-12 px-6 text-sm font-bold tracking-wide transition-all duration-200 shadow-md hover:shadow-lg mt-2">
-                                    Sign In
+                                <button
+                                    type="submit"
+                                    disabled={loading}
+                                    className={`w-full flex items-center justify-center rounded-lg bg-primary hover:bg-primary-hover text-white h-12 px-6 text-sm font-bold tracking-wide transition-all duration-200 shadow-md hover:shadow-lg mt-2 ${loading ? 'opacity-70 cursor-not-allowed' : ''}`}
+                                >
+                                    {loading ? 'Signing In...' : 'Sign In'}
                                 </button>
                             </form>
 
