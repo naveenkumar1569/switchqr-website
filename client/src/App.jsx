@@ -19,6 +19,7 @@ const GlobalAnalytics = React.lazy(() => import('./pages/GlobalAnalytics'));
 const QRDetails = React.lazy(() => import('./pages/QRDetails'));
 const Settings = React.lazy(() => import('./pages/Settings'));
 const Billing = React.lazy(() => import('./pages/Billing'));
+const ScanLimitReached = React.lazy(() => import('./pages/ScanLimitReached'));
 
 // Loading fallback component
 const PageLoader = () => (
@@ -69,6 +70,7 @@ function App() {
               <Routes>
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
+                <Route path="/scan-limit-reached" element={<ScanLimitReached />} />
 
                 <Route element={<PrivateRoute />}>
                   <Route path="/" element={<Dashboard />} />

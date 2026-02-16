@@ -5,6 +5,7 @@ import { useToast } from '../context/ToastContext';
 import CampaignCard from '../components/CampaignCard';
 import LockedFeature from '../components/LockedFeature';
 import { apiGet, apiPost, apiPut, apiDelete } from '../utils/api';
+import { isFeatureEnabled, FEATURES } from '../utils/planPermissions';
 
 const Campaigns = () => {
     const navigate = useNavigate();
@@ -24,7 +25,7 @@ const Campaigns = () => {
     const [renaming, setRenaming] = useState(false);
 
     useEffect(() => {
-        if (planInfo?.features?.campaigns) {
+        if (isFeatureEnabled(planInfo?.effectivePlan, FEATURES.CAMPAIGNS_ACCESS)) {
             fetchCampaigns();
         } else {
             setLoading(false);
@@ -142,8 +143,8 @@ const Campaigns = () => {
         campaign.name.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
-    // Free plan - show locked state with blurred preview
-    if (!planInfo?.features?.campaigns) {
+    // Free/Starter plan - show locked state with blurred preview
+    if (!isFeatureEnabled(planInfo?.effectivePlan, FEATURES.CAMPAIGNS_ACCESS)) {
         return (
             <div className="mx-auto max-w-6xl relative">
                 {/* Blurred Content Preview */}

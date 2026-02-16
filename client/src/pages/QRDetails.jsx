@@ -11,6 +11,7 @@ import { apiGet, apiPost, apiPut, apiDelete } from '../utils/api';
 import { getQRImageUrl, getRedirectUrl } from '../utils/qrHelpers';
 import { fetchQRStats } from '../utils/analyticsService';
 import { calculateChartScale } from '../utils/chartHelpers';
+import { isFeatureEnabled, FEATURES, getLockDetails } from '../utils/planPermissions';
 
 const LockedOverlay = ({ title, description }) => (
     <div className="absolute inset-0 bg-white/40 dark:bg-[#1e1726]/40 backdrop-blur-[2px] rounded-2xl flex flex-col items-center justify-center z-20 border border-slate-200/50 dark:border-slate-700/50">
@@ -1190,7 +1191,13 @@ const QRDetails = () => {
             {/* Analytics Section */}
             <div className="space-y-6">
                 {/* Chart Card */}
-                <div className="bg-white dark:bg-[#1e1726] rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm p-6">
+                <div className="bg-white dark:bg-[#1e1726] rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm p-6 relative">
+                    {!isFeatureEnabled(planInfo?.effectivePlan, FEATURES.QR_ANALYTICS_CHART) && (
+                        <LockedOverlay
+                            title={getLockDetails(FEATURES.QR_ANALYTICS_CHART).title}
+                            description={getLockDetails(FEATURES.QR_ANALYTICS_CHART).description}
+                        />
+                    )}
                     <div className="flex items-center justify-between mb-6">
                         <div>
                             <h3 className="font-bold text-slate-900 dark:text-white text-lg">Scan Performance</h3>
@@ -1255,10 +1262,10 @@ const QRDetails = () => {
                 {/* Detailed Breakdown Cards */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 relative">
                     {/* Advanced Analytics Lock Overlay */}
-                    {(planInfo?.effectivePlan === 'starter' || planInfo?.effectivePlan === 'free' || !planInfo?.effectivePlan) && (
+                    {!isFeatureEnabled(planInfo?.effectivePlan, FEATURES.QR_DEVICE_DISTRIBUTION) && (
                         <LockedOverlay
-                            title="Unlock Advanced Analytics"
-                            description="Upgrade to Pro to access device distributions, operating system details, and full scan history."
+                            title={getLockDetails(FEATURES.QR_DEVICE_DISTRIBUTION).title}
+                            description={getLockDetails(FEATURES.QR_DEVICE_DISTRIBUTION).description}
                         />
                     )}
 
@@ -1368,7 +1375,7 @@ const QRDetails = () => {
                     </div>
 
                     {
-                        planInfo?.features?.scheduling ? (
+                        isFeatureEnabled(planInfo?.effectivePlan, FEATURES.QR_SCHEDULES) ? (
                             <>
                                 {abTestingEnabled && planInfo?.features?.ab_testing && (
                                     <div className="mb-4 p-3 rounded-lg bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800">
@@ -1443,7 +1450,7 @@ const QRDetails = () => {
                     </div>
 
                     {
-                        planInfo?.features?.ab_testing ? (
+                        isFeatureEnabled(planInfo?.effectivePlan, FEATURES.QR_AB_TESTING) ? (
                             <>
                                 {abTestingEnabled && (
                                     <div className="mb-4 p-3 rounded-lg bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800">

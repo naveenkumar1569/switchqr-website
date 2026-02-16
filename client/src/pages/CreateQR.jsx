@@ -5,6 +5,7 @@ import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
 import { normalizeUrl, validateUrl } from '../utils/urlHelpers';
 import { apiGet, apiPost } from '../utils/api';
+import { isFeatureEnabled, FEATURES, getLockDetails } from '../utils/planPermissions';
 import VariantList from '../components/VariantList';
 
 const CreateQR = () => {
@@ -74,7 +75,7 @@ const CreateQR = () => {
 
     // Fetch campaigns for dropdown
     useEffect(() => {
-        if (token && planInfo?.features?.campaigns) {
+        if (token && isFeatureEnabled(planInfo?.effectivePlan, FEATURES.CAMPAIGNS_ACCESS)) {
             apiGet('/api/campaigns', token)
                 .then(res => {
                     if (!res.ok) throw new Error('Failed to fetch campaigns');
@@ -194,7 +195,7 @@ const CreateQR = () => {
             let finalCampaignId = formData.campaign_id || null;
 
             // Handle inline campaign creation
-            if (isCreatingCampaign && planInfo?.features?.campaigns) {
+            if (isCreatingCampaign && isFeatureEnabled(planInfo?.effectivePlan, FEATURES.CAMPAIGNS_ACCESS)) {
                 if (!newCampaignName.trim()) {
                     setLoading(false);
                     showError('Campaign Name Required', { description: 'Please enter a name for the new campaign.' });
@@ -336,7 +337,7 @@ const CreateQR = () => {
                                 {urlError && <p className="mt-1 text-xs text-error font-medium flex items-center gap-1"><span className="material-symbols-outlined text-[14px]">error</span> {urlError}</p>}
                             </div>
                             {/* Campaign Dropdown - Pro Only */}
-                            {planInfo?.features?.campaigns && (
+                            {isFeatureEnabled(planInfo?.effectivePlan, FEATURES.CAMPAIGNS_ACCESS) && (
                                 <div>
                                     <div className="flex items-center justify-between mb-1">
                                         <label className="block text-sm font-medium text-text-dark dark:text-gray-200" htmlFor="campaign_id">Campaign</label>
@@ -492,25 +493,27 @@ const CreateQR = () => {
                                                 type="checkbox"
                                                 checked={scanTrackingEnabled}
                                                 onChange={(e) => setScanTrackingEnabled(e.target.checked)}
+                                                disabled={!isFeatureEnabled(planInfo?.effectivePlan, FEATURES.CREATE_SCAN_TRACKING)}
                                             />
                                             <label
                                                 htmlFor="toggle-tracking"
-                                                className={`relative inline-flex h-6 w-12 cursor-pointer items-center rounded-full p-1 transition-colors duration-200 ease-in-out ${scanTrackingEnabled ? 'bg-primary' : 'bg-slate-200 dark:bg-slate-700'}`}
+                                                className={`relative inline-flex h-6 w-12 cursor-pointer items-center rounded-full p-1 transition-colors duration-200 ease-in-out ${scanTrackingEnabled ? 'bg-primary' : 'bg-slate-200 dark:bg-slate-700'} ${!isFeatureEnabled(planInfo?.effectivePlan, FEATURES.CREATE_SCAN_TRACKING) ? 'opacity-50 cursor-not-allowed' : ''}`}
                                             >
                                                 <span className={`pointer-events-none inline-block size-4 rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${scanTrackingEnabled ? 'translate-x-6' : 'translate-x-0'}`}></span>
                                             </label>
+                                            {!isFeatureEnabled(planInfo?.effectivePlan, FEATURES.CREATE_SCAN_TRACKING) && <span className="ml-2 material-symbols-outlined text-xs text-amber-500">lock</span>}
                                         </div>
                                     </div>
                                     {/* A/B Testing Toggle (Pro Feature) */}
                                     <div
                                         onClick={() => {
-                                            if (planInfo?.features?.ab_testing) {
+                                            if (isFeatureEnabled(planInfo?.effectivePlan, FEATURES.CREATE_AB_TESTING)) {
                                                 setAbTestingEnabled(!abTestingEnabled);
                                             } else {
                                                 navigate('/billing');
                                             }
                                         }}
-                                        className={`flex items-center justify-between transition-all cursor-pointer ${!planInfo?.features?.ab_testing
+                                        className={`flex items-center justify-between transition-all cursor-pointer ${!isFeatureEnabled(planInfo?.effectivePlan, FEATURES.CREATE_AB_TESTING)
                                             ? 'p-3 rounded-lg border border-dashed border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-[#352b42]/50 opacity-80 hover:border-primary/50 hover:bg-primary/5'
                                             : ''
                                             }`}
@@ -518,22 +521,22 @@ const CreateQR = () => {
                                         <div className="flex flex-col">
                                             <div className="flex items-center gap-2">
                                                 <span className="text-sm font-medium text-text-dark dark:text-white">A/B Testing</span>
-                                                {!planInfo?.features?.ab_testing && <span className="bg-amber-100 text-amber-800 text-[10px] font-bold px-1.5 py-0.5 rounded border border-amber-200 uppercase">Pro</span>}
-                                                {!planInfo?.features?.ab_testing && <span className="material-symbols-outlined text-xs text-gray-400">lock</span>}
+                                                {!isFeatureEnabled(planInfo?.effectivePlan, FEATURES.CREATE_AB_TESTING) && <span className="bg-amber-100 text-amber-800 text-[10px] font-bold px-1.5 py-0.5 rounded border border-amber-200 uppercase">Pro</span>}
+                                                {!isFeatureEnabled(planInfo?.effectivePlan, FEATURES.CREATE_AB_TESTING) && <span className="material-symbols-outlined text-xs text-gray-400">lock</span>}
                                             </div>
                                             <span className="text-xs text-text-subtle">Split traffic between two destination URLs.</span>
                                         </div>
 
-                                        <div className={`relative flex items-center ${!planInfo?.features?.ab_testing ? 'opacity-50 cursor-not-allowed' : ''}`}>
+                                        <div className={`relative flex items-center ${!isFeatureEnabled(planInfo?.effectivePlan, FEATURES.CREATE_AB_TESTING) ? 'opacity-50 cursor-not-allowed' : ''}`}>
                                             <input
                                                 className="peer sr-only"
                                                 type="checkbox"
                                                 checked={abTestingEnabled}
                                                 readOnly
-                                                disabled={!planInfo?.features?.ab_testing}
+                                                disabled={!isFeatureEnabled(planInfo?.effectivePlan, FEATURES.CREATE_AB_TESTING)}
                                             />
                                             <div
-                                                className={`relative inline-flex h-6 w-12 items-center rounded-full p-1 transition-colors duration-200 ease-in-out ${!planInfo?.features?.ab_testing
+                                                className={`relative inline-flex h-6 w-12 items-center rounded-full p-1 transition-colors duration-200 ease-in-out ${!isFeatureEnabled(planInfo?.effectivePlan, FEATURES.CREATE_AB_TESTING)
                                                     ? 'bg-slate-200 dark:bg-slate-700 cursor-not-allowed'
                                                     : abTestingEnabled ? 'bg-primary cursor-pointer' : 'bg-slate-200 dark:bg-slate-700 cursor-pointer'
                                                     }`}
@@ -546,7 +549,7 @@ const CreateQR = () => {
                                     </div>
 
                                     {/* Inline Variant Configuration */}
-                                    {abTestingEnabled && planInfo?.features?.ab_testing && (
+                                    {abTestingEnabled && isFeatureEnabled(planInfo?.effectivePlan, FEATURES.CREATE_AB_TESTING) && (
                                         <div className="mt-6 border-t border-dashed border-gray-200 dark:border-gray-700 pt-6 animate-fadeIn">
                                             <h3 className="text-sm font-semibold text-text-dark dark:text-white mb-4">Experimental Variants</h3>
                                             <VariantList

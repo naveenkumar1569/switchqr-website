@@ -11,9 +11,24 @@ const logger = require('./logger');
 
 const PLAN_CONFIG = {
     limits: {
-        free: 5,
+        free: 3,        // Updated from 5
         starter: 100,
         pro: 1000
+    },
+    scanLimits: {
+        free: 500,
+        starter: 100000,
+        pro: null  // Unlimited
+    },
+    linkUpdateLimits: {
+        free: 10,
+        starter: 500,
+        pro: null  // Unlimited
+    },
+    analyticsHistoryDays: {
+        free: 7,
+        starter: 90,
+        pro: null  // Unlimited
     },
     features: {
         free: {
@@ -26,12 +41,12 @@ const PLAN_CONFIG = {
             svg_pdf_downloads: false
         },
         starter: {
-            advanced_analytics: true,
+            advanced_analytics: false,  // Starter gets "Basic" analytics, not "Advanced"
             campaigns: false,
             branding: false,
             ab_testing: false,
             scheduling: true,
-            csv_export: false,
+            csv_export: false,          // CSV export is Pro-only
             svg_pdf_downloads: true
         },
         pro: {

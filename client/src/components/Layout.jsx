@@ -1,6 +1,7 @@
 import React from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { isFeatureEnabled, FEATURES } from '../utils/planPermissions';
 
 const Layout = () => {
     const { user, logout, planInfo } = useAuth();
@@ -26,7 +27,7 @@ const Layout = () => {
                     <Link to="/campaigns" className={`flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium transition-colors ${isActive('/campaigns') ? 'bg-primary/10 text-primary dark:bg-primary/20 dark:text-primary-300' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'}`}>
                         <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>folder</span>
                         <span>Campaigns</span>
-                        {!planInfo?.features?.campaigns && (
+                        {!isFeatureEnabled(planInfo?.effectivePlan, FEATURES.CAMPAIGNS_ACCESS) && (
                             <span className="ml-auto material-symbols-outlined text-xs text-amber-500">lock</span>
                         )}
                     </Link>
@@ -37,7 +38,7 @@ const Layout = () => {
                     <Link to="/analytics" className={`flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium transition-colors ${isActive('/analytics') ? 'bg-primary/10 text-primary dark:bg-primary/20 dark:text-primary-300' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'}`}>
                         <span className="material-symbols-outlined">bar_chart</span>
                         <span>Analytics</span>
-                        {(planInfo?.effectivePlan === 'free' || !planInfo?.effectivePlan) && (
+                        {!isFeatureEnabled(planInfo?.effectivePlan, FEATURES.ANALYTICS_PAGE) && (
                             <span className="ml-auto material-symbols-outlined text-xs text-amber-500">lock</span>
                         )}
                     </Link>

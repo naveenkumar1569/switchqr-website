@@ -7,6 +7,7 @@
 const express = require('express');
 const { getAuthenticatedClient } = require('../utils/supabase');
 const logger = require('../utils/logger');
+const { requireFeature } = require('../middleware/planEnforcement');
 
 const router = express.Router();
 
@@ -32,7 +33,7 @@ const normalizeTimezone = (tz) => {
 };
 
 // GET /api/campaigns - List user's campaigns
-router.get('/', supabaseAuth, async (req, res) => {
+router.get('/', supabaseAuth, requireFeature('campaigns'), async (req, res) => {
     try {
         const { data: { user }, error: authError } = await req.supabase.auth.getUser();
         if (authError || !user) {
@@ -133,7 +134,7 @@ router.get('/', supabaseAuth, async (req, res) => {
 });
 
 // GET /api/campaigns/:id - Get detailed campaign info
-router.get('/:id', supabaseAuth, async (req, res) => {
+router.get('/:id', supabaseAuth, requireFeature('campaigns'), async (req, res) => {
     const { id } = req.params;
     try {
         const { data: { user }, error: authError } = await req.supabase.auth.getUser();
@@ -345,24 +346,14 @@ router.get('/:id', supabaseAuth, async (req, res) => {
 });
 
 // POST /api/campaigns - Create a new campaign
-router.post('/', supabaseAuth, async (req, res) => {
+router.post('/', supabaseAuth, requireFeature('campaigns'), async (req, res) => {
     const { name, description } = req.body;
-    const { resolveUserPlan } = require('../utils/planManager');
 
     if (!name) return res.status(400).json({ error: 'Campaign name is required' });
 
     try {
         const { data: { user }, error: authError } = await req.supabase.auth.getUser();
         if (authError || !user) return res.status(401).json({ error: 'Unauthorized' });
-
-        // PLAN ENFORCEMENT
-        const plan = await resolveUserPlan(user.id);
-        if (!plan.features.campaigns) {
-            return res.status(403).json({
-                error: 'Campaigns not available on your plan',
-                upgrade_required: true
-            });
-        }
 
         const { data: campaign, error } = await req.supabase
             .from('campaigns')
@@ -385,7 +376,7 @@ router.post('/', supabaseAuth, async (req, res) => {
 });
 
 // PUT /api/campaigns/:id - Rename campaign
-router.put('/:id', supabaseAuth, async (req, res) => {
+router.put('/:id', supabaseAuth, requireFeature('campaigns'), async (req, res) => {
     const { id } = req.params;
     const { name } = req.body;
 
@@ -412,7 +403,7 @@ router.put('/:id', supabaseAuth, async (req, res) => {
 });
 
 // DELETE /api/campaigns/:id - Soft delete campaign
-router.delete('/:id', supabaseAuth, async (req, res) => {
+router.delete('/:id', supabaseAuth, requireFeature('campaigns'), async (req, res) => {
     const { id } = req.params;
 
     try {

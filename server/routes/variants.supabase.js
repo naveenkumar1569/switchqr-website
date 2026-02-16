@@ -7,6 +7,7 @@
 const express = require('express');
 const { getAuthenticatedClient } = require('../utils/supabase');
 const logger = require('../utils/logger');
+const { requireFeature } = require('../middleware/planEnforcement');
 
 const router = express.Router();
 
@@ -80,7 +81,7 @@ router.get('/:id/variants', supabaseAuth, async (req, res) => {
 });
 
 // POST /api/qrs/:id/variants
-router.post('/:id/variants', supabaseAuth, async (req, res) => {
+router.post('/:id/variants', supabaseAuth, requireFeature('ab_testing'), async (req, res) => {
     const { id } = req.params;
     const { name, destination_url, weight } = req.body;
 
@@ -120,7 +121,7 @@ router.post('/:id/variants', supabaseAuth, async (req, res) => {
 });
 
 // PUT /api/qrs/:id/variants/:variantId
-router.put('/:id/variants/:variantId', supabaseAuth, async (req, res) => {
+router.put('/:id/variants/:variantId', supabaseAuth, requireFeature('ab_testing'), async (req, res) => {
     const { id, variantId } = req.params;
     const { name, destination_url, weight, is_enabled } = req.body;
 
@@ -165,7 +166,7 @@ router.put('/:id/variants/:variantId', supabaseAuth, async (req, res) => {
 });
 
 // PUT /api/qrs/:id/variants (Bulk Update)
-router.put('/:id/variants', supabaseAuth, async (req, res) => {
+router.put('/:id/variants', supabaseAuth, requireFeature('ab_testing'), async (req, res) => {
     const { id } = req.params;
     const { variants, ab_control_weight } = req.body; // Expect array of variants and optional control weight
 
@@ -225,7 +226,7 @@ router.put('/:id/variants', supabaseAuth, async (req, res) => {
 });
 
 // DELETE /api/qrs/:id/variants/:variantId
-router.delete('/:id/variants/:variantId', supabaseAuth, async (req, res) => {
+router.delete('/:id/variants/:variantId', supabaseAuth, requireFeature('ab_testing'), async (req, res) => {
     const { id, variantId } = req.params;
 
     try {

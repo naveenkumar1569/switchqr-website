@@ -3,6 +3,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { fetchGlobalStats } from '../utils/analyticsService';
 import { calculateChartScale } from '../utils/chartHelpers';
+import { isFeatureEnabled, FEATURES, getLockDetails } from '../utils/planPermissions';
 import { Link } from 'react-router-dom';
 
 const getFlagEmoji = (countryCode) => {
@@ -111,7 +112,7 @@ const GlobalAnalytics = () => {
 
     // Check if user has access to Analytics tab
     const effectivePlan = planInfo?.effectivePlan || planInfo?.plan || 'free';
-    const hasAnalyticsAccess = effectivePlan !== 'free';
+    const hasAnalyticsAccess = isFeatureEnabled(effectivePlan, FEATURES.ANALYTICS_PAGE);
     const isProUser = effectivePlan === 'pro';
     const isStarterUser = effectivePlan === 'starter';
 
@@ -364,11 +365,11 @@ const GlobalAnalytics = () => {
                     {/* Export */}
                     <button
                         onClick={handleExport}
-                        className={`flex items-center gap-2 px-4 py-2.5 rounded-lg transition-colors text-sm font-medium group ${planInfo?.features?.csv_export
+                        className={`flex items-center gap-2 px-4 py-2.5 rounded-lg transition-colors text-sm font-medium group ${isFeatureEnabled(effectivePlan, FEATURES.EXPORT_DATA)
                             ? 'bg-primary/5 hover:bg-primary/10 text-primary dark:bg-primary/10 dark:hover:bg-primary/20'
                             : 'bg-gray-100 dark:bg-gray-800 text-gray-400 cursor-not-allowed'
                             }`}
-                        disabled={!planInfo?.features?.csv_export}
+                        disabled={!isFeatureEnabled(effectivePlan, FEATURES.EXPORT_DATA)}
                     >
                         <span className="material-symbols-outlined text-lg group-hover:translate-y-0.5 transition-transform">download</span>
                         Export
@@ -755,10 +756,10 @@ const GlobalAnalytics = () => {
                 </div>
 
                 {/* Unified Lock Overlay for Advanced Insights */}
-                {isStarterUser && (
+                {!isFeatureEnabled(effectivePlan, FEATURES.ANALYTICS_PEAK_TIME) && (
                     <LockedFeature
-                        title="Unlock Advanced Insights"
-                        description="Upgrade to Pro to access detailed geographic data, device distributions, and peak scanning time heatmaps."
+                        title={getLockDetails(FEATURES.ANALYTICS_PEAK_TIME).title}
+                        description={getLockDetails(FEATURES.ANALYTICS_PEAK_TIME).description}
                     />
                 )}
             </div>

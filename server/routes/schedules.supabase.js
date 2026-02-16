@@ -7,6 +7,7 @@
 const express = require('express');
 const { getAuthenticatedClient } = require('../utils/supabase');
 const logger = require('../utils/logger');
+const { requireFeature } = require('../middleware/planEnforcement');
 
 const router = express.Router();
 
@@ -79,7 +80,7 @@ router.get('/:id/schedules', supabaseAuth, async (req, res) => {
 });
 
 // POST /api/qrs/:id/schedules
-router.post('/:id/schedules', supabaseAuth, async (req, res) => {
+router.post('/:id/schedules', supabaseAuth, requireFeature('scheduling'), async (req, res) => {
     const { id } = req.params;
     const { start_time, end_time, destination_url, days, timezone } = req.body;
 
@@ -121,7 +122,7 @@ router.post('/:id/schedules', supabaseAuth, async (req, res) => {
 });
 
 // DELETE /api/qrs/:id/schedules/:scheduleId
-router.delete('/:id/schedules/:scheduleId', supabaseAuth, async (req, res) => {
+router.delete('/:id/schedules/:scheduleId', supabaseAuth, requireFeature('scheduling'), async (req, res) => {
     const { id, scheduleId } = req.params;
     console.log(`🗑️ [DELETE] Attempting to delete schedule ${scheduleId} for QR ${id}`);
 
