@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, useMemo } from 'react';
-import { apiGet } from '../utils/api';
+import { apiGet, apiPost } from '../utils/api';
 import { supabase } from '../utils/supabase';
 
 const AuthContext = createContext(null);
@@ -69,14 +69,7 @@ export const AuthProvider = ({ children }) => {
             const capturedKey = 'timezone_captured';
             if (sessionStorage.getItem(capturedKey)) return;
 
-            const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5001'}/api/profile/timezone`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${currentToken}`
-                },
-                body: JSON.stringify({ timezone })
-            });
+            const response = await apiPost('/api/profile/timezone', { timezone }, currentToken);
 
             if (response.ok) {
                 sessionStorage.setItem(capturedKey, 'true');
