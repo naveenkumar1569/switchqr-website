@@ -275,24 +275,17 @@ router.put('/:id', supabaseAuth, async (req, res) => {
 
             // 2. Strict comparison using urlFormatter
             if (currentQR && !isSameUrl(currentQR.destination_url, updates.destination_url)) {
-                console.log(`[USAGE] Link update detected for user ${user.id}: ${currentQR.destination_url} -> ${updates.destination_url}`);
+                console.log(`[LINK_UPDATE_COUNTED] User: ${user.id}, QR: ${id}, URL: ${currentQR.destination_url} -> ${updates.destination_url}`);
 
-                // 3. Log event and increment counter transactionally (RPC is best, but using parallel for now)
-                // Note: user_usage_stats increment should be transactional if possible
-                const { error: eventError } = await req.supabase
-                    .from('usage_events')
-                    .insert({
-                        user_id: user.id,
-                        event_type: 'link_update',
-                        qr_id: id,
-                        old_url: currentQR.destination_url,
-                        new_url: updates.destination_url
-                    });
-
-                if (!eventError) {
-                    // Update the projection table
-                    await req.supabase.rpc('increment_link_updates', { user_id_param: user.id });
-                }
+                // 3. Atomic increment + Event log via RPC
+                await req.supabase.rpc('increment_link_updates', {
+                    user_id_param: user.id,
+                    qr_id_param: id,
+                    old_url_param: currentQR.destination_url,
+                    new_url_param: updates.destination_url
+                });
+            } else {
+                console.log(`[LINK_UPDATE_SKIPPED] User: ${user.id}, QR: ${id} - Functionally identical URL or non-URL update`);
             }
         }
         // --- END LINK UPDATE TRACKING ---

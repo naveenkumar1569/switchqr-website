@@ -233,7 +233,11 @@ router.get('/r/:shortCode', async (req, res) => {
         });
 
         // 6. Increment Total Scans in Usage Stats (Async)
-        supabaseAdmin.rpc('increment_total_scans', { user_id_param: qr.owner_id })
+        supabaseAdmin.rpc('increment_total_scans', {
+            user_id_param: qr.owner_id,
+            qr_id_param: qr.id,
+            inc_param: 1
+        })
             .then(({ error }) => {
                 if (error) console.error(`[USAGE] Failed to increment scan count for user ${qr.owner_id}`, error);
                 else console.log(`[USAGE] Incremented scan count for user ${qr.owner_id}`);
