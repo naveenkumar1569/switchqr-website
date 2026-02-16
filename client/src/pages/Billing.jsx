@@ -38,8 +38,8 @@ const Billing = () => {
         },
         yearly: {
             free: { price: 0, qrs: 3 },
-            starter: { price: 90, qrs: 100 },
-            pro: { price: 290, qrs: 1000 }
+            starter: { price: 7, qrs: 100 }, // $7/mo billed annually
+            pro: { price: 23, qrs: 1000 }    // $23/mo billed annually
         }
     };
 
@@ -128,8 +128,11 @@ const Billing = () => {
                             <p className="text-[#6e5393] dark:text-[#a08cb3] text-sm mb-4">Great for hobbyists & side projects.</p>
                             <div className="flex items-baseline gap-1">
                                 <span className="text-4xl font-black text-[#140f1a] dark:text-white tracking-tight">${currentPlanData.starter.price}</span>
-                                <span className="text-base font-medium text-[#6e5393] dark:text-[#a08cb3]">/{billingPeriod === 'monthly' ? 'mo' : 'yr'}</span>
+                                <span className="text-base font-medium text-[#6e5393] dark:text-[#a08cb3]">/mo</span>
                             </div>
+                            {billingPeriod === 'yearly' && (
+                                <p className="text-[10px] text-[#6e5393] dark:text-[#a08cb3] mt-1 font-medium">Billed annually (${currentPlanData.starter.price * 12}/yr)</p>
+                            )}
                         </div>
                         <button
                             className={`w-full rounded-xl border-2 mb-8 py-3 text-sm font-bold transition-colors ${currentPlan === 'starter' ? 'bg-[#ece8f2] border-[#ece8f2] dark:bg-[#2f2b3a] dark:border-[#2f2b3a] text-[#6e5393] dark:text-[#a08cb3] cursor-not-allowed opacity-70' : 'border-primary bg-transparent text-primary hover:bg-primary/5 dark:hover:bg-primary/10'}`}
@@ -175,8 +178,11 @@ const Billing = () => {
                             <p className="text-[#6e5393] dark:text-[#a08cb3] text-sm mb-4">For power users and businesses.</p>
                             <div className="flex items-baseline gap-1">
                                 <span className="text-4xl font-black text-[#140f1a] dark:text-white tracking-tight">${currentPlanData.pro.price}</span>
-                                <span className="text-base font-medium text-[#6e5393] dark:text-[#a08cb3]">/{billingPeriod === 'monthly' ? 'mo' : 'yr'}</span>
+                                <span className="text-base font-medium text-[#6e5393] dark:text-[#a08cb3]">/mo</span>
                             </div>
+                            {billingPeriod === 'yearly' && (
+                                <p className="text-[10px] text-[#6e5393] dark:text-[#a08cb3] mt-1 font-medium">Billed annually (${currentPlanData.pro.price * 12}/yr)</p>
+                            )}
                         </div>
                         <button
                             className={`w-full rounded-xl py-3 text-sm font-bold mb-8 transition-all shadow-md hover:shadow-lg ${currentPlan === 'pro' ? 'bg-[#ece8f2] dark:bg-[#2f2b3a] text-[#6e5393] dark:text-[#a08cb3] cursor-not-allowed opacity-70 shadow-none hover:shadow-none' : 'bg-primary hover:bg-primary-dark text-white'}`}
