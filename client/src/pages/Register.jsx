@@ -24,12 +24,14 @@ const Register = () => {
         // Validate password confirmation
         if (password !== confirmPassword) {
             setError('Passwords do not match');
+            setLoading(false);
             return;
         }
 
         // Validate password length
         if (password.length < 8) {
             setError('Password must be at least 8 characters long');
+            setLoading(false);
             return;
         }
 

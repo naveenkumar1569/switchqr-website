@@ -52,18 +52,12 @@ router.post('/register', async (req, res) => {
 
         if (error) {
             console.error('[Auth] Supabase SignUp Error:', error);
-            // Translate Supabase Exists error if needed, but Supabase usually returns pretty clear messages
             return res.status(400).json({ error: error.message });
         }
 
-        if (!data.session) {
-            // If email confirmation is enabled, session might be null
-            return res.status(200).json({
-                message: 'Registration successful! Please check your email to confirm your account.'
-            });
-        }
-
         // 2. Apply 7-day Pro trial using Admin client
+        // IMPORTANT: This MUST run before the email confirmation check below,
+        // otherwise users needing email confirmation never get their trial.
         try {
             const adminClient = getAdminClient();
             const trialExpiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000); // 7 days from now
@@ -159,13 +153,21 @@ router.post('/register', async (req, res) => {
             // Don't fail registration even if trial fails
         }
 
+        // 3. Check if email confirmation is required
+        if (!data.session) {
+            // Email confirmation is enabled - session will be null
+            return res.status(200).json({
+                message: 'Registration successful! Please check your email to confirm your account.'
+            });
+        }
+
+        // 4. Return session (email confirmation disabled / auto-confirmed)
         // Helper to split full_name
         const fullName = data.user.user_metadata?.full_name || name || '';
         const parts = fullName.trim().split(' ');
         const firstName = parts[0] || '';
         const lastName = parts.slice(1).join(' ') || '';
 
-        // 3. Return Legacy Format
         res.status(201).json({
             token: data.session.access_token,
             user: {
