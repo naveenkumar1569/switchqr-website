@@ -68,31 +68,95 @@ router.post('/register', async (req, res) => {
             const adminClient = getAdminClient();
             const trialExpiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000); // 7 days from now
 
-            const { error: profileError } = await adminClient
-                .from('profiles')
-                .upsert({
-                    id: data.user.id,
-                    plan: 'pro',
-                    plan_expires_at: trialExpiresAt.toISOString(),
-                    updated_at: new Date().toISOString()
-                }, { onConflict: 'id' });
+            logger.info('[TRIAL_START] Applying 7-day Pro trial', {
+                userId: data.user.id,
+                email: email,
+                expiresAt: trialExpiresAt.toISOString()
+            });
 
-            if (profileError) {
-                console.error('[TRIAL_APPLY_FAILED]', data.user.id, profileError.message);
-                logger.error('[TRIAL_ERROR] Failed to apply trial', {
+            // Check if profile already exists
+            const { data: existingProfile, error: fetchError } = await adminClient
+                .from('profiles')
+                .select('id, plan, plan_expires_at')
+                .eq('id', data.user.id)
+                .maybeSingle();
+
+            if (fetchError) {
+                logger.error('[TRIAL_FETCH_ERROR] Error checking for existing profile', {
                     userId: data.user.id,
-                    error: profileError.message
+                    error: fetchError.message
                 });
-                // Don't fail registration, just log the error
+            }
+
+            if (!existingProfile) {
+                // Profile doesn't exist - CREATE with trial
+                logger.info('[TRIAL_CREATE] Creating new profile with Pro trial', {
+                    userId: data.user.id
+                });
+
+                const { data: newProfile, error: createError } = await adminClient
+                    .from('profiles')
+                    .insert({
+                        id: data.user.id,
+                        plan: 'pro',
+                        plan_expires_at: trialExpiresAt.toISOString(),
+                        created_at: new Date().toISOString(),
+                        updated_at: new Date().toISOString()
+                    })
+                    .select()
+                    .single();
+
+                if (createError) {
+                    logger.error('[TRIAL_CREATE_FAILED] Failed to create profile with trial', {
+                        userId: data.user.id,
+                        error: createError.message,
+                        code: createError.code,
+                        details: createError.details
+                    });
+                } else {
+                    logger.info('[TRIAL_APPLIED] ✅ 7-day Pro trial successfully applied (new profile)', {
+                        userId: data.user.id,
+                        plan: newProfile.plan,
+                        expiresAt: newProfile.plan_expires_at
+                    });
+                }
             } else {
+                // Profile exists - UPDATE with trial
+                logger.info('[TRIAL_UPDATE] Updating existing profile with Pro trial', {
+                    userId: data.user.id,
+                    currentPlan: existingProfile.plan
+                });
+
+                const { error: updateError } = await adminClient
+                    .from('profiles')
+                    .update({
+                        plan: 'pro',
+                        plan_expires_at: trialExpiresAt.toISOString(),
+                        updated_at: new Date().toISOString()
+                    })
+                    .eq('id', data.user.id);
+
+                if (updateError) {
+                    logger.error('[TRIAL_UPDATE_FAILED] Failed to update profile with trial', {
+                        userId: data.user.id,
+                        error: updateError.message,
+                        code: updateError.code
+                    });
+                } else {
+                    logger.info('[TRIAL_APPLIED] ✅ 7-day Pro trial successfully applied (updated)', {
+                        userId: data.user.id,
+                        plan: 'pro',
+                        expiresAt: trialExpiresAt.toISOString()
+                    });
+                }
             }
         } catch (trialError) {
-            console.error('[TRIAL_APPLY_FAILED]', data.user.id, trialError.message);
-            logger.error('[TRIAL_ERROR] Exception applying trial', {
+            logger.error('[TRIAL_EXCEPTION] Exception during trial application', {
                 userId: data.user.id,
-                error: trialError.message
+                error: trialError.message,
+                stack: trialError.stack
             });
-            // Don't fail registration
+            // Don't fail registration even if trial fails
         }
 
         // Helper to split full_name
