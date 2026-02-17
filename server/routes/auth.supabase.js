@@ -38,60 +38,58 @@ router.post('/register', async (req, res) => {
     }
 
     try {
+        const adminClient = getAdminClient();
 
-        // 1. Sign Up User
-        const { data, error } = await supabase.auth.signUp({
+        // 1. Create user via Admin API with auto-confirmation
+        //    This bypasses email confirmation entirely so users can sign in immediately.
+        const { data: createData, error: createError } = await adminClient.auth.admin.createUser({
             email,
             password,
-            options: {
-                data: {
-                    full_name: name || '' // Metadata
-                }
+            email_confirm: true,  // Auto-confirm the email
+            user_metadata: {
+                full_name: name || ''
             }
         });
 
-        if (error) {
-            console.error('[Auth] Supabase SignUp Error:', error);
-            return res.status(400).json({ error: error.message });
+        if (createError) {
+            logger.error('[Auth] Admin createUser failed', { email, error: createError.message });
+
+            // Handle "user already exists" gracefully
+            if (createError.message?.toLowerCase().includes('already') ||
+                createError.message?.toLowerCase().includes('exists') ||
+                createError.message?.toLowerCase().includes('duplicate')) {
+                return res.status(409).json({ error: 'An account with this email already exists. Please sign in instead.' });
+            }
+
+            return res.status(400).json({ error: createError.message });
         }
 
-        // 2. Apply 7-day Pro trial using Admin client
-        // IMPORTANT: This MUST run before the email confirmation check below,
-        // otherwise users needing email confirmation never get their trial.
+        const userId = createData.user.id;
+        logger.info('[Auth] User created successfully', { userId, email });
+
+        // 2. Apply 7-day Pro trial
         try {
-            const adminClient = getAdminClient();
-            const trialExpiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000); // 7 days from now
+            const trialExpiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
 
             logger.info('[TRIAL_START] Applying 7-day Pro trial', {
-                userId: data.user.id,
-                email: email,
+                userId,
+                email,
                 expiresAt: trialExpiresAt.toISOString()
             });
 
-            // Check if profile already exists
-            const { data: existingProfile, error: fetchError } = await adminClient
+            const { data: existingProfile } = await adminClient
                 .from('profiles')
-                .select('id, plan, plan_expires_at')
-                .eq('id', data.user.id)
+                .select('id, plan')
+                .eq('id', userId)
                 .maybeSingle();
 
-            if (fetchError) {
-                logger.error('[TRIAL_FETCH_ERROR] Error checking for existing profile', {
-                    userId: data.user.id,
-                    error: fetchError.message
-                });
-            }
-
             if (!existingProfile) {
-                // Profile doesn't exist - CREATE with trial
-                logger.info('[TRIAL_CREATE] Creating new profile with Pro trial', {
-                    userId: data.user.id
-                });
-
-                const { data: newProfile, error: createError } = await adminClient
+                const { data: newProfile, error: profileError } = await adminClient
                     .from('profiles')
                     .insert({
-                        id: data.user.id,
+                        id: userId,
+                        email: email,
+                        full_name: name || '',
                         plan: 'pro',
                         plan_expires_at: trialExpiresAt.toISOString(),
                         created_at: new Date().toISOString(),
@@ -100,27 +98,12 @@ router.post('/register', async (req, res) => {
                     .select()
                     .single();
 
-                if (createError) {
-                    logger.error('[TRIAL_CREATE_FAILED] Failed to create profile with trial', {
-                        userId: data.user.id,
-                        error: createError.message,
-                        code: createError.code,
-                        details: createError.details
-                    });
+                if (profileError) {
+                    logger.error('[TRIAL_CREATE_FAILED]', { userId, error: profileError.message, code: profileError.code });
                 } else {
-                    logger.info('[TRIAL_APPLIED] ✅ 7-day Pro trial successfully applied (new profile)', {
-                        userId: data.user.id,
-                        plan: newProfile.plan,
-                        expiresAt: newProfile.plan_expires_at
-                    });
+                    logger.info('[TRIAL_APPLIED] ✅ Pro trial applied (new profile)', { userId, plan: newProfile.plan });
                 }
             } else {
-                // Profile exists - UPDATE with trial
-                logger.info('[TRIAL_UPDATE] Updating existing profile with Pro trial', {
-                    userId: data.user.id,
-                    currentPlan: existingProfile.plan
-                });
-
                 const { error: updateError } = await adminClient
                     .from('profiles')
                     .update({
@@ -128,58 +111,54 @@ router.post('/register', async (req, res) => {
                         plan_expires_at: trialExpiresAt.toISOString(),
                         updated_at: new Date().toISOString()
                     })
-                    .eq('id', data.user.id);
+                    .eq('id', userId);
 
                 if (updateError) {
-                    logger.error('[TRIAL_UPDATE_FAILED] Failed to update profile with trial', {
-                        userId: data.user.id,
-                        error: updateError.message,
-                        code: updateError.code
-                    });
+                    logger.error('[TRIAL_UPDATE_FAILED]', { userId, error: updateError.message });
                 } else {
-                    logger.info('[TRIAL_APPLIED] ✅ 7-day Pro trial successfully applied (updated)', {
-                        userId: data.user.id,
-                        plan: 'pro',
-                        expiresAt: trialExpiresAt.toISOString()
-                    });
+                    logger.info('[TRIAL_APPLIED] ✅ Pro trial applied (updated)', { userId });
                 }
             }
         } catch (trialError) {
-            logger.error('[TRIAL_EXCEPTION] Exception during trial application', {
-                userId: data.user.id,
-                error: trialError.message,
-                stack: trialError.stack
-            });
-            // Don't fail registration even if trial fails
+            logger.error('[TRIAL_EXCEPTION]', { userId, error: trialError.message });
+            // Don't fail registration if trial fails
         }
 
-        // 3. Check if email confirmation is required
-        if (!data.session) {
-            // Email confirmation is enabled - session will be null
-            return res.status(200).json({
-                message: 'Registration successful! Please check your email to confirm your account.'
+        // 3. Sign in the user to get a session token
+        const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
+            email,
+            password
+        });
+
+        if (signInError) {
+            logger.error('[Auth] Post-registration sign-in failed', { userId, error: signInError.message });
+            // User was created but we couldn't sign them in automatically
+            // They can still use the login page
+            return res.status(201).json({
+                message: 'Account created successfully! Please sign in with your credentials.'
             });
         }
 
-        // 4. Return session (email confirmation disabled / auto-confirmed)
-        // Helper to split full_name
-        const fullName = data.user.user_metadata?.full_name || name || '';
+        // 4. Return session
+        const fullName = createData.user.user_metadata?.full_name || name || '';
         const parts = fullName.trim().split(' ');
         const firstName = parts[0] || '';
         const lastName = parts.slice(1).join(' ') || '';
 
+        logger.info('[Auth] Registration complete', { userId, email });
+
         res.status(201).json({
-            token: data.session.access_token,
+            token: signInData.session.access_token,
             user: {
-                id: data.user.id,
-                email: data.user.email,
+                id: userId,
+                email: createData.user.email,
                 first_name: firstName,
                 last_name: lastName
             }
         });
 
     } catch (e) {
-        console.error('[Auth] Server Error:', e);
+        logger.error('[Auth] Server error during registration', { error: e.message, stack: e.stack });
         res.status(500).json({ error: 'Server error during registration' });
     }
 });
