@@ -108,8 +108,8 @@ async function resolveUserPlan(userId) {
                 isTrial = true;
                 const expiryDate = new Date(planExpiresAt);
                 const now = new Date();
-                const diffTime = Math.abs(expiryDate - now);
-                daysRemaining = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                const diffTime = expiryDate - now;
+                daysRemaining = diffTime > 0 ? Math.floor(diffTime / (1000 * 60 * 60 * 24)) : 0;
             }
         }
         // 2. Fixed Term / Manual Trial / Canceled Subscription (Run-out phase)
@@ -124,8 +124,8 @@ async function resolveUserPlan(userId) {
                 // If it has an expiry date and is NOT expired, it's a trial (or term-limited plan)
                 // This covers the current manual "Pro Trial" case.
                 isTrial = true;
-                const diffTime = Math.abs(expiryDate - now);
-                daysRemaining = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                const diffTime = expiryDate - now;
+                daysRemaining = diffTime > 0 ? Math.floor(diffTime / (1000 * 60 * 60 * 24)) : 0;
             }
         }
         // 3. Lifetime / Manual Paid (No expiry, No sub status) -> Remains Stored Plan (Pro)
