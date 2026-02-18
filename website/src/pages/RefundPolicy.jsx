@@ -1,15 +1,6 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 
 const RefundPolicy = () => {
-    const today = new Date().toLocaleDateString('en-US', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric'
-    });
-
-    const CLIENT_APP_URL = 'https://app.switch-qr.com';
-
     return (
         <div className="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 font-display transition-colors duration-300 min-h-screen">
             <main className="max-w-4xl mx-auto px-6 py-16 md:py-24">
@@ -20,74 +11,53 @@ const RefundPolicy = () => {
                     </h1>
                     <div className="flex items-center gap-2 text-slate-500 dark:text-slate-400 font-medium">
                         <span className="material-symbols-outlined text-sm">event</span>
-                        <span>Last updated: {today}</span>
+                        <span>Last updated: February 18, 2026</span>
                     </div>
                 </header>
 
-                {/* Main Content Section */}
+                {/* Main Content */}
                 <article className="prose-custom max-w-none prose prose-slate dark:prose-invert">
                     {/* Introduction */}
                     <section className="mb-12">
                         <p className="text-lg text-slate-600 dark:text-slate-300 leading-relaxed">
-                            At SwitchQR, we strive to provide the best possible service to our customers. We understand that circumstances change, and we want to ensure our refund process is as transparent and straightforward as possible. This policy outlines the conditions under which refunds may be issued for our SaaS subscriptions.
+                            SwitchQR subscriptions are billed and managed through Paddle, our Merchant of Record. Paddle handles all payments, invoicing, and refunds in accordance with their consumer terms.
                         </p>
                     </section>
 
-                    {/* Refund Window */}
+                    {/* 14-Day Money-Back Guarantee */}
                     <section className="mb-12">
                         <h2 className="text-2xl font-bold text-primary mb-4 flex items-center gap-2">
-                            <span className="material-symbols-outlined">history</span>
-                            Refund Window
+                            <span className="material-symbols-outlined">verified</span>
+                            14-Day Money-Back Guarantee
                         </h2>
-                        <div className="space-y-4 text-slate-600 dark:text-slate-300">
-                            <p>
-                                We offer a <strong>14-day money-back guarantee</strong> for all new subscriptions. If you are not satisfied with SwitchQR for any reason, you are eligible for a full refund within the first 14 days of your initial purchase.
-                            </p>
-                            <p>
-                                Please note that this initial 14-day window applies only to the first payment of a new subscription plan and does not apply to subsequent renewal payments.
-                            </p>
-                        </div>
+                        <p className="text-slate-600 dark:text-slate-300 leading-relaxed">
+                            We offer a <strong>14-day money-back guarantee</strong> for first-time subscription purchases. If you are not satisfied with SwitchQR, you may request a full refund within 14 days of your initial purchase.
+                        </p>
                     </section>
 
-                    {/* How Refunds Work */}
+                    {/* Refund Processing */}
                     <section className="mb-12">
                         <h2 className="text-2xl font-bold text-primary mb-4 flex items-center gap-2">
                             <span className="material-symbols-outlined">account_balance_wallet</span>
-                            How Refunds Work
+                            Refund Processing
                         </h2>
-                        <div className="space-y-4 text-slate-600 dark:text-slate-300">
-                            <p>
-                                Once a refund request is approved, the funds will be credited back to the original payment method used during the transaction. Please be aware of the following:
-                            </p>
-                            <ul className="list-none space-y-3 mb-6">
-                                <li className="flex items-start gap-3">
-                                    <span className="material-symbols-outlined text-primary mt-1">check_circle</span>
-                                    <span>Refunds typically take <strong>5 to 10 business days</strong> to appear on your statement, depending on your financial institution.</span>
-                                </li>
-                                <li className="flex items-start gap-3">
-                                    <span className="material-symbols-outlined text-primary mt-1">check_circle</span>
-                                    <span>We do not provide pro-rated refunds for partial months of service if you cancel outside of the initial 14-day window.</span>
-                                </li>
-                                <li className="flex items-start gap-3">
-                                    <span className="material-symbols-outlined text-primary mt-1">check_circle</span>
-                                    <span>Any transaction fees incurred by the payment processor are generally non-refundable.</span>
-                                </li>
-                            </ul>
-                        </div>
+                        <p className="text-slate-600 dark:text-slate-300 leading-relaxed">
+                            All refund requests are processed through Paddle and issued to the original payment method used at checkout. Processing times may vary depending on your financial institution.
+                        </p>
                     </section>
 
-                    {/* Renewals */}
+                    {/* Subscription Renewals */}
                     <section className="mb-12">
                         <h2 className="text-2xl font-bold text-primary mb-4 flex items-center gap-2">
                             <span className="material-symbols-outlined">autorenew</span>
-                            Renewals
+                            Subscription Renewals
                         </h2>
                         <div className="space-y-4 text-slate-600 dark:text-slate-300">
                             <p>
-                                Subscriptions are set to renew automatically to ensure uninterrupted service. You can disable auto-renewal at any time through your Account Settings.
+                                SwitchQR subscriptions renew automatically at the end of each billing period. You may cancel your subscription at any time through your account settings to prevent future charges.
                             </p>
                             <p>
-                                Requests for refunds on automatic renewals will be considered on a case-by-case basis and must be submitted within 48 hours of the renewal charge. We recommend canceling your subscription at least 24 hours before the renewal date to avoid unwanted charges.
+                                Refund requests for renewal payments are handled in accordance with Paddle's refund policy and consumer protection requirements.
                             </p>
                         </div>
                     </section>
@@ -99,50 +69,57 @@ const RefundPolicy = () => {
                             How to Request a Refund
                         </h2>
                         <p className="mb-6 text-slate-600 dark:text-slate-300">
-                            To initiate a refund request, please send an email to our support team. To help us process your request quickly, please include the following information:
+                            To request a refund, please contact Paddle directly through your purchase receipt or contact Paddle support at:
                         </p>
-                        {/* Information Callout Box */}
                         <div className="bg-primary/5 dark:bg-primary/10 border border-primary/20 rounded-xl p-8 mb-8">
-                            <div className="flex items-center gap-3 mb-4">
-                                <span className="material-symbols-outlined text-primary">contact_support</span>
-                                <h3 className="text-lg font-bold text-slate-900 dark:text-white">Contact Information</h3>
-                            </div>
-                            <p className="mb-6 text-slate-700 dark:text-slate-300">
-                                Send your request to: <a className="text-primary font-bold hover:underline" href="mailto:support@switch-qr.com">support@switch-qr.com</a>
-                            </p>
-                            <div className="space-y-4">
-                                <p className="text-sm uppercase tracking-wider font-semibold text-slate-500 dark:text-slate-400">Required Details:</p>
-                                <ul className="grid grid-cols-1 md:grid-cols-2 gap-4 text-slate-700 dark:text-slate-300">
-                                    <li className="flex items-center gap-3 bg-white dark:bg-background-dark p-3 rounded-lg border border-primary/10">
-                                        <span className="material-symbols-outlined text-primary">alternate_email</span>
-                                        <span className="text-sm font-medium">Account Email Address</span>
-                                    </li>
-                                    <li className="flex items-center gap-3 bg-white dark:bg-background-dark p-3 rounded-lg border border-primary/10">
-                                        <span className="material-symbols-outlined text-primary">calendar_today</span>
-                                        <span className="text-sm font-medium">Date of Transaction</span>
-                                    </li>
-                                    <li className="flex items-center gap-3 bg-white dark:bg-background-dark p-3 rounded-lg border border-primary/10">
-                                        <span className="material-symbols-outlined text-primary">receipt_long</span>
-                                        <span className="text-sm font-medium">Order ID or Invoice Number</span>
-                                    </li>
-                                    <li className="flex items-center gap-3 bg-white dark:bg-background-dark p-3 rounded-lg border border-primary/10">
-                                        <span className="material-symbols-outlined text-primary">help_outline</span>
-                                        <span className="text-sm font-medium">Reason for Refund</span>
-                                    </li>
-                                </ul>
+                            <div className="space-y-6">
+                                {/* Paddle Support */}
+                                <div>
+                                    <div className="flex items-center gap-3 mb-2">
+                                        <span className="material-symbols-outlined text-primary">support_agent</span>
+                                        <h3 className="text-lg font-bold text-slate-900 dark:text-white">Paddle Support</h3>
+                                    </div>
+                                    <a className="text-primary font-bold hover:underline" href="https://www.paddle.net/support" target="_blank" rel="noopener noreferrer">
+                                        https://www.paddle.net/support
+                                    </a>
+                                </div>
+
+                                <hr className="border-primary/10" />
+
+                                {/* SwitchQR Support */}
+                                <div>
+                                    <div className="flex items-center gap-3 mb-2">
+                                        <span className="material-symbols-outlined text-primary">contact_support</span>
+                                        <h3 className="text-lg font-bold text-slate-900 dark:text-white">SwitchQR Support</h3>
+                                    </div>
+                                    <p className="text-slate-600 dark:text-slate-300 mb-2">
+                                        Alternatively, you may contact SwitchQR support at:
+                                    </p>
+                                    <a className="text-primary font-bold hover:underline" href="mailto:support@switch-qr.com">
+                                        support@switch-qr.com
+                                    </a>
+                                    <p className="text-sm text-slate-500 dark:text-slate-400 mt-2">
+                                        We will assist you in initiating the refund process with Paddle where applicable.
+                                    </p>
+                                </div>
                             </div>
                         </div>
                     </section>
 
-                    {/* Exceptions */}
+                    {/* Merchant of Record */}
                     <section className="mb-16">
                         <h2 className="text-2xl font-bold text-primary mb-4 flex items-center gap-2">
                             <span className="material-symbols-outlined">gavel</span>
-                            Exceptions
+                            Merchant of Record
                         </h2>
-                        <p className="text-slate-600 dark:text-slate-300">
-                            SwitchQR reserves the right to deny refund requests if we detect patterns of abuse or fraudulent activity associated with your account. Accounts terminated due to violations of our Terms of Service are not eligible for refunds.
-                        </p>
+                        <div className="space-y-4 text-slate-600 dark:text-slate-300">
+                            <p>
+                                All transactions are processed by Paddle, who acts as the Merchant of Record for SwitchQR. Refunds are governed by Paddle's Consumer Terms, available at:
+                            </p>
+                            <a className="text-primary font-bold hover:underline block" href="https://www.paddle.com/legal/invoiced-consumer-terms" target="_blank" rel="noopener noreferrer">
+                                https://www.paddle.com/legal/invoiced-consumer-terms
+                            </a>
+                        </div>
                     </section>
                 </article>
             </main>
