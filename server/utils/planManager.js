@@ -92,6 +92,7 @@ async function resolveUserPlan(userId) {
         const storedPlan = profile.plan || 'free';
         const planExpiresAt = profile.plan_expires_at;
         const subscriptionStatus = profile.subscription_status;
+        const currentPeriodEnd = profile.current_period_end || null;
 
         let effectivePlan = storedPlan;
 
@@ -135,6 +136,7 @@ async function resolveUserPlan(userId) {
             effectivePlan: effectivePlan,
             plan_expires_at: planExpiresAt || null,
             subscription_status: subscriptionStatus || null,
+            current_period_end: currentPeriodEnd,
             is_trial: isTrial,
             days_remaining: daysRemaining,
             qr_limit: PLAN_CONFIG.limits[effectivePlan] || 5,

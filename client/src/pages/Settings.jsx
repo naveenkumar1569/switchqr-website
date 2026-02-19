@@ -257,10 +257,25 @@ const Settings = () => {
                             </button>
                         </div>
 
-                        <div className="p-4 rounded-xl border border-dashed border-slate-200 flex items-start gap-3 text-sm text-slate-500">
-                            <span className="material-symbols-outlined text-slate-400 text-base mt-0.5">info</span>
-                            <span>Your payment method, next invoice date, and billing history are managed securely through the Billing Portal. Click <strong>Manage Subscription</strong> above to view them.</span>
-                        </div>
+                        {planInfo?.current_period_end ? (
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div className="p-4 rounded-xl border border-dashed border-slate-200 flex flex-col gap-1 items-start">
+                                    <span className="text-xs uppercase tracking-wider font-bold text-slate-400">Next Invoice</span>
+                                    <span className="text-slate-900 font-medium">
+                                        {new Date(planInfo.current_period_end).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+                                    </span>
+                                </div>
+                                <div className="p-4 rounded-xl border border-dashed border-slate-200 flex flex-col gap-1 items-start">
+                                    <span className="text-xs uppercase tracking-wider font-bold text-slate-400">Payment Method</span>
+                                    <span className="text-sm text-slate-500">View in Billing Portal</span>
+                                </div>
+                            </div>
+                        ) : (
+                            <div className="p-4 rounded-xl border border-dashed border-slate-200 flex items-start gap-3 text-sm text-slate-500">
+                                <span className="material-symbols-outlined text-slate-400 text-base mt-0.5">info</span>
+                                <span>Your payment method, next invoice date, and billing history are managed securely through the Billing Portal. Click <strong>Manage Subscription</strong> above to view them.</span>
+                            </div>
+                        )}
                     </div>
                 )}
             </div>
