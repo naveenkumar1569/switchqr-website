@@ -386,12 +386,14 @@ const Billing = () => {
                             </div>
                             <div className="space-y-4">
                                 <div>
-                                    <h4 className="text-xs uppercase tracking-wider font-bold text-[#6e5393] [#a08cb3] mb-1">Next Billing Date</h4>
+                                    <h4 className="text-xs uppercase tracking-wider font-bold text-[#6e5393] [#a08cb3] mb-1">
+                                        {planInfo?.current_period_end ? 'Next Billing Date' : planInfo?.plan_expires_at ? 'Trial Ends' : 'Next Billing Date'}
+                                    </h4>
                                     <p className="text-sm font-medium text-[#140f1a] ">
                                         {currentPlan === 'free'
                                             ? 'N/A (Free Tier)'
-                                            : planInfo?.current_period_end
-                                                ? new Date(planInfo.current_period_end).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
+                                            : (planInfo?.current_period_end || planInfo?.plan_expires_at)
+                                                ? new Date(planInfo.current_period_end || planInfo.plan_expires_at).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
                                                 : 'Active (Auto-renew)'}
                                     </p>
                                 </div>

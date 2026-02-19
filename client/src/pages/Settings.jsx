@@ -257,17 +257,21 @@ const Settings = () => {
                             </button>
                         </div>
 
-                        {planInfo?.current_period_end ? (
+                        {(planInfo?.current_period_end || planInfo?.plan_expires_at) ? (
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <div className="p-4 rounded-xl border border-dashed border-slate-200 flex flex-col gap-1 items-start">
-                                    <span className="text-xs uppercase tracking-wider font-bold text-slate-400">Next Invoice</span>
+                                    <span className="text-xs uppercase tracking-wider font-bold text-slate-400">
+                                        {planInfo?.current_period_end ? 'Next Invoice' : 'Trial Ends'}
+                                    </span>
                                     <span className="text-slate-900 font-medium">
-                                        {new Date(planInfo.current_period_end).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+                                        {new Date(planInfo.current_period_end || planInfo.plan_expires_at).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
                                     </span>
                                 </div>
                                 <div className="p-4 rounded-xl border border-dashed border-slate-200 flex flex-col gap-1 items-start">
                                     <span className="text-xs uppercase tracking-wider font-bold text-slate-400">Payment Method</span>
-                                    <span className="text-sm text-slate-500">View in Billing Portal</span>
+                                    <span className="text-sm text-slate-500">
+                                        {planInfo?.current_period_end ? 'Managed via Billing Portal' : '—'}
+                                    </span>
                                 </div>
                             </div>
                         ) : (
