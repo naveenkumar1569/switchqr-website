@@ -55,46 +55,54 @@ const SuccessStories = () => {
             {/* Featured Story */}
             <section className="bg-gray-50 py-12">
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                    <div className="group relative overflow-hidden rounded-2xl bg-white shadow-xl">
+                    <div className="group relative overflow-hidden rounded-[2.5rem] bg-white shadow-xl border border-gray-100">
                         <div className="flex flex-col lg:flex-row">
-                            <div className="relative h-64 lg:h-auto lg:w-1/2 overflow-hidden">
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent lg:hidden"></div>
+                            <div className="relative h-80 lg:h-auto lg:w-1/2 overflow-hidden">
                                 <img
                                     src={featuredStory.image}
                                     alt={featuredStory.title}
-                                    className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                                    className="h-full w-full object-cover grayscale brightness-75 transition-all duration-1000 group-hover:scale-105 group-hover:grayscale-0 group-hover:brightness-100"
                                 />
-                                <div className="absolute left-4 top-4 rounded-full bg-white/90 backdrop-blur px-3 py-1 text-xs font-bold uppercase tracking-wider text-text-main shadow-sm lg:hidden">
-                                    Featured Story
+                                {/* Featured Badge Overlay */}
+                                <div className="absolute top-6 left-6 flex items-center gap-2 px-4 py-2 bg-white/90 backdrop-blur rounded-full shadow-sm">
+                                    <span className="material-symbols-outlined text-primary text-sm">stars</span>
+                                    <span className="text-xs font-black uppercase tracking-widest text-text-main">Featured Story</span>
+                                </div>
+                                {/* Company Logo Overlay */}
+                                <div className="absolute bottom-6 left-6 right-6 p-4 bg-black/40 backdrop-blur-md rounded-2xl border border-white/10 flex items-center gap-3">
+                                    <div className="size-10 rounded-xl bg-white flex items-center justify-center">
+                                        <span className="material-symbols-outlined text-primary text-2xl">{featuredStory.logo || 'monitoring'}</span>
+                                    </div>
+                                    <div className="flex flex-col">
+                                        <span className="text-white font-black text-lg tracking-tight leading-none uppercase">{featuredStory.company}</span>
+                                        <span className="text-white/60 text-[10px] font-bold tracking-widest uppercase mt-1">{featuredStory.category}</span>
+                                    </div>
                                 </div>
                             </div>
-                            <div className="flex flex-col justify-center p-8 lg:w-1/2 lg:p-12">
-                                <div className="mb-4 hidden lg:flex items-center gap-3">
-                                    <span className="rounded-full bg-primary/10 px-3 py-1 text-xs font-bold uppercase tracking-wider text-primary">Featured Story</span>
-                                    <span className="rounded-full border border-gray-200 px-3 py-1 text-xs font-medium text-text-muted">{featuredStory.category}</span>
-                                </div>
-                                <h2 className="mb-4 text-3xl font-bold leading-tight text-text-main lg:text-4xl">
+                            <div className="flex flex-col justify-center p-8 lg:w-1/2 lg:p-14">
+                                <h2 className="mb-6 text-3xl font-black leading-[1.1] text-text-main lg:text-4xl tracking-tight">
                                     {featuredStory.title}
                                 </h2>
-                                <p className="mb-8 text-lg text-text-muted line-clamp-3">
+                                <p className="mb-8 text-lg text-text-muted leading-relaxed">
                                     {featuredStory.description}
                                 </p>
-                                <div className="mb-8 grid grid-cols-2 gap-6 border-y border-gray-100 py-6">
-                                    <div>
-                                        <div className="text-3xl font-black text-primary">{featuredStory.metrics[0].value}</div>
-                                        <div className="text-sm font-medium text-text-muted">{featuredStory.metrics[0].label}</div>
+
+                                <div className="mb-10 flex items-center gap-5 p-6 bg-gray-50 rounded-2xl border border-gray-100">
+                                    <div className="size-16 rounded-full overflow-hidden border-2 border-white shadow-md shrink-0">
+                                        <img src={featuredStory.authorImage} alt={featuredStory.author} className="size-full object-cover" />
                                     </div>
-                                    <div>
-                                        <div className="text-3xl font-black text-primary">{featuredStory.metrics[1].value}</div>
-                                        <div className="text-sm font-medium text-text-muted">{featuredStory.metrics[1].label}</div>
+                                    <div className="flex flex-col">
+                                        <span className="text-base font-black text-text-main tracking-tight uppercase">{featuredStory.author}</span>
+                                        <span className="text-xs font-bold text-text-muted mt-0.5">{featuredStory.role}</span>
                                     </div>
                                 </div>
+
                                 <Link
                                     to={`/case-studies/${featuredStory.slug}`}
-                                    className="inline-flex items-center gap-2 font-bold text-primary transition-colors hover:text-primary-dark"
+                                    className="inline-flex items-center justify-center gap-2 h-14 px-8 rounded-xl bg-primary text-white font-black text-sm uppercase tracking-widest shadow-lg shadow-primary/25 hover:translate-y-[-2px] transition-all"
                                 >
-                                    Read Full Story
-                                    <span className="material-symbols-outlined text-[20px]">arrow_forward</span>
+                                    Read Full Case Study
+                                    <span className="material-symbols-outlined">arrow_right_alt</span>
                                 </Link>
                             </div>
                         </div>
@@ -105,49 +113,70 @@ const SuccessStories = () => {
             {/* Case Study Grid */}
             <section className="bg-gray-50 pb-24">
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                    <div className="mb-8 flex items-end justify-between">
+                    <div className="mb-12 flex items-end justify-between">
                         <div>
-                            <h3 className="text-2xl font-bold text-text-main">Latest Stories</h3>
-                            <p className="mt-1 text-text-muted">Explore how different industries are innovating.</p>
+                            <div className="text-primary font-black text-xs uppercase tracking-[0.2em] mb-3">Library</div>
+                            <h3 className="text-3xl font-black text-text-main tracking-tight uppercase">Latest Stories</h3>
                         </div>
                         <div className="hidden sm:block relative">
-                            <span className="material-symbols-outlined absolute left-3 top-2.5 text-gray-400 text-[20px]">search</span>
+                            <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-gray-400">search</span>
                             <input
                                 type="text"
-                                placeholder="Search stories..."
-                                className="pl-10 rounded-full border-gray-200 bg-white py-2 pr-4 text-sm focus:border-primary focus:ring-primary"
+                                placeholder="Search by industry or brand..."
+                                className="pl-11 h-12 w-64 rounded-xl border-gray-200 bg-white text-sm focus:border-primary focus:ring-primary shadow-sm"
                             />
                         </div>
                     </div>
-                    <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+
+                    <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
                         {filteredStories.map((story) => (
-                            <article key={story.id} className="card-hover group flex flex-col overflow-hidden rounded-2xl bg-white shadow-sm">
-                                <div className="relative aspect-[4/3] overflow-hidden">
+                            <article key={story.id} className="group relative flex flex-col bg-white rounded-[2rem] border border-gray-100 shadow-sm hover:shadow-2xl transition-all duration-500 overflow-hidden">
+                                {/* Card Header / Image */}
+                                <div className="relative aspect-[16/10] overflow-hidden">
                                     <img
                                         src={story.image}
-                                        alt={story.title}
-                                        className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                                        alt={story.company}
+                                        className="h-full w-full object-cover grayscale brightness-75 transition-all duration-1000 group-hover:scale-110 group-hover:grayscale-0 group-hover:brightness-100"
                                     />
-                                    <div className="absolute left-4 top-4">
-                                        <span className="rounded-full bg-white/90 px-3 py-1 text-xs font-bold text-primary shadow-sm backdrop-blur">
-                                            {story.category}
-                                        </span>
+                                    {/* Company Badge Overlay */}
+                                    <div className="absolute bottom-4 left-4 flex items-center gap-2 p-2.5 bg-white/95 backdrop-blur rounded-xl shadow-lg border border-white/20 translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
+                                        <div className="size-8 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
+                                            <span className="material-symbols-outlined text-primary text-xl font-bold">{story.logo || 'monitoring'}</span>
+                                        </div>
+                                        <span className="text-xs font-black text-text-main uppercase tracking-tight pr-2">{story.company}</span>
+                                    </div>
+                                    {/* Static Category Tag */}
+                                    <div className="absolute top-4 right-4 px-3 py-1 bg-black/30 backdrop-blur-md rounded-full text-[10px] font-black tracking-widest text-white uppercase border border-white/10">
+                                        {story.category}
                                     </div>
                                 </div>
-                                <div className="flex flex-1 flex-col p-6">
-                                    <h3 className="mb-2 text-xl font-bold leading-tight text-text-main">
+
+                                {/* Card Body */}
+                                <div className="flex flex-1 flex-col p-8">
+                                    {/* Author Mini-Info */}
+                                    <div className="flex items-center gap-3 mb-5">
+                                        <div className="size-10 rounded-full overflow-hidden border-2 border-primary/10 bg-gray-50 shrink-0">
+                                            <img src={story.authorImage} alt={story.author} className="size-full object-cover" />
+                                        </div>
+                                        <div className="flex flex-col">
+                                            <span className="text-[11px] font-black text-text-main uppercase tracking-tight">{story.author}</span>
+                                            <span className="text-[9px] font-bold text-text-muted uppercase tracking-widest">{story.role.split(',')[0]}</span>
+                                        </div>
+                                    </div>
+
+                                    <h3 className="mb-4 text-xl font-black leading-tight text-text-main group-hover:text-primary transition-colors">
                                         {story.title}
                                     </h3>
-                                    <p className="mb-4 flex-1 text-sm text-text-muted">
-                                        {story.description}
-                                    </p>
-                                    <Link
-                                        to={`/case-studies/${story.slug}`}
-                                        className="inline-flex items-center gap-1.5 text-sm font-bold text-primary transition-colors hover:text-primary-dark"
-                                    >
-                                        Read Story
-                                        <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
-                                    </Link>
+
+                                    <div className="mt-auto pt-6 border-t border-gray-100">
+                                        <Link
+                                            to={`/case-studies/${story.slug}`}
+                                            className="inline-flex items-center gap-2 text-xs font-black text-text-main uppercase tracking-[0.15em] hover:text-primary transition-colors"
+                                        >
+                                            View Results
+                                            <span className="material-symbols-outlined text-[18px]">arrow_right_alt</span>
+                                        </Link>
+                                    </div>
                                 </div>
                             </article>
                         ))}
