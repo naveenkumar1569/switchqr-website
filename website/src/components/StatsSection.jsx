@@ -78,6 +78,11 @@ const StatsSection = () => {
     return (
         <section className="py-20 bg-white border-t border-gray-100">
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                <div className="text-center mb-16">
+                    <h2 className="text-text-main text-3xl md:text-4xl font-black tracking-tight">
+                        Powering high-growth <span className="text-primary">QR campaigns</span>
+                    </h2>
+                </div>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12">
                     {stats.map((stat, index) => (
                         <div key={index} className="flex flex-col items-center text-center group">

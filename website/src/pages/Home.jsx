@@ -191,6 +191,9 @@ const Home = () => {
                 </div>
             </section>
 
+            {/* Stats Section */}
+            <StatsSection />
+
             {/* Solution Section */}
             <section className="py-24 px-4 sm:px-6 lg:px-8">
                 <div className="mx-auto max-w-7xl">
@@ -219,9 +222,6 @@ const Home = () => {
                     </div>
                 </div>
             </section>
-
-            {/* Stats Section */}
-            <StatsSection />
 
             {/* Use Cases Section */}
             <section className="py-20 bg-white border-t border-gray-100 overflow-hidden">
