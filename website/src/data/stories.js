@@ -14,7 +14,7 @@ export const stories = [
         quote: "SwitchQR didn't just save us printing costs; it gave us a new channel for customer data we didn't know we were missing. We can now optimize our in-store traffic in real-time, just like we optimize our website.",
         author: 'Sarah Jenkins',
         role: 'Chief Marketing Officer, RetailX',
-        authorImage: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150&h=150&fit=crop&crop=faces',
+        authorImage: '/images/testimonials/sarah_jenkins.png',
         metrics: [
             { value: '200%', label: 'App Installs', subtext: 'Organic lift from store traffic' },
             { value: '40%', label: 'Conversion Lift', subtext: 'Due to stock-aware routing' },
