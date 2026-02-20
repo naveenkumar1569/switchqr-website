@@ -136,5 +136,28 @@ export const stories = [
             { value: '45%', label: 'Engagement', subtext: 'Intl. visitor score' }
         ],
         integrations: ['SoundCloud', 'Google Translate features', 'Tableau']
+    },
+    {
+        id: 'skyline-media-automation',
+        slug: 'skyline-media-automation',
+        title: 'Managing at Scale: How Skyline Media Automated QR Operations for 500+ Clients',
+        company: 'Skyline Media',
+        category: 'Marketing',
+        image: 'https://images.unsplash.com/photo-1551434678-e076c223a692?w=800&q=80',
+        heroImage: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1200&q=80',
+        description: "Skyline Media leveraged SwitchQR's API and bulk tools to manage 10,000+ dynamic touchpoints, saving 20+ hours of manual work per week.",
+        challenge: "Skyline Media, a leading digital-out-of-home (DOOH) agency, faced a major operational bottleneck. Managing QR campaigns for their 500+ clients across thousands of physical locations was a manual nightmare. Updating a single destination URL required multiple steps, and tracking attribution across different regions was fragmented. As they scaled, the team was spending over 20 hours a week just on QR maintenance and reporting, leaving little time for strategic optimization.",
+        solution: "They integrated SwitchQR into their internal campaign management platform via API. This allowed them to automate the creation of batches of 500+ QR codes at once. They utilized the dynamic redirect feature to update thousands of physical assets in real-time without reprinting. Most importantly, they used SwitchQR's advanced analytics to provide each of their clients with a dedicated dashboard showing scan geolocation data and device types.",
+        result: "The transition to SwitchQR effectively eliminated the 20-hour weekly maintenance burden, allowing the team to focus on high-level campaign strategy. Lead generation for their top-tier clients saw a 30% lift due to more optimized, time-sensitive routing. Operationally, they reduced 'broken link' errors by 100% since all assets were now dynamic and manageable from a central cockpit. Their clients reported a 50% increase in transparency regarding offline-to-online conversion metrics.",
+        quote: "The bulk creation tools and API access allowed us to automate QR generation for our 500+ clients seamlessly. It's been a massive productivity boost for our operations team.",
+        author: 'David Chen',
+        role: 'Operations Lead, Skyline Media',
+        authorImage: '/images/testimonials/david_chen.png',
+        metrics: [
+            { value: '20+ hrs', label: 'Time Saved', subtext: 'Per week on operations' },
+            { value: '100%', label: 'Error Reduction', subtext: 'Zero broken physical links' },
+            { value: '500+', label: 'Clients Managed', subtext: 'Seamlessly via API' }
+        ],
+        integrations: ['SwitchQR API', 'Slack', 'Google Looker Studio']
     }
 ];

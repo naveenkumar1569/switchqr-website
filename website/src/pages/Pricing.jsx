@@ -384,7 +384,8 @@ const Pricing = () => {
                                 description: 'The dynamic capabilities meant we could change promos without reprinting signage. It\'s a game changer for retail.',
                                 author: 'Sarah Jenkins',
                                 role: 'CMO, RetailX',
-                                image: '/images/testimonials/sarah_jenkins.png'
+                                image: '/images/testimonials/sarah_jenkins.png',
+                                slug: 'retailx-engagement'
                             },
                             {
                                 logo: 'rocket_launch',
@@ -393,7 +394,8 @@ const Pricing = () => {
                                 description: 'The bulk creation tools and API access allowed us to automate QR generation for our 500+ clients seamlessly.',
                                 author: 'David Chen',
                                 role: 'Operations Lead, Skyline Media',
-                                image: '/images/testimonials/david_chen.png'
+                                image: '/images/testimonials/david_chen.png',
+                                slug: 'skyline-media-automation'
                             },
                         ].map((story, i) => (
                             <div key={i} className="flex flex-col md:flex-row bg-white rounded-[2rem] border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-500 overflow-hidden group">
@@ -419,9 +421,17 @@ const Pricing = () => {
                                     <p className="text-gray-500 text-sm leading-relaxed mb-6 italic">
                                         "{story.description}"
                                     </p>
-                                    <div className="mt-auto">
-                                        <div className="text-sm font-extrabold text-text-main">{story.author}</div>
-                                        <div className="text-xs text-gray-400 font-medium uppercase tracking-wider mt-0.5">{story.role}</div>
+                                    <div className="flex flex-col gap-4 mt-auto">
+                                        <div>
+                                            <div className="text-sm font-extrabold text-text-main">{story.author}</div>
+                                            <div className="text-xs text-gray-400 font-medium uppercase tracking-wider mt-0.5">{story.role}</div>
+                                        </div>
+                                        <Link
+                                            to={`/case-studies/${story.slug}`}
+                                            className="inline-flex items-center gap-1 text-primary font-bold text-sm hover:gap-2 transition-all"
+                                        >
+                                            Read Full Story <span className="material-symbols-outlined text-lg">arrow_right_alt</span>
+                                        </Link>
                                     </div>
                                 </div>
                             </div>
