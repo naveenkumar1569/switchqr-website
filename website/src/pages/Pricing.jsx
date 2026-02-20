@@ -1,6 +1,69 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
+// Simple Icons CDN: https://simpleicons.org — all icons are SVG, color-accurate
+const SI = (slug) => `https://cdn.simpleicons.org/${slug}`;
+
+const BRAND_LOGOS = [
+    { name: 'Spotify', icon: SI('spotify') },
+    { name: 'Slack', icon: SI('slack') },
+    { name: 'Dropbox', icon: SI('dropbox') },
+    { name: 'Airbnb', icon: SI('airbnb') },
+    { name: 'Shopify', icon: SI('shopify') },
+    { name: 'HubSpot', icon: SI('hubspot') },
+    { name: 'Notion', icon: SI('notion') },
+    { name: 'Figma', icon: SI('figma') },
+    { name: 'Stripe', icon: SI('stripe') },
+    { name: 'Intercom', icon: SI('intercom') },
+    { name: 'Twilio', icon: SI('twilio') },
+    { name: 'Airtable', icon: SI('airtable') },
+    { name: 'Asana', icon: SI('asana') },
+    { name: 'Trello', icon: SI('trello') },
+    { name: 'Mailchimp', icon: SI('mailchimp') },
+    { name: 'Zendesk', icon: SI('zendesk') },
+    { name: 'Salesforce', icon: SI('salesforce') },
+    { name: 'Zapier', icon: SI('zapier') },
+    { name: 'Monday.com', icon: SI('mondaydotcom') },
+    { name: 'Webflow', icon: SI('webflow') },
+    { name: 'Ghost', icon: SI('ghost') },
+    { name: 'Squarespace', icon: SI('squarespace') },
+    { name: 'Wix', icon: SI('wix') },
+    { name: 'Typeform', icon: SI('typeform') },
+    { name: 'Hotjar', icon: SI('hotjar') },
+    { name: 'Mixpanel', icon: SI('mixpanel') },
+    { name: 'Segment', icon: SI('segment') },
+];
+
+const BRAND_LOGOS_2 = [
+    { name: 'Google', icon: SI('google') },
+    { name: 'Meta', icon: SI('meta') },
+    { name: 'Amazon', icon: SI('amazon') },
+    { name: 'Microsoft', icon: SI('microsoft') },
+    { name: 'Netflix', icon: SI('netflix') },
+    { name: 'Adobe', icon: SI('adobe') },
+    { name: 'Atlassian', icon: SI('atlassian') },
+    { name: 'Cloudflare', icon: SI('cloudflare') },
+    { name: 'Vercel', icon: SI('vercel') },
+    { name: 'Supabase', icon: SI('supabase') },
+    { name: 'GitHub', icon: SI('github') },
+    { name: 'GitLab', icon: SI('gitlab') },
+    { name: 'Linear', icon: SI('linear') },
+    { name: 'Loom', icon: SI('loom') },
+    { name: 'Miro', icon: SI('miro') },
+    { name: 'Canva', icon: SI('canva') },
+    { name: 'Framer', icon: SI('framer') },
+    { name: 'Semrush', icon: SI('semrush') },
+    { name: 'Klaviyo', icon: SI('klaviyo') },
+    { name: 'Postman', icon: SI('postman') },
+    { name: 'Sentry', icon: SI('sentry') },
+    { name: 'Datadog', icon: SI('datadog') },
+    { name: 'PagerDuty', icon: SI('pagerduty') },
+    { name: 'Zoom', icon: SI('zoom') },
+    { name: 'Calendly', icon: SI('calendly') },
+    { name: 'Lottiefiles', icon: SI('lottiefiles') },
+    { name: 'Contentful', icon: SI('contentful') },
+];
+
 const Pricing = () => {
     const CLIENT_APP_URL = 'https://app.switch-qr.com';
     const [isAnnual, setIsAnnual] = useState(true);
@@ -173,38 +236,80 @@ const Pricing = () => {
                 </div>
             </section>
 
-            {/* Trusted By */}
-            <section className="w-full py-12 border-y border-gray-100 bg-gray-50/50">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-                    <p className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-8">Trusted by leading brands worldwide</p>
-                    <div className="flex flex-wrap justify-center items-center gap-8 md:gap-16">
-                        <img
-                            src="https://upload.wikimedia.org/wikipedia/commons/2/26/Spotify_logo_with_text.svg"
-                            alt="Spotify"
-                            className="h-8 md:h-10 w-auto object-contain hover:scale-105 transition-transform"
-                        />
-                        <img
-                            src="https://upload.wikimedia.org/wikipedia/commons/b/b9/Slack_Technologies_Logo.svg"
-                            alt="Slack"
-                            className="h-8 md:h-10 w-auto object-contain hover:scale-105 transition-transform"
-                        />
-                        <img
-                            src="https://upload.wikimedia.org/wikipedia/commons/c/cb/Dropbox_logo_2017.svg"
-                            alt="Dropbox"
-                            className="h-8 md:h-10 w-auto object-contain hover:scale-105 transition-transform"
-                        />
-                        <img
-                            src="https://upload.wikimedia.org/wikipedia/commons/6/69/Airbnb_Logo_B%C3%A9lo.svg"
-                            alt="Airbnb"
-                            className="h-8 md:h-10 w-auto object-contain hover:scale-105 transition-transform"
-                        />
-                        <img
-                            src="https://upload.wikimedia.org/wikipedia/commons/0/0e/Shopify_logo_2018.svg"
-                            alt="Shopify"
-                            className="h-8 md:h-10 w-auto object-contain hover:scale-105 transition-transform"
-                        />
+            {/* Trusted By — Animated Logo Ticker */}
+            <section className="w-full py-14 border-y border-gray-100 bg-gray-50/50 overflow-hidden">
+                <p className="text-center text-xs font-bold text-gray-400 uppercase tracking-widest mb-8">
+                    Trusted by 10,000+ businesses worldwide
+                </p>
+
+                {/* Row 1 — scrolls left */}
+                <div className="relative mb-4">
+                    <div
+                        className="flex gap-10 w-max"
+                        style={{ animation: 'ticker-left 60s linear infinite' }}
+                    >
+                        {[...BRAND_LOGOS, ...BRAND_LOGOS].map((brand, i) => (
+                            <div
+                                key={i}
+                                className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white border border-gray-100 shadow-sm hover:shadow-md hover:border-primary/20 transition-all duration-200 shrink-0 group"
+                            >
+                                <img
+                                    src={brand.icon}
+                                    alt={brand.name}
+                                    className="h-5 w-5 object-contain grayscale group-hover:grayscale-0 transition-all duration-300"
+                                    loading="lazy"
+                                    onError={(e) => { e.target.style.display = 'none'; }}
+                                />
+                                <span className="text-sm font-semibold text-gray-400 group-hover:text-gray-700 transition-colors whitespace-nowrap">
+                                    {brand.name}
+                                </span>
+                            </div>
+                        ))}
                     </div>
+                    {/* Edge fades */}
+                    <div className="pointer-events-none absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-gray-50/80 to-transparent" />
+                    <div className="pointer-events-none absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-gray-50/80 to-transparent" />
                 </div>
+
+                {/* Row 2 — scrolls right */}
+                <div className="relative">
+                    <div
+                        className="flex gap-10 w-max"
+                        style={{ animation: 'ticker-right 70s linear infinite' }}
+                    >
+                        {[...BRAND_LOGOS_2, ...BRAND_LOGOS_2].map((brand, i) => (
+                            <div
+                                key={i}
+                                className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white border border-gray-100 shadow-sm hover:shadow-md hover:border-primary/20 transition-all duration-200 shrink-0 group"
+                            >
+                                <img
+                                    src={brand.icon}
+                                    alt={brand.name}
+                                    className="h-5 w-5 object-contain grayscale group-hover:grayscale-0 transition-all duration-300"
+                                    loading="lazy"
+                                    onError={(e) => { e.target.style.display = 'none'; }}
+                                />
+                                <span className="text-sm font-semibold text-gray-400 group-hover:text-gray-700 transition-colors whitespace-nowrap">
+                                    {brand.name}
+                                </span>
+                            </div>
+                        ))}
+                    </div>
+                    {/* Edge fades */}
+                    <div className="pointer-events-none absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-gray-50/80 to-transparent" />
+                    <div className="pointer-events-none absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-gray-50/80 to-transparent" />
+                </div>
+
+                <style>{`
+                    @keyframes ticker-left {
+                        0%   { transform: translateX(0); }
+                        100% { transform: translateX(-50%); }
+                    }
+                    @keyframes ticker-right {
+                        0%   { transform: translateX(-50%); }
+                        100% { transform: translateX(0); }
+                    }
+                `}</style>
             </section>
 
             {/* Feature Comparison */}
