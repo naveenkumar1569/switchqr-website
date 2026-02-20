@@ -232,15 +232,15 @@ const Home = () => {
                             <p className="text-text-muted">See how different businesses use SwitchQR.</p>
                         </div>
                     </div>
-                    <div className="flex overflow-x-auto gap-6 pb-8 snap-x snap-mandatory hide-scrollbar -mx-4 px-4 sm:mx-0 sm:px-0">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                         {useCases.map((useCase, index) => (
                             <Link
                                 to={`/industries/${useCase.slug}`}
                                 key={index}
-                                className="snap-start shrink-0 w-[85vw] sm:w-[360px] flex flex-col rounded-2xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-md transition-shadow group cursor-pointer"
+                                className="flex flex-col rounded-2xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 group cursor-pointer bg-white"
                             >
                                 <div
-                                    className="h-48 w-full relative overflow-hidden flex items-center justify-center"
+                                    className="h-48 w-full relative overflow-hidden flex items-center justify-center p-6"
                                     style={{ background: useCase.gradient }}
                                 >
                                     <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-300"></div>
@@ -251,14 +251,18 @@ const Home = () => {
                                         <span className="material-symbols-outlined text-4xl drop-shadow-md">{useCase.icon}</span>
                                     </div>
                                 </div>
-                                <div className="p-6 bg-white flex flex-col flex-1">
-                                    <div className="flex items-center gap-2 mb-3 text-primary font-bold text-xs uppercase tracking-wider">
+                                <div className="p-8 bg-white flex flex-col flex-1">
+                                    <div className="flex items-center gap-2 mb-4 text-primary font-bold text-xs uppercase tracking-wider">
                                         <span className="material-symbols-outlined text-sm">{useCase.icon}</span>
                                         {useCase.name}
                                     </div>
-                                    <h3 className="text-lg font-bold text-text-main mb-2 group-hover:text-primary transition-colors">{useCase.hero.title}</h3>
-                                    <p className="text-sm text-text-muted">{useCase.hero.subtitle.substring(0, 80)}...</p>
-                                    <div className="mt-4 flex items-center text-primary text-sm font-bold opacity-0 group-hover:opacity-100 transition-opacity -translate-x-2 group-hover:translate-x-0 duration-300">
+                                    <h3 className="text-xl font-bold text-text-main mb-3 group-hover:text-primary transition-colors leading-tight">
+                                        {useCase.hero.title}
+                                    </h3>
+                                    <p className="text-sm text-text-muted leading-relaxed mb-6">
+                                        {useCase.hero.subtitle.substring(0, 100)}...
+                                    </p>
+                                    <div className="mt-auto flex items-center text-primary text-sm font-bold group-hover:translate-x-1 transition-transform duration-300">
                                         Explore Use Case <span className="material-symbols-outlined text-lg ml-1">arrow_forward</span>
                                     </div>
                                 </div>
