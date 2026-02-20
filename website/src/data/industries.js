@@ -7,158 +7,209 @@ export const industries = {
         gradient: 'linear-gradient(135deg, #a5b4fc 0%, #818cf8 100%)',
         hero: {
             eyebrow: 'Events Industry Solution',
-            title: 'The "Adaptive Ticket" for Modern Events',
-            subtitle: 'One QR code that evolves from registration to live agenda to post-event feedback. No reprinting required.',
-            image: 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1200&q=80'
+            title: 'The Adaptive QR Code for Modern Event Operations',
+            subtitle: 'Events change constantly — schedules shift, sessions move, and links evolve from registration to live access to post-event follow-ups.',
+            description: 'SwitchQR gives event teams a single, permanent QR code that adapts throughout the entire event lifecycle — without ever needing reprints.',
+            highlight: 'Update destinations instantly. Reduce printing costs. Ensure attendees always see the latest information.',
+            cta: 'Create Event QR',
+            secondaryCta: 'View Demo',
+            image: 'https://images.unsplash.com/photo-1505373877841-8d25f7d46678?w=1600&h=1200&fit=crop'
         },
-        placement: [
-            'Booth banners',
-            'Stage screens',
-            'Badges',
-            'Flyers'
-        ],
-        flow: {
-            before: 'QR links to Agenda / Registration page',
-            during: 'Scheduled redirect to Live Session links & Lead forms',
-            after: 'Redirects to Feedback Survey & Recordings'
+        placementSection: {
+            title: 'Where Event Teams Use SwitchQR',
+            subtitle: 'SwitchQR works across all event touchpoints:',
+            items: [
+                { icon: 'tv', label: 'Stage screens and presentation displays' },
+                { icon: 'storefront', label: 'Booth banners and sponsor signage' },
+                { icon: 'badge', label: 'Attendee badges and lanyards' },
+                { icon: 'how_to_reg', label: 'Registration desks and welcome areas' },
+                { icon: 'news', label: 'Printed flyers, posters, and venue signage' },
+                { icon: 'mail', label: 'Email confirmations and event landing pages' }
+            ]
         },
         benefits: {
-            title: 'Chef’s Kiss for Event Teams',
-            subtitle: 'No reprinting, no rushing to change links manually, and full scan analytics per event.',
+            title: 'Built for Event Teams Managing Real-World Complexity',
+            subtitle: 'SwitchQR eliminates the limitations of static QR codes and gives teams complete control.',
             items: [
                 {
-                    icon: 'edit_square',
-                    title: 'Zero Reprinting',
-                    description: 'Fix typos or schedule changes instantly. No need to replace physical signage.'
+                    icon: 'history_toggle_off',
+                    title: 'Instant Updates Without Reprinting',
+                    description: 'Fix errors, update session links, or change destinations instantly — even after materials are printed and deployed. No replacements. No operational delays.'
                 },
                 {
-                    icon: 'analytics',
-                    title: 'Event Analytics',
-                    description: 'Track exactly which sessions are most popular and monitor attendee flow in real-time.'
+                    icon: 'monitoring',
+                    title: 'Real-Time Event Analytics',
+                    description: 'Track scan activity across sessions, booths, and locations. Understand what attendees engage with most and use real data to improve future events.'
                 },
                 {
-                    icon: 'folder_open',
-                    title: 'Campaign Folders',
-                    description: 'Organize every event into its own folder for clean management.'
+                    icon: 'folder_managed',
+                    title: 'Organized Event Management',
+                    description: 'Group QR codes by event, campaign, or sponsor using structured folders. Maintain clarity and control across multiple events.'
                 }
             ]
         },
-        advanced: [
-            'A/B test different CTAs ("Book demo" vs "Download brochure")',
-            'Campaign folder for each event'
-        ],
+        advanced: {
+            title: 'Advanced Capabilities for Event Teams',
+            subtitle: 'SwitchQR enables continuous optimization throughout the event lifecycle.',
+            items: [
+                { title: 'A/B Testing', description: 'Test different destinations to improve engagement and conversion.' },
+                { title: 'Campaign Management', description: 'Organize events into structured campaigns for better reporting.' },
+                { title: 'Dynamic Scheduling', description: 'Automatically update redirects based on your event schedule.' }
+            ]
+        },
         feature: {
             type: 'timeline',
-            title: 'The Perfect Event Lifecycle',
-            subtitle: 'A single asset that serves the entire attendee journey.',
+            title: 'One QR Code Across the Entire Event Lifecycle',
+            subtitle: 'A single QR code can serve multiple purposes as your event progresses.',
             items: [
-                {
-                    icon: 'how_to_reg',
-                    time: 'Pre-Event',
-                    title: 'Registration',
-                    description: 'Links to registration & agenda'
-                },
-                {
-                    icon: 'live_tv',
-                    time: 'During Event',
-                    title: 'Live Access',
-                    description: 'Redirects to live streams & speaker bios',
-                    active: true
-                },
-                {
-                    icon: 'rate_review',
-                    time: 'Post-Event',
-                    title: 'Feedback Loop',
-                    description: 'Switches to survey & recordings'
-                }
+                { icon: 'how_to_reg', time: 'Before Event', title: 'Before Event', description: 'Registration, agenda, and event information' },
+                { icon: 'live_tv', time: 'During Event', title: 'During Event', description: 'Live streams, session materials, and speaker details', active: true },
+                { icon: 'rate_review', time: 'After Event', title: 'After Event', description: 'Feedback surveys, recordings, and follow-ups' }
             ],
+            footer: 'The QR code stays the same — only the destination changes.',
             demo: {
                 time: 'Event Day, 09:00 AM',
                 url: 'event.com/live-stage',
                 image: 'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://switchqr.com&color=6b26d9'
             }
         },
+
+        setup: {
+            title: 'Simple Setup in Minutes',
+            steps: [
+                { title: 'Create your QR code', description: 'Generate a dynamic QR for your event.' },
+                { title: 'Set redirect rules', description: 'Define destinations and optional scheduling.' },
+                { title: 'Monitor and optimize', description: 'Track scans and update anytime.' }
+            ],
+            footer: 'No reprints. No delays. No limitations.'
+        },
         testimonial: {
-            quote: "This is chef’s kiss for PMMs and event teams. We stopped printing 5 different flyers and just used one smart QR.",
+            quote: "We replaced multiple static QR codes with a single adaptive QR. It simplified operations and gave us real visibility into engagement.",
             author: 'Alex Rivera',
-            role: 'Head of Event Operations, SaaStr',
-            image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=faces'
+            role: 'Head of Event Operations',
+            image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop'
         }
     },
     retail: {
         slug: 'retail',
-        name: 'Retail & In-Store',
-        icon: 'storefront',
-        gradient: 'linear-gradient(135deg, #f9a8d4 0%, #f472b6 100%)',
+        name: 'Retail Industry',
+        icon: 'shopping_basket',
+        gradient: 'linear-gradient(135deg, #f5f3ff 0%, #e0e7ff 100%)',
         hero: {
-            eyebrow: 'Retail & In-Store Marketing',
-            title: 'Dynamic Shelf Talkers',
-            subtitle: 'Retail teams can update offers without changing physical materials. Your window display works 24/7.',
-            image: 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1200&q=80'
+            eyebrow: 'Retail Industry Solution',
+            title: 'Dynamic QR Codes for Modern Retail Operations',
+            subtitle: 'Retail promotions change constantly — offers rotate, inventory shifts, and campaigns evolve weekly.',
+            description: 'SwitchQR allows retail teams to deploy one permanent QR code that can be updated instantly across stores, displays, and printed materials — without replacing physical signage. Keep in-store marketing accurate, current, and measurable at all times.',
+            image: 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1200&q=80',
+            cta: 'Create your first retail QR',
+            secondaryCta: 'View live demo',
+            highlight: 'One permanent QR. Infinite marketing possibilities.'
         },
-        placement: [
-            'Shelf displays',
-            'Window posters',
-            'Checkout counters'
-        ],
-        flow: {
-            before: 'Regular days → Product info page',
-            during: 'Sale days → Discount landing page',
-            after: 'Post-sale → Loyalty signup or WhatsApp opt-in'
+        placementSection: {
+            title: 'Where Retailers Use SwitchQR',
+            subtitle: 'SwitchQR integrates seamlessly across the physical store environment:',
+            items: [
+                { icon: 'shelves', label: 'Shelf talkers and product displays' },
+                { icon: 'vertical_shades_closed', label: 'Window posters and storefront signage' },
+                { icon: 'shopping_bag', label: 'Checkout counters and POS areas' },
+                { icon: 'package_2', label: 'Packaging inserts and receipts' },
+                { icon: 'campaign', label: 'In-store promotional stands' },
+                { icon: 'storefront', label: 'Mall kiosks and pop-ups' }
+            ],
+            footer: 'One QR code continues working even as campaigns change.'
         },
         benefits: {
-            title: 'Geo-Analytics That Make Sense',
-            subtitle: 'See which store locations are driving the most engagement and optimize accordingly.',
+            title: 'Built for Retail Teams Managing Multiple Locations',
+            subtitle: 'SwitchQR removes the operational friction of updating physical retail marketing.',
             items: [
                 {
-                    icon: 'campaign',
-                    title: 'Instant Promos',
-                    description: 'Update window displays instantly to match current stock and weekly promotions.'
+                    icon: 'bolt',
+                    title: 'Update Promotions Instantly',
+                    description: 'Change offers, product links, or seasonal campaigns instantly — without replacing printed materials. Your signage stays relevant without additional printing or operational overhead.'
                 },
                 {
-                    icon: 'location_on',
-                    title: 'Location Data',
-                    description: 'Compare scan performance between different store branches.'
+                    icon: 'insights',
+                    title: 'Store-Level Insights',
+                    description: 'Track which store locations, displays, and promotions generate the most engagement. Use real scan data to optimize merchandising and promotional strategy.'
                 },
                 {
                     icon: 'loyalty',
-                    title: 'Loyalty Growth',
-                    description: 'Convert one-time shoppers into repeat customers after the sale ends.'
+                    title: 'Convert In-Store Traffic',
+                    description: 'Continue engaging customers after they leave the store by redirecting QR codes to loyalty programs, recommendations, or follow-up offers. Extend the value of every in-store interaction.'
                 }
             ]
         },
-        advanced: [
-            'A/B test offer types per location',
-            'Campaign folders per store or region'
-        ],
+        advanced: {
+            title: 'Advanced Capabilities for Retail Operations',
+            subtitle: 'SwitchQR enables continuous optimization across stores and campaigns.',
+            items: [
+                { title: 'A/B Test Promotions', description: 'Test different promotions to identify top-performing offers by location.' },
+                { title: 'Regional Control', description: 'Organize campaigns by store, region, or product line for better reporting.' },
+                { title: 'Real-Time Tracking', description: 'Track engagement across all locations instantly to see what drives revenue.' }
+            ],
+            footer: 'Retail teams gain full control without operational disruption.'
+        },
         feature: {
-            type: 'ab_test',
-            title: 'Optimize Content with A/B Testing',
-            subtitle: 'Stop guessing which offer works best. Split traffic automatically and see the winner.',
-            experiment: {
-                metric: 'Conversion Rate',
-                lift: '+42%',
-                variants: [
-                    {
-                        name: 'Variant A',
-                        label: '50% Off',
-                        value: '2.4%',
-                        color: 'bg-gray-400'
-                    },
-                    {
-                        name: 'Variant B',
-                        label: 'Buy 1 Get 1',
-                        value: '3.8%',
-                        color: 'bg-primary'
-                    }
-                ]
+            type: 'analytics',
+            title: 'Optimize Promotions with Real Data',
+            subtitle: 'Test and refine offers based on real customer behavior across locations.',
+            stats: [
+                { label: 'Total Scans', value: '84.2k', icon: 'qr_code_scanner' },
+                { label: 'Highest Lift', value: '+32%', icon: 'trending_up' },
+                { label: 'Top Store', value: 'Downtown HQ', icon: 'location_on' }
+            ],
+            map_data: {
+                active_regions: ['North', 'Midwest', 'South'],
+                highlight: 'Compare Performance Across Categories'
             }
         },
+        lifecycle: {
+            title: 'One QR Code That Evolves With Your Store',
+            subtitle: 'The QR code remains the same — only the destination updates.',
+            items: [
+                {
+                    icon: 'rocket_launch',
+                    title: 'Launch phase',
+                    description: 'Product launches and promotional offers'
+                },
+                {
+                    icon: 'campaign',
+                    title: 'Active promotion',
+                    description: 'Discounts, product information, and conversions'
+                },
+                {
+                    icon: 'loyalty',
+                    title: 'Post-promotion',
+                    description: 'Loyalty enrollment, future offers, and customer retention'
+                }
+            ]
+        },
+        setup: {
+            title: 'Simple Setup in Minutes',
+            subtitle: 'Get your retail campaigns running in three steps:',
+            items: [
+                {
+                    icon: 'qr_code_2',
+                    title: '1. Create your QR code',
+                    description: 'Generate a dynamic QR for any retail use case.'
+                },
+                {
+                    icon: 'link',
+                    title: '2. Set your destination',
+                    description: 'Link to offers, product pages, or loyalty programs.'
+                },
+                {
+                    icon: 'sync',
+                    title: '3. Update anytime',
+                    description: 'Modify promotions instantly without replacing printed materials.'
+                }
+            ]
+        },
         testimonial: {
-            quote: "Retail teams can update offers without changing physical materials. Also: geo analytics actually makes sense here.",
-            author: 'Sarah Chen',
-            role: 'CMO, Urban Outfitters',
-            image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150&h=150&fit=crop&crop=faces'
+            quote: "We deployed QR codes across multiple store displays and were able to update campaigns instantly without replacing signage. It significantly improved our operational efficiency.",
+            author: 'Retail Marketing Lead',
+            role: 'Enterprise Operations',
+            image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&h=400&fit=crop'
         }
     },
     packaging: {
@@ -172,14 +223,14 @@ export const industries = {
             subtitle: 'Packaging lasts months. Your marketing doesn’t. Update the unboxing experience long after shipping.',
             image: 'https://images.unsplash.com/photo-1542838132-92c53300491e?w=1200&q=80'
         },
-        placement: [
-            'Product box',
-            'Instruction manual'
-        ],
-        flow: {
-            before: 'Initial phase → Onboarding video',
-            during: 'Later → Accessories & Upsell page',
-            after: 'Later → Feedback & Review page'
+        placementSection: {
+            title: 'Where D2C Brands Use SwitchQR',
+            subtitle: 'Connect with customers directly through your packaging:',
+            items: [
+                { icon: 'package_2', label: 'Primary product box' },
+                { icon: 'menu_book', label: 'Instruction manuals' },
+                { icon: 'card_giftcard', label: 'Thank you inserts' }
+            ]
         },
         benefits: {
             title: 'Post-Purchase Engagement',
@@ -202,11 +253,15 @@ export const industries = {
                 }
             ]
         },
-        advanced: [
-            'A/B test different upsell flows',
-            'Track scans by country for logistics insights',
-            'Campaigns per product SKU or batch'
-        ],
+        advanced: {
+            title: 'Digital Packaging Strategy',
+            subtitle: 'Maximize the lifetime value of every customer.',
+            items: [
+                { title: 'Dynamic Upselling', description: 'Test different upsell flows based on the product life cycle.' },
+                { title: 'SKU Intelligence', description: 'Create and track campaigns per product SKU or batch.' },
+                { title: 'Batch Scheduling', description: 'Roll out new experiences to specific batches of products.' }
+            ]
+        },
         feature: {
             type: 'analytics',
             title: 'Supply Chain Intelligence',
@@ -222,10 +277,10 @@ export const industries = {
             }
         },
         testimonial: {
-            quote: "Packaging lasts months. Your marketing doesn’t. SwitchQR lets packaging evolve digitally.",
+            quote: "Our packaging is now a living channel. We update unboxing videos and accessory offers long after the product has left our warehouse.",
             author: 'Marcus Johnson',
             role: 'Product Lead, TechGear',
-            image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&h=150&fit=crop&crop=faces'
+            image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=400&fit=crop'
         }
     },
     restaurants: {
@@ -239,19 +294,18 @@ export const industries = {
             subtitle: 'Menus change. Offers change. Your QR codes shouldn’t. Automate your day-parting.',
             image: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1200&q=80'
         },
-        placement: [
-            'Table tents',
-            'Menus',
-            'Wall posters'
-        ],
-        flow: {
-            before: 'Normal hours → Standard Menu',
-            during: 'Happy hours → Special Offers',
-            after: 'Special days → Event / Live Music promo'
+        placementSection: {
+            title: 'Where Restaurants Use SwitchQR',
+            subtitle: 'Automate your customer touchpoints:',
+            items: [
+                { icon: 'table_restaurant', label: 'Table tents and stands' },
+                { icon: 'restaurant_menu', label: 'Menu boards and flyers' },
+                { icon: 'window', label: 'Window posters for takeaway' }
+            ]
         },
         benefits: {
             title: 'Automate Your Service',
-            subtitle: 'Restaurants actually use this stuff, not just talk about it. Reduce friction for staff.',
+            subtitle: 'Reduce friction for staff and improve customer experience.',
             items: [
                 {
                     icon: 'schedule',
@@ -270,10 +324,15 @@ export const industries = {
                 }
             ]
         },
-        advanced: [
-            'Campaign per branch',
-            'A/B test ordering vs WhatsApp booking'
-        ],
+        advanced: {
+            title: 'Enterprise Restaurant Tools',
+            subtitle: 'Smart automation for single locations or chains.',
+            items: [
+                { title: 'Branch Folders', description: 'Organize and manage campaigns separately for every branch.' },
+                { title: 'Flow Testing', description: 'A/B test ordering vs WhatsApp booking to see what works best.' },
+                { title: 'Timed Redirects', description: 'Set specific schedules for specials and seasonal menus.' }
+            ]
+        },
         feature: {
             type: 'timeline',
             title: 'The Self-Updating Menu',
@@ -283,7 +342,7 @@ export const industries = {
                     icon: 'lunch_dining',
                     time: '11am - 4pm',
                     title: 'Lunch',
-                    description: 'Standard Menu'
+                    description: 'Redirects to Standard Menu'
                 },
                 {
                     icon: 'local_bar',
@@ -296,7 +355,7 @@ export const industries = {
                     icon: 'music_note',
                     time: 'Friday Night',
                     title: 'Live Music',
-                    description: 'Promotes band schedule'
+                    description: 'Promotes band schedule and drinks'
                 }
             ],
             demo: {
@@ -306,10 +365,10 @@ export const industries = {
             }
         },
         testimonial: {
-            quote: "Menus change. Offers change. QR shouldn’t. And restaurants actually use this stuff.",
+            quote: "SwitchQR automated our day-parting. Our lunch and dinner menus switch perfectly without any manual effort from the staff.",
             author: 'Elena Rodriguez',
             role: 'Owner, La Mesa Bistro',
-            image: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=150&h=150&fit=crop&crop=faces'
+            image: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&h=400&fit=crop'
         }
     },
     education: {
@@ -323,15 +382,14 @@ export const industries = {
             subtitle: 'Education marketing is heavily offline + seasonal. Scheduled redirects are perfect here.',
             image: 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=1200&q=80'
         },
-        placement: [
-            'Posters',
-            'Flyers',
-            'Campus boards'
-        ],
-        flow: {
-            before: 'Before admissions → Brochure download',
-            during: 'During admissions → Application page',
-            after: 'After intake → Orientation info'
+        placementSection: {
+            title: 'Where Education Teams Use SwitchQR',
+            subtitle: 'Bridge the gap between campus and digital discovery:',
+            items: [
+                { icon: 'ads_click', label: 'Posters and brochures' },
+                { icon: 'campaign', label: 'Event flyers and admissions ads' },
+                { icon: 'domain', label: 'Campus notice boards' }
+            ]
         },
         benefits: {
             title: 'Seamless Student Journey',
@@ -340,24 +398,29 @@ export const industries = {
                 {
                     icon: 'timeline',
                     title: 'Seasonal Updates',
-                    description: 'Change the link when admissions open vs close.'
+                    description: 'Change the link when admissions open vs close without reprinting brochures.'
                 },
                 {
                     icon: 'call_split',
                     title: 'A/B Testing',
-                    description: 'Test messaging: Career focus vs Placement focus.'
+                    description: 'Test messaging: Career outcomes focus vs Campus life focus.'
                 },
                 {
                     icon: 'folder_copy',
                     title: 'Course Folders',
-                    description: 'Organize campaigns by course or department.'
+                    description: 'Organize campaigns by course or department for better tracking.'
                 }
             ]
         },
-        advanced: [
-            'A/B test messaging (career vs placement focus)',
-            'Campaign folders by course'
-        ],
+        advanced: {
+            title: 'Admissions Optimization Tools',
+            subtitle: 'Smart tools to improve student recruitment efficiency.',
+            items: [
+                { title: 'Message Testing', description: 'A/B test different calls to action (e.g., Download Brochure vs Apply Now).' },
+                { title: 'Departmental Access', description: 'Give individual departments control over their own QR campaigns.' },
+                { title: 'Seasonal Automation', description: 'Schedule automatic redirects for application deadlines and orientation.' }
+            ]
+        },
         feature: {
             type: 'ab_test',
             title: 'Perfect Your Messaging',
@@ -382,10 +445,10 @@ export const industries = {
             }
         },
         testimonial: {
-            quote: "Education marketing is heavily offline and seasonal. Scheduled redirects perfectly match our admission cycles.",
+            quote: "Education marketing is heavily seasonal. SwitchQR allows us to update our admissions links across the entire campus instantly as deadlines approach.",
             author: 'Dr. James Wilson',
             role: 'Dean of Admissions, State Tech',
-            image: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=150&h=150&fit=crop&crop=faces'
+            image: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400&h=400&fit=crop'
         }
     },
     corporate: {
@@ -399,15 +462,14 @@ export const industries = {
             subtitle: 'Internal comms are messy. QR lets teams push changing content without reprinting.',
             image: 'https://images.unsplash.com/photo-1497215728101-856f4ea42174?w=1200&q=80'
         },
-        placement: [
-            'Notice boards',
-            'Cafeteria tables',
-            'Entry areas'
-        ],
-        flow: {
-            before: 'Default → Internal updates / Intranet',
-            during: 'During drives → Surveys or Registrations',
-            after: 'After drives → Recap or Policy updates'
+        placementSection: {
+            title: 'Where Corporate Teams Use SwitchQR',
+            subtitle: 'Modernize internal communication at every office:',
+            items: [
+                { icon: 'dashboard', label: 'Notice boards and digital signage' },
+                { icon: 'coffee', label: 'Cafeteria and breakout tables' },
+                { icon: 'sensor_door', label: 'Entry areas and meeting rooms' }
+            ]
         },
         benefits: {
             title: 'Engage Your Workforce',
@@ -416,25 +478,29 @@ export const industries = {
                 {
                     icon: 'update',
                     title: 'Push Updates',
-                    description: 'Broadcast policy changes instantly to everyone.'
+                    description: 'Broadcast policy changes or urgent updates instantly to everyone.'
                 },
                 {
                     icon: 'poll',
-                    title: 'Feedback',
-                    description: 'Run quick pulse surveys during lunch hours.'
+                    title: 'Live Feedback',
+                    description: 'Run quick pulse surveys or feedback forms during lunch hours.'
                 },
                 {
                     icon: 'insights',
-                    title: 'Participation',
-                    description: 'Analytics to see which departments are actually engaged.'
+                    title: 'Engagement Data',
+                    description: 'Analytics to see which departments or floors are actually engaged.'
                 }
             ]
         },
-        advanced: [
-            'A/B test engagement flows',
-            'Analytics to see participation',
-            'Campaigns per department or location'
-        ],
+        advanced: {
+            title: 'Internal Ops Control',
+            subtitle: 'Manage workplace communication with enterprise precision.',
+            items: [
+                { title: 'Department Isolation', description: 'Securely manage campaigns for HR, Sales, or IT separately.' },
+                { title: 'Engagement Analytics', description: 'Get detailed reports on internal participation and document views.' },
+                { title: 'Regional Overrides', description: 'Schedule content updates for specific office locations or regions.' }
+            ]
+        },
         feature: {
             type: 'analytics',
             title: 'Internal Engagement Data',
@@ -450,10 +516,10 @@ export const industries = {
             }
         },
         testimonial: {
-            quote: "Internal comms are usually ignored. SwitchQR lets us push changing content to the cafeteria tables without reprinting flyers every week.",
+            quote: "Internal comms are usually ignored. SwitchQR lets us push changing content to cafeteria tables without reprinting flyers every week.",
             author: 'Linda Martinez',
             role: 'HR Director, OmniCorp',
-            image: 'https://images.unsplash.com/photo-1551836022-d5d88e9218df?w=150&h=150&fit=crop&crop=faces'
+            image: 'https://images.unsplash.com/photo-1551836022-d5d88e9218df?w=400&h=400&fit=crop'
         }
     }
 };
