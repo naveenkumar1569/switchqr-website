@@ -4,64 +4,22 @@ import { Link } from 'react-router-dom';
 // Simple Icons CDN: https://simpleicons.org — all icons are SVG, color-accurate
 const SI = (slug) => `https://cdn.simpleicons.org/${slug}`;
 
+// Row 1: Marketing & eCommerce tools — most relevant to QR code use cases
 const BRAND_LOGOS = [
-    { name: 'Spotify', icon: SI('spotify') },
-    { name: 'Slack', icon: SI('slack') },
-    { name: 'Dropbox', icon: SI('dropbox') },
-    { name: 'Airbnb', icon: SI('airbnb') },
     { name: 'Shopify', icon: SI('shopify') },
     { name: 'HubSpot', icon: SI('hubspot') },
-    { name: 'Notion', icon: SI('notion') },
-    { name: 'Figma', icon: SI('figma') },
-    { name: 'Stripe', icon: SI('stripe') },
-    { name: 'Intercom', icon: SI('intercom') },
-    { name: 'Twilio', icon: SI('twilio') },
-    { name: 'Airtable', icon: SI('airtable') },
-    { name: 'Asana', icon: SI('asana') },
-    { name: 'Trello', icon: SI('trello') },
-    { name: 'Mailchimp', icon: SI('mailchimp') },
-    { name: 'Zendesk', icon: SI('zendesk') },
-    { name: 'Salesforce', icon: SI('salesforce') },
     { name: 'Zapier', icon: SI('zapier') },
-    { name: 'Monday.com', icon: SI('mondaydotcom') },
+    { name: 'Mailchimp', icon: SI('mailchimp') },
     { name: 'Webflow', icon: SI('webflow') },
-    { name: 'Ghost', icon: SI('ghost') },
-    { name: 'Squarespace', icon: SI('squarespace') },
-    { name: 'Wix', icon: SI('wix') },
-    { name: 'Typeform', icon: SI('typeform') },
-    { name: 'Hotjar', icon: SI('hotjar') },
-    { name: 'Mixpanel', icon: SI('mixpanel') },
-    { name: 'Segment', icon: SI('segment') },
 ];
 
+// Row 2: Design, productivity & social — commonly paired with QR workflows
 const BRAND_LOGOS_2 = [
-    { name: 'Google', icon: SI('google') },
-    { name: 'Meta', icon: SI('meta') },
-    { name: 'Amazon', icon: SI('amazon') },
-    { name: 'Microsoft', icon: SI('microsoft') },
-    { name: 'Netflix', icon: SI('netflix') },
-    { name: 'Adobe', icon: SI('adobe') },
-    { name: 'Atlassian', icon: SI('atlassian') },
-    { name: 'Cloudflare', icon: SI('cloudflare') },
-    { name: 'Vercel', icon: SI('vercel') },
-    { name: 'Supabase', icon: SI('supabase') },
-    { name: 'GitHub', icon: SI('github') },
-    { name: 'GitLab', icon: SI('gitlab') },
-    { name: 'Linear', icon: SI('linear') },
-    { name: 'Loom', icon: SI('loom') },
-    { name: 'Miro', icon: SI('miro') },
     { name: 'Canva', icon: SI('canva') },
-    { name: 'Framer', icon: SI('framer') },
-    { name: 'Semrush', icon: SI('semrush') },
-    { name: 'Klaviyo', icon: SI('klaviyo') },
-    { name: 'Postman', icon: SI('postman') },
-    { name: 'Sentry', icon: SI('sentry') },
-    { name: 'Datadog', icon: SI('datadog') },
-    { name: 'PagerDuty', icon: SI('pagerduty') },
-    { name: 'Zoom', icon: SI('zoom') },
-    { name: 'Calendly', icon: SI('calendly') },
-    { name: 'Lottiefiles', icon: SI('lottiefiles') },
-    { name: 'Contentful', icon: SI('contentful') },
+    { name: 'Typeform', icon: SI('typeform') },
+    { name: 'Stripe', icon: SI('stripe') },
+    { name: 'Notion', icon: SI('notion') },
+    { name: 'Meta', icon: SI('meta') },
 ];
 
 const Pricing = () => {
@@ -237,7 +195,8 @@ const Pricing = () => {
             </section>
 
             {/* Trusted By — Animated Logo Ticker */}
-            <section className="w-full py-14 border-y border-gray-100 bg-gray-50/50 overflow-hidden">
+            {/* group class here — hover on section makes ALL logos colorise together */}
+            <section className="w-full py-14 border-y border-gray-100 bg-gray-50/50 overflow-hidden group/ticker">
                 <p className="text-center text-xs font-bold text-gray-400 uppercase tracking-widest mb-8">
                     Trusted by 10,000+ businesses worldwide
                 </p>
@@ -246,21 +205,21 @@ const Pricing = () => {
                 <div className="relative mb-4">
                     <div
                         className="flex gap-10 w-max"
-                        style={{ animation: 'ticker-left 60s linear infinite' }}
+                        style={{ animation: 'ticker-left 90s linear infinite' }}
                     >
-                        {[...BRAND_LOGOS, ...BRAND_LOGOS].map((brand, i) => (
+                        {[...BRAND_LOGOS, ...BRAND_LOGOS, ...BRAND_LOGOS, ...BRAND_LOGOS].map((brand, i) => (
                             <div
                                 key={i}
-                                className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white border border-gray-100 shadow-sm hover:shadow-md hover:border-primary/20 transition-all duration-200 shrink-0 group"
+                                className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white border border-gray-100 shadow-sm hover:shadow-md hover:border-primary/20 transition-all duration-200 shrink-0"
                             >
                                 <img
                                     src={brand.icon}
                                     alt={brand.name}
-                                    className="h-5 w-5 object-contain grayscale group-hover:grayscale-0 transition-all duration-300"
+                                    className="h-5 w-5 object-contain grayscale group-hover/ticker:grayscale-0 transition-all duration-500"
                                     loading="lazy"
                                     onError={(e) => { e.target.style.display = 'none'; }}
                                 />
-                                <span className="text-sm font-semibold text-gray-400 group-hover:text-gray-700 transition-colors whitespace-nowrap">
+                                <span className="text-sm font-semibold text-gray-400 group-hover/ticker:text-gray-700 transition-colors duration-500 whitespace-nowrap">
                                     {brand.name}
                                 </span>
                             </div>
@@ -275,21 +234,21 @@ const Pricing = () => {
                 <div className="relative">
                     <div
                         className="flex gap-10 w-max"
-                        style={{ animation: 'ticker-right 70s linear infinite' }}
+                        style={{ animation: 'ticker-right 110s linear infinite' }}
                     >
-                        {[...BRAND_LOGOS_2, ...BRAND_LOGOS_2].map((brand, i) => (
+                        {[...BRAND_LOGOS_2, ...BRAND_LOGOS_2, ...BRAND_LOGOS_2, ...BRAND_LOGOS_2].map((brand, i) => (
                             <div
                                 key={i}
-                                className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white border border-gray-100 shadow-sm hover:shadow-md hover:border-primary/20 transition-all duration-200 shrink-0 group"
+                                className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white border border-gray-100 shadow-sm hover:shadow-md hover:border-primary/20 transition-all duration-200 shrink-0"
                             >
                                 <img
                                     src={brand.icon}
                                     alt={brand.name}
-                                    className="h-5 w-5 object-contain grayscale group-hover:grayscale-0 transition-all duration-300"
+                                    className="h-5 w-5 object-contain grayscale group-hover/ticker:grayscale-0 transition-all duration-500"
                                     loading="lazy"
                                     onError={(e) => { e.target.style.display = 'none'; }}
                                 />
-                                <span className="text-sm font-semibold text-gray-400 group-hover:text-gray-700 transition-colors whitespace-nowrap">
+                                <span className="text-sm font-semibold text-gray-400 group-hover/ticker:text-gray-700 transition-colors duration-500 whitespace-nowrap">
                                     {brand.name}
                                 </span>
                             </div>
