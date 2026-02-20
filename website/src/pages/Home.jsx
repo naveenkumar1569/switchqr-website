@@ -163,7 +163,7 @@ const Home = () => {
             </section>
 
             {/* Problem Section */}
-            <section className="py-20 px-4 sm:px-6 lg:px-8 bg-white border-y border-gray-100">
+            <section className="py-24 px-4 sm:px-6 lg:px-8 bg-white">
                 <div className="mx-auto max-w-7xl">
                     <div className="mb-12 max-w-3xl">
                         <span className="inline-block py-1 px-3 rounded-full bg-red-50 text-red-600 text-xs font-bold uppercase tracking-wider mb-4">
@@ -224,7 +224,7 @@ const Home = () => {
             </section>
 
             {/* Use Cases Section */}
-            <section className="py-20 bg-white border-t border-gray-100 overflow-hidden">
+            <section className="py-24 bg-gradient-to-b from-[#f8f6fb] to-white overflow-hidden">
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <div className="flex justify-between items-end mb-10">
                         <div>
