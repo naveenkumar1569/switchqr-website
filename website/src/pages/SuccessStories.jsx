@@ -61,7 +61,7 @@ const SuccessStories = () => {
                                 <img
                                     src={featuredStory.image}
                                     alt={featuredStory.title}
-                                    className="h-full w-full object-cover grayscale brightness-75 transition-all duration-1000 group-hover:scale-105 group-hover:grayscale-0 group-hover:brightness-100"
+                                    className="h-full w-full object-cover transition-all duration-1000 group-hover:scale-105"
                                 />
                                 {/* Featured Badge Overlay */}
                                 <div className="absolute top-6 left-6 flex items-center gap-2 px-4 py-2 bg-white/90 backdrop-blur rounded-full shadow-sm">
@@ -136,7 +136,7 @@ const SuccessStories = () => {
                                     <img
                                         src={story.image}
                                         alt={story.company}
-                                        className="h-full w-full object-cover grayscale brightness-75 transition-all duration-1000 group-hover:scale-110 group-hover:grayscale-0 group-hover:brightness-100"
+                                        className="h-full w-full object-cover transition-all duration-1000 group-hover:scale-110"
                                     />
                                     {/* Company Badge Overlay */}
                                     <div className="absolute bottom-4 left-4 flex items-center gap-2 p-2.5 bg-white/95 backdrop-blur rounded-xl shadow-lg border border-white/20 translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
