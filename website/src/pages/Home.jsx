@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { industries } from '../data/industries';
+import StatsSection from '../components/StatsSection';
 
 // Hardcoded production URL for marketing site
 const CLIENT_APP_URL = 'https://app.switch-qr.com';
@@ -218,6 +219,9 @@ const Home = () => {
                     </div>
                 </div>
             </section>
+
+            {/* Stats Section */}
+            <StatsSection />
 
             {/* Use Cases Section */}
             <section className="py-20 bg-white border-t border-gray-100 overflow-hidden">
