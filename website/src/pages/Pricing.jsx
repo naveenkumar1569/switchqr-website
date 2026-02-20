@@ -374,43 +374,55 @@ const Pricing = () => {
                             All Stories <span className="material-symbols-outlined text-lg group-hover:translate-x-1 transition-transform">arrow_forward</span>
                         </Link>
                     </div>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
                         {[
                             {
                                 logo: 'storefront',
                                 company: 'RetailX',
-                                quote: '"How RetailX increased in-store engagement by 40% using SwitchQR."',
-                                description: '"SwitchQR allowed us to track exactly which store locations were driving the most app downloads. The dynamic capabilities meant we could change promos without reprinting signage."',
+                                quote: 'Increased in-store engagement by 40%.',
+                                description: 'The dynamic capabilities meant we could change promos without reprinting signage. It\'s a game changer for retail.',
                                 author: 'Sarah Jenkins',
                                 role: 'CMO, RetailX',
+                                image: '/images/testimonials/sarah_jenkins.png'
                             },
                             {
                                 logo: 'rocket_launch',
-                                company: 'TechFlow',
-                                quote: '"We saved 20+ hours per week managing client campaigns."',
-                                description: '"The bulk creation tools and API access allowed us to automate QR generation for our 500+ clients. It seamlessly integrated into our existing marketing workflow."',
-                                author: 'Mike Ross',
-                                role: 'Product Lead, TechFlow',
+                                company: 'Skyline Media',
+                                quote: 'Saved 20+ hours per week managing campaigns.',
+                                description: 'The bulk creation tools and API access allowed us to automate QR generation for our 500+ clients seamlessly.',
+                                author: 'David Chen',
+                                role: 'Operations Lead, Skyline Media',
+                                image: '/images/testimonials/david_chen.png'
                             },
                         ].map((story, i) => (
-                            <div key={i} className="bg-white p-8 md:p-10 rounded-3xl border border-gray-200 shadow-sm hover:shadow-lg transition-all duration-300 group">
-                                <div className="h-10 mb-6 text-gray-900 font-bold text-xl flex items-center gap-2 opacity-80 group-hover:opacity-100 transition-opacity">
-                                    <span className="material-symbols-outlined text-primary text-3xl">{story.logo}</span>
-                                    {story.company}
-                                </div>
-                                <h3 className="text-xl md:text-2xl font-bold text-text-main mb-4 leading-snug">{story.quote}</h3>
-                                <p className="text-gray-600 mb-8 leading-relaxed">{story.description}</p>
-                                <div className="flex items-center justify-between mt-auto">
-                                    <div className="flex items-center gap-4">
-                                        <div className="size-12 rounded-full bg-gray-200 flex items-center justify-center text-gray-500">
-                                            <span className="material-symbols-outlined">person</span>
-                                        </div>
-                                        <div>
-                                            <div className="text-sm font-bold text-text-main">{story.author}</div>
-                                            <div className="text-xs text-gray-500 font-medium">{story.role}</div>
-                                        </div>
+                            <div key={i} className="flex flex-col md:flex-row bg-white rounded-[2rem] border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-500 overflow-hidden group">
+                                {/* Image Column */}
+                                <div className="md:w-2/5 relative overflow-hidden">
+                                    <img
+                                        src={story.image}
+                                        alt={story.author}
+                                        className="w-full h-64 md:h-full object-cover grayscale brightness-90 group-hover:grayscale-0 group-hover:scale-110 transition-all duration-700"
+                                    />
+                                    {/* Company Overlay */}
+                                    <div className="absolute bottom-4 left-4 right-4 p-3 bg-black/40 backdrop-blur-md rounded-xl border border-white/10 flex items-center gap-2">
+                                        <span className="material-symbols-outlined text-primary text-2xl">{story.logo}</span>
+                                        <span className="text-white font-bold text-sm tracking-tight">{story.company}</span>
                                     </div>
-                                    <Link to="/case-studies/retailx" className="text-primary font-bold text-sm hover:underline">View Story</Link>
+                                </div>
+
+                                {/* Content Column */}
+                                <div className="md:w-3/5 p-8 flex flex-col justify-center">
+                                    <h3 className="text-xl font-bold text-text-main mb-3 leading-tight tracking-tight">
+                                        "{story.quote}"
+                                    </h3>
+                                    <p className="text-gray-500 text-sm leading-relaxed mb-6 italic">
+                                        "{story.description}"
+                                    </p>
+                                    <div className="mt-auto">
+                                        <div className="text-sm font-extrabold text-text-main">{story.author}</div>
+                                        <div className="text-xs text-gray-400 font-medium uppercase tracking-wider mt-0.5">{story.role}</div>
+                                    </div>
                                 </div>
                             </div>
                         ))}
