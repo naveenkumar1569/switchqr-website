@@ -12,7 +12,7 @@ import ComingSoon from './pages/ComingSoon';
 import Terms from './pages/Terms';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import RefundPolicy from './pages/RefundPolicy';
-import Contact from './pages/Contact';
+import Blog from './pages/Blog';
 import Layout from './Layout'; // Import the global Layout
 import ScrollToTop from './components/ScrollToTop';
 
@@ -27,6 +27,7 @@ function App() {
                     <Route path="/pricing" element={<Pricing />} />
                     <Route path="/about" element={<AboutUs />} />
                     <Route path="/careers" element={<Careers />} />
+                    <Route path="/blog" element={<Blog />} />
                     <Route path="/case-studies" element={<SuccessStories />} />
                     <Route path="/case-studies/:slug" element={<CaseStudy />} />
                     <Route path="/industries/:slug" element={<IndustryUseCase />} />
