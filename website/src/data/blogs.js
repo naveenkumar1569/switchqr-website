@@ -5,7 +5,7 @@ export const blogs = [
         title: 'Why Static QR Codes Are Costing Your Business Thousands',
         eyebrow: 'Marketing Strategy',
         category: 'Strategy',
-        description: '2026 - Discover how bridging the physical and digital worlds can transform your customer engagement strategy in 2024.',
+        description: 'Discover how bridging the physical and digital worlds can transform your customer engagement strategy in 2026.',
         author: {
             name: 'Naveen Kumar',
             image: '/images/authors/naveen.jpg'
@@ -109,7 +109,7 @@ export const blogs = [
         title: '5 Metrics You Should Be Tracking Today (If You Use QR Codes for Revenue)',
         eyebrow: 'Marketing Analytics',
         category: 'Analytics',
-        description: '2026 - Discover the five structural metrics that reveal whether your QR layer is generating revenue or silently capping it.',
+        description: 'Discover the five structural metrics that reveal whether your QR layer is generating revenue or silently capping it in 2026.',
         author: {
             name: 'Naveen Kumar',
             image: '/images/authors/naveen.jpg'
@@ -302,7 +302,7 @@ export const blogs = [
         title: 'What Is a Dynamic QR Code and Why Businesses Are Switching',
         eyebrow: 'Technology Guide',
         category: 'Technology',
-        description: '2026 - Discover why adaptive infrastructure is replacing fixed links in modern customer engagement strategy in 2024.',
+        description: 'Discover why adaptive infrastructure is replacing fixed links in modern customer engagement strategy in 2026.',
         author: {
             name: 'Naveen Kumar',
             image: '/images/authors/naveen.jpg'
@@ -541,7 +541,7 @@ export const blogs = [
         title: 'Best QR Code Strategy for Restaurants, Retail, and Multi Location Brands',
         eyebrow: 'Operations Strategy',
         category: 'Strategy',
-        description: '2026 - Discover the strategic frameworks that turn physical touchpoints into scalable revenue systems for multi-location brands in 2024.',
+        description: 'Discover the strategic frameworks that turn physical touchpoints into scalable revenue systems for multi-location brands in 2026.',
         author: {
             name: 'Naveen Kumar',
             image: '/images/authors/naveen.jpg'
