@@ -13,6 +13,7 @@ import Terms from './pages/Terms';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import RefundPolicy from './pages/RefundPolicy';
 import Blog from './pages/Blog';
+import Contact from './pages/Contact';
 import Layout from './Layout'; // Import the global Layout
 import ScrollToTop from './components/ScrollToTop';
 
