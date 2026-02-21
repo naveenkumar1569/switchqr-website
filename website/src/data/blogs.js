@@ -836,6 +836,157 @@ export const blogs = [
             author: 'Naveen Kumar'
         },
         proTip: 'Don\'t choose a QR generator based on initial cost. Choose based on the long-term value of the routing control and attribution data it provides.'
+    },
+    {
+        id: 'increase-aov-qr',
+        slug: 'how-qr-codes-can-increase-average-order-value',
+        title: 'How QR Codes Can Increase Average Order Value',
+        eyebrow: 'Revenue Strategy',
+        category: 'Strategy',
+        description: 'Discover how to turn every physical scan into a revenue lever that consistently increases average order value in 2026.',
+        author: {
+            name: 'Naveen Kumar',
+            image: '/images/authors/naveen.jpg'
+        },
+        date: 'Feb 2026',
+        readTime: '9 min read',
+        image: 'https://images.unsplash.com/photo-1556742044-3c52d6e88c62?w=1200&q=80',
+        content: [
+            {
+                type: 'paragraph',
+                text: 'Average order value is one of the most powerful metrics in commerce. It does not require acquiring more customers. It does not depend on increasing foot traffic. It does not demand higher ad spend. Instead, it focuses on extracting more value from customers who are already present and already engaged. When businesses look for growth, they often chase expansion before optimization. They try to widen the top of the funnel while ignoring the untapped potential inside each transaction.'
+            },
+            {
+                type: 'paragraph',
+                text: 'QR codes sit directly in the path of that untapped potential. Every time a customer scans, they are signaling intent. They are interacting with a digital layer that can shape their purchasing decisions in real time. That moment, when attention is active and engagement is voluntary, is an ideal opportunity to influence basket size. Yet many businesses treat QR codes as static informational links rather than dynamic revenue tools.'
+            },
+            {
+                type: 'paragraph',
+                text: 'In restaurants, QR codes often replace physical menus. In retail stores, they provide product details. In multi location service brands, they enable bookings or inquiries. In all these scenarios, the QR interaction becomes a decision environment. The design of that environment determines whether customers make a minimum purchase or explore higher value options. When used strategically, QR codes can increase average order value without increasing customer acquisition costs. The difference lies not in the square itself, but in what happens behind it.'
+            },
+            {
+                type: 'heading',
+                text: 'The Psychology of the Scan'
+            },
+            {
+                type: 'paragraph',
+                text: 'To understand how QR codes influence average order value, it is important to examine the psychology behind the scan. Scanning is an intentional act. The customer takes out a phone, opens a camera, and engages with a physical prompt. That behavior signals curiosity or readiness. It creates a micro moment of focus. Unlike passive browsing, scanning often occurs in context. A diner scans while seated at a table. A shopper scans while standing in front of a product. A customer scans while holding packaging in their hand. These moments are high leverage because the environment supports immediate action.'
+            },
+            {
+                type: 'paragraph',
+                text: 'If the digital experience delivered after the scan simply replicates static information, the opportunity is wasted. If instead it is designed to guide the customer toward complementary products, premium options, or bundled offerings, it can increase order size naturally. The key is alignment. The landing experience must reflect the customer’s current context and subtly expand their purchasing scope.'
+            },
+            {
+                type: 'heading',
+                text: 'Restaurants: Designing Menus for Upsell Momentum'
+            },
+            {
+                type: 'paragraph',
+                text: 'In restaurants, average order value is influenced heavily by add ons, drinks, desserts, and premium upgrades. Traditional printed menus present these options, but they lack dynamic sequencing. A QR based digital menu creates flexibility. A well structured digital menu can prioritize high margin items at the top. It can suggest pairings based on selected dishes. It can highlight limited time premium offerings with visual prominence. It can present upsell prompts before checkout.'
+            },
+            {
+                type: 'paragraph',
+                text: 'For example, when a customer selects a main course, the system can immediately suggest a complementary side or beverage. When they move to checkout, it can prompt them with a dessert offer that feels timely rather than intrusive. The sequencing matters. Because the menu is digital, placement can be adjusted based on performance data. If certain pairings consistently increase order value, they can be promoted more aggressively. If specific upsell prompts underperform, they can be revised or replaced without reprinting materials. QR codes enable that adaptive layer. Instead of static suggestions embedded in ink, the restaurant gains a controllable recommendation engine.'
+            },
+            {
+                type: 'heading',
+                text: 'Retail: Expanding the Basket Beyond the Shelf'
+            },
+            {
+                type: 'paragraph',
+                text: 'In retail environments, customers often scan QR codes for product information, reviews, or online purchasing options. This behavior creates a moment where the store can expand the customer’s consideration set. If a shopper scans a product display, the landing page can recommend complementary items. A customer viewing a jacket can be shown matching accessories. A shopper scanning a skincare product can see bundled sets. A buyer examining electronics can be offered extended warranties or add ons.'
+            },
+            {
+                type: 'paragraph',
+                text: 'The effectiveness of this approach depends on relevance. Generic recommendations dilute impact. Contextual recommendations tied directly to the scanned product increase likelihood of acceptance. Retailers can also use QR codes to promote limited edition bundles available only through the digital interface. By framing certain combinations as exclusive or time sensitive, they create urgency that lifts average order value. Dynamic routing allows experimentation with these strategies. Different recommendation sequences can be tested to determine which combinations produce higher basket sizes. Over time, data driven refinement strengthens performance.'
+            },
+            {
+                type: 'heading',
+                text: 'Multi Location Brands: Standardization With Local Optimization'
+            },
+            {
+                type: 'paragraph',
+                text: 'Multi location brands face a unique challenge. Headquarters may design upsell strategies, but local markets vary. Demographics, purchasing power, and preferences differ across regions. QR codes can function as standardized entry points with localized optimization behind them. A national brand can deploy consistent signage, but route customers to region specific digital experiences.'
+            },
+            {
+                type: 'paragraph',
+                text: 'For instance, a coffee chain can promote premium seasonal beverages differently in colder climates than in warmer ones. A fitness studio chain can highlight higher tier membership plans in urban areas where demand is stronger. By analyzing revenue per scan and average order value by location, headquarters can identify which upsell tactics perform best in each region. Successful approaches can be scaled. Underperforming ones can be adjusted. The QR layer becomes a feedback loop rather than a static conduit.'
+            },
+            {
+                type: 'heading',
+                text: 'Time Based Opportunities'
+            },
+            {
+                type: 'paragraph',
+                text: 'Average order value fluctuates by time of day. Breakfast purchases differ from dinner purchases. Weekend behavior differs from weekday behavior. Dynamic QR routing enables time based personalization. During slower hours, businesses can promote bundle deals to increase basket size. During peak hours, they can emphasize premium upgrades when customers are less price sensitive.'
+            },
+            {
+                type: 'paragraph',
+                text: 'In restaurants, afternoon traffic may respond well to snack add ons or limited time desserts. In retail, evening shoppers may be more inclined toward bundled gifts. Because QR codes can redirect automatically based on time, businesses do not need to change signage manually. The system adapts quietly. This adaptability ensures that upsell prompts remain contextually relevant. Relevance drives acceptance. Acceptance increases order value.'
+            },
+            {
+                type: 'heading',
+                text: 'Reducing Friction to Encourage Add Ons'
+            },
+            {
+                type: 'paragraph',
+                text: 'Upselling fails when it introduces friction. If adding a side item requires navigating multiple screens, customers abandon the attempt. If the digital interface is cluttered, premium options are overlooked. QR based ordering systems must be designed for seamless add ons. Clear prompts, intuitive layout, and minimal steps encourage incremental purchases.'
+            },
+            {
+                type: 'paragraph',
+                text: 'The advantage of a digital system is that layout and flow can be optimized continuously. Data reveals where customers drop off. Prompts can be repositioned. Language can be refined. Visual hierarchy can be adjusted. Each refinement may increase average order value by a small margin. Over thousands of transactions, those margins accumulate into meaningful revenue gains.'
+            },
+            {
+                type: 'heading',
+                text: 'Leveraging Scarcity and Exclusivity'
+            },
+            {
+                type: 'paragraph',
+                text: 'Scarcity is a powerful driver of purchasing behavior. QR codes can support limited time digital exclusives that are not available through traditional menus or shelf tags. For example, a retailer might offer a bundle available only via QR scan. A restaurant could promote a chef’s special accessible through the digital menu. These exclusives create a sense of discovery and privilege.'
+            },
+            {
+                type: 'paragraph',
+                text: 'Because the experience is digital, these offers can be activated and deactivated easily. Businesses can test how exclusivity impacts order size without committing to permanent printed changes. When customers perceive added value through digital access, they are more willing to expand their purchase.'
+            },
+            {
+                type: 'heading',
+                text: 'Data Driven Refinement'
+            },
+            {
+                type: 'paragraph',
+                text: 'The most significant advantage of QR driven upsell strategies is measurability. Average order value can be tracked for QR initiated transactions separately from other channels. This allows businesses to isolate the impact of digital prompts. If introducing a pairing suggestion increases average order value by five percent, that insight can be validated across locations. If a premium upgrade prompt performs poorly, it can be revised quickly. Without data, upselling remains guesswork. With data, it becomes systematic optimization. The QR layer functions as both trigger and measurement mechanism.'
+            },
+            {
+                type: 'heading',
+                text: 'Long Term Impact on Revenue'
+            },
+            {
+                type: 'paragraph',
+                text: 'Increasing average order value has compounding effects. Higher basket sizes improve revenue without increasing traffic. Higher revenue per customer improves profitability because fixed costs remain stable. Over time, even small percentage increases significantly affect annual results.'
+            },
+            {
+                type: 'paragraph',
+                text: 'Consider a restaurant processing 200 orders per day with an average order value of 25 dollars. A five percent increase raises that to 26.25 dollars. That 1.25 dollar difference generates an additional 250 dollars per day, or more than 90,000 dollars annually. That increase does not require more tables, more staff, or more advertising. It requires better optimization of existing demand. QR codes, when used strategically, provide the interface through which that optimization occurs.'
+            },
+            {
+                type: 'heading',
+                text: 'Conclusion'
+            },
+            {
+                type: 'paragraph',
+                text: 'QR codes are often seen as operational conveniences. In reality, they are revenue interfaces. Each scan represents a moment where purchasing decisions can be influenced. By designing digital experiences that prioritize relevant add ons, contextual recommendations, time based offers, and data driven refinement, businesses can increase average order value consistently.'
+            },
+            {
+                type: 'paragraph',
+                text: 'The square printed on a table or shelf is not the strategy. The routing logic and digital experience behind it determine whether that square merely informs or actively grows revenue. In competitive markets where incremental gains matter, the ability to expand each transaction without increasing acquisition costs is powerful. QR codes, when treated as adaptive infrastructure rather than static links, provide a practical path toward that goal.'
+            }
+        ],
+        tags: ['Strategy', 'Revenue', 'QRCode'],
+        quote: {
+            text: 'QR codes are often seen as operational conveniences. In reality, they are revenue interfaces.',
+            author: 'Naveen Kumar'
+        },
+        proTip: 'Use data-driven sequencing in your digital menus and catalogs to present the most effective upsell prompts at the exact moment of high intent.'
     }
 ];
 
