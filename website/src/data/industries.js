@@ -452,81 +452,109 @@ export const industries = {
     },
     education: {
         slug: 'education',
-        name: 'Education & Training',
+        name: 'Education & Training Institutes',
         icon: 'school',
         gradient: 'linear-gradient(135deg, #93c5fd 0%, #3b82f6 100%)',
         hero: {
-            eyebrow: 'Education & Training Institutes',
-            title: 'Admissions Funnel from Offline Ads',
-            subtitle: 'Education marketing is heavily offline + seasonal. Scheduled redirects are perfect here.',
-            image: 'https://images.unsplash.com/photo-1541339907198-e08756ebafe1?q=80&w=1200&auto=format&fit=crop'
+            eyebrow: 'Admissions & Enrollment Solution',
+            title: 'Turn Every Poster Into an Admissions Funnel',
+            subtitle: 'Offline marketing drives student interest. SwitchQR converts that interest into applications—instantly and intelligently.',
+            description: 'Convert every physical touchpoint—brochures, posters, and campus signage—into a high-converting digital gateway. Manage seasonal application cycles and optimize messaging without reprinting physical assets.',
+            image: 'https://images.unsplash.com/photo-1541339907198-e08756ebafe1?q=80&w=1200&auto=format&fit=crop',
+            cta: 'Get started free',
+            secondaryCta: 'View demo',
+            highlight: 'Convert offline interest into instant applications.'
         },
         placementSection: {
-            title: 'Where Education Teams Use SwitchQR',
-            subtitle: 'Bridge the gap between campus and digital discovery:',
+            title: 'Where Institutions Use SwitchQR',
+            subtitle: 'Bring static campus materials to life:',
             items: [
-                { icon: 'ads_click', label: 'Posters and brochures' },
-                { icon: 'campaign', label: 'Event flyers and admissions ads' },
-                { icon: 'domain', label: 'Campus notice boards' }
-            ]
+                { icon: 'ads_click', label: 'Posters and admission brochures' },
+                { icon: 'campaign', label: 'Entrance coaching ads and flyers' },
+                { icon: 'domain', label: 'Campus notice boards and kiosks' },
+                { icon: 'groups', label: 'Education fairs and outreach events' }
+            ],
+            footer: 'Every scan becomes a measurable step toward enrollment.'
         },
         benefits: {
-            title: 'Seamless Student Journey',
-            subtitle: 'Guide prospective students from "Interest" to "Enrolled" with one physical touchpoint.',
+            title: 'Convert Interest Into Applications—Seamlessly',
+            subtitle: 'Guide students from curiosity to enrollment without friction.',
             items: [
                 {
-                    icon: 'timeline',
-                    title: 'Seasonal Updates',
-                    description: 'Change the link when admissions open vs close without reprinting brochures.'
+                    icon: 'calendar_today',
+                    title: 'Seasonal Admissions Updates',
+                    description: 'When applications open, redirect instantly to the application form. When closed, redirect to “Join Next Intake” or “Download Brochure.” No reprinting. No confusion.'
                 },
                 {
-                    icon: 'call_split',
-                    title: 'A/B Testing',
-                    description: 'Test messaging: Career outcomes focus vs Campus life focus.'
+                    icon: 'analytics',
+                    title: 'Message Testing for Higher Applications',
+                    description: 'Test what drives more conversions: “Download Brochure”, “Apply Now”, or “Check Placement Stats”. SwitchQR automatically identifies the winner.'
                 },
                 {
-                    icon: 'folder_copy',
-                    title: 'Course Folders',
-                    description: 'Organize campaigns by course or department for better tracking.'
+                    icon: 'folder_shared',
+                    title: 'Course-Level Campaign Organization',
+                    description: 'Create separate folders for Engineering, MBA, Medical, or Certification programs. Track which programs attract the most interest.'
                 }
             ]
         },
         advanced: {
-            title: 'Admissions Optimization Tools',
-            subtitle: 'Smart tools to improve student recruitment efficiency.',
+            title: 'Improve Admissions Efficiency With Smart Automation',
+            subtitle: 'Test, optimize, and scale without manual effort.',
             items: [
-                { title: 'Message Testing', description: 'A/B test different calls to action (e.g., Download Brochure vs Apply Now).' },
+                { title: 'Message Optimization', description: 'Test admissions messaging across campaigns to improve funnel velocity.' },
                 { title: 'Departmental Access', description: 'Give individual departments control over their own QR campaigns.' },
-                { title: 'Seasonal Automation', description: 'Schedule automatic redirects for application deadlines and orientation.' }
-            ]
+                { title: 'Cycle Scheduling', description: 'Schedule automatic redirects for admission cycles and deadlines.' }
+            ],
+            footer: 'Scale your enrollment efforts with data-driven precision.'
         },
         feature: {
             type: 'ab_test',
-            title: 'Perfect Your Messaging',
-            subtitle: 'Unsure if "High Placement Rates" or "Modern Campus" drives more clicks? Test it.',
+            title: 'Example: Messaging Test Results',
+            subtitle: 'Identify high-converting messaging to drive higher application intent.',
             experiment: {
-                metric: 'Applications Started',
+                metric: 'Conversion Rate',
                 lift: '+18%',
                 variants: [
                     {
                         name: 'Variant A',
-                        label: 'Career Focus',
+                        label: 'Career-focused',
                         value: '12.5%',
                         color: 'bg-primary'
                     },
                     {
                         name: 'Variant B',
-                        label: 'Campus Life',
+                        label: 'Campus life',
                         value: '10.6%',
                         color: 'bg-gray-400'
                     }
                 ]
             }
         },
+        setup: {
+            title: 'Launch in Minutes',
+            subtitle: 'Get your admissions funnel running in three steps:',
+            items: [
+                {
+                    icon: 'qr_code_2',
+                    title: '1. Create QR code',
+                    description: 'Generate a dynamic QR for your institution.'
+                },
+                {
+                    icon: 'swap_horiz',
+                    title: '2. Set redirect rules',
+                    description: 'Configure schedules for admission cycles.'
+                },
+                {
+                    icon: 'auto_graph',
+                    title: '3. Track and optimize',
+                    description: 'Monitor performance and update anytime.'
+                }
+            ]
+        },
         testimonial: {
-            quote: "Education marketing is heavily seasonal. SwitchQR allows us to update our admissions links across the entire campus instantly as deadlines approach.",
-            author: 'Dr. James Wilson',
-            role: 'Dean of Admissions, State Tech',
+            quote: "SwitchQR lets us update admissions links across campus instantly without reprinting materials. It saves time and improves conversions.",
+            author: 'Dean of Admissions',
+            role: 'State Technical Institute',
             image: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400&h=400&fit=crop'
         }
     },
