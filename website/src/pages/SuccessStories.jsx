@@ -4,7 +4,7 @@ import { stories } from '../data/stories';
 
 const SuccessStories = () => {
     const CLIENT_APP_URL = 'https://app.switch-qr.com';
-    const categories = ['All', 'Retail', 'Events', 'Food & Beverage', 'Packaging'];
+    const categories = ['All', 'Retail', 'Events', 'Food & Beverage', 'Packaging', 'Marketing'];
     const [activeCategory, setActiveCategory] = React.useState('All');
 
     // Filter stories based on active category
@@ -140,8 +140,12 @@ const SuccessStories = () => {
                                     />
                                     {/* Company Badge Overlay */}
                                     <div className="absolute bottom-4 left-4 flex items-center gap-2 p-2.5 bg-white/95 backdrop-blur rounded-xl shadow-lg border border-white/20 translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
-                                        <div className="size-8 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
-                                            <span className="material-symbols-outlined text-primary text-xl font-bold">{story.logo || 'monitoring'}</span>
+                                        <div className="size-8 rounded-lg bg-primary/10 flex items-center justify-center shrink-0 overflow-hidden">
+                                            {story.brandLogo ? (
+                                                <img src={story.brandLogo} alt={story.company} className="size-5 object-contain" />
+                                            ) : (
+                                                <span className="material-symbols-outlined text-primary text-xl font-bold">{story.logo || 'monitoring'}</span>
+                                            )}
                                         </div>
                                         <span className="text-xs font-black text-text-main uppercase tracking-tight pr-2">{story.company}</span>
                                     </div>

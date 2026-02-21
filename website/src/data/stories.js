@@ -164,5 +164,29 @@ export const stories = [
             { value: '500+', label: 'Clients Managed', subtext: 'Seamlessly via API' }
         ],
         integrations: ['SwitchQR API', 'Slack', 'Google Looker Studio']
+    },
+    {
+        id: 'hubspot-event-conversions',
+        slug: 'hubspot-event-conversions',
+        title: 'How HubSpot Increased Event Conversions by 28% Without Reprinting a Single QR Code',
+        company: 'HubSpot',
+        category: 'Marketing',
+        brandLogo: 'https://cdn.simpleicons.org/hubspot',
+        image: '/images/cases/hubspot_events.png',
+        heroImage: 'https://images.unsplash.com/photo-1540575861501-7cf05a4b125a?w=1200&q=80',
+        description: "HubSpot transformed their static in-person event assets into dynamic growth channels, significantly boosting lead capture efficiency across 300+ global events.",
+        challenge: "HubSpot runs over 300+ offline events globally each year. Physical marketing assets—booth signage, flyers, and banners—are central to these campaigns, each featuring QR codes directing prospects to landing pages. \n\nHowever, static QR codes limited HubSpot’s ability to adapt campaigns once materials were printed. Each time HubSpot printed event materials, QR codes were tied permanently to a single landing page. If campaign priorities changed, those materials became outdated. Across major conferences, HubSpot typically printed 2,000–5,000 physical assets per event, making mid-campaign updates impractical. \n\nRegional teams needed flexibility to adjust campaigns locally, but updating QR destinations required coordination with central web and design teams, introducing delays of 3–5 business days.",
+        solution: "HubSpot implemented SwitchQR to make QR code destinations dynamically controllable. Instead of embedding fixed URLs, SwitchQR allowed HubSpot to update QR destinations instantly and route users to different landing pages based on campaign timing. \n\nField marketing teams gained full operational control, allowing them to optimize conversion paths without modifying physical assets. They could test different funnel entry points—demo signups, free CRM onboarding, or content downloads—and adapt routing in real-time based on live performance data.",
+        result: "Within the first 90 days, HubSpot observed a 28% increase in QR-to-signup conversion rates. By testing and optimizing landing page routing during live events, average conversion rates climbed from 18.4% to 23.6%. \n\nOperationally, campaign turnaround time was reduced by 41%, with routing updates completed in under 2 minutes. HubSpot avoided reprinting approximately 18,000+ assets across just 6 major events, saving significant production costs. Average QR scans per event increased from 1,200 to 1,540, and the lifespan of printed materials extended by 3–4× as assets could be reused across multiple campaigns.",
+        quote: "SwitchQR gave our field teams the ability to adapt campaigns in real time without operational friction. We were able to improve conversion performance while simplifying campaign execution.",
+        author: 'Senior Manager',
+        role: 'Global Field Marketing, HubSpot',
+        authorImage: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&h=400&fit=crop&q=80',
+        metrics: [
+            { value: '28%', label: 'Conversion Lift', subtext: 'In QR-to-signup rate' },
+            { value: '41%', label: 'Faster Updates', subtext: 'Turnaround time reduced' },
+            { value: '18,000+', label: 'Reprints Saved', subtext: 'Across 6 major events' }
+        ],
+        integrations: ['HubSpot CRM', 'SwitchQR API', 'Salesforce']
     }
 ];
