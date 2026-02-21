@@ -22,6 +22,12 @@ const BlogDetail = () => {
         return <Navigate to="/blog" replace />;
     }
 
+    const formatText = (text) => {
+        if (!text) return '';
+        // Replace **text** with <strong>text</strong>
+        return text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+    };
+
     return (
         <div className="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 antialiased selection:bg-primary/20 selection:text-primary min-h-screen">
             {/* Reading Progress Bar */}
@@ -37,7 +43,7 @@ const BlogDetail = () => {
                 <section className="pt-12 pb-8 px-4 sm:px-6">
                     <div className="max-w-[800px] mx-auto text-center flex flex-col items-center gap-6">
                         {/* Category Tag */}
-                        <span className="inline-flex items-center rounded-full bg-primary/10 px-3 py-1 text-sm font-bold text-primary ring-1 ring-inset ring-primary/20">
+                        <span className="inline-flex items-center rounded-full bg-primary/10 px-3 py-1 text-sm font-bold text-primary ring-1 ring-inset ring-primary/20 uppercase tracking-wider">
                             {blog.eyebrow}
                         </span>
 
@@ -111,33 +117,41 @@ const BlogDetail = () => {
                         {blog.content.map((item, idx) => {
                             if (item.type === 'paragraph') {
                                 return (
-                                    <p key={idx}>
+                                    <p key={idx} className="relative">
                                         {idx === 0 && (
-                                            <span className="font-bold text-4xl lg:text-5xl float-left mr-3 mt-1 text-primary leading-[1]">
+                                            <span className="font-bold text-4xl lg:text-6xl float-left mr-3 text-primary leading-[1]">
                                                 {item.text.charAt(0)}
                                             </span>
                                         )}
-                                        {idx === 0 ? item.text.substring(1) : item.text}
+                                        <span dangerouslySetInnerHTML={{
+                                            __html: formatText(idx === 0 ? item.text.substring(1) : item.text)
+                                        }} />
                                     </p>
                                 );
                             }
                             if (item.type === 'heading') {
                                 return (
-                                    <h2 key={idx} className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white pt-6 mt-4">
+                                    <h2 key={idx} className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white pt-8 mt-6 mb-2">
                                         {item.text}
                                     </h2>
                                 );
                             }
                             if (item.type === 'divider') {
-                                return <div key={idx} className="text-center text-slate-300 py-4">{item.text}</div>;
+                                return <div key={idx} className="flex justify-center py-6">
+                                    <div className="flex gap-2">
+                                        <div className="size-1.5 rounded-full bg-slate-200 dark:bg-gray-700"></div>
+                                        <div className="size-1.5 rounded-full bg-slate-200 dark:bg-gray-700"></div>
+                                        <div className="size-1.5 rounded-full bg-slate-200 dark:bg-gray-700"></div>
+                                    </div>
+                                </div>;
                             }
                             if (item.type === 'list') {
                                 return (
-                                    <ul key={idx} className="space-y-4 list-none pl-2">
+                                    <ul key={idx} className="space-y-4 list-none pl-2 my-6">
                                         {item.items.map((listItem, lIdx) => (
                                             <li key={lIdx} className="flex gap-3 items-start">
-                                                <span className="material-symbols-outlined text-primary mt-1 text-[20px]">check_circle</span>
-                                                <span>{listItem}</span>
+                                                <span className="material-symbols-outlined text-primary mt-1 text-[20px] shrink-0">check_circle</span>
+                                                <span dangerouslySetInnerHTML={{ __html: formatText(listItem) }} />
                                             </li>
                                         ))}
                                     </ul>
