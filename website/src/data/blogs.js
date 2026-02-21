@@ -297,13 +297,4 @@ export const blogs = [
         proTip: 'Stop tracking scan volume in isolation. Focus on the value generated per interaction to understand the true ROI of your physical placements.'
     }
 ];
-        ],
-tags: ['Analytics', 'Strategy', 'QRCode'],
-    quote: {
-    text: 'Measurement is not about reporting. It is about leverage. If a metric does not enable a decision, it is noise.',
-        author: 'Naveen Kumar'
-},
-proTip: 'Stop tracking scan volume in isolation. Focus on the value generated per interaction to understand the true ROI of your physical placements.'
-    }
-];
 
