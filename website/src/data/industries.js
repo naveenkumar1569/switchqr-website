@@ -560,73 +560,101 @@ export const industries = {
     },
     corporate: {
         slug: 'corporate',
-        name: 'Corporate & Internal',
+        name: 'Corporate Offices & Internal Operations',
         icon: 'apartment',
         gradient: 'linear-gradient(135deg, #c4b5fd 0%, #8b5cf6 100%)',
         hero: {
-            eyebrow: 'Corporate Offices & Internal Ops',
-            title: 'Dynamic Workplace Communication',
-            subtitle: 'Internal comms are messy. QR lets teams push changing content without reprinting.',
-            image: 'https://images.unsplash.com/photo-1497215728101-856f4ea42174?w=1200&q=80'
+            eyebrow: 'Internal Communications & Ops Solution',
+            title: 'Make Internal Communication Visible, Measurable, and Actionable',
+            subtitle: 'Most workplace announcements go unread. SwitchQR turns physical office spaces into trackable communication channels.',
+            description: 'Convert notices, cafeteria posters, and meeting room displays into dynamic digital channels. Guide employees to the latest policy updates and collect real-time feedback effortlessly.',
+            image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=1200&q=80',
+            cta: 'Get started free',
+            secondaryCta: 'View demo',
+            highlight: 'Turn physical office spaces into trackable communication channels.'
         },
         placementSection: {
             title: 'Where Corporate Teams Use SwitchQR',
-            subtitle: 'Modernize internal communication at every office:',
+            subtitle: 'Bring static workplace communication into the digital loop:',
             items: [
                 { icon: 'dashboard', label: 'Notice boards and digital signage' },
-                { icon: 'coffee', label: 'Cafeteria and breakout tables' },
-                { icon: 'sensor_door', label: 'Entry areas and meeting rooms' }
-            ]
+                { icon: 'coffee', label: 'Cafeteria tables and break areas' },
+                { icon: 'meeting_room', label: 'Meeting rooms and collaboration zones' },
+                { icon: 'verified_user', label: 'Entry areas and compliance checkpoints' }
+            ],
+            footer: 'Every scan becomes measurable engagement.'
         },
         benefits: {
-            title: 'Engage Your Workforce',
-            subtitle: 'Turn passive notice boards into active communication channels.',
+            title: 'Turn Passive Notices Into Active Communication',
+            subtitle: 'Ensure employees see, read, and act on critical updates.',
             items: [
                 {
-                    icon: 'update',
-                    title: 'Push Updates',
-                    description: 'Broadcast policy changes or urgent updates instantly to everyone.'
+                    icon: 'campaign',
+                    title: 'Push Policy Updates Instantly',
+                    description: 'Update HR policies, compliance notices, or company announcements in real time—without reprinting or replacing materials.'
                 },
                 {
-                    icon: 'poll',
-                    title: 'Live Feedback',
-                    description: 'Run quick pulse surveys or feedback forms during lunch hours.'
+                    icon: 'quiz',
+                    title: 'Collect Feedback at Scale',
+                    description: 'Run pulse surveys, feedback forms, or engagement polls using a single physical QR touchpoint.'
                 },
                 {
-                    icon: 'insights',
-                    title: 'Engagement Data',
-                    description: 'Analytics to see which departments or floors are actually engaged.'
+                    icon: 'analytics',
+                    title: 'See What’s Actually Being Read',
+                    description: 'Know which departments engage—and which ignore updates—so you can improve communication effectiveness.'
                 }
             ]
         },
         advanced: {
-            title: 'Internal Ops Control',
-            subtitle: 'Manage workplace communication with enterprise precision.',
+            title: 'Enterprise-Grade Internal Communication Control',
+            subtitle: 'Operate internal communication with precision.',
             items: [
-                { title: 'Department Isolation', description: 'Securely manage campaigns for HR, Sales, or IT separately.' },
-                { title: 'Engagement Analytics', description: 'Get detailed reports on internal participation and document views.' },
-                { title: 'Regional Overrides', description: 'Schedule content updates for specific office locations or regions.' }
-            ]
+                { title: 'Departmental Campaigns', description: 'Assign QR campaigns by department (HR, IT, Operations) for targeted updates.' },
+                { title: 'Location Tracking', description: 'Track engagement by office location or team to identify communication gaps.' },
+                { title: 'Automated Scheduling', description: 'Schedule automatic updates for policy changes, events, or announcements.' }
+            ],
+            footer: 'Maintain full control without operational overhead.'
         },
         feature: {
             type: 'analytics',
-            title: 'Internal Engagement Data',
-            subtitle: 'Finally understand which departments are actually reading the new policy updates.',
+            title: 'Finally Measure Internal Engagement',
+            subtitle: 'Understand how employees interact with internal communications.',
             stats: [
                 { label: 'Policy Reads', value: '88%', icon: 'fact_check' },
                 { label: 'Most Active', value: 'Sales Team', icon: 'groups' },
                 { label: 'Avg Time', value: '4m 12s', icon: 'schedule' }
             ],
             map_data: {
-                active_regions: ['HQ', 'Remote', 'Sales Office'],
-                highlight: 'Department Breakdown'
+                active_regions: ['NYC Office', 'London HQ', 'Remote Teams'],
+                highlight: 'Real-time engagement visibility across regions.'
             }
         },
+        setup: {
+            title: 'Deploy in Minutes',
+            subtitle: 'Modernize your workplace in three steps:',
+            items: [
+                {
+                    icon: 'qr_code_2',
+                    title: 'Create QR code',
+                    description: 'Generate a dynamic QR for posters or notices.'
+                },
+                {
+                    icon: 'settings_suggest',
+                    title: 'Assign destinations',
+                    description: 'Link to policies, surveys, or announcements.'
+                },
+                {
+                    icon: 'monitoring',
+                    title: 'Track engagement',
+                    description: 'Monitor performance and update anytime.'
+                }
+            ]
+        },
         testimonial: {
-            quote: "Internal comms are usually ignored. SwitchQR lets us push changing content to cafeteria tables without reprinting flyers every week.",
-            author: 'Linda Martinez',
-            role: 'HR Director, OmniCorp',
-            image: 'https://images.unsplash.com/photo-1551836022-d5d88e9218df?w=400&h=400&fit=crop'
+            quote: "SwitchQR helped us deliver updates across offices instantly—without replacing printed materials. We finally have visibility into engagement.",
+            author: 'HR Director',
+            role: 'Global Enterprise Company',
+            image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&h=400&fit=crop'
         }
-    }
+    },
 };
