@@ -460,7 +460,7 @@ export const industries = {
             title: 'Turn Every Poster Into an Admissions Funnel',
             subtitle: 'Offline marketing drives student interest. SwitchQR converts that interest into applications—instantly and intelligently.',
             description: 'Convert every physical touchpoint—brochures, posters, and campus signage—into a high-converting digital gateway. Manage seasonal application cycles and optimize messaging without reprinting physical assets.',
-            image: 'https://images.unsplash.com/photo-1523240759499-46be4193d3af?w=1200&q=80',
+            image: 'https://images.unsplash.com/photo-1509062522246-3755977927d7?w=1200&q=80',
             cta: 'Get started free',
             secondaryCta: 'View demo',
             highlight: 'Convert offline interest into instant applications.'
