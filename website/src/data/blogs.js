@@ -5,7 +5,7 @@ export const blogs = [
         title: 'Why Static QR Codes Are Costing Your Business Thousands',
         eyebrow: 'Marketing Strategy',
         category: 'Strategy',
-        description: 'Discover how bridging the physical and digital worlds can transform your customer engagement strategy in 2024.',
+        description: '2026 - Discover how bridging the physical and digital worlds can transform your customer engagement strategy in 2024.',
         author: {
             name: 'Naveen Kumar',
             image: '/images/authors/naveen.jpg'
@@ -32,7 +32,7 @@ export const blogs = [
             },
             {
                 type: 'paragraph',
-                text: 'Imagine a restaurant chain generating 1,500 scans per day across table tents and window displays. Their average upsell value per customer is $8. A time-based promotion — like a two-hour happy hour — could increase upsell conversion by just 3%. Let’s keep this conservative. If 30% of daily scans happen during that window: 450 scans × 3% uplift × $8 = **$108 per day.** That’s roughly **$3,000 per month** for one location. Multiply that across five locations and you’re looking at **$15,000 per month** in incremental revenue that never materializes because the QR code cannot switch destinations based on time. This isn’t hypothetical. It’s simple conversion math. **Static infrastructure blocks dynamic revenue.**'
+                text: 'Imagine a restaurant chain generating 1,500 scans per day across table tents and window displays. Their average upsell value per customer is $8. A time-based promotion like a two-hour happy hour could increase upsell conversion by just 3%. Let’s keep this conservative. If 30% of daily scans happen during that window: 450 scans × 3% uplift × $8 = **$108 per day.** That’s roughly **$3,000 per month** for one location. Multiply that across five locations and you’re looking at **$15,000 per month** in incremental revenue that never materializes because the QR code cannot switch destinations based on time. This isn’t hypothetical. It’s simple conversion math. **Static infrastructure blocks dynamic revenue.**'
             },
             {
                 type: 'heading',
@@ -80,7 +80,20 @@ export const blogs = [
             },
             {
                 type: 'paragraph',
-                text: 'No single inefficiency from static QR codes will destroy a business. **The problem is accumulation.** **$15,000** missed from timed promotions, **$25,000** from attribution inefficiencies, **$18,000** from reprinting, and **$60,000** from untested conversion uplift. Individually manageable. Together? **Six figures.** Static QR codes don’t create dramatic losses. They create quiet ceilings. **And ceilings are dangerous because they’re invisible.**'
+                text: 'No single inefficiency from static QR codes will destroy a business. **The problem is accumulation.**'
+            },
+            {
+                type: 'list',
+                items: [
+                    '**$15,000** missed from timed promotions',
+                    '**$25,000** from attribution inefficiencies',
+                    '**$18,000** from reprinting',
+                    '**$60,000** from untested conversion uplift'
+                ]
+            },
+            {
+                type: 'paragraph',
+                text: 'Individually manageable. Together: **Six figures.** Static QR codes don’t create dramatic losses. They create quiet ceilings. **And ceilings are dangerous because they’re invisible.**'
             }
         ],
         tags: ['Marketing', 'TechTrends', 'QRCode'],
