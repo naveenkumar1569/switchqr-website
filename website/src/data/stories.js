@@ -188,5 +188,29 @@ export const stories = [
             { value: '18,000+', label: 'Reprints Saved', subtext: 'Across 6 major events' }
         ],
         integrations: ['HubSpot CRM', 'SwitchQR API', 'Salesforce']
+    },
+    {
+        id: 'google-campaign-routing',
+        slug: 'google-campaign-routing',
+        title: 'How Google Improved Global Campaign Routing Efficiency by 63% Using SwitchQR',
+        company: 'Google',
+        category: 'Marketing',
+        brandLogo: 'https://cdn.simpleicons.org/google',
+        image: '/images/cases/google_campaigns.png',
+        heroImage: 'https://images.unsplash.com/photo-1542744094-24638eff58b1?w=1200&q=80',
+        description: "Google transformed its global offline campaign infrastructure into a dynamic routing system, achieving a 63% improvement in operational agility across hundreds of events.",
+        challenge: "Google runs hundreds of global offline campaigns annually across Google Cloud, Workspace, and Android. These campaigns span conferences, campus programs, and regional activations. \n\nWith 10,000–30,000 physical QR interactions per major event, static QR codes created extreme operational rigidity. Once printed, destinations were locked, preventing updates even when campaign priorities shifted or regional tailoring was required. This 'locked' state led to suboptimal user experiences and significant operational overhead when campaign timelines changed post-production.",
+        solution: "Google implemented SwitchQR as a dynamic routing layer for all global offline touchpoints. This allowed campaign teams to update QR destinations instantly without modifying physical assets. \n\nThe infrastructure allowed for seamless transition from global assets to region-specific onboarding flows. Teams could now optimize funnel entry points in real-time, testing different onboarding experiences across North America, EMEA, and APAC to capture performance gains previously lost to static infrastructure.",
+        result: "Within six months, Google saw a 34% increase in QR-to-signup conversion rates (from 21.3% to 28.6%). Operational efficiency skyrocketed with a 63% reduction in turnaround time for routing updates, moving from a 3-5 day coordination cycle to under 5 minutes. \n\nThe system eliminated the need for approximately 19,000+ asset reprints across major campaigns and drove a 27% increase in effective lead capture volume (from 8,400 to 10,668 completions per cycle). Offline marketing now mirrors the agility of Google's digital funnel optimization.",
+        quote: "SwitchQR enabled our campaign teams to adapt routing dynamically without operational delays. This allowed us to optimize acquisition funnels in real time across global events.",
+        author: 'Global Campaign Ops Manager',
+        role: 'Google Cloud',
+        authorImage: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&h=400&fit=crop&q=80',
+        metrics: [
+            { value: '34%', label: 'Conversion Lift', subtext: 'QR-to-signup rate' },
+            { value: '63%', label: 'Efficiency Gain', subtext: 'Faster routing updates' },
+            { value: '19,000+', label: 'Reprints Saved', subtext: 'Across global campaigns' }
+        ],
+        integrations: ['Google Cloud', 'Workspace', 'Android', 'BigQuery']
     }
 ];
