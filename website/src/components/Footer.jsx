@@ -10,8 +10,8 @@ const Footer = () => {
             { name: 'Pricing', path: '/pricing' },
         ],
         Resources: [
-            { name: 'Blog', path: '/blog' },
             { name: 'Case Studies', path: '/case-studies' },
+            { name: 'Blog', path: '/blog' },
             { name: 'Help Center', path: '/coming-soon/help-center' },
             { name: 'QR Generator', path: `${CLIENT_APP_URL}/register` },
         ],
