@@ -182,27 +182,43 @@ const BlogDetail = () => {
                             <div>
                                 <h3 className="text-sm font-bold text-slate-400 uppercase tracking-wider mb-6 pb-2 border-b border-slate-100 dark:border-gray-800">Related Articles</h3>
                                 <div className="space-y-8">
-                                    {blogs.filter(b => b.slug !== slug).slice(0, 2).map((relatedBlog) => (
-                                        <Link
-                                            key={relatedBlog.id}
-                                            to={`/blog/${relatedBlog.slug}`}
-                                            className="group block cursor-pointer"
-                                        >
-                                            <div className="overflow-hidden rounded-xl mb-3 aspect-[16/10] bg-gray-100 dark:bg-gray-800">
-                                                <img
-                                                    src={relatedBlog.image}
-                                                    alt={relatedBlog.title}
-                                                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                                                />
-                                            </div>
-                                            <h4 className="text-base font-bold text-slate-900 dark:text-white leading-tight group-hover:text-primary transition-colors line-clamp-2">
-                                                {relatedBlog.title}
-                                            </h4>
-                                            <p className="text-slate-500 dark:text-slate-400 mt-2 text-xs line-clamp-1 uppercase tracking-wider font-bold">
-                                                {relatedBlog.category} • {relatedBlog.date}
-                                            </p>
-                                        </Link>
-                                    ))}
+                                    {(() => {
+                                        const currentIndex = blogs.findIndex(b => b.slug === slug);
+                                        const related = [
+                                            blogs[(currentIndex + 1) % blogs.length],
+                                            blogs[(currentIndex + 2) % blogs.length]
+                                        ].filter(b => b.slug !== slug);
+
+                                        // Fallback if filtering current post leaves only 1, pick third one
+                                        if (related.length < 2 && blogs.length > 2) {
+                                            const thirdCandidate = blogs[(currentIndex + 3) % blogs.length];
+                                            if (thirdCandidate.slug !== slug) {
+                                                related.push(thirdCandidate);
+                                            }
+                                        }
+
+                                        return related.slice(0, 2).map((relatedBlog) => (
+                                            <Link
+                                                key={relatedBlog.id}
+                                                to={`/blog/${relatedBlog.slug}`}
+                                                className="group block cursor-pointer"
+                                            >
+                                                <div className="overflow-hidden rounded-xl mb-3 aspect-[16/10] bg-gray-100 dark:bg-gray-800">
+                                                    <img
+                                                        src={relatedBlog.image}
+                                                        alt={relatedBlog.title}
+                                                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                                                    />
+                                                </div>
+                                                <h4 className="text-base font-bold text-slate-900 dark:text-white leading-tight group-hover:text-primary transition-colors line-clamp-2">
+                                                    {relatedBlog.title}
+                                                </h4>
+                                                <p className="text-slate-500 dark:text-slate-400 mt-2 text-xs line-clamp-1 uppercase tracking-wider font-bold">
+                                                    {relatedBlog.category} • {relatedBlog.date}
+                                                </p>
+                                            </Link>
+                                        ));
+                                    })()}
                                 </div>
                             </div>
 
