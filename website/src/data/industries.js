@@ -430,7 +430,7 @@ export const industries = {
             eyebrow: 'Education & Training Institutes',
             title: 'Admissions Funnel from Offline Ads',
             subtitle: 'Education marketing is heavily offline + seasonal. Scheduled redirects are perfect here.',
-            image: 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=1200&q=80'
+            image: 'https://images.unsplash.com/photo-1541339907198-e08756ebafe1?q=80&w=1200&auto=format&fit=crop'
         },
         placementSection: {
             title: 'Where Education Teams Use SwitchQR',
