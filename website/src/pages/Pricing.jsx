@@ -57,8 +57,10 @@ const Pricing = () => {
             cta: 'Get Started',
             ctaStyle: 'secondary',
             features: [
-                '5 Dynamic QR Codes',
-                '5 Edit Destination Links',
+                '3 Dynamic QR Codes',
+                '10 Edit Destination Links',
+                '500 Total Scans',
+                '7-Day Analytics History',
                 'Standard Support',
             ],
         },
@@ -71,10 +73,11 @@ const Pricing = () => {
             ctaStyle: 'outline',
             features: [
                 'Everything in Free, plus:',
-                '50 Dynamic QR Codes',
-                '100 Edit Destination Links',
+                '100 Dynamic QR Codes',
+                '500 Edit Destination Links',
+                '100k Total Scans',
+                '90-Day Analytics History',
                 'Basic Analytics Dashboard',
-                'Custom Colors & Logos',
             ],
         },
         {
@@ -89,10 +92,11 @@ const Pricing = () => {
                 'Everything in Starter, plus:',
                 '1000 Dynamic QR Codes',
                 'Unlimited Edit Destination Links',
-                'Unlimited Campaigns',
-                'Advanced Pixel Tracking',
-                '5 Team Seats',
-                'Priority Email Support',
+                'Unlimited Total Scans',
+                'Unlimited Analytics History',
+                'Advanced Analytics & Tracking',
+                'Campaign Management',
+                'CSV Data Export',
             ],
         },
     ];
@@ -117,20 +121,27 @@ const Pricing = () => {
     ];
 
     const comparisonData = {
+        'Usage Limits': [
+            { feature: 'Active QR Codes', free: '3', starter: '100', pro: '1000' },
+            { feature: 'Total Scans', free: '500', starter: '100k', pro: 'Unlimited' },
+            { feature: 'Link Updates', free: '10', starter: '500', pro: 'Unlimited' },
+            { feature: 'Analytics History', free: '7 Days', starter: '90 Days', pro: 'Unlimited' },
+        ],
         'QR Management': [
-            { feature: 'Dynamic QR Codes', free: '5', starter: '50', pro: '1000' },
-            { feature: 'Edit Destination Links', free: '5', starter: '100', pro: 'Unlimited' },
-            { feature: 'Campaigns', free: '-', starter: '-', pro: 'Unlimited' },
+            { feature: 'Dynamic QR Codes', free: true, starter: true, pro: true },
+            { feature: 'Edit Destination Links', free: true, starter: true, pro: true },
+            { feature: 'Campaign Folders', free: false, starter: false, pro: true },
         ],
         'Analytics': [
-            { feature: 'Geo-tracking', free: false, starter: 'Basic', pro: 'Precise GPS' },
-            { feature: 'Device & OS Stats', free: false, starter: true, pro: true },
-            { feature: 'CSV Export', free: false, starter: true, pro: true },
+            { feature: 'Analytics Dashboard', free: false, starter: 'Basic', pro: 'Advanced' },
+            { feature: 'Geo-tracking', free: false, starter: false, pro: true },
+            { feature: 'Device & OS Stats', free: false, starter: false, pro: true },
+            { feature: 'CSV Export', free: false, starter: false, pro: true },
         ],
         'Advanced': [
             { feature: 'A/B Testing', free: false, starter: false, pro: true },
-            { feature: 'Smart Scheduling', free: false, starter: 'Limited', pro: 'Unlimited' },
-            { feature: 'White Label Branding', free: false, starter: 'Basic Customization', pro: 'Full White Label' },
+            { feature: 'Smart Scheduling', free: false, starter: true, pro: true },
+            { feature: 'Scan Tracking Controls', free: false, starter: true, pro: true },
         ],
     };
 
