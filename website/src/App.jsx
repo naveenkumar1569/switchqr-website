@@ -13,6 +13,7 @@ import Terms from './pages/Terms';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import RefundPolicy from './pages/RefundPolicy';
 import Blog from './pages/Blog';
+import BlogDetail from './pages/BlogDetail';
 import Contact from './pages/Contact';
 import Layout from './Layout'; // Import the global Layout
 import ScrollToTop from './components/ScrollToTop';
@@ -29,6 +30,7 @@ function App() {
                     <Route path="/about" element={<AboutUs />} />
                     <Route path="/careers" element={<Careers />} />
                     <Route path="/blog" element={<Blog />} />
+                    <Route path="/blog/:slug" element={<BlogDetail />} />
                     <Route path="/case-studies" element={<SuccessStories />} />
                     <Route path="/case-studies/:slug" element={<CaseStudy />} />
                     <Route path="/industries/:slug" element={<IndustryUseCase />} />
