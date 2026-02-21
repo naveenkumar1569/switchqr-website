@@ -4,7 +4,7 @@ import { stories } from '../data/stories';
 
 const SuccessStories = () => {
     const CLIENT_APP_URL = 'https://app.switch-qr.com';
-    const categories = ['All', 'Retail', 'Events', 'Food & Beverage', 'Packaging', 'Marketing', 'Fintech'];
+    const categories = ['All', 'Retail', 'Events', 'Food & Beverage', 'Packaging', 'Marketing', 'Fintech', 'Cloud & Enterprise'];
     const [activeCategory, setActiveCategory] = React.useState('All');
 
     // Filter stories based on active category

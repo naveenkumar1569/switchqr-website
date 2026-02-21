@@ -172,6 +172,19 @@ const CaseStudy = () => {
                                 <div className="text-gray-600 mb-4">
                                     <RichText content={story.solution} />
                                 </div>
+                                {story.solutionCards && (
+                                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+                                        {story.solutionCards.map((card, i) => (
+                                            <div key={i} className="bg-white dark:bg-gray-800 p-6 rounded-xl border border-gray-100 dark:border-gray-700 flex flex-col gap-3 shadow-sm hover:shadow-md transition-shadow">
+                                                <div className="size-10 rounded-lg bg-primary/10 flex items-center justify-center text-primary mb-2">
+                                                    <span className="material-symbols-outlined">{card.icon}</span>
+                                                </div>
+                                                <h3 className="font-bold text-text-main dark:text-white">{card.title}</h3>
+                                                <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">{card.description}</p>
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
                             </section>
 
                             {/* The Result */}
@@ -181,6 +194,49 @@ const CaseStudy = () => {
                                     <p className="mt-4">{story.result}</p>
                                 </div>
                             </section>
+
+                            {/* Detailed Results Section (if present) */}
+                            {story.detailedResults && (
+                                <section className="mt-12">
+                                    <h2 className="text-2xl md:text-3xl font-bold text-text-main mb-6">Detailed Results</h2>
+                                    <div className="space-y-8">
+                                        {story.detailedResults.map((res, i) => (
+                                            <div key={i} className="flex flex-col md:flex-row gap-6 border-b border-gray-100 dark:border-gray-800 pb-8 last:border-0 last:pb-0">
+                                                <div className="w-full md:w-1/3">
+                                                    <div className="text-5xl font-black text-primary mb-2">{res.value}</div>
+                                                    <div className="font-bold text-lg text-text-main dark:text-white">{res.label}</div>
+                                                </div>
+                                                <div className="w-full md:w-2/3">
+                                                    <p className="text-base text-gray-600 dark:text-gray-400">
+                                                        {res.description}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </section>
+                            )}
+
+                            {/* Operational Impact Section (if present) */}
+                            {story.operationalImpact && (
+                                <section className="mt-12 bg-gray-50 dark:bg-gray-800/50 rounded-2xl p-8 border border-gray-100 dark:border-gray-800">
+                                    <h2 className="text-2xl md:text-3xl font-bold text-text-main dark:text-white mb-6">Operational Impact</h2>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                        {story.operationalImpact.map((impact, i) => {
+                                            const [title, description] = impact.split(': ');
+                                            return (
+                                                <div key={i} className="flex gap-4">
+                                                    <span className="material-symbols-outlined text-primary mt-1">check_circle</span>
+                                                    <div>
+                                                        <h4 className="font-bold text-text-main dark:text-white">{title}</h4>
+                                                        {description && <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">{description}</p>}
+                                                    </div>
+                                                </div>
+                                            );
+                                        })}
+                                    </div>
+                                </section>
+                            )}
 
                             {/* CTA Section */}
                             <section className="mt-16 py-16 px-8 rounded-2xl bg-white dark:bg-gray-800 border border-[#ece8f2] dark:border-gray-700 text-center flex flex-col items-center gap-6 shadow-sm">

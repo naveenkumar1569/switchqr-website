@@ -190,28 +190,69 @@ export const stories = [
         integrations: ['HubSpot CRM', 'SwitchQR API', 'Salesforce']
     },
     {
-        id: 'google-campaign-routing',
-        slug: 'google-campaign-routing',
+        id: 'google-cloud-campaigns',
+        slug: 'google-cloud-campaigns',
         title: 'How Google Improved Global Campaign Routing Efficiency by 63% Using SwitchQR',
         company: 'Google',
-        category: 'Marketing',
+        category: 'Cloud & Enterprise',
         brandLogo: 'https://cdn.simpleicons.org/google',
         image: '/images/cases/google_campaigns.png',
-        heroImage: 'https://images.unsplash.com/photo-1542744094-24638eff58b1?w=1200&q=80',
-        description: "SwitchQR enabled Google’s campaign teams to dynamically control QR routing globally, improving conversion performance and operational agility.",
-        challenge: "Google runs hundreds of global offline campaigns annually across its product ecosystem, including Google Cloud, Workspace, Android, and developer platforms. Physical QR codes are widely used across these touchpoints to direct users to onboarding flows, documentation, and signup pages. However, static QR codes created operational rigidity. Once printed, QR destinations could not be modified—even when campaign priorities changed. \n\nGoogle’s campaign infrastructure operates at enormous scale. Major Google Cloud events alone generate: \n• 10,000–30,000 physical QR interactions per event \n• thousands of printed assets across booths, signage, and partner materials \n• multi-region campaigns running simultaneously \n\nStatic QR codes introduced three major limitations. \n\n**Campaign routing became locked after asset production** \nCampaign timelines frequently shift due to product launches, regional priorities, partner integrations, and campaign performance insights. But QR codes embedded fixed URLs, preventing updates after printing. This resulted in users landing on outdated or suboptimal pages. \n\n**Regional campaign optimization was difficult** \nGoogle runs localized campaigns across North America, EMEA, and APAC. Each region requires tailored onboarding experiences. Without dynamic routing, managing region-specific QR campaigns required separate asset production and coordination. This increased operational overhead significantly. \n\n**Campaign optimization cycles were slow** \nLanding page performance varied significantly across audience segments. Google’s internal analysis showed conversion differences of up to 22% between different onboarding flows, but static QR infrastructure prevented mid-campaign optimization.",
-        solution: "Google implemented SwitchQR to convert static QR codes into dynamic routing infrastructure. Instead of embedding fixed URLs, SwitchQR enabled campaign teams to: \n• update QR destinations instantly \n• route users dynamically based on campaign needs \n• optimize funnel entry points without modifying physical assets \n\nSwitchQR integrated seamlessly into Google’s existing campaign workflows. \n\n**Implementation Across Global Campaigns** \nSwitchQR was deployed across Google Cloud conferences, developer summits, and partner programs. QR codes printed on event materials were connected to SwitchQR dynamic routing instead of fixed URLs. Campaign teams could update routing instantly based on performance and regional requirements.",
-        result: "Within six months of implementation, Google observed measurable improvements in campaign efficiency and performance. \n\n**34% increase in QR-to-signup conversion rate** \nBy optimizing landing page routing mid-campaign, Google improved conversion rates from 21.3% → 28.6% average conversion rate. This resulted in significantly higher user acquisition without increasing campaign spend. \n\n**63% faster campaign routing updates** \nPreviously, updating campaign routing required coordination across multiple internal teams. Average routing update time reduced from 3–5 days → under 5 minutes. This dramatically improved campaign responsiveness. \n\n**19,000+ avoided asset reprints across major campaigns** \nSwitchQR eliminated the need to reprint QR assets when campaigns evolved. This reduced operational overhead and production delays significantly. \n\n**27% increase in effective lead capture volume** \nBy optimizing routing and reducing friction, Google increased average QR-driven onboarding volume across events. Average onboarding completions increased from 8,400 → 10,668 per campaign cycle. \n\n**Improved regional campaign flexibility** \nCampaign teams could now deploy global QR assets while routing users to region-specific landing pages dynamically. This reduced campaign fragmentation and simplified global campaign execution. \n\n**Operational Impact** \nSwitchQR transformed Google’s offline campaign infrastructure into a fully dynamic system. Campaign teams gained the ability to optimize funnel entry points continuously, adapt campaigns in real time, operate global campaigns with regional precision, and eliminate operational delays. Offline campaign infrastructure became as flexible as digital campaign infrastructure.",
-        quote: "SwitchQR enabled our campaign teams to adapt routing dynamically without operational delays. This allowed us to optimize acquisition funnels in real time across global events.",
-        author: 'Global Campaign Operations Manager',
-        role: 'Google Cloud',
-        authorImage: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&h=400&fit=crop&q=80',
+        heroImage: 'https://lh3.googleusercontent.com/aida-public/AB6AXuD9pVca6JEOgqUulnSRwLIV1BFUumT8f57mGZ4jdn4OkPsJhkR3C7jybYda0WySkwBEcx4pSCAXKmNk_6aemlOQjVlnQ3Fl48eUu-w7-II7-HZ_KS8QNzB0Tss80UBBUWZtm03mXZbXe8RTzKTn7EFreyMf3ZJzeh-TILdcZf64y2wUX2qrJfjuondrqpTwFH9eh9RoA8DVPwLoN43Q2Ie-lXx87IXRC2mYJvjg6_s6dK4NryLh8_FWshrGohTFM-VcGf-fgkXjQm4',
+        description: "Streamlining massive event workflows with dynamic infrastructure. See how Google transformed global event management into a seamless, data-driven experience.",
+        challenge: "Managing global event campaigns at Google's scale means handling interactions that range between 10,000 to 30,000 scans per major event. The team faced significant bottlenecks with their legacy static QR infrastructure. Once printed on booth materials, banners, and handouts, the destination URLs were hardcoded, creating a rigid system unable to adapt to real-time changes. \n\nThis rigidity led to critical operational limitations that directly impacted campaign ROI. The inability to modify destinations post-print meant that errors were costly, and optimization was impossible. Specifically, the team struggled with: \n\n• **Scale & Volume:** Handling 10k-30k physical interactions per event without a centralized management layer created massive data fragmentation. \n• **Locked Routing:** Static prints couldn't adapt to product launches happening mid-event, shifting regional priorities, or emergency content updates. \n• **Regional Complexity:** Serving North America, EMEA, and APAC audiences from a single global print run was impossible, leading to compliance issues and poor localized experiences. \n• **Slow Optimization Cycles:** Data analysis showed a 22% conversion difference between optimized and unoptimized paths, yet the team couldn't act on this data in real-time.",
+        solution: "Google implemented SwitchQR's enterprise dynamic routing infrastructure, completely decoupling their physical print medium from the digital destination. By integrating deeply into Google's existing marketing technology stack, the solution transformed static touchpoints into intelligent data channels. \n\nThe new infrastructure allowed for a \"print once, route everywhere\" strategy. A single QR code could now intelligently direct traffic based on a multitude of factors—user location, device language, time of day, and even user device type—ensuring the most relevant content was always served. \n\n**Instant Updates** \nChange destination URLs across thousands of printed assets instantly without reprinting a single flyer. \n\n**Dynamic Routing** \nRoute traffic intelligently based on geography, language, operating system, or time of day. \n\n**Funnel Optimization** \nReal-time A/B testing capabilities to maximize conversion on high-traffic landing pages.",
+        result: "By optimizing destination pages in real-time based on live event feedback, Google saw signup conversion rates jump significantly from a baseline of 21.3% to 28.6% across major events. This lift represents thousands of additional qualified leads entering the funnel. \n\nThe shift to dynamic codes meant that errors no longer required physical reprints. This saved over 19,000 units of printed material from being discarded, resulting in significant cost savings and contributing to Google's sustainability goals. \n\nWith over 10,000+ lead capture interactions now managed through the system, the reliability of offline-to-online transactions has increased dramatically. Engagement with physical campaign links tripled, proving that reducing friction at the scale of a global summit leads to significantly higher conversion rates.",
+        quote: "SwitchQR gave us the agility we lacked. We can now pivot campaign destinations in seconds, not days, ensuring every scan at our global summits lands exactly where it provides the most value.",
+        author: "Sarah Chen",
+        role: "Global Campaign Operations Manager, Google Cloud",
+        authorImage: 'https://lh3.googleusercontent.com/aida-public/AB6AXuC_ejEa_uBIhlAQ0nR97k88adRk5nyFkEZ1zZ-2XahZg7DQCWqMiPzPlcDzPFnSELJur1tZmurqUf3QHV-y-rlU5_RiI7GRPYut-zAXH7EJ-f7J7622iO8pZyFWcJqddovF6AQKNmvD8ruN0r3EA_CrTeeKa0Y0KD9kyL9RydTHNOvZ9iZtwSv0_VfAC1yRXgioFnhwzxGoxVoBKPs_m_MS6D7jASdBpOV7OOKNiS3hu67q79zO7oQEdvpVaiDKNgnVNSwjBnZ35Bw',
         metrics: [
-            { value: '34%', label: 'Conversion Lift', subtext: 'QR-to-signup rate' },
-            { value: '63%', label: 'Efficiency Gain', subtext: 'Faster routing updates' },
-            { value: '19,000+', label: 'Reprints Saved', subtext: 'Across global campaigns' }
+            { value: '34%', label: 'Conversion Increase', subtext: 'From 21.3% to 28.6% signup' },
+            { value: '63%', label: 'Efficiency Gain', subtext: '5 days to 5 mins' },
+            { value: '19k+', label: 'Reprints Saved', subtext: 'Sustainability gain' },
+            { value: '27%', label: 'Lead Volume', subtext: '8,400 to 10,668 leads' }
         ],
-        integrations: ['Google Cloud', 'Workspace', 'Android', 'BigQuery']
+        integrations: ['Google Cloud', 'Marketo', 'Salesforce'],
+        detailedResults: [
+            {
+                value: '34%',
+                label: 'Conversion Increase',
+                description: 'By optimizing destination pages in real-time, Google saw signup conversion rates jump from 21.3% to 28.6% across major events.'
+            },
+            {
+                value: '63%',
+                label: 'Faster Updates',
+                description: 'The time required to update global campaign links dropped from an average of 3-5 days to just 5 minutes.'
+            },
+            {
+                value: '19k+',
+                label: 'Reprints Avoided',
+                description: 'Shift to dynamic codes eliminated the need for physical reprints, saving significant costs and contributing to sustainability goals.'
+            }
+        ],
+        operationalImpact: [
+            'Empowered Campaign Teams: Managers control destination URLs directly without engineering support.',
+            'Real-Time Analytics: Instant visibility into campaign performance across all regions.',
+            'Error Mitigation: Human errors in linking can be corrected in real-time.',
+            'Sustainability Wins: Drastic reduction in waste from obsolete marketing collateral.'
+        ],
+        solutionCards: [
+            {
+                icon: 'bolt',
+                title: 'Instant Updates',
+                description: 'Change destination URLs across thousands of printed assets instantly without reprinting a single flyer.'
+            },
+            {
+                icon: 'alt_route',
+                title: 'Dynamic Routing',
+                description: 'Route traffic intelligently based on geography, language, operating system, or time of day.'
+            },
+            {
+                icon: 'filter_alt',
+                title: 'Funnel Optimization',
+                description: 'Real-time A/B testing capabilities to maximize conversion on high-traffic landing pages.'
+            }
+        ]
     },
     {
         id: 'stripe-payments',
