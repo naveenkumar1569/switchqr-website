@@ -2,23 +2,22 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 const Footer = () => {
+    const CLIENT_APP_URL = 'https://app.switch-qr.com';
+
     const footerLinks = {
         Product: [
             { name: 'Features', path: '/features' },
             { name: 'Pricing', path: '/pricing' },
-            { name: 'API', path: '/coming-soon/api' },
-            { name: 'Integrations', path: '/coming-soon/integrations' },
         ],
         Resources: [
             { name: 'Blog', path: '/coming-soon/blog' },
             { name: 'Case Studies', path: '/case-studies' },
             { name: 'Help Center', path: '/coming-soon/help-center' },
-            { name: 'QR Generator', path: '/coming-soon/qr-generator' },
+            { name: 'QR Generator', path: `${CLIENT_APP_URL}/register` },
         ],
         Company: [
             { name: 'About Us', path: '/about' },
             { name: 'Careers', path: '/careers' },
-            { name: 'Legal', path: '/coming-soon/legal' },
             { name: 'Contact', path: '/contact' },
         ],
     };
