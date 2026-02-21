@@ -182,20 +182,26 @@ const BlogDetail = () => {
                             <div>
                                 <h3 className="text-sm font-bold text-slate-400 uppercase tracking-wider mb-6 pb-2 border-b border-slate-100 dark:border-gray-800">Related Articles</h3>
                                 <div className="space-y-8">
-                                    {[1, 2].map((i) => (
-                                        <div key={i} className="group cursor-pointer">
+                                    {blogs.filter(b => b.slug !== slug).slice(0, 2).map((relatedBlog) => (
+                                        <Link
+                                            key={relatedBlog.id}
+                                            to={`/blog/${relatedBlog.slug}`}
+                                            className="group block cursor-pointer"
+                                        >
                                             <div className="overflow-hidden rounded-xl mb-3 aspect-[16/10] bg-gray-100 dark:bg-gray-800">
-                                                <div className="w-full h-full bg-slate-50 dark:bg-gray-800/50 flex items-center justify-center text-slate-300">
-                                                    <span className="material-symbols-outlined text-3xl">article</span>
-                                                </div>
+                                                <img
+                                                    src={relatedBlog.image}
+                                                    alt={relatedBlog.title}
+                                                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                                                />
                                             </div>
                                             <h4 className="text-base font-bold text-slate-900 dark:text-white leading-tight group-hover:text-primary transition-colors line-clamp-2">
-                                                Coming Soon: More Marketing Insights
+                                                {relatedBlog.title}
                                             </h4>
                                             <p className="text-slate-500 dark:text-slate-400 mt-2 text-xs line-clamp-1 uppercase tracking-wider font-bold">
-                                                Resources
+                                                {relatedBlog.category} • {relatedBlog.date}
                                             </p>
-                                        </div>
+                                        </Link>
                                     ))}
                                 </div>
                             </div>
