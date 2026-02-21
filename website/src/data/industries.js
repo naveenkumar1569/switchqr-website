@@ -100,7 +100,7 @@ export const industries = {
             title: 'Dynamic QR Codes for Modern Retail Operations',
             subtitle: 'Retail promotions change constantly — offers rotate, inventory shifts, and campaigns evolve weekly.',
             description: 'SwitchQR allows retail teams to deploy one permanent QR code that can be updated instantly across stores, displays, and printed materials — without replacing physical signage. Keep in-store marketing accurate, current, and measurable at all times.',
-            image: 'https://images.unsplash.com/photo-1441984904996-e0b6ba687e12?w=1200&q=80',
+            image: 'https://images.unsplash.com/photo-1481437156560-3205f6a55735?w=1200&q=80',
             cta: 'Create your first retail QR',
             secondaryCta: 'View live demo',
             highlight: 'One permanent QR. Infinite marketing possibilities.'
