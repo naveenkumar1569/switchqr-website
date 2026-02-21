@@ -25,7 +25,10 @@ const BlogDetail = () => {
     const formatText = (text) => {
         if (!text) return '';
         // Replace **text** with <strong>text</strong>
-        return text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+        let formatted = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+        // Replace [label](url) with <a href="url" target="_blank" rel="noopener noreferrer">label</a>
+        formatted = formatted.replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer" class="text-primary hover:underline font-bold">$1</a>');
+        return formatted;
     };
 
     return (
@@ -111,9 +114,11 @@ const BlogDetail = () => {
                             }
                             if (item.type === 'heading') {
                                 return (
-                                    <h2 key={idx} className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white pt-8 mt-6 mb-2">
-                                        {item.text}
-                                    </h2>
+                                    <h2
+                                        key={idx}
+                                        className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white pt-8 mt-6 mb-2"
+                                        dangerouslySetInnerHTML={{ __html: formatText(item.text) }}
+                                    />
                                 );
                             }
                             if (item.type === 'list') {

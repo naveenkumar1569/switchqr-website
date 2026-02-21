@@ -747,7 +747,7 @@ export const blogs = [
             },
             {
                 type: 'heading',
-                text: 'QR Code Generator Pro'
+                text: '[QR Code Generator Pro](https://www.qr-code-generator.com/)'
             },
             {
                 type: 'paragraph',
@@ -759,7 +759,7 @@ export const blogs = [
             },
             {
                 type: 'heading',
-                text: 'Beaconstac'
+                text: '[Beaconstac (Uniqode)](https://www.uniqode.com/)'
             },
             {
                 type: 'paragraph',
@@ -771,7 +771,7 @@ export const blogs = [
             },
             {
                 type: 'heading',
-                text: 'Flowcode'
+                text: '[Flowcode](https://www.flowcode.com/)'
             },
             {
                 type: 'paragraph',
@@ -783,7 +783,7 @@ export const blogs = [
             },
             {
                 type: 'heading',
-                text: 'The QR Code Generator'
+                text: '[The QR Code Generator](https://www.the-qrcode-generator.com/)'
             },
             {
                 type: 'paragraph',
@@ -795,7 +795,7 @@ export const blogs = [
             },
             {
                 type: 'heading',
-                text: 'SwitchQR'
+                text: '[SwitchQR](https://www.switch-qr.com/)'
             },
             {
                 type: 'paragraph',
