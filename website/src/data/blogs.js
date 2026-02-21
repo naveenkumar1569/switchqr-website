@@ -723,7 +723,7 @@ export const blogs = [
         },
         date: 'Feb 2026',
         readTime: '8 min read',
-        image: 'https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=1200&q=80',
+        image: 'https://images.unsplash.com/photo-1551434678-e076c223a692?w=1200&q=80',
         content: [
             {
                 type: 'paragraph',
@@ -850,7 +850,7 @@ export const blogs = [
         },
         date: 'Feb 2026',
         readTime: '9 min read',
-        image: 'https://images.unsplash.com/photo-1556742044-3c52d6e88c62?w=1200&q=80',
+        image: 'https://images.unsplash.com/photo-1556742502-ec7c0e9f34b1?w=1200&q=80',
         content: [
             {
                 type: 'paragraph',
