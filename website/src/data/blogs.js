@@ -1585,7 +1585,7 @@ export const blogs = [
         },
         date: 'Feb 2026',
         readTime: '12 min read',
-        image: 'https://images.unsplash.com/photo-1556740714-a8322c36ca3d?w=1200&q=80',
+        image: 'https://images.unsplash.com/photo-1681433412602-db329923c7e3?w=1200&q=80',
         content: [
             {
                 type: 'paragraph',
