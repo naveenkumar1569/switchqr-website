@@ -214,73 +214,123 @@ export const industries = {
     },
     packaging: {
         slug: 'packaging',
-        name: 'Packaging & D2C',
-        icon: 'inventory_2',
-        gradient: 'linear-gradient(135deg, #6ee7b7 0%, #34d399 100%)',
+        name: 'Product Packaging & D2C Brands',
+        icon: 'package_2',
+        gradient: 'linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%)',
         hero: {
-            eyebrow: 'Product Packaging & D2C Brands',
-            title: 'Packaging That Evolves Digitally',
-            subtitle: 'Packaging lasts months. Your marketing doesn’t. Update the unboxing experience long after shipping.',
-            image: 'https://images.unsplash.com/photo-1542838132-92c53300491e?w=1200&q=80'
+            eyebrow: 'Packaging & D2C Solution',
+            title: 'Turn Product Packaging into a Long-Term Customer Channel',
+            subtitle: 'Packaging stays with your customer long after delivery. Your marketing should evolve with it.',
+            description: 'SwitchQR enables brands to deploy one permanent QR code on packaging that can be updated anytime — after shipping, after launch, and throughout the product lifecycle. Deliver updated experiences without changing packaging or inventory.',
+            image: 'https://images.unsplash.com/photo-1589939705384-5185137a7f0f?w=1200&q=80',
+            cta: 'Create your first packaging QR',
+            secondaryCta: 'View live demo',
+            highlight: 'Deliver updated experiences without changing packaging or inventory.'
         },
         placementSection: {
             title: 'Where D2C Brands Use SwitchQR',
-            subtitle: 'Connect with customers directly through your packaging:',
+            subtitle: 'SwitchQR integrates directly into your product packaging ecosystem:',
             items: [
-                { icon: 'package_2', label: 'Primary product box' },
-                { icon: 'menu_book', label: 'Instruction manuals' },
-                { icon: 'card_giftcard', label: 'Thank you inserts' }
-            ]
+                { icon: 'package_2', label: 'Primary product packaging' },
+                { icon: 'menu_book', label: 'Instruction manuals and setup guides' },
+                { icon: 'card_giftcard', label: 'Thank-you cards and inserts' },
+                { icon: 'verified', label: 'Warranty cards and registration forms' },
+                { icon: 'label', label: 'Product labels and outer cartons' }
+            ],
+            footer: 'One QR code continues working throughout the product’s lifetime.'
         },
         benefits: {
-            title: 'Post-Purchase Engagement',
-            subtitle: 'Turn a static box into an ongoing customer relationship channel.',
+            title: 'Extend Customer Engagement Beyond Delivery',
+            subtitle: 'SwitchQR transforms packaging from a static asset into an ongoing engagement channel.',
             items: [
                 {
-                    icon: 'smart_display',
-                    title: 'Video Manuals',
-                    description: 'Replace paper instructions with always-updated video guides.'
+                    icon: 'video_library',
+                    title: 'Always-Updated Setup and Video Guides',
+                    description: 'Replace printed instructions with digital setup videos, troubleshooting guides, and onboarding flows. Update content anytime without reprinting packaging.'
                 },
                 {
                     icon: 'trending_up',
-                    title: 'Upsell Flows',
-                    description: 'Suggest compatible accessories weeks after they bought the main product.'
+                    title: 'Upsell and Cross-Sell After Purchase',
+                    description: 'Recommend accessories, upgrades, or complementary products after customers begin using the product. Drive additional revenue from existing customers.'
                 },
                 {
                     icon: 'public',
-                    title: 'Global Supply Chain',
-                    description: 'Track scans by country for logistics insights.'
+                    title: 'Global Visibility Into Product Usage',
+                    description: 'Track when and where products are being scanned to understand customer distribution and engagement. Gain real-world insight beyond shipment data.'
                 }
             ]
         },
         advanced: {
-            title: 'Digital Packaging Strategy',
-            subtitle: 'Maximize the lifetime value of every customer.',
+            title: 'Built for Modern D2C and Product Teams',
+            subtitle: 'SwitchQR provides control across the entire product lifecycle.',
             items: [
-                { title: 'Dynamic Upselling', description: 'Test different upsell flows based on the product life cycle.' },
-                { title: 'SKU Intelligence', description: 'Create and track campaigns per product SKU or batch.' },
-                { title: 'Batch Scheduling', description: 'Roll out new experiences to specific batches of products.' }
-            ]
+                { title: 'SKU-Level Control', description: 'Manage campaigns by product, SKU, or batch for precise messaging.' },
+                { title: 'Post-Shipment Updates', description: 'Update experiences even after the product has left the warehouse.' },
+                { title: 'Agile Campaigns', description: 'Launch new campaigns without waiting for the next packaging print run.' }
+            ],
+            footer: 'Packaging becomes a flexible digital touchpoint.'
         },
         feature: {
             type: 'analytics',
-            title: 'Supply Chain Intelligence',
-            subtitle: 'See exactly where your products are being unboxed around the world in real-time.',
+            title: 'Supply Chain and Product Intelligence',
+            subtitle: 'Understand how customers interact with your products after delivery.',
             stats: [
-                { label: 'Total Scans', value: '124.5k', icon: 'qr_code_scanner' },
-                { label: 'Top Region', value: 'North America', icon: 'public' },
-                { label: 'Engagement', value: '3.2m', icon: 'timer' }
+                { label: 'Unboxing Scans', value: '12.5k', icon: 'inventory_2' },
+                { label: 'Video Views', value: '8.2k', icon: 'play_circle' },
+                { label: 'Registration', value: '64%', icon: 'how_to_reg' }
             ],
             map_data: {
-                active_regions: ['US', 'DE', 'JP', 'UK'],
-                highlight: 'Global Distribution'
+                active_regions: ['USA', 'UK', 'Germany'],
+                highlight: 'Track engagement across packaging batches and releases'
             }
         },
+        lifecycle: {
+            title: 'One QR Code That Evolves With the Product Lifecycle',
+            subtitle: 'A single QR code can serve multiple purposes over time.',
+            items: [
+                {
+                    icon: 'rocket_launch',
+                    title: 'Launch phase',
+                    description: 'Setup guides, onboarding, and registration'
+                },
+                {
+                    icon: 'settings',
+                    title: 'Active usage phase',
+                    description: 'Tutorials, feature education, and support'
+                },
+                {
+                    icon: 'auto_graph',
+                    title: 'Growth phase',
+                    description: 'Accessory recommendations and product upgrades'
+                }
+            ]
+        },
+        setup: {
+            title: 'Simple Setup in Minutes',
+            subtitle: 'Get your packaging campaigns running in three steps:',
+            items: [
+                {
+                    icon: 'qr_code_2',
+                    title: '1. Create your QR code',
+                    description: 'Generate a dynamic QR for your packaging.'
+                },
+                {
+                    icon: 'link',
+                    title: '2. Assign your destination',
+                    description: 'Link to setup guides, product pages, or campaigns.'
+                },
+                {
+                    icon: 'sync',
+                    title: '3. Update anytime',
+                    description: 'Modify experiences without changing packaging.'
+                }
+            ]
+        },
         testimonial: {
-            quote: "Our packaging is now a living channel. We update unboxing videos and accessory offers long after the product has left our warehouse.",
-            author: 'Marcus Johnson',
-            role: 'Product Lead, TechGear',
-            image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=400&fit=crop'
+            quote: "We placed SwitchQR on our packaging and were able to update onboarding videos and accessory offers without changing inventory. It gave us ongoing control after delivery.",
+            author: 'Product Operations Lead',
+            role: 'D2C Brand Strategy',
+            image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=faces'
         }
     },
     restaurants: {
