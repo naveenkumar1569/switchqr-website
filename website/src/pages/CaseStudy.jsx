@@ -204,25 +204,6 @@ const CaseStudy = () => {
                     </div>
                 </div>
             </div>
-            {/* Bottom CTA */}
-            <section className="py-20 bg-white border-t border-gray-100">
-                <div className="max-w-[960px] mx-auto px-4 text-center flex flex-col items-center gap-6">
-                    <h2 className="text-3xl md:text-4xl font-black text-text-main tracking-tight">
-                        Ready to see similar results?
-                    </h2>
-                    <p className="text-lg text-gray-600 max-w-xl">
-                        Join {story.company} and 500+ other brands using SwitchQR to modernize their physical touchpoints.
-                    </p>
-                    <div className="flex flex-col sm:flex-row gap-4 mt-4 w-full justify-center">
-                        <a href={`${CLIENT_APP_URL}/register`} className="flex min-w-[160px] cursor-pointer items-center justify-center rounded-xl h-12 px-8 bg-primary text-white text-base font-bold shadow-lg shadow-primary/25 hover:translate-y-[-2px] transition-transform">
-                            Start your free trial
-                        </a>
-                        <a href="mailto:sales@switchqr.com" className="flex min-w-[160px] cursor-pointer items-center justify-center rounded-xl h-12 px-8 bg-background-light border border-gray-200 text-text-main text-base font-bold hover:bg-gray-100 transition-colors">
-                            Talk to Sales
-                        </a>
-                    </div>
-                </div>
-            </section>
         </>
     );
 };
