@@ -12,6 +12,7 @@ import ComingSoon from './pages/ComingSoon';
 import Terms from './pages/Terms';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import RefundPolicy from './pages/RefundPolicy';
+import Contact from './pages/Contact';
 import Layout from './Layout'; // Import the global Layout
 import ScrollToTop from './components/ScrollToTop';
 
@@ -32,6 +33,7 @@ function App() {
                     <Route path="/terms" element={<Terms />} />
                     <Route path="/privacy" element={<PrivacyPolicy />} />
                     <Route path="/refund" element={<RefundPolicy />} />
+                    <Route path="/contact" element={<Contact />} />
                     <Route path="*" element={<Navigate to="/" replace />} />
                 </Routes>
             </Layout>
