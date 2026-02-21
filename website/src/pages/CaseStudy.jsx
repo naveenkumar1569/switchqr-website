@@ -178,14 +178,32 @@ const CaseStudy = () => {
                             <section>
                                 <h2 className="text-2xl md:text-3xl font-bold text-text-main mb-4">The Result</h2>
                                 <div className="text-gray-600 mb-4">
-                                    <RichText content={story.result} />
+                                    <p className="mt-4">{story.result}</p>
                                 </div>
+                            </section>
+
+                            {/* CTA Section */}
+                            <section className="mt-16 py-16 px-8 rounded-2xl bg-white dark:bg-gray-800 border border-[#ece8f2] dark:border-gray-700 text-center flex flex-col items-center gap-6 shadow-sm">
+                                <h2 className="text-3xl md:text-4xl font-black text-text-main dark:text-white tracking-tight">
+                                    Ready to build the future of {story.category === 'Fintech' ? 'payments' : story.category.toLowerCase()}?
+                                </h2>
+                                <p className="text-lg text-gray-600 dark:text-gray-400 max-w-xl">
+                                    Join {story.company} and thousands of other forward-thinking companies using SwitchQR to bridge the physical-digital divide.
+                                </p>
+                                <div className="flex flex-col sm:flex-row gap-4 mt-4 w-full justify-center">
+                                    <a href={`${CLIENT_APP_URL}/register`} className="flex min-w-[160px] cursor-pointer items-center justify-center rounded-xl h-12 px-8 bg-primary text-white text-base font-bold shadow-lg shadow-primary/25 hover:translate-y-[-2px] transition-transform">
+                                        Start your free trial
+                                    </a>
+                                    <a href="mailto:sales@switchqr.com" className="flex min-w-[160px] cursor-pointer items-center justify-center rounded-xl h-12 px-8 bg-background-light dark:bg-gray-800 border border-[#ece8f2] dark:border-gray-700 text-text-main dark:text-white text-base font-bold hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+                                        Talk to Sales
+                                    </a>
+                                </div>
+                                <p className="text-xs text-gray-400 mt-4">No credit card required for 14-day trial.</p>
                             </section>
                         </div>
                     </div>
                 </div>
             </div>
-
             {/* Bottom CTA */}
             <section className="py-20 bg-white border-t border-gray-100">
                 <div className="max-w-[960px] mx-auto px-4 text-center flex flex-col items-center gap-6">
