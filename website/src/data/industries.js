@@ -339,85 +339,114 @@ export const industries = {
         icon: 'restaurant',
         gradient: 'linear-gradient(135deg, #fdba74 0%, #fb923c 100%)',
         hero: {
-            eyebrow: 'Restaurants & Cafés',
-            title: 'Smart Menus & Promotions',
-            subtitle: 'Menus change. Offers change. Your QR codes shouldn’t. Automate your day-parting.',
-            image: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1200&q=80'
+            eyebrow: 'Restaurants & Cafés Solution',
+            title: 'Smart Menus That Update Automatically',
+            subtitle: 'Menus change throughout the day. Your QR codes shouldn’t need to.',
+            description: 'SwitchQR allows restaurants and cafés to deploy one permanent QR code that automatically redirects customers to the correct menu, promotion, or ordering page — based on time, campaign, or location. No reprinting. No manual updates. No broken links.',
+            image: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1200&q=80',
+            cta: 'Create your first smart menu',
+            secondaryCta: 'View live demo',
+            highlight: 'No reprinting. No manual updates. No broken links.'
         },
         placementSection: {
             title: 'Where Restaurants Use SwitchQR',
-            subtitle: 'Automate your customer touchpoints:',
+            subtitle: 'SwitchQR integrates seamlessly into existing restaurant touchpoints:',
             items: [
-                { icon: 'table_restaurant', label: 'Table tents and stands' },
-                { icon: 'restaurant_menu', label: 'Menu boards and flyers' },
-                { icon: 'window', label: 'Window posters for takeaway' }
-            ]
+                { icon: 'table_restaurant', label: 'Table tents and table stands' },
+                { icon: 'restaurant_menu', label: 'Printed menus and menu boards' },
+                { icon: 'window', label: 'Window displays and takeaway posters' },
+                { icon: 'store', label: 'Counter displays and ordering areas' },
+                { icon: 'auto_awesome', label: 'Flyers and promotional materials' }
+            ],
+            footer: 'One QR code works across every customer interaction.'
         },
         benefits: {
             title: 'Automate Your Service',
-            subtitle: 'Reduce friction for staff and improve customer experience.',
+            subtitle: 'Ensure customers always see the correct experience without staff intervention.',
             items: [
                 {
                     icon: 'schedule',
-                    title: 'Day-Parting',
-                    description: 'Automatically switch from Lunch to Dinner menus.'
+                    title: 'Automatic Day-Parting',
+                    description: 'Switch between breakfast, lunch, dinner, and late-night menus automatically based on schedule. Eliminate the need to manually update links.'
                 },
                 {
                     icon: 'celebration',
-                    title: 'Happy Hour',
-                    description: 'Trigger special offer pages only during 4-6 PM.'
+                    title: 'Timed Promotions and Happy Hours',
+                    description: 'Activate special offers only during specific hours or days. Run happy hours, seasonal menus, and limited-time campaigns with precision.'
                 },
                 {
-                    icon: 'store',
-                    title: 'Branch Management',
-                    description: 'Manage campaigns separately for each location.'
+                    icon: 'location_on',
+                    title: 'Manage Multiple Locations Easily',
+                    description: 'Assign separate campaigns and rules for each branch while maintaining centralized control. Maintain consistency across your entire operation.'
                 }
             ]
         },
         advanced: {
-            title: 'Enterprise Restaurant Tools',
-            subtitle: 'Smart automation for single locations or chains.',
+            title: 'Built for Single Locations and Multi-Branch Restaurants',
+            subtitle: 'SwitchQR provides the flexibility restaurants need to operate efficiently.',
             items: [
-                { title: 'Branch Folders', description: 'Organize and manage campaigns separately for every branch.' },
-                { title: 'Flow Testing', description: 'A/B test ordering vs WhatsApp booking to see what works best.' },
-                { title: 'Timed Redirects', description: 'Set specific schedules for specials and seasonal menus.' }
-            ]
+                { title: 'Instant Updates', description: 'Update menus instantly without reprinting physical materials.' },
+                { title: 'Scheduled Automation', description: 'Run scheduled promotions automatically based on time of day.' },
+                { title: 'Branch Management', description: 'Manage campaigns by branch or location for localized control.' }
+            ],
+            footer: 'Your physical QR codes remain the same — only the destination updates.'
         },
         feature: {
             type: 'timeline',
-            title: 'The Self-Updating Menu',
-            subtitle: 'Set it once and let the schedule run your marketing.',
+            title: 'One QR Code That Adapts Throughout the Day',
+            subtitle: 'A single QR code can power your entire service cycle.',
             items: [
                 {
-                    icon: 'lunch_dining',
-                    time: '11am - 4pm',
-                    title: 'Lunch',
-                    description: 'Redirects to Standard Menu'
+                    icon: 'coffee',
+                    time: 'Morning',
+                    title: 'Breakfast hours',
+                    description: 'Redirect to breakfast menu'
                 },
                 {
-                    icon: 'local_bar',
-                    time: '4pm - 7pm',
-                    title: 'Happy Hour',
-                    description: 'Redirects to 2-for-1 Offers',
+                    icon: 'lunch_dining',
+                    time: 'Day/Evening',
+                    title: 'Lunch and dinner service',
+                    description: 'Automatically switch to the appropriate menu',
                     active: true
                 },
                 {
-                    icon: 'music_note',
-                    time: 'Friday Night',
-                    title: 'Live Music',
-                    description: 'Promotes band schedule and drinks'
+                    icon: 'local_bar',
+                    time: 'Campaign',
+                    title: 'Promotional periods',
+                    description: 'Activate happy hour, live events, or seasonal offers'
                 }
             ],
             demo: {
-                time: 'Daily, 05:00 PM',
-                url: 'bistro.com/happy-hour',
-                image: 'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://switchqr.com&color=ea580c'
+                time: 'Daily Service',
+                url: 'bistro.com/menu',
+                image: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=400&h=400&fit=crop'
             }
         },
+        setup: {
+            title: 'Simple Setup in Minutes',
+            subtitle: 'Get your smart menus running in three steps:',
+            items: [
+                {
+                    icon: 'qr_code_2',
+                    title: '1. Create your QR code',
+                    description: 'Generate a dynamic QR for menus or promotions.'
+                },
+                {
+                    icon: 'settings',
+                    title: '2. Configure schedules',
+                    description: 'Define when and where your QR redirects.'
+                },
+                {
+                    icon: 'sync',
+                    title: '3. Update anytime',
+                    description: 'Modify menus or campaigns instantly without reprinting.'
+                }
+            ]
+        },
         testimonial: {
-            quote: "SwitchQR automated our day-parting. Our lunch and dinner menus switch perfectly without any manual effort from the staff.",
-            author: 'Elena Rodriguez',
-            role: 'Owner, La Mesa Bistro',
+            quote: "SwitchQR automated our menu switching completely. Our QR codes now redirect customers to the correct menu throughout the day without staff needing to manage anything.",
+            author: 'Restaurant Owner',
+            role: 'Hospitality Operations',
             image: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&h=400&fit=crop'
         }
     },
