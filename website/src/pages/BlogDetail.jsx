@@ -91,9 +91,9 @@ const BlogDetail = () => {
                 </section>
 
                 {/* Main Content Layout */}
-                <div className="max-w-[1200px] mx-auto px-4 sm:px-6 flex flex-col items-center relative mb-20 text-center lg:text-left">
+                <div className="max-w-[1240px] mx-auto px-4 sm:px-6 flex flex-col lg:flex-row gap-12 relative mb-20 items-start">
                     {/* Article Body */}
-                    <article className="max-w-[720px] w-full text-lg leading-relaxed text-slate-700 dark:text-slate-300 space-y-10 font-normal">
+                    <article className="flex-1 max-w-[760px] w-full text-lg leading-relaxed text-slate-700 dark:text-slate-300 space-y-10 font-normal">
                         {blog.content.map((item, idx) => {
                             if (item.type === 'paragraph') {
                                 return (
@@ -118,9 +118,9 @@ const BlogDetail = () => {
                             }
                             if (item.type === 'list') {
                                 return (
-                                    <ul key={idx} className="space-y-4 list-none pl-2 my-6 text-left">
+                                    <ul key={idx} className="space-y-4 list-none pl-2 my-6">
                                         {item.items.map((listItem, lIdx) => (
-                                            <li key={lIdx} className="flex gap-3 items-start">
+                                            <li key={lIdx} className="flex gap-3 items-start text-left">
                                                 <span className="material-symbols-outlined text-primary mt-1 text-[20px] shrink-0">check_circle</span>
                                                 <span dangerouslySetInnerHTML={{ __html: formatText(listItem) }} />
                                             </li>
@@ -176,59 +176,53 @@ const BlogDetail = () => {
                         </div>
                     </article>
 
-                    {/* Sidebar (Right) - Optional Next Post Preview */}
-                    <aside className="hidden xl:block w-72 shrink-0">
-                        <div className="sticky top-32">
-                            <h3 className="text-sm font-bold text-slate-400 uppercase tracking-wider mb-4">Up Next</h3>
-                            <div className="group block p-4 bg-white dark:bg-gray-800 rounded-xl border border-slate-100 dark:border-gray-700 shadow-sm hover:shadow-md transition-all hover:border-primary/30">
-                                <div className="aspect-video w-full rounded-lg bg-slate-100 dark:bg-gray-700 mb-3 overflow-hidden">
-                                    <img alt="Next post preview" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400&q=80" />
+                    {/* Sidebar (Right) - Related Articles */}
+                    <aside className="hidden lg:block w-80 shrink-0 sticky top-32">
+                        <div className="space-y-8">
+                            <div>
+                                <h3 className="text-sm font-bold text-slate-400 uppercase tracking-wider mb-6 pb-2 border-b border-slate-100 dark:border-gray-800">Related Articles</h3>
+                                <div className="space-y-8">
+                                    {[1, 2].map((i) => (
+                                        <div key={i} className="group cursor-pointer">
+                                            <div className="overflow-hidden rounded-xl mb-3 aspect-[16/10] bg-gray-100 dark:bg-gray-800">
+                                                <div className="w-full h-full bg-slate-50 dark:bg-gray-800/50 flex items-center justify-center text-slate-300">
+                                                    <span className="material-symbols-outlined text-3xl">article</span>
+                                                </div>
+                                            </div>
+                                            <h4 className="text-base font-bold text-slate-900 dark:text-white leading-tight group-hover:text-primary transition-colors line-clamp-2">
+                                                Coming Soon: More Marketing Insights
+                                            </h4>
+                                            <p className="text-slate-500 dark:text-slate-400 mt-2 text-xs line-clamp-1 uppercase tracking-wider font-bold">
+                                                Resources
+                                            </p>
+                                        </div>
+                                    ))}
                                 </div>
-                                <h4 className="font-bold text-slate-800 dark:text-white leading-tight group-hover:text-primary transition-colors">
-                                    5 Metrics You Should Be Tracking Today
-                                </h4>
-                                <p className="text-sm text-slate-500 dark:text-slate-400 mt-2 line-clamp-2">
-                                    Stop guessing and start measuring. Here are the top 5 KPIs for digital growth.
-                                </p>
+                            </div>
+
+                            {/* Mini CTA Sidebar */}
+                            <div className="p-6 bg-primary rounded-2xl text-white relative overflow-hidden shadow-lg shadow-primary/20">
+                                <div className="relative z-10">
+                                    <h4 className="font-black text-xl mb-2 italic">Grow Faster.</h4>
+                                    <p className="text-white/80 text-sm mb-4">Bridge the gap with SwitchQR.</p>
+                                    <Link to="/pricing" className="inline-block bg-white text-primary font-bold px-4 py-2 rounded-lg text-sm transition-transform hover:scale-105">
+                                        Get Started
+                                    </Link>
+                                </div>
+                                <div className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/4 w-32 h-32 bg-white/10 rounded-full blur-2xl"></div>
                             </div>
                         </div>
                     </aside>
                 </div>
             </main>
 
-            {/* Related Articles */}
-            <div className="bg-white dark:bg-gray-800/30 border-t border-slate-100 dark:border-gray-700">
-                <div className="max-w-[1200px] mx-auto px-6 py-16">
-                    <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-8">Related Articles</h2>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                        {/* Placeholder Related Cards */}
-                        {[1, 2, 3].map((i) => (
-                            <div key={i} className="flex flex-col group cursor-pointer">
-                                <div className="overflow-hidden rounded-xl mb-4 aspect-[4/3] bg-gray-100 dark:bg-gray-800">
-                                    <div className="w-full h-full bg-slate-200 dark:bg-gray-700 flex items-center justify-center text-slate-400">
-                                        <span className="material-symbols-outlined text-4xl">article</span>
-                                    </div>
-                                </div>
-                                <span className="text-xs font-bold text-primary mb-2 uppercase tracking-wide">Resources</span>
-                                <h3 className="text-lg font-bold text-slate-900 dark:text-white leading-snug group-hover:text-primary transition-colors">
-                                    Coming Soon: More Marketing Insights
-                                </h3>
-                                <p className="text-slate-500 dark:text-slate-400 mt-2 text-sm line-clamp-2">
-                                    We're crafting more expert guides and deep-dives. Stay tuned!
-                                </p>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </div>
-
-            {/* CTA Section */}
+            {/* CTA Section (Bottom) */}
             <div className="bg-slate-900 py-16 px-6 relative overflow-hidden">
                 <div className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/4 w-96 h-96 bg-primary/30 rounded-full blur-3xl"></div>
                 <div className="max-w-[800px] mx-auto text-center relative z-10">
                     <h2 className="text-3xl md:text-4xl font-black text-white mb-4 italic">Ready to modernize your campaigns?</h2>
                     <p className="text-slate-300 text-lg mb-8 max-w-xl mx-auto">
-                        Join thousands of marketers using SwitchQR to bridge the gap between offline and online. Start your free trial today.
+                        Join thousands of marketers using SwitchQR. Start your free trial today.
                     </p>
                     <div className="flex flex-col sm:flex-row justify-center gap-4">
                         <Link to="/pricing" className="bg-primary hover:bg-primary-dark text-white font-bold py-3 px-8 rounded-xl transition-all shadow-lg hover:shadow-primary/50 text-center">
