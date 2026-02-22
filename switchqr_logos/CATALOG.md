@@ -4,13 +4,18 @@ Visual reference for all logo assets in the package.
 
 ## 📦 Complete Package Overview
 
-Your logo package includes **12 files** across 3 formats:
+Your logo package includes **17 files** across 3 formats:
 
-### PNG Files (4 sizes)
+### PNG Files (4 sizes + 5 social variants)
 - ✅ `png/logo-256w.png` - 3.8 KB
 - ✅ `png/logo-512w.png` - 7.9 KB
 - ✅ `png/logo-1024w.png` - 17 KB
 - ✅ `png/logo-2048w.png` - 40 KB
+- ✅ `png/social/social-og-image.png` (1200x630) - 23 KB
+- ✅ `png/social/social-instagram-square.png` (1080x1080) - 18 KB
+- ✅ `png/social/social-profile-avatar.png` (512x512) - 8 KB
+- ✅ `png/social/social-twitter-header.png` (1500x500) - 18 KB
+- ✅ `png/social/social-linkedin-banner.png` (1128x191) - 11 KB
 
 ### SVG Files (4 sizes)
 - ✅ `svg/logo-256w.svg` - 1.6 KB
