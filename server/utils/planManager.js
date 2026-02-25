@@ -89,10 +89,39 @@ async function resolveUserPlan(userId) {
             return getDefaultPlan('free');
         }
 
-        const storedPlan = profile.plan || 'free';
-        const planExpiresAt = profile.plan_expires_at;
+        let storedPlan = profile.plan || 'free';
+        let planExpiresAt = profile.plan_expires_at;
         const subscriptionStatus = profile.subscription_status;
         const currentPeriodEnd = profile.current_period_end || null;
+
+        // --- AUTO-TRIAL FOR NEW USERS (OAuth/Supabase bypass) ---
+        // If on free plan with NO expiry and NO subscription status, they likely missed the trial.
+        if (storedPlan === 'free' && !planExpiresAt && !subscriptionStatus) {
+            try {
+                const trialExpiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
+                logger.info('[PLAN_MANAGER] Auto-applying 7-day Pro trial (Lazy)', { userId, expiresAt: trialExpiresAt.toISOString() });
+
+                const { error: updateError } = await admin
+                    .from('profiles')
+                    .update({
+                        plan: 'pro',
+                        plan_expires_at: trialExpiresAt.toISOString(),
+                        updated_at: new Date().toISOString()
+                    })
+                    .eq('id', userId);
+
+                if (updateError) {
+                    logger.error('[PLAN_MANAGER] Failed to auto-apply trial', { userId, error: updateError.message });
+                } else {
+                    // Update variables so the current request returns the trial info immediately
+                    storedPlan = 'pro';
+                    planExpiresAt = trialExpiresAt.toISOString();
+                    logger.info('[PLAN_MANAGER] ✅ Auto-trial applied successfully', { userId });
+                }
+            } catch (err) {
+                logger.error('[PLAN_MANAGER] Error in auto-trial logic', { userId, error: err.message });
+            }
+        }
 
         let effectivePlan = storedPlan;
 
