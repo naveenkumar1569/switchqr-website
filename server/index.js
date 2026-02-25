@@ -91,6 +91,9 @@ app.use('/api/qrs', schedulesRoutes); // Schedules are under /api/qrs/:id/schedu
 // Redirect Service (Must be last to avoid capturing api routes)
 app.use('/', redirectRoutes);
 
+// Static files (from Vite build)
+app.use(express.static(path.join(__dirname, '../client/dist')));
+
 // Health Check Endpoint
 app.get('/health', async (req, res) => {
     const health = {
@@ -109,15 +112,18 @@ app.get('/health', async (req, res) => {
     res.status(health.status === 'ok' ? 200 : 503).json(health);
 });
 
-// Root endpoint
-app.get('/', (req, res) => {
-    res.send('SwitchQR API is running');
+// SPA routing - serve index.html for all non-API GET requests
+app.use((req, res, next) => {
+    if (req.method === 'GET' && !req.url.startsWith('/api/') && !req.url.startsWith('/health')) {
+        return res.sendFile(path.join(__dirname, '../client/dist/index.html'));
+    }
+    next();
 });
 
 // 404 Handler (Log unhandled routes)
 app.use((req, res) => {
     console.error(`[404] Route not found: ${req.method} ${req.url}`);
-    res.status(404).send(`Cannot GET ${req.url} (Explicit 404)`);
+    res.status(404).json({ error: 'Not Found', path: req.url });
 });
 
 // Start Server
