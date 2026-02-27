@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { industries } from '../data/industries';
 import StatsSection from '../components/StatsSection';
+import SEOContent from '../components/SEOContent';
 
 // Hardcoded production URL for marketing site
 const CLIENT_APP_URL = 'https://app.switch-qr.com';
@@ -58,7 +59,7 @@ const Home = () => {
                     <div className="flex flex-col lg:flex-row gap-12 lg:gap-24 items-center">
                         <div className="flex-1 text-center lg:text-left space-y-8 z-10">
                             <h1 className="text-text-main text-5xl lg:text-7xl font-black leading-[1.05] tracking-tight">
-                                Change QR destinations <span className="text-primary">anytime.</span>
+                                Dynamic QR Code Generator for <span className="text-primary">Marketing Teams</span> and Businesses
                             </h1>
                             <p className="text-text-main/80 text-lg lg:text-xl font-medium leading-relaxed max-w-2xl mx-auto lg:mx-0">
                                 Stop reprinting marketing materials. Manage all your QR campaigns, track scans, and redirect users instantly from one dynamic dashboard.
@@ -271,6 +272,9 @@ const Home = () => {
                     </div>
                 </div>
             </section>
+
+            {/* SEO Content Sections */}
+            <SEOContent />
 
             {/* Final CTA */}
             <section className="py-20 px-4 sm:px-6 lg:px-8">
