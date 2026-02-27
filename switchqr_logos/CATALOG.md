@@ -11,13 +11,14 @@ Your logo package includes **17 files** across 3 formats:
 - ✅ `png/logo-512w.png` - 7.9 KB
 - ✅ `png/logo-1024w.png` - 17 KB
 - ✅ `png/logo-2048w.png` - 40 KB
-- ✅ `png/social/social-og-image.png` (1200x630) - 23 KB
-- ✅ `png/social/social-instagram-square.png` (1080x1080) - 18 KB
-- ✅ `png/social/social-profile-avatar.png` (512x512) - 8 KB
-- ✅ `png/social/social-twitter-header.png` (1500x500) - 18 KB
-- ✅ `png/social/social-linkedin-banner.png` (1128x191) - 11 KB
+### PNG Social Media Variants (Light/Dark & High-Res)
+All platforms include `light`, `light@2x`, `dark`, and `dark@2x` variants.
 
-### SVG Files (4 sizes)
+- 📁 `png/social/twitter/` (Profile: 512x512, Header: 1500x500, Post: 1200x675)
+- 📁 `png/social/linkedin/` (Profile: 512x512, Banner: 1128x191, Post: 1200x627)
+- 📁 `png/social/facebook/` (Profile: 512x512, Cover: 820x312, Post: 1200x630)
+- 📁 `png/social/instagram/` (Profile: 512x512, Square: 1080x1080, Portrait: 1080x1350)
+- 📁 `png/social/open-graph/` (OG Image: 1200x630)
 - ✅ `svg/logo-256w.svg` - 1.6 KB
 - ✅ `svg/logo-512w.svg` - 1.6 KB
 - ✅ `svg/logo-1024w.svg` - 1.6 KB
